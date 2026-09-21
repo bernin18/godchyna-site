@@ -79,9 +79,10 @@ pointer-events:none}
 .section-title p{margin-top:4px}
 .partners-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .partner-card{display:grid;grid-template-columns:.8fr 1.35fr;align-items:center;min-height:150px;padding:25px 28px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(135deg,#071015,#071015 60%,#091217)}
-.partner-name{font-family:"Chakra Petch";font-weight:700;font-size:31px}
-.partner-card.orange .partner-name,.partner-card.orange b{color:#ff541d}
-.partner-card.blue .partner-name,.partner-card.blue b{color:#35aeff}
+.partner-name{display:flex;align-items:center;min-height:52px}
+.partner-logo{display:block;max-width:210px;max-height:48px;width:auto;height:auto;object-fit:contain}
+.partner-card.orange b{color:#ff541d}
+.partner-card.blue b{color:#35aeff}
 .partner-info{border-left:1px solid #1d2e32;padding-left:28px}
 .code-row{display:flex;align-items:center;gap:8px;color:#d1d6d6;font-size:14px}
 .code-row button{background:none;border:0;color:#dbe5e2;padding:3px;cursor:pointer}
@@ -147,6 +148,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .service-card{min-height:105px}
  .contact-row{grid-template-columns:1fr}
  .partner-card{grid-template-columns:1fr;gap:18px}
+ .partner-logo{max-width:190px;max-height:44px}
  .partner-info{border-left:0;border-top:1px solid #1d2e32;padding:18px 0 0}
  .giveaway-card{padding:15px;gap:20px}
  .knife-stage{min-height:230px}
