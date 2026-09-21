@@ -28,6 +28,7 @@ const partners = [
     benefit: "15% em todos os depósitos",
     url: "https://topskin.net/utm/godchyna",
     tone: "orange",
+    logo: "./topskin-logo.png",
   },
   {
     name: "CSGO-SKINS",
@@ -35,6 +36,7 @@ const partners = [
     benefit: "10% em todos os depósitos",
     url: "https://csgo-skins.com/?ref=GODCHYNA",
     tone: "blue",
+    logo: "./csgoskins-logo.png",
   },
 ] as const;
 
@@ -87,7 +89,9 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
   }
   return (
     <article className={`partner-card ${partner.tone}`}>
-      <div className="partner-name">{partner.name}</div>
+      <div className="partner-name">
+        <img className="partner-logo" src={partner.logo} alt={partner.name} />
+      </div>
       <div className="partner-info">
         <div className="code-row"><span>Código: <b>{partner.code}</b></span><button onClick={copy} aria-label="Copiar código">{copied?<Check/>:<Copy/>}</button></div>
         <p>{partner.benefit}</p>
