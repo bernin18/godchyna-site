@@ -39,7 +39,7 @@ const partners = [
 ] as const;
 
 function Brand() {
-  return <a className="brand" href="/">CHYNA</a>;
+  return <a className="brand" href="./">CHYNA</a>;
 }
 
 function SocialIcons() {
@@ -206,8 +206,8 @@ function StorePage(){
 }
 
 export default function App(){
-  const path=window.location.pathname;
-  if(path.startsWith("/giveaways")) return <GiveawaysPage/>;
-  if(path.startsWith("/loja")) return <StorePage/>;
+  const path = window.location.pathname.replace(/\/$/, "");
+  if(path.endsWith("/giveaways")) return <GiveawaysPage/>;
+  if(path.endsWith("/loja")) return <StorePage/>;
   return <Home/>;
 }
