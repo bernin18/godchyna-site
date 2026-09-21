@@ -101,7 +101,7 @@ function GiveawayCard() {
   return (
     <article className="giveaway-card">
       <div className="knife-stage">
-        <img src="/ursus-marble-fade.webp" alt="Ursus Marble Fade Factory New" />
+        <img src="/ursus-marble-fade.png" alt="Ursus Marble Fade Factory New" />
         <span>CS2</span>
       </div>
       <div className="giveaway-info">
@@ -157,7 +157,7 @@ function Home(){
             <a className="outline-cta" href="#contacto">SEGUE NAS REDES <span>›</span></a>
           </div>
           <div className="hero-character">
-            <img src="/hero-chyna.webp" alt="Chyna em estilo tático gaming" />
+            <img src="/hero-chyna.png" alt="Chyna em estilo tático gaming" />
           </div>
           <div className="hero-slogan">GOOD<br/>SKINS.<br/><br/>BETTER<br/>PEOPLE.</div>
         </section>
