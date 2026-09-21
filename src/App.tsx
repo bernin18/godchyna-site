@@ -175,10 +175,6 @@ function Home(){
               </a>
             </div>
           </div>
-          <div className="hero-character">
-            <img src="./hero-chyna.png" alt="Chyna em estilo tático gaming" />
-          </div>
-          <div className="hero-slogan">GOOD<br/>SKINS.<br/><br/>BETTER<br/>PEOPLE.</div>
         </section>
 
         <section className="section skins-section">
