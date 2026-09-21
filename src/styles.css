@@ -43,9 +43,12 @@ radial-gradient(circle at 70% 20%,rgba(0,130,96,.18),transparent 38%);
 .hero-tags{display:flex;gap:20px;color:var(--green);font-weight:800;letter-spacing:.18em;margin-top:24px}
 .hero-tags i{font-style:normal}
 .hero-text{color:#d0d5d5;line-height:1.8;margin:29px 0 30px;font-size:16px}
-.outline-cta{display:inline-flex;align-items:center;gap:28px;border:1px solid var(--green);border-radius:7px;padding:15px 25px;color:var(--green);font-weight:800;font-size:13px;box-shadow:0 0 18px rgba(32,243,154,.09);transition:.2s}
-.outline-cta:hover{background:var(--green);color:#04100b}
-.outline-cta span{font-size:24px;line-height:10px}
+.hero-cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.hero-social-btn{min-width:150px;min-height:50px;padding:0 22px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.08em;transition:.2s;border:1px solid transparent}
+.hero-social-btn svg{width:18px;height:18px}
+.hero-social-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.twitch-btn{color:#fff;background:linear-gradient(90deg,#5b21b6,#9146ff);border-color:#a970ff;box-shadow:0 0 20px rgba(145,70,255,.28)}
+.tiktok-btn{color:#fff;background:linear-gradient(90deg,#050505,#171717);border-color:#343434;box-shadow:0 0 18px rgba(255,255,255,.08)}
 .hero-character{position:absolute;z-index:2;right:10%;bottom:0;width:min(48%,720px);height:100%;display:flex;align-items:flex-end;justify-content:center}
 .hero-character img{max-height:94%;max-width:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 25px #000)}
 .hero-slogan{position:absolute;z-index:3;right:3.8%;top:180px;font-family:"Chakra Petch";font-style:italic;font-weight:700;font-size:31px;line-height:1.05;color:rgba(238,247,245,.16);transform:rotate(-4deg);text-align:center}
@@ -131,6 +134,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .hero h1{font-size:66px}
  .hero-tags{font-size:11px;gap:10px;letter-spacing:.1em}
  .hero-text{font-size:14px;max-width:88%}
+ .hero-cta-row{flex-direction:column;align-items:flex-start}
+ .hero-social-btn{width:min(240px,100%)}
  .hero-character{width:80%;height:58%;right:-20%;opacity:.72}
  .section{padding:44px 20px}
  .skins-copy h2,.section-title h2,.section-title h1{font-size:31px}
