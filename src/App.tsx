@@ -60,10 +60,10 @@ function Header() {
       <div className="topbar-inner">
         <Brand />
         <nav className={open ? "nav open" : "nav"}>
-          <a href="/#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
-          <a href="/#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
-          <a href="/giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
-          <a href="/loja" onClick={()=>setOpen(false)}>LOJA</a>
+          <a href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
+          <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
+          <a href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
+          <a href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
         </nav>
         <div className="desktop-social"><SocialIcons /></div>
         <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label="Abrir menu">
@@ -101,7 +101,7 @@ function GiveawayCard() {
   return (
     <article className="giveaway-card">
       <div className="knife-stage">
-        <img src="/ursus-marble-fade.png" alt="Ursus Marble Fade Factory New" />
+        <img src="./ursus-marble-fade.png" alt="Ursus Marble Fade Factory New" />
         <span>CS2</span>
       </div>
       <div className="giveaway-info">
@@ -157,7 +157,7 @@ function Home(){
             <a className="outline-cta" href="#contacto">SEGUE NAS REDES <span>›</span></a>
           </div>
           <div className="hero-character">
-            <img src="/hero-chyna.png" alt="Chyna em estilo tático gaming" />
+            <img src="./hero-chyna.png" alt="Chyna em estilo tático gaming" />
           </div>
           <div className="hero-slogan">GOOD<br/>SKINS.<br/><br/>BETTER<br/>PEOPLE.</div>
         </section>
