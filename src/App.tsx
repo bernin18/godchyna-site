@@ -154,7 +154,26 @@ function Home(){
             <h1>CHYNA</h1>
             <div className="hero-tags"><span>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>COMUNIDADE</span></div>
             <p className="hero-text">Acompanha as streams, participa nos giveaways,<br className="desktop-break"/> usa os meus códigos e faz parte desta comunidade!</p>
-            <a className="outline-cta" href="#contacto">SEGUE NAS REDES <span>›</span></a>
+            <div className="hero-cta-row">
+              <a
+                className="hero-social-btn twitch-btn"
+                href={socials.twitch}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Twitch />
+                TWITCH
+              </a>
+              <a
+                className="hero-social-btn tiktok-btn"
+                href={socials.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Music2 />
+                TIKTOK
+              </a>
+            </div>
           </div>
           <div className="hero-character">
             <img src="./hero-chyna.png" alt="Chyna em estilo tático gaming" />
