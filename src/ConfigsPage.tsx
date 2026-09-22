@@ -277,7 +277,6 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
       <Header />
       <main className="configs-page">
         <section className="configs-intro">
-          <span className="configs-kicker">CONFIGURAÇÕES & HARDWARE</span>
           <h1>SETUP DO <span className="chynao-word">CHYNAO</span></h1>
           <p>O equipamento, o hardware e as configurações que uso no dia a dia para jogar, competir e fazer stream.</p>
 
