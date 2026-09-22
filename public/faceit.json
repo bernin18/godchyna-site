@@ -1,0 +1,23 @@
+{
+  "updatedAt": null,
+  "source": "https://fplleaderboards.com/players/Chyna",
+  "player": "Chyna",
+  "level": 10,
+  "elo": 2936,
+  "rankingPt": 65,
+  "stats": {
+    "matches": 5838,
+    "winRate": 52,
+    "kd": 1.2,
+    "adr": 82.55,
+    "headshots": 54
+  },
+  "recentResults": ["L", "L", "W", "L", "L"],
+  "recentMatches": [
+    {"result":"L","map":"Inferno","score":"8–13","kills":13,"assists":0,"deaths":14,"rating":0.93,"elo":2936,"eloChange":-25},
+    {"result":"L","map":"Dust2","score":"5–13","kills":13,"assists":3,"deaths":11,"rating":1.18,"elo":2961,"eloChange":-30},
+    {"result":"W","map":"Anubis","score":"13–10","kills":14,"assists":6,"deaths":16,"rating":0.88,"elo":2991,"eloChange":30},
+    {"result":"L","map":"Mirage","score":"14–16","kills":22,"assists":5,"deaths":20,"rating":1.1,"elo":2961,"eloChange":-30},
+    {"result":"L","map":"Dust2","score":"6–13","kills":13,"assists":2,"deaths":15,"rating":0.87,"elo":2991,"eloChange":-30}
+  ]
+}
