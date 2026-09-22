@@ -277,8 +277,15 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
       <Header />
       <main className="configs-page">
         <section className="configs-intro">
-          <h1>SETUP DO <span className="chynao-word">CHYNAO</span></h1>
-          <p>O equipamento, o hardware e as configurações que uso no dia a dia para jogar, competir e fazer stream.</p>
+          <div className="configs-hero-row">
+            <h1 className="configs-title-art">
+              <img src={asset("chynao.png?v=1")} alt="Setup do Chynao" />
+            </h1>
+            <div className="configs-agent" aria-hidden="true">
+              <div className="configs-agent-glow" />
+              <img src={asset("hero-chyna.png?v=1")} alt="" />
+            </div>
+          </div>
 
           <div className="configs-switch" role="tablist" aria-label="Categorias do setup">
             <button
