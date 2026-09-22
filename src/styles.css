@@ -31,13 +31,7 @@ button{font:inherit}
 .social-icons a:hover{color:var(--green);transform:translateY(-2px)}
 .menu-btn{display:none;background:none;border:0;color:white}
 main{overflow:hidden}
-.hero{position:relative;min-height:610px;border-bottom:1px solid #142429;display:flex;align-items:center;max-width:1600px;margin:auto;padding:65px 72px;overflow:hidden;background:
-linear-gradient(90deg,rgba(4,11,13,.98) 0%,rgba(4,12,14,.92) 31%,rgba(4,12,14,.62) 49%,rgba(3,8,10,.20) 72%,rgba(3,8,10,.44) 100%),
-url("./hero-green-bg.png");
-background-size:cover;
-background-position:right center;
-background-repeat:no-repeat;
-}
+.hero{position:relative;min-height:610px;border-bottom:1px solid #142429;display:flex;align-items:center;max-width:1600px;margin:auto;padding:65px 72px;overflow:hidden;background-color:#05090c;background-size:cover;background-position:right center;background-repeat:no-repeat}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;background:
 radial-gradient(circle at 74% 42%,rgba(31,243,154,.18),transparent 24%),
 radial-gradient(circle at 84% 58%,rgba(0,190,118,.11),transparent 30%),
@@ -81,8 +75,8 @@ pointer-events:none}
 .partner-card{display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:160px;padding:25px 28px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(135deg,#071015,#071015 60%,#091217)}
 .partner-name{display:flex;align-items:center;justify-content:center;min-height:72px;padding:0 28px}
 .partner-logo{display:block;width:auto;height:auto;object-fit:contain;margin:0 auto;background:transparent}
-.partner-card.orange .partner-logo{width:180px;max-width:100%;max-height:52px}
-.partner-card.blue .partner-logo{width:220px;max-width:100%;max-height:52px}
+.partner-card.orange .partner-logo{width:235px;max-width:100%;max-height:66px;filter:drop-shadow(0 0 10px rgba(255,83,29,.08))}
+.partner-card.blue .partner-logo{width:270px;max-width:100%;max-height:64px;filter:drop-shadow(0 0 10px rgba(53,174,255,.08))}
 .partner-card.orange b{color:#ff541d}
 .partner-card.blue b{color:#35aeff}
 .partner-info{border-left:1px solid #1d2e32;padding-left:28px}
@@ -155,8 +149,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .contact-row{grid-template-columns:1fr}
  .partner-card{grid-template-columns:1fr;gap:18px}
  .partner-name{padding:0;justify-content:center}
- .partner-card.orange .partner-logo{width:170px;max-height:48px}
- .partner-card.blue .partner-logo{width:200px;max-height:48px}
+ .partner-card.orange .partner-logo{width:205px;max-height:58px}
+ .partner-card.blue .partner-logo{width:235px;max-height:56px}
  .partner-info{border-left:0;border-top:1px solid #1d2e32;padding:18px 0 0}
  .giveaway-card{padding:15px;gap:20px}
  .knife-stage{min-height:230px}
