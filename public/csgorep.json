@@ -1,0 +1,17 @@
+{
+  "updatedAt": null,
+  "steamId": "76561198018758818",
+  "profile": null,
+  "ban": null,
+  "stats": {
+    "positive": 0,
+    "neutral": 0,
+    "negative": 0,
+    "total": 0
+  },
+  "reps": {
+    "total": 0,
+    "filtered": 0,
+    "recent": []
+  }
+}
