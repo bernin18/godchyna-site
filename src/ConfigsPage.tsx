@@ -55,7 +55,22 @@ const fallbackData: Record<ConfigTab, ConfigRow[]> = {
   Viewmodel: [],
   HUD: [],
   Radar: [],
-  Audio: [],
+  Audio: [
+    { label: "Dispositivo de áudio", value: "HyperX Virtual Surround Sound" },
+    { label: "Perfil de equalização", value: "Natural" },
+    { label: "Correção de perspetiva", value: "Sim" },
+    { label: "Som quando o jogo está em segundo plano", value: "Não" },
+    { label: "Modo de voz/microfone", value: "Pressionar para falar" },
+    { label: "Dispositivo de entrada de voz", value: "HyperX Virtual Surround Sound" },
+    { label: "Ouvir a minha própria voz", value: "Desligado" },
+    { label: "Pressionar para falar simplificado", value: "Não" },
+    { label: "Limiar de ativação do microfone", value: "-120" },
+    { label: "Silenciar música de MVP se ambas as equipas estiverem vivas", value: "Não" },
+    { label: "Equalização - Competitivo", value: "Predefinição" },
+    { label: "Equalização - Casual", value: "Predefinição" },
+    { label: "Equalização - Deathmatch", value: "Predefinição" },
+    { label: "Equalização - Corrida às Armas", value: "Predefinição" },
+  ],
 };
 
 const fallbackDownloadUrl = "https://gg.settings.gg/api/download/cs2/58493090";
@@ -93,11 +108,11 @@ function Cs2Configs() {
 
         setConfigData((current) => ({
           Mouse: payload.tabs?.Mouse?.length ? payload.tabs.Mouse : current.Mouse,
-          Video: payload.tabs?.Video ?? current.Video,
-          Viewmodel: payload.tabs?.Viewmodel ?? current.Viewmodel,
-          HUD: payload.tabs?.HUD ?? current.HUD,
-          Radar: payload.tabs?.Radar ?? current.Radar,
-          Audio: payload.tabs?.Audio ?? current.Audio,
+          Video: payload.tabs?.Video?.length ? payload.tabs.Video : current.Video,
+          Viewmodel: payload.tabs?.Viewmodel?.length ? payload.tabs.Viewmodel : current.Viewmodel,
+          HUD: payload.tabs?.HUD?.length ? payload.tabs.HUD : current.HUD,
+          Radar: payload.tabs?.Radar?.length ? payload.tabs.Radar : current.Radar,
+          Audio: payload.tabs?.Audio?.length ? payload.tabs.Audio : current.Audio,
         }));
 
         if (payload.downloadUrl) setDownloadUrl(payload.downloadUrl);
