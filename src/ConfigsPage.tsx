@@ -1,9 +1,10 @@
 import { useState } from "react";
+import type { ComponentType } from "react";
 import "./configs.css";
 
 type ConfigsPageProps = {
-  Header: () => JSX.Element;
-  Footer: () => JSX.Element;
+  Header: ComponentType;
+  Footer: ComponentType;
 };
 
 type GearItem = {
