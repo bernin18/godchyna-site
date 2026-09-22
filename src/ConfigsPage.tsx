@@ -11,6 +11,9 @@ type GearItem = {
   category: string;
   name: string;
   detail?: string;
+  image?: string;
+  imageWidth?: string;
+  imageHeight?: string;
 };
 
 type ConfigTab = "Mouse" | "Video" | "Viewmodel" | "HUD" | "Radar" | "Audio";
@@ -23,19 +26,78 @@ type SettingsPayload = {
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
 const peripherals: GearItem[] = [
-  { category: "MOUSE", name: "Razer DeathAdder V3 PRO" },
-  { category: "TECLADO", name: "XTRFY K4 RGB TKL" },
-  { category: "MONITOR", name: "BenQ XL2566X+", detail: "Fast TN · 400Hz" },
-  { category: "HEADSET", name: "HyperX Cloud II", detail: "7.1" },
-  { category: "MOUSEPAD", name: "SteelSeries QcK Heavy" },
+  {
+    category: "MOUSE",
+    name: "Razer DeathAdder V3 PRO",
+    image: "chu_t_razer_deathadder_v3_pro_wireless_8khz.png",
+    imageWidth: "68%",
+    imageHeight: "78%",
+  },
+  {
+    category: "TECLADO",
+    name: "XTRFY K4 RGB TKL",
+    image: "XG-K4-RGB-TKL-R-US1.webp",
+    imageWidth: "92%",
+    imageHeight: "72%",
+  },
+  {
+    category: "MONITOR",
+    name: "BenQ XL2566X+",
+    detail: "Fast TN · 400Hz",
+    image: "XL2566X 01.jpg",
+    imageWidth: "88%",
+    imageHeight: "82%",
+  },
+  {
+    category: "HEADSET",
+    name: "HyperX Cloud II",
+    detail: "7.1",
+    image: "hyperx_cloud_ii_red_3_detachable.webp",
+    imageWidth: "76%",
+    imageHeight: "82%",
+  },
+  {
+    category: "MOUSEPAD",
+    name: "SteelSeries QcK Heavy",
+    image: "549729-02.webp",
+    imageWidth: "88%",
+    imageHeight: "68%",
+  },
 ];
 
 const pcSpecs: GearItem[] = [
-  { category: "CPU", name: "Intel Core i7-14700K", detail: "até 5.6GHz" },
-  { category: "GPU", name: "MSI GeForce RTX 4060 Ti Gaming X Slim", detail: "16GB GDDR6 · DLSS 3" },
-  { category: "MOTHERBOARD", name: "MSI MAG Z790 TOMAHAWK" },
+  {
+    category: "CPU",
+    name: "Intel Core i7-14700K",
+    detail: "até 5.6GHz",
+    image: "intel-i7-14700k-14th-gen-desktop-cpu-main-1600px-v1.webp",
+    imageWidth: "74%",
+    imageHeight: "76%",
+  },
+  {
+    category: "GPU",
+    name: "MSI GeForce RTX 4060 Ti Gaming X Slim",
+    detail: "16GB GDDR6 · DLSS 3",
+    image: "Karta-graficzna-MSI-GeForce-RTX-4060-Ti-Gaming-X-Slim-16GB-DLSS-3-front-box.jpg",
+    imageWidth: "92%",
+    imageHeight: "76%",
+  },
+  {
+    category: "MOTHERBOARD",
+    name: "MSI MAG Z790 TOMAHAWK",
+    image: "1_36.webp",
+    imageWidth: "78%",
+    imageHeight: "80%",
+  },
   { category: "RAM", name: "32GB DDR5", detail: "2x16GB · 6400MHz" },
-  { category: "SSD", name: "Samsung 990 PRO 1TB", detail: "M.2 2280" },
+  {
+    category: "SSD",
+    name: "Samsung 990 PRO 1TB",
+    detail: "M.2 2280",
+    image: "612Z9aQdaSL._SL400_.jpg",
+    imageWidth: "78%",
+    imageHeight: "66%",
+  },
 ];
 
 const configTabs: ConfigTab[] = ["Mouse", "Video", "Viewmodel", "HUD", "Radar", "Audio"];
@@ -78,9 +140,28 @@ const fallbackDownloadUrl = "https://gg.settings.gg/api/download/cs2/58493090";
 function GearCard({ item }: { item: GearItem }) {
   return (
     <article className="gear-card">
-      <div className="gear-card-visual" aria-hidden="true">
-        <div className="gear-placeholder-ring" />
-        <span>IMAGEM EM BREVE</span>
+      <div className="gear-card-visual">
+        {item.image ? (
+          <img
+            src={asset(item.image)}
+            alt={item.name}
+            loading="lazy"
+            style={{
+              position: "relative",
+              zIndex: 2,
+              width: item.imageWidth ?? "84%",
+              height: item.imageHeight ?? "80%",
+              objectFit: "contain",
+              borderRadius: "9px",
+              filter: "drop-shadow(0 18px 22px rgba(0,0,0,.48)) drop-shadow(0 0 16px rgba(32,243,154,.08))",
+            }}
+          />
+        ) : (
+          <>
+            <div className="gear-placeholder-ring" />
+            <span>IMAGEM EM BREVE</span>
+          </>
+        )}
       </div>
       <div className="gear-card-copy">
         <span className="gear-category">{item.category}</span>
