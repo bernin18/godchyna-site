@@ -277,8 +277,8 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
       <Header />
       <main className="configs-page">
         <section className="configs-intro">
-          <span className="configs-kicker">SETUP DO CHYNA</span>
-          <h1>SETUP <span>&</span> CONFIGS</h1>
+          <span className="configs-kicker">CONFIGURAÇÕES & HARDWARE</span>
+          <h1>SETUP DO <span className="chynao-word">CHYNAO</span></h1>
           <p>O equipamento, o hardware e as configurações que uso no dia a dia para jogar, competir e fazer stream.</p>
 
           <div className="configs-switch" role="tablist" aria-label="Categorias do setup">
@@ -321,7 +321,6 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
                 <span>{active === "gear" ? "GEAR" : "HARDWARE"}</span>
                 <h2>{active === "gear" ? "PERIFÉRICOS" : "PC SPECS"}</h2>
               </div>
-              <p>{active === "gear" ? "O setup que está em cima da secretária." : "A máquina por trás das streams e do CS2."}</p>
             </div>
 
             <div className="gear-grid">
