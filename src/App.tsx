@@ -13,6 +13,7 @@ import {
   Music2,
   X,
 } from "lucide-react";
+import ReputationSection from "./ReputationSection";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
@@ -290,6 +291,8 @@ function Home(){
             </div>
           </div>
         </section>
+
+        <ReputationSection />
 
         <section id="parcerias" className="section">
           <header className="section-title"><h2>PARCERIAS</h2><p>Usa os meus códigos e apoia o canal!</p></header>
