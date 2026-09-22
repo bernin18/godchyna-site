@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ComponentType } from "react";
 import "./configs.css";
 
@@ -13,8 +13,14 @@ type GearItem = {
   detail?: string;
 };
 
-type ConfigTab = "Mouse" | "Video" | "Viewmodel" | "HUD" | "Radar" | "Audio" | "Binds" | "Launch Options";
+type ConfigTab = "Mouse" | "Video" | "Viewmodel" | "HUD" | "Radar" | "Audio";
 type ConfigRow = { label: string; value: string };
+type SettingsPayload = {
+  downloadUrl?: string;
+  tabs?: Partial<Record<ConfigTab, ConfigRow[]>>;
+};
+
+const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
 const peripherals: GearItem[] = [
   { category: "MOUSE", name: "Razer DeathAdder V3 PRO" },
@@ -32,9 +38,9 @@ const pcSpecs: GearItem[] = [
   { category: "SSD", name: "Samsung 990 PRO 1TB", detail: "M.2 2280" },
 ];
 
-const configTabs: ConfigTab[] = ["Mouse", "Video", "Viewmodel", "HUD", "Radar", "Audio", "Binds", "Launch Options"];
+const configTabs: ConfigTab[] = ["Mouse", "Video", "Viewmodel", "HUD", "Radar", "Audio"];
 
-const configData: Record<ConfigTab, ConfigRow[] | null> = {
+const fallbackData: Record<ConfigTab, ConfigRow[]> = {
   Mouse: [
     { label: "Sens (In-game)", value: "1.4" },
     { label: "Mouse DPI", value: "400" },
@@ -45,14 +51,14 @@ const configData: Record<ConfigTab, ConfigRow[] | null> = {
     { label: "Zoom sensitivity", value: "1" },
     { label: "m_yaw", value: "0.022" },
   ],
-  Video: null,
-  Viewmodel: null,
-  HUD: null,
-  Radar: null,
-  Audio: null,
-  Binds: null,
-  "Launch Options": null,
+  Video: [],
+  Viewmodel: [],
+  HUD: [],
+  Radar: [],
+  Audio: [],
 };
+
+const fallbackDownloadUrl = "https://gg.settings.gg/api/download/cs2/58493090";
 
 function GearCard({ item }: { item: GearItem }) {
   return (
@@ -72,6 +78,40 @@ function GearCard({ item }: { item: GearItem }) {
 
 function Cs2Configs() {
   const [configTab, setConfigTab] = useState<ConfigTab>("Mouse");
+  const [configData, setConfigData] = useState<Record<ConfigTab, ConfigRow[]>>(fallbackData);
+  const [downloadUrl, setDownloadUrl] = useState(fallbackDownloadUrl);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadSettings() {
+      try {
+        const response = await fetch(`${asset("settingsgg.json")}?v=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`settings.gg data request failed: ${response.status}`);
+        const payload = (await response.json()) as SettingsPayload;
+        if (cancelled) return;
+
+        setConfigData((current) => ({
+          Mouse: payload.tabs?.Mouse?.length ? payload.tabs.Mouse : current.Mouse,
+          Video: payload.tabs?.Video ?? current.Video,
+          Viewmodel: payload.tabs?.Viewmodel ?? current.Viewmodel,
+          HUD: payload.tabs?.HUD ?? current.HUD,
+          Radar: payload.tabs?.Radar ?? current.Radar,
+          Audio: payload.tabs?.Audio ?? current.Audio,
+        }));
+
+        if (payload.downloadUrl) setDownloadUrl(payload.downloadUrl);
+      } catch (error) {
+        console.warn("Unable to load settings.gg data", error);
+      }
+    }
+
+    loadSettings();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const rows = configData[configTab];
 
   return (
@@ -81,7 +121,7 @@ function Cs2Configs() {
           <span>COUNTER-STRIKE 2</span>
           <h2>CS2 CONFIG</h2>
         </div>
-        <a href="https://settings.gg/user/58493090/cs2" target="_blank" rel="noopener noreferrer">VER NO SETTINGS.GG</a>
+        <a href={downloadUrl} rel="noopener noreferrer">DOWNLOAD CONFIG</a>
       </div>
 
       <div className="config-subtabs" role="tablist" aria-label="Parâmetros CS2">
@@ -105,10 +145,10 @@ function Cs2Configs() {
           <strong>{configTab === "Mouse" ? "Mouse & Sensitivity" : configTab}</strong>
         </div>
 
-        {rows ? (
+        {rows.length ? (
           <div className="config-table">
             {rows.map((row) => (
-              <div className="config-row" key={row.label}>
+              <div className="config-row" key={`${configTab}-${row.label}-${row.value}`}>
                 <span>{row.label}</span>
                 <strong>{row.value}</strong>
               </div>
@@ -117,7 +157,7 @@ function Cs2Configs() {
         ) : (
           <div className="config-empty">
             <strong>{configTab}</strong>
-            <span>Parâmetros preparados para importar do perfil settings.gg.</span>
+            <span>Sem dados públicos disponíveis nesta categoria.</span>
           </div>
         )}
       </div>
@@ -135,7 +175,7 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
       <main className="configs-page">
         <section className="configs-intro">
           <span className="configs-kicker">SETUP DO CHYNA</span>
-          <h1>CONFIGS <span>&</span> SPECS</h1>
+          <h1>SETUP <span>&</span> CONFIGS</h1>
           <p>O equipamento, o hardware e as configurações que uso no dia a dia para jogar, competir e fazer stream.</p>
 
           <div className="configs-switch" role="tablist" aria-label="Categorias do setup">
