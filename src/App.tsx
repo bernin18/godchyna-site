@@ -151,7 +151,7 @@ function Header() {
           <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
           <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>SOBRE MIM</a>
           <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
-          <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
+          <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAYS</a>
           <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>SETUP & CONFIGS</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
         </nav>
@@ -366,7 +366,7 @@ function Home(){
         </section>
 
         <section id="giveaway" className="section">
-          <header className="section-title"><h2>GIVEAWAY EM CURSO</h2><p>Participa e tem a oportunidade de ganhar!</p></header>
+          <header className="section-title"><h2>GIVEAWAYS EM CURSO</h2><p>Participa e tem a oportunidade de ganhar!</p></header>
           <GiveawayCard/>
         </section>
       </main>
