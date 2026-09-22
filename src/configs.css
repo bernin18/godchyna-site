@@ -3,13 +3,16 @@ radial-gradient(circle at 12% 8%,rgba(32,243,154,.065),transparent 26rem),
 radial-gradient(circle at 92% 34%,rgba(0,180,255,.045),transparent 25rem),
 linear-gradient(180deg,#05090c,#060b0e 55%,#05090c)}
 
-.configs-intro{padding:72px 50px 34px;border-bottom:1px solid #142429;text-align:center}
-.configs-kicker{display:block;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:800;letter-spacing:.24em;margin-bottom:9px}
-.configs-intro h1{margin:0;font-family:"Chakra Petch",sans-serif;font-size:48px;line-height:1;font-style:italic;letter-spacing:.02em}
-.configs-intro h1 .chynao-word{display:inline-block;margin-left:7px;font-family:"Segoe Script","Brush Script MT","Lucida Handwriting",cursive;font-size:1.14em;font-weight:700;font-style:normal;letter-spacing:-.04em;background:linear-gradient(180deg,#e8c27b 0%,#c99b51 44%,#9b6d2f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 12px rgba(201,155,81,.13);transform:rotate(-2deg) translateY(2px)}
-.configs-intro>p{max-width:660px;margin:16px auto 0;color:#aeb9b9;font-size:14px;line-height:1.7}
+.configs-intro{padding:38px 50px 30px;border-bottom:1px solid #142429;text-align:center;overflow:hidden}
+.configs-hero-row{max-width:1120px;min-height:238px;margin:0 auto -4px;display:grid;grid-template-columns:minmax(0,1fr) 265px;gap:18px;align-items:center}
+.configs-title-art{height:176px;margin:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.configs-title-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 50%;mix-blend-mode:screen;filter:drop-shadow(0 7px 18px rgba(0,0,0,.26))}
+.configs-agent{position:relative;height:238px;display:flex;align-items:flex-end;justify-content:center;isolation:isolate}
+.configs-agent-glow{position:absolute;z-index:0;width:190px;height:190px;bottom:5px;border-radius:50%;background:radial-gradient(circle,rgba(32,243,154,.16),rgba(32,243,154,.055) 38%,transparent 70%);filter:blur(14px);opacity:.8}
+.configs-agent img{position:relative;z-index:1;display:block;max-width:100%;height:232px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(32,243,154,.08));animation:setup-agent-float 5.2s ease-in-out infinite;transform-origin:50% 85%}
+@keyframes setup-agent-float{0%,100%{transform:translate3d(0,0,0) rotate(-.35deg)}50%{transform:translate3d(0,-8px,0) rotate(.45deg)}}
 
-.configs-switch{display:flex;justify-content:center;gap:10px;margin-top:30px}
+.configs-switch{display:flex;justify-content:center;gap:10px;margin-top:8px}
 .configs-switch button{min-width:145px;min-height:44px;padding:0 20px;border:1px solid #25383e;border-radius:999px;background:#091116;color:#8f9b9d;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em;cursor:pointer;transition:.2s ease}
 .configs-switch button:hover{border-color:#31545c;color:#eef5f3;transform:translateY(-1px)}
 .configs-switch button.active{color:#03110c;border-color:var(--green);background:linear-gradient(90deg,#20f39a,#16d989);box-shadow:0 0 24px rgba(32,243,154,.16)}
@@ -59,13 +62,20 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 .config-empty span{font-size:11px;line-height:1.6}
 
 @media(max-width:1180px){
+  .configs-hero-row{grid-template-columns:minmax(0,1fr) 225px;max-width:980px}
+  .configs-agent{height:220px}
+  .configs-agent img{height:214px}
   .gear-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 @media(max-width:800px){
-  .configs-intro{padding:54px 24px 30px}
-  .configs-intro h1{font-size:40px}
-  .configs-intro h1 .chynao-word{font-size:1.08em}
+  .configs-intro{padding:30px 24px 28px}
+  .configs-hero-row{grid-template-columns:minmax(0,1fr) 175px;gap:4px;min-height:190px}
+  .configs-title-art{height:136px}
+  .configs-agent{height:188px}
+  .configs-agent img{height:184px}
+  .configs-agent-glow{width:145px;height:145px}
+  .configs-switch{margin-top:4px}
   .gear-section,.cs-config-section{padding:34px 24px 54px}
   .gear-section-head{align-items:flex-start;flex-direction:column;gap:8px}
   .gear-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -73,10 +83,13 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 }
 
 @media(max-width:520px){
-  .configs-intro{padding:44px 16px 26px}
-  .configs-intro h1{font-size:33px}
-  .configs-intro h1 .chynao-word{display:block;margin:9px 0 0;font-size:1.18em}
-  .configs-switch{gap:8px}
+  .configs-intro{padding:23px 16px 25px}
+  .configs-hero-row{grid-template-columns:1fr;min-height:0;gap:0;margin-bottom:0}
+  .configs-title-art{height:118px;width:100%}
+  .configs-agent{height:150px;margin-top:-12px}
+  .configs-agent img{height:150px}
+  .configs-agent-glow{width:118px;height:118px}
+  .configs-switch{gap:8px;margin-top:2px}
   .configs-switch button{min-width:0;flex:1;padding:0 9px;font-size:9px}
   .gear-section,.cs-config-section{padding:29px 14px 44px}
   .gear-grid{grid-template-columns:1fr}
@@ -88,4 +101,8 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
   .config-row{grid-template-columns:1fr auto;gap:14px;min-height:54px}
   .config-row span{font-size:11px}
   .config-row strong{font-size:12px;text-align:right}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .configs-agent img{animation:none}
 }
