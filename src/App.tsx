@@ -12,6 +12,7 @@ import {
 import ReputationSection from "./ReputationSection";
 import ConfigsPage from "./ConfigsPage";
 import "./about.css";
+import "./extra-pages.css";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
@@ -32,6 +33,7 @@ const socialIconUrls = {
 } as const;
 
 type SocialName = keyof typeof socialIconUrls;
+type FaceitSnapshot = { level?: number; elo?: number; updatedAt?: string | null };
 
 const profileLinks = {
   faceit: "https://www.faceit.com/pt/players/Chyna/cs2",
@@ -129,7 +131,7 @@ function StreamStatus() {
 function Header() {
   const [open,setOpen]=useState(false);
   const path=window.location.pathname.replace(/\/$/,"");
-  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/loja");
+  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/loja");
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -160,7 +162,7 @@ function Header() {
         <nav className={open ? "nav open" : "nav"}>
           <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
           <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>SOBRE MIM</a>
-          <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
+          <a className={path.endsWith("/parcerias")?"active":""} href="./parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
           <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAYS</a>
           <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>SETUP & CONFIGS</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
@@ -268,6 +270,43 @@ function ProfileButton({kind,label,url}:{kind:"faceit"|"steam"|"x";label:string;
   );
 }
 
+function FaceitProfileButton(){
+  const [stats,setStats]=useState<FaceitSnapshot>({level:10});
+
+  useEffect(()=>{
+    let cancelled=false;
+    async function refresh(){
+      try{
+        const response=await fetch(`${asset("faceit.json")}?v=${Date.now()}`,{cache:"no-store"});
+        if(!response.ok) throw new Error(`FACEIT snapshot request failed: ${response.status}`);
+        const payload=(await response.json()) as FaceitSnapshot;
+        if(!cancelled) setStats(payload);
+      }catch(error){
+        console.warn("Unable to refresh FACEIT profile snapshot",error);
+      }
+    }
+    refresh();
+    const timer=window.setInterval(refresh,60000);
+    return ()=>{
+      cancelled=true;
+      window.clearInterval(timer);
+    };
+  },[]);
+
+  return (
+    <a className="about-profile-btn faceit faceit-profile-btn" href={profileLinks.faceit} target="_blank" rel="noopener noreferrer" aria-label={`FACEIT nível ${stats.level ?? 10}, ${stats.elo ?? "—"} ELO`}>
+      <span className="faceit-profile-main">
+        <img src="https://cdn.simpleicons.org/faceit/FF5500" alt="" aria-hidden="true" />
+        <span>FACEIT</span>
+      </span>
+      <span className="faceit-live-stats" aria-live="polite">
+        <b className="faceit-level-badge">{stats.level ?? 10}</b>
+        <span className="faceit-elo">{typeof stats.elo==="number"?stats.elo.toLocaleString("en-US"):"—"}<small>ELO</small></span>
+      </span>
+    </a>
+  );
+}
+
 function AboutPage(){
   return (
     <>
@@ -292,7 +331,7 @@ function AboutPage(){
             <div className="about-profiles">
               <span className="about-kicker">PERFIS</span>
               <div className="about-profile-grid">
-                <ProfileButton kind="faceit" label="FACEIT" url={profileLinks.faceit}/>
+                <FaceitProfileButton/>
                 <ProfileButton kind="steam" label="STEAM" url={profileLinks.steam}/>
                 <ProfileButton kind="x" label="GODCHYNA" url={profileLinks.x}/>
                 <ProfileButton kind="x" label="SHANGHAIMASTERS" url={profileLinks.shanghaiMasters}/>
@@ -385,6 +424,10 @@ function Home(){
   );
 }
 
+function PartnersPage(){
+  return <><Header/><main className="subpage partners-page"><header className="section-title"><h1>PARCERIAS</h1><p>Usa os meus códigos e apoia o canal!</p></header><div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div></main><Footer/></>;
+}
+
 function GiveawaysPage(){
   return <><Header/><main className="subpage"><header className="section-title"><h1>GIVEAWAYS</h1><p>Todos os giveaways ativos aparecem nesta página.</p></header><GiveawayCard/></main><Footer/></>;
 }
@@ -397,6 +440,7 @@ export default function App(){
   const path = window.location.pathname.replace(/\/$/, "");
   if(path.endsWith("/sobre")) return <AboutPage/>;
   if(path.endsWith("/configs")) return <ConfigsPage Header={Header} Footer={Footer}/>;
+  if(path.endsWith("/parcerias")) return <PartnersPage/>;
   if(path.endsWith("/giveaways")) return <GiveawaysPage/>;
   if(path.endsWith("/loja")) return <StorePage/>;
   return <Home/>;
