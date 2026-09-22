@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
+import FaceitPerformance from "./FaceitPerformance";
 import "./about.css";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
@@ -293,17 +294,10 @@ function AboutPage(){
                 <ProfileButton kind="x" label="SHANGHAIMASTERS" url={profileLinks.shanghaiMasters}/>
               </div>
             </div>
-
-            <div className="faceit-next-card">
-              <div>
-                <span className="about-kicker">FACEIT LIVE</span>
-                <strong>ESTATÍSTICAS DINÂMICAS</strong>
-              </div>
-              <p>ELO, nível, K/D/A, ADR, HS% e partidas recentes podem ser ligados diretamente à FACEIT.</p>
-              <span className="faceit-api-pill">API A LIGAR</span>
-            </div>
           </aside>
         </section>
+
+        <FaceitPerformance/>
       </main>
       <Footer/>
     </>
