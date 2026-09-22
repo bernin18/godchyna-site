@@ -14,7 +14,6 @@ import {
   X,
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
-import FaceitPerformance from "./FaceitPerformance";
 import "./about.css";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
@@ -277,18 +276,8 @@ function AboutPage(){
           </div>
 
           <aside className="about-side">
-            <div className="about-timeline">
-              <span>2009</span><strong>CS 1.6</strong>
-              <i />
-              <span>ERA</span><strong>CS:GO</strong>
-              <i />
-              <span>HOJE</span><strong>CS2</strong>
-              <i />
-              <span>2024</span><strong>MERCADO DE SKINS</strong>
-            </div>
-
             <div className="about-profiles">
-              <span className="about-kicker">PERFIS & PROJETO</span>
+              <span className="about-kicker">PERFIS</span>
               <div className="about-profile-grid">
                 <ProfileButton kind="faceit" label="FACEIT" url={profileLinks.faceit}/>
                 <ProfileButton kind="steam" label="STEAM" url={profileLinks.steam}/>
@@ -298,8 +287,6 @@ function AboutPage(){
             </div>
           </aside>
         </section>
-
-        <FaceitPerformance/>
       </main>
       <Footer/>
     </>
