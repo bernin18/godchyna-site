@@ -13,6 +13,9 @@ type GearItem = {
   detail?: string;
 };
 
+type ConfigTab = "Mouse" | "Video" | "Viewmodel" | "HUD" | "Radar" | "Audio" | "Binds" | "Launch Options";
+type ConfigRow = { label: string; value: string };
+
 const peripherals: GearItem[] = [
   { category: "MOUSE", name: "Razer DeathAdder V3 PRO" },
   { category: "TECLADO", name: "XTRFY K4 RGB TKL" },
@@ -28,6 +31,28 @@ const pcSpecs: GearItem[] = [
   { category: "RAM", name: "32GB DDR5", detail: "2x16GB · 6400MHz" },
   { category: "SSD", name: "Samsung 990 PRO 1TB", detail: "M.2 2280" },
 ];
+
+const configTabs: ConfigTab[] = ["Mouse", "Video", "Viewmodel", "HUD", "Radar", "Audio", "Binds", "Launch Options"];
+
+const configData: Record<ConfigTab, ConfigRow[] | null> = {
+  Mouse: [
+    { label: "Sens (In-game)", value: "1.4" },
+    { label: "Mouse DPI", value: "400" },
+    { label: "Rate", value: "4000 Hz" },
+    { label: "Acceleration", value: "No" },
+    { label: "Raw Input", value: "1" },
+    { label: "Windows", value: "6/11" },
+    { label: "Zoom sensitivity", value: "1" },
+    { label: "m_yaw", value: "0.022" },
+  ],
+  Video: null,
+  Viewmodel: null,
+  HUD: null,
+  Radar: null,
+  Audio: null,
+  Binds: null,
+  "Launch Options": null,
+};
 
 function GearCard({ item }: { item: GearItem }) {
   return (
@@ -45,8 +70,63 @@ function GearCard({ item }: { item: GearItem }) {
   );
 }
 
+function Cs2Configs() {
+  const [configTab, setConfigTab] = useState<ConfigTab>("Mouse");
+  const rows = configData[configTab];
+
+  return (
+    <section className="cs-config-section">
+      <div className="gear-section-head configs-head">
+        <div>
+          <span>COUNTER-STRIKE 2</span>
+          <h2>CS2 CONFIG</h2>
+        </div>
+        <a href="https://settings.gg/user/58493090/cs2" target="_blank" rel="noopener noreferrer">VER NO SETTINGS.GG</a>
+      </div>
+
+      <div className="config-subtabs" role="tablist" aria-label="Parâmetros CS2">
+        {configTabs.map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            role="tab"
+            aria-selected={configTab === tab}
+            className={configTab === tab ? "active" : ""}
+            onClick={() => setConfigTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <div className="config-panel">
+        <div className="config-panel-title">
+          <span>{configTab.toUpperCase()}</span>
+          <strong>{configTab === "Mouse" ? "Mouse & Sensitivity" : configTab}</strong>
+        </div>
+
+        {rows ? (
+          <div className="config-table">
+            {rows.map((row) => (
+              <div className="config-row" key={row.label}>
+                <span>{row.label}</span>
+                <strong>{row.value}</strong>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="config-empty">
+            <strong>{configTab}</strong>
+            <span>Parâmetros preparados para importar do perfil settings.gg.</span>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
-  const [active, setActive] = useState<"gear" | "pc">("gear");
+  const [active, setActive] = useState<"gear" | "pc" | "configs">("gear");
   const items = active === "gear" ? peripherals : pcSpecs;
 
   return (
@@ -56,7 +136,7 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
         <section className="configs-intro">
           <span className="configs-kicker">SETUP DO CHYNA</span>
           <h1>CONFIGS <span>&</span> SPECS</h1>
-          <p>O equipamento e o hardware que uso no dia a dia para jogar, competir e fazer stream.</p>
+          <p>O equipamento, o hardware e as configurações que uso no dia a dia para jogar, competir e fazer stream.</p>
 
           <div className="configs-switch" role="tablist" aria-label="Categorias do setup">
             <button
@@ -77,22 +157,35 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
             >
               PC
             </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={active === "configs"}
+              className={active === "configs" ? "active" : ""}
+              onClick={() => setActive("configs")}
+            >
+              CONFIGS
+            </button>
           </div>
         </section>
 
-        <section className="gear-section">
-          <div className="gear-section-head">
-            <div>
-              <span>{active === "gear" ? "GEAR" : "HARDWARE"}</span>
-              <h2>{active === "gear" ? "PERIFÉRICOS" : "PC SPECS"}</h2>
+        {active === "configs" ? (
+          <Cs2Configs />
+        ) : (
+          <section className="gear-section">
+            <div className="gear-section-head">
+              <div>
+                <span>{active === "gear" ? "GEAR" : "HARDWARE"}</span>
+                <h2>{active === "gear" ? "PERIFÉRICOS" : "PC SPECS"}</h2>
+              </div>
+              <p>{active === "gear" ? "O setup que está em cima da secretária." : "A máquina por trás das streams e do CS2."}</p>
             </div>
-            <p>{active === "gear" ? "O setup que está em cima da secretária." : "A máquina por trás das streams e do CS2."}</p>
-          </div>
 
-          <div className="gear-grid">
-            {items.map((item) => <GearCard key={item.category} item={item} />)}
-          </div>
-        </section>
+            <div className="gear-grid">
+              {items.map((item) => <GearCard key={item.category} item={item} />)}
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </>
