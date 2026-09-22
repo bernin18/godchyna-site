@@ -186,8 +186,8 @@ pointer-events:none}
 .knife-stage img{
   position:relative;
   z-index:3;
-  width:93%;
-  height:93%;
+  width:82%;
+  height:82%;
   object-fit:contain;
   filter:
     drop-shadow(0 22px 20px rgba(0,0,0,.78))
@@ -232,7 +232,8 @@ pointer-events:none}
   filter:blur(1px);
   mix-blend-mode:screen;
   opacity:0;
-  animation:knifeShineSweep 3.4s ease-in-out infinite;
+  display:none;
+  animation:none;
   pointer-events:none
 }
 .knife-sparkle{
