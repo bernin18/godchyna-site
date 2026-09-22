@@ -144,7 +144,6 @@ export default function ReputationSection() {
 
       <div className="rep-comments-label">
         <span>COMENTÁRIOS RECENTES</span>
-        <small>Passa o rato para pausar</small>
       </div>
 
       {repeatedReviews.length > 0 ? (
