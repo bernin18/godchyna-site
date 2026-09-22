@@ -1,0 +1,19 @@
+.partners-page{position:relative;background:radial-gradient(circle at 15% 0%,rgba(32,243,154,.045),transparent 26rem)}
+.partners-page .section-title{margin-bottom:30px}
+.partners-page .partners-grid{margin-top:6px}
+
+.about-profile-btn.faceit-profile-btn{justify-content:space-between;gap:12px;padding:0 12px 0 15px;overflow:hidden}
+.faceit-profile-main{display:flex;align-items:center;gap:11px;min-width:0}
+.faceit-profile-main>span{white-space:nowrap}
+.faceit-live-stats{margin-left:auto;display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.faceit-level-badge{width:31px;height:31px;display:grid;place-items:center;border-radius:50%;border:3px solid #ff315d;background:#0a0f13;color:#ff315d;font-family:"Chakra Petch",sans-serif;font-size:13px;font-weight:800;line-height:1;box-shadow:0 0 13px rgba(255,49,93,.18),inset 0 0 10px rgba(255,49,93,.06)}
+.faceit-elo{display:inline-flex;align-items:baseline;gap:4px;color:#f5f7f6;font-family:"Chakra Petch",sans-serif;font-size:14px;font-weight:800;letter-spacing:.015em;white-space:nowrap}
+.faceit-elo small{color:#738184;font-size:7px;font-weight:800;letter-spacing:.12em}
+.about-profile-btn.faceit-profile-btn:hover .faceit-level-badge{box-shadow:0 0 17px rgba(255,49,93,.28),inset 0 0 10px rgba(255,49,93,.08)}
+
+@media(max-width:620px){
+  .partners-page .partners-grid{grid-template-columns:1fr}
+  .about-profile-btn.faceit-profile-btn{min-height:58px}
+  .faceit-level-badge{width:29px;height:29px;font-size:12px}
+  .faceit-elo{font-size:13px}
+}
