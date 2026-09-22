@@ -28,7 +28,7 @@ const partners = [
     benefit: "15% em todos os depósitos",
     url: "https://topskin.net/utm/godchyna",
     tone: "orange",
-    logo: "./topskin-logo.png",
+    logo: "./topskin-logo.png?v=2",
   },
   {
     name: "CSGO-SKINS",
@@ -36,7 +36,7 @@ const partners = [
     benefit: "10% em todos os depósitos",
     url: "https://csgo-skins.com/?ref=GODCHYNA",
     tone: "blue",
-    logo: "./csgoskins-logo.png",
+    logo: "./csgoskins-logo.png?v=2",
   },
 ] as const;
 
