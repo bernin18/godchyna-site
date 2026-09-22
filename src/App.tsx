@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
   Check,
@@ -27,7 +27,7 @@ const partners = [
   {
     name: "TOPSKIN",
     code: "godchyna",
-    benefit: "15% em todos os depósitos",
+    benefit: "15% de bónus em todos os depósitos",
     url: "https://topskin.net/utm/godchyna",
     tone: "orange",
     logo: "topskin-logo.png?v=3",
@@ -35,7 +35,7 @@ const partners = [
   {
     name: "CSGO-SKINS",
     code: "GODCHYNA",
-    benefit: "10% em todos os depósitos",
+    benefit: "10% de bónus em todos os depósitos",
     url: "https://csgo-skins.com/?ref=GODCHYNA",
     tone: "blue",
     logo: "csgoskins-logo.png?v=3",
@@ -54,6 +54,53 @@ function SocialIcons() {
       <a href={socials.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><Music2 /></a>
       <a href={socials.discord} target="_blank" rel="noreferrer" aria-label="Discord"><MessageCircle /></a>
     </div>
+  );
+}
+
+function StreamStatus() {
+  const [status,setStatus]=useState<"checking"|"live"|"offline">("checking");
+
+  useEffect(()=>{
+    let cancelled=false;
+
+    async function checkStream(){
+      try{
+        const response=await fetch(`https://decapi.me/twitch/uptime/godchyna?offline_msg=0&_=${Date.now()}`,{
+          cache:"no-store",
+        });
+        if(!response.ok) throw new Error(`Twitch status request failed: ${response.status}`);
+        const text=(await response.text()).trim().toLowerCase();
+        if(cancelled) return;
+        const isOffline=text==="0" || text.includes("offline") || text.includes("not live");
+        setStatus(isOffline?"offline":"live");
+      }catch(error){
+        console.warn("Unable to refresh Twitch status",error);
+      }
+    }
+
+    checkStream();
+    const timer=window.setInterval(checkStream,60000);
+    return ()=>{
+      cancelled=true;
+      window.clearInterval(timer);
+    };
+  },[]);
+
+  const isLive=status==="live";
+  const label=status==="checking"?"A VERIFICAR":isLive?"LIVE":"OFFLINE";
+
+  return (
+    <a
+      className={`stream-status ${isLive?"live":"offline"}`}
+      href={socials.twitch}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Estado da stream na Twitch: ${label}`}
+      aria-live="polite"
+    >
+      <span className="stream-dot" />
+      <span className="stream-status-text">{label}</span>
+    </a>
   );
 }
 
@@ -220,16 +267,7 @@ function Home(){
                 TIKTOK
               </a>
             </div>
-            <a
-              className="stream-status offline"
-              href={socials.twitch}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Estado da stream na Twitch"
-            >
-              <span className="stream-dot" />
-              <span className="stream-status-text">OFFLINE</span>
-            </a>
+            <StreamStatus />
           </div>
         </section>
 
