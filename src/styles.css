@@ -93,7 +93,23 @@ pointer-events:none}
 .blue .partner-cta{background:#087be9}
 .giveaway-card{display:grid;grid-template-columns:.78fr 1.22fr;gap:35px;padding:25px;border:1px solid #1a3035;border-radius:12px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
 .knife-stage{min-height:290px;position:relative;display:flex;align-items:center;justify-content:center;border:1px solid #19343b;border-radius:9px;background:radial-gradient(circle at 50% 30%,#101e24,#050b0e 70%);overflow:hidden}
-.knife-stage img{width:93%;height:93%;object-fit:contain;filter:drop-shadow(0 20px 18px #000)}
+.knife-stage img{
+  width:93%;
+  height:93%;
+  object-fit:contain;
+  filter:drop-shadow(0 20px 18px #000) drop-shadow(0 0 12px rgba(32,243,154,.10));
+  transform-origin:center;
+  animation:knifeFloat 5.5s ease-in-out infinite;
+  will-change:transform,filter
+}
+.knife-stage:hover img{
+  animation-duration:3.8s;
+  filter:drop-shadow(0 24px 20px #000) drop-shadow(0 0 18px rgba(32,243,154,.16))
+}
+@keyframes knifeFloat{
+  0%,100%{transform:translateY(0) rotate(-1deg) scale(1)}
+  50%{transform:translateY(-10px) rotate(1.2deg) scale(1.015)}
+}
 .knife-stage span{position:absolute;bottom:12px;left:18px;color:#23343a;font-family:"Chakra Petch";font-weight:800;font-style:italic;font-size:29px}
 .giveaway-info{display:flex;flex-direction:column;justify-content:center}
 .giveaway-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
@@ -163,4 +179,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  footer{padding:30px 20px}
  .subpage{padding:50px 20px}
  .desktop-break{display:none}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .knife-stage img{animation:none}
 }
