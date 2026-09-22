@@ -1,0 +1,95 @@
+.brand-glyph{
+  width:18px;
+  height:18px;
+  display:block;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+
+.social-icons{
+  gap:9px;
+}
+
+.social-icons a.social-icon{
+  width:32px;
+  height:32px;
+  border-radius:10px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  opacity:1;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  transition:transform .2s ease,filter .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+
+.social-icons a.social-icon .brand-glyph{
+  width:16px;
+  height:16px;
+}
+
+.social-icons a.social-icon.instagram{
+  background:
+    radial-gradient(circle at 30% 107%,#fdf497 0 5%,#fd5949 42%,#d6249f 62%,#285aeb 90%);
+  border-color:rgba(255,110,170,.42);
+  box-shadow:0 0 15px rgba(214,36,159,.18);
+}
+
+.social-icons a.social-icon.twitch{
+  background:#9146ff;
+  border-color:#ad7bff;
+  box-shadow:0 0 15px rgba(145,70,255,.22);
+}
+
+.social-icons a.social-icon.tiktok{
+  background:#0d0d0f;
+  border-color:#34343a;
+  box-shadow:-2px 0 10px rgba(0,242,234,.12),2px 0 10px rgba(255,0,80,.12);
+}
+
+.social-icons a.social-icon.x{
+  background:#111214;
+  border-color:#313438;
+  box-shadow:0 0 12px rgba(255,255,255,.05);
+}
+
+.social-icons a.social-icon.discord{
+  background:#5865f2;
+  border-color:#7c86ff;
+  box-shadow:0 0 16px rgba(88,101,242,.24);
+}
+
+.social-icons a.social-icon:hover{
+  color:inherit;
+  transform:translateY(-2px) scale(1.06);
+  filter:brightness(1.12);
+  border-color:rgba(255,255,255,.34);
+}
+
+.hero-social-btn .brand-glyph{
+  width:18px;
+  height:18px;
+}
+
+.discord-btn .brand-glyph,
+.instagram-btn .brand-glyph{
+  width:18px;
+  height:18px;
+}
+
+.discord-btn{
+  border-color:#7c86ff;
+  background:linear-gradient(90deg,#5865f2,#4752c4);
+  box-shadow:0 0 16px rgba(88,101,242,.24);
+}
+
+.instagram-btn{
+  border-color:#d94f98;
+  background:linear-gradient(100deg,#833ab4 0%,#c13584 34%,#fd1d1d 68%,#fcb045 100%);
+  box-shadow:0 0 16px rgba(214,36,159,.18);
+}
+
+@media(max-width:720px){
+  .footer-main .social-icons{gap:10px}
+  .social-icons a.social-icon{width:34px;height:34px;border-radius:11px}
+}
