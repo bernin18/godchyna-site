@@ -8,6 +8,9 @@ type ReputationReview = {
   rate?: number;
   trade_position?: number;
   body?: string;
+  from_steam_id?: string;
+  username?: string;
+  avatar?: string;
 };
 
 type ReputationData = {
@@ -42,17 +45,59 @@ function positionLabel(position?: number) {
   return null;
 }
 
+function steamAvatarUrl(avatar?: string) {
+  if (!avatar) return null;
+  return `https://avatars.cloudflare.steamstatic.com/${avatar}_medium.jpg`;
+}
+
 function ReviewCard({ review, duplicate = false }: { review: ReputationReview; duplicate?: boolean }) {
   const label = rateLabel(review.rate);
   const position = positionLabel(review.trade_position);
   const tone = review.rate === 1 ? "positive" : review.rate === 0 ? "neutral" : "negative";
+  const username = review.username?.trim() || "Utilizador Steam";
+  const initial = username.charAt(0).toUpperCase();
+  const avatarUrl = steamAvatarUrl(review.avatar);
+  const steamUrl = review.from_steam_id
+    ? `https://steamcommunity.com/profiles/${review.from_steam_id}`
+    : null;
 
   return (
     <article className={`rep-review-card ${tone}`} aria-hidden={duplicate || undefined}>
       <div className="rep-review-head">
-        <span className={`rep-rate ${tone}`}>{label}</span>
-        <span className="rep-review-source">CSGOREP</span>
-        {position && <span className="rep-position">{position}</span>}
+        {steamUrl ? (
+          <a
+            className="rep-review-author"
+            href={steamUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={duplicate ? -1 : 0}
+          >
+            <span className="rep-avatar" aria-hidden="true">
+              <span>{initial}</span>
+              {avatarUrl && (
+                <img
+                  src={avatarUrl}
+                  alt=""
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.style.display = "none";
+                  }}
+                />
+              )}
+            </span>
+            <span className="rep-review-username">{username}</span>
+          </a>
+        ) : (
+          <div className="rep-review-author">
+            <span className="rep-avatar" aria-hidden="true"><span>{initial}</span></span>
+            <span className="rep-review-username">{username}</span>
+          </div>
+        )}
+
+        <div className="rep-review-meta">
+          {position && <span className="rep-position">{position}</span>}
+          <span className={`rep-rate ${tone}`}>{label}</span>
+        </div>
       </div>
       <p>“{review.body}”</p>
     </article>
@@ -151,7 +196,7 @@ export default function ReputationSection() {
           <div className="rep-track">
             {repeatedReviews.map((review, index) => (
               <ReviewCard
-                key={`${index}-${review.body}`}
+                key={`${index}-${review.from_steam_id}-${review.body}`}
                 review={review}
                 duplicate={index >= reviews.length}
               />
