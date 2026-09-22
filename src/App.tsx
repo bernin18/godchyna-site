@@ -113,6 +113,11 @@ function GiveawayCard() {
   return (
     <article className="giveaway-card">
       <div className="knife-stage">
+        <div className="knife-ambient-glow" />
+        <div className="knife-shine" />
+        <div className="knife-sparkle sparkle-1" />
+        <div className="knife-sparkle sparkle-2" />
+        <div className="knife-sparkle sparkle-3" />
         <img src={asset("ursus-marble-fade.png")} alt="Ursus Marble Fade Factory New" />
         <span>CS2</span>
       </div>
