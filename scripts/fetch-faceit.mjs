@@ -25,6 +25,10 @@ function num(match, index = 1) {
   return Number.isFinite(value) ? value : null;
 }
 
+function within(value, min, max) {
+  return typeof value === "number" && Number.isFinite(value) && value >= min && value <= max ? value : null;
+}
+
 function mapName(raw = "") {
   const name = raw.replace(/^de_/i, "").toLowerCase();
   return name ? name[0].toUpperCase() + name.slice(1) : "—";
@@ -66,17 +70,23 @@ async function main() {
   const html = await response.text();
   const text = cleanText(html);
 
-  const elo = num(text.match(/\b(\d{4})\s+ELO\b/i));
-  const rankingPt = num(text.match(/Ranking\s+pt\s*#?\s*([\d,]+)/i));
-  const matches = num(text.match(/\b(\d{3,6})\s+Total Matches\b/i)) ?? num(text.match(/Total Stats\s+(\d{3,6})\s+Matches\b/i));
-  const winRate = num(text.match(/Win Rate\s+(\d+(?:\.\d+)?)%/i));
-  const kd = num(text.match(/K\/D Ratio\s+([\d.]+)/i));
-  const headshots = num(text.match(/Headshot\s*%\s*(\d+(?:\.\d+)?)%/i)) ?? num(text.match(/Headshots\s*%?\s*(\d+(?:\.\d+)?)%/i));
-  const adr = num(text.match(/\bADR\s+([\d.]+)/i));
+  const elo = within(num(text.match(/\b(\d{4})\s+ELO\b/i)), 1000, 6000);
+  const rankingPt = within(num(text.match(/Ranking\s+pt\s*#?\s*([\d,]+)/i)), 1, 100000);
+  const matches = within(num(text.match(/\b(\d{3,6})\s+Total Matches\b/i)) ?? num(text.match(/Total Stats\s+(\d{3,6})\s+Matches\b/i)), 1, 100000);
+  const winRate = within(num(text.match(/Win Rate\s+(\d+(?:\.\d+)?)%/i)), 0, 100);
+  const parsedKd = num(text.match(/K\/D Ratio\s+([\d.]+)/i)) ?? num(text.match(/\bK\/D\s+([\d.]+)/i));
+  const kd = within(parsedKd, 0.1, 5);
+  const headshots = within(num(text.match(/Headshot\s*%\s*(\d+(?:\.\d+)?)%/i)) ?? num(text.match(/Headshots\s*%?\s*(\d+(?:\.\d+)?)%/i)), 0, 100);
+  const adr = within(num(text.match(/\bADR\s+([\d.]+)/i)), 1, 250);
 
-  const formMatch = text.match(/Recent Results\s+((?:[WL]\s*){3,10})/i);
-  const recentResults = formMatch ? (formMatch[1].toUpperCase().match(/[WL]/g) ?? []).slice(0, 5) : fallback.recentResults;
   const recentMatches = parseRecentMatches(text);
+  const formMatch = text.match(/Recent Results\s+((?:[WL]\s*){3,10})/i);
+  const scrapedForm = formMatch ? (formMatch[1].toUpperCase().match(/[WL]/g) ?? []).slice(0, 5) : [];
+  const recentResults = recentMatches.length
+    ? recentMatches.map((match) => match.result).slice(0, 5)
+    : scrapedForm.length
+      ? scrapedForm
+      : fallback.recentResults;
 
   const output = {
     ...fallback,
