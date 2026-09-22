@@ -14,6 +14,8 @@ import {
   X,
 } from "lucide-react";
 
+const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
+
 const socials = {
   twitch: "https://www.twitch.tv/godchyna",
   tiktok: "https://www.tiktok.com/@godchyna",
@@ -28,7 +30,7 @@ const partners = [
     benefit: "15% em todos os depósitos",
     url: "https://topskin.net/utm/godchyna",
     tone: "orange",
-    logo: "./topskin-logo.png?v=2",
+    logo: "topskin-logo.png?v=3",
   },
   {
     name: "CSGO-SKINS",
@@ -36,7 +38,7 @@ const partners = [
     benefit: "10% em todos os depósitos",
     url: "https://csgo-skins.com/?ref=GODCHYNA",
     tone: "blue",
-    logo: "./csgoskins-logo.png?v=2",
+    logo: "csgoskins-logo.png?v=3",
   },
 ] as const;
 
@@ -90,7 +92,7 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
   return (
     <article className={`partner-card ${partner.tone}`}>
       <div className="partner-name">
-        <img className="partner-logo" src={partner.logo} alt={partner.name} />
+        <img className="partner-logo" src={asset(partner.logo)} alt={partner.name} />
       </div>
       <div className="partner-info">
         <div className="code-row">
@@ -111,7 +113,7 @@ function GiveawayCard() {
   return (
     <article className="giveaway-card">
       <div className="knife-stage">
-        <img src="./ursus-marble-fade.png" alt="Ursus Marble Fade Factory New" />
+        <img src={asset("ursus-marble-fade.png")} alt="Ursus Marble Fade Factory New" />
         <span>CS2</span>
       </div>
       <div className="giveaway-info">
@@ -157,7 +159,13 @@ function Home(){
     <>
       <Header/>
       <main>
-        <section id="inicio" className="hero">
+        <section
+          id="inicio"
+          className="hero"
+          style={{
+            backgroundImage: `linear-gradient(90deg,rgba(4,11,13,.98) 0%,rgba(4,12,14,.92) 31%,rgba(4,12,14,.62) 49%,rgba(3,8,10,.20) 72%,rgba(3,8,10,.44) 100%), url("${asset("hero-green-bg.png?v=3")}")`,
+          }}
+        >
           <div className="hero-glow"/>
           <div className="hero-copy">
             <p className="eyebrow">BEM-VINDO AO MUNDO DO</p>
