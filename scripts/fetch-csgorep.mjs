@@ -54,15 +54,14 @@ try {
   const profileData = profileResult.status === "fulfilled" ? profileResult.value ?? {} : {};
   const allReviews = Array.isArray(repsData.data) ? repsData.data : [];
 
-  if (allReviews.length > 0) {
-    console.log("CSGOREP_FIRST_REVIEW_RAW", JSON.stringify(allReviews[0]));
-  }
-
   const normalizedReviews = allReviews
     .map((review) => ({
       rate: Number(review?.rate),
       trade_position: Number(review?.trade_position),
       body: typeof review?.body === "string" ? review.body.trim() : "",
+      from_steam_id: typeof review?.from_steam_id === "string" ? review.from_steam_id : String(review?.from_steam_id ?? ""),
+      username: typeof review?.username === "string" ? review.username.trim() : "",
+      avatar: typeof review?.avatar === "string" ? review.avatar.trim() : "",
     }))
     .filter((review) => review.body.length > 0);
 
