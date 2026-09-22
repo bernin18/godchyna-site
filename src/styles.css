@@ -78,9 +78,11 @@ pointer-events:none}
 .section-title{margin-bottom:22px}
 .section-title p{margin-top:4px}
 .partners-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.partner-card{display:grid;grid-template-columns:.8fr 1.35fr;align-items:center;min-height:150px;padding:25px 28px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(135deg,#071015,#071015 60%,#091217)}
-.partner-name{display:flex;align-items:center;min-height:52px}
-.partner-logo{display:block;max-width:210px;max-height:48px;width:auto;height:auto;object-fit:contain}
+.partner-card{display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:160px;padding:25px 28px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(135deg,#071015,#071015 60%,#091217)}
+.partner-name{display:flex;align-items:center;justify-content:center;min-height:72px;padding:0 28px}
+.partner-logo{display:block;width:auto;height:auto;object-fit:contain;margin:0 auto;background:transparent}
+.partner-card.orange .partner-logo{width:180px;max-width:100%;max-height:52px}
+.partner-card.blue .partner-logo{width:220px;max-width:100%;max-height:52px}
 .partner-card.orange b{color:#ff541d}
 .partner-card.blue b{color:#35aeff}
 .partner-info{border-left:1px solid #1d2e32;padding-left:28px}
@@ -152,7 +154,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .service-card{min-height:105px}
  .contact-row{grid-template-columns:1fr}
  .partner-card{grid-template-columns:1fr;gap:18px}
- .partner-logo{max-width:190px;max-height:44px}
+ .partner-name{padding:0;justify-content:center}
+ .partner-card.orange .partner-logo{width:170px;max-height:48px}
+ .partner-card.blue .partner-logo{width:200px;max-height:48px}
  .partner-info{border-left:0;border-top:1px solid #1d2e32;padding:18px 0 0}
  .giveaway-card{padding:15px;gap:20px}
  .knife-stage{min-height:230px}
