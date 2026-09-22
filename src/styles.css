@@ -98,6 +98,7 @@ pointer-events:none}
   display:flex;
   align-items:center;
   justify-content:center;
+  perspective:900px;
   border:1px solid #19343b;
   border-radius:9px;
   background:
@@ -126,11 +127,12 @@ pointer-events:none}
   object-fit:contain;
   filter:
     drop-shadow(0 22px 20px rgba(0,0,0,.78))
-    drop-shadow(0 0 14px rgba(32,243,154,.12));
+    drop-shadow(0 0 22px rgba(32,243,154,.20));
   transform-origin:center;
+  transform-style:preserve-3d;
   animation:
-    knifeFloatPremium 4.8s ease-in-out infinite,
-    knifeGlowPulse 3.6s ease-in-out infinite;
+    knifeShowcaseSpin 7.2s ease-in-out infinite,
+    knifeGlowPulse 3.2s ease-in-out infinite;
   will-change:transform,filter
 }
 .knife-stage:hover{
@@ -183,11 +185,11 @@ pointer-events:none}
 .sparkle-1{top:22%;right:26%;animation:sparkleOne 3.2s ease-in-out infinite}
 .sparkle-2{bottom:24%;left:22%;width:8px;height:8px;animation:sparkleTwo 4.1s ease-in-out infinite}
 .sparkle-3{top:48%;left:63%;width:12px;height:12px;animation:sparkleThree 3.7s ease-in-out infinite}
-@keyframes knifeFloatPremium{
-  0%,100%{transform:translateY(0) rotate(-1.2deg) scale(1)}
-  25%{transform:translateY(-6px) rotate(.2deg) scale(1.008)}
-  50%{transform:translateY(-12px) rotate(1.35deg) scale(1.018)}
-  75%{transform:translateY(-5px) rotate(.15deg) scale(1.01)}
+@keyframes knifeShowcaseSpin{
+  0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-14deg) rotateZ(-1.4deg) scale(1)}
+  25%{transform:translateY(-7px) rotateX(-1deg) rotateY(0deg) rotateZ(.2deg) scale(1.012)}
+  50%{transform:translateY(-12px) rotateX(2deg) rotateY(14deg) rotateZ(1.4deg) scale(1.02)}
+  75%{transform:translateY(-6px) rotateX(0deg) rotateY(0deg) rotateZ(.1deg) scale(1.01)}
 }
 @keyframes knifeGlowPulse{
   0%,100%{filter:drop-shadow(0 22px 20px rgba(0,0,0,.78)) drop-shadow(0 0 12px rgba(32,243,154,.10))}
