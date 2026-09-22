@@ -29,6 +29,20 @@ function within(value, min, max) {
   return typeof value === "number" && Number.isFinite(value) && value >= min && value <= max ? value : null;
 }
 
+function levelFromElo(elo) {
+  if (typeof elo !== "number" || !Number.isFinite(elo)) return null;
+  if (elo >= 2001) return 10;
+  if (elo >= 1751) return 9;
+  if (elo >= 1531) return 8;
+  if (elo >= 1351) return 7;
+  if (elo >= 1201) return 6;
+  if (elo >= 1051) return 5;
+  if (elo >= 901) return 4;
+  if (elo >= 751) return 3;
+  if (elo >= 501) return 2;
+  return 1;
+}
+
 function mapName(raw = "") {
   const name = raw.replace(/^de_/i, "").toLowerCase();
   return name ? name[0].toUpperCase() + name.slice(1) : "—";
@@ -71,6 +85,11 @@ async function main() {
   const text = cleanText(html);
 
   const elo = within(num(text.match(/\b(\d{4})\s+ELO\b/i)), 1000, 6000);
+  const scrapedLevel = within(
+    num(text.match(/(?:FACEIT\s*)?(?:SKILL\s*)?LEVEL\s*#?\s*(\d{1,2})/i)),
+    1,
+    15,
+  );
   const rankingPt = within(num(text.match(/Ranking\s+pt\s*#?\s*([\d,]+)/i)), 1, 100000);
   const matches = within(num(text.match(/\b(\d{3,6})\s+Total Matches\b/i)) ?? num(text.match(/Total Stats\s+(\d{3,6})\s+Matches\b/i)), 1, 100000);
   const winRate = within(num(text.match(/Win Rate\s+(\d+(?:\.\d+)?)%/i)), 0, 100);
@@ -88,12 +107,15 @@ async function main() {
       ? scrapedForm
       : fallback.recentResults;
 
+  const resolvedElo = elo ?? fallback.elo;
+  const resolvedLevel = scrapedLevel ?? levelFromElo(resolvedElo) ?? fallback.level;
+
   const output = {
     ...fallback,
     updatedAt: new Date().toISOString(),
     source: SOURCE,
-    level: 10,
-    elo: elo ?? fallback.elo,
+    level: resolvedLevel,
+    elo: resolvedElo,
     rankingPt: rankingPt ?? fallback.rankingPt,
     stats: {
       matches: matches ?? fallback.stats?.matches,
