@@ -3,16 +3,16 @@ radial-gradient(circle at 12% 8%,rgba(32,243,154,.065),transparent 26rem),
 radial-gradient(circle at 92% 34%,rgba(0,180,255,.045),transparent 25rem),
 linear-gradient(180deg,#05090c,#060b0e 55%,#05090c)}
 
-.configs-intro{padding:28px 50px 24px;border-bottom:1px solid #142429;text-align:center;overflow:hidden}
-.configs-hero-row{width:min(1040px,100%);min-height:205px;margin:0 auto;display:grid;grid-template-columns:minmax(0,760px) 245px;gap:28px;align-items:center;justify-content:center}
-.configs-title-art{width:100%;height:182px;margin:0;display:flex;align-items:center;justify-content:flex-end;overflow:visible;background:transparent;isolation:isolate}
-.configs-title-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;mix-blend-mode:screen;filter:drop-shadow(0 9px 20px rgba(0,0,0,.24));opacity:.99}
-.configs-agent{position:relative;width:245px;height:205px;display:flex;align-items:flex-end;justify-content:center;isolation:isolate;overflow:visible}
-.configs-agent-glow{position:absolute;z-index:0;width:162px;height:162px;bottom:0;border-radius:50%;background:radial-gradient(circle,rgba(32,243,154,.13),rgba(32,243,154,.04) 40%,transparent 70%);filter:blur(13px);opacity:.72}
-.configs-agent img{position:relative;z-index:1;display:block;width:auto;max-width:245px;height:200px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 17px 22px rgba(0,0,0,.48)) drop-shadow(0 0 14px rgba(32,243,154,.06));animation:setup-agent-float 5.2s ease-in-out infinite;transform-origin:50% 85%}
-@keyframes setup-agent-float{0%,100%{transform:translate3d(0,0,0) rotate(-.25deg)}50%{transform:translate3d(0,-5px,0) rotate(.3deg)}}
+.configs-intro{display:grid;grid-template-columns:minmax(0,780px) 310px;grid-template-rows:minmax(160px,1fr) auto;column-gap:28px;align-items:stretch;justify-content:center;min-height:270px;padding:6px 50px;border-bottom:1px solid #142429;text-align:center;overflow:hidden}
+.configs-hero-row{display:contents}
+.configs-title-art{grid-column:1;grid-row:1;width:100%;height:165px;margin:0;display:flex;align-items:center;justify-content:center;align-self:center;overflow:visible}
+.configs-title-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;mix-blend-mode:screen;filter:contrast(1.35) brightness(1.05) saturate(1.06) drop-shadow(0 7px 18px rgba(0,0,0,.24))}
+.configs-agent{grid-column:2;grid-row:1/span 2;position:relative;width:310px;height:100%;min-height:258px;display:flex;align-items:stretch;justify-content:center;isolation:isolate;overflow:visible}
+.configs-agent-glow{position:absolute;z-index:0;width:190px;height:190px;bottom:2px;border-radius:50%;background:radial-gradient(circle,rgba(32,243,154,.14),rgba(32,243,154,.045) 40%,transparent 70%);filter:blur(13px);opacity:.7}
+.configs-agent img{position:relative;z-index:1;display:block;width:auto;max-width:310px;height:calc(100% - 4px);max-height:none;margin:2px 0;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 16px 20px rgba(0,0,0,.5)) drop-shadow(0 0 14px rgba(32,243,154,.055));animation:setup-agent-float 5.2s ease-in-out infinite;transform-origin:50% 85%}
+@keyframes setup-agent-float{0%,100%{transform:translate3d(0,0,0) rotate(-.25deg)}50%{transform:translate3d(0,-4px,0) rotate(.3deg)}}
 
-.configs-switch{display:flex;justify-content:center;gap:10px;margin-top:12px}
+.configs-switch{grid-column:1;grid-row:2;display:flex;justify-content:center;align-self:end;gap:10px;margin:0 0 10px}
 .configs-switch button{min-width:145px;min-height:44px;padding:0 20px;border:1px solid #25383e;border-radius:999px;background:#091116;color:#8f9b9d;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em;cursor:pointer;transition:.2s ease}
 .configs-switch button:hover{border-color:#31545c;color:#eef5f3;transform:translateY(-1px)}
 .configs-switch button.active{color:#03110c;border-color:var(--green);background:linear-gradient(90deg,#20f39a,#16d989);box-shadow:0 0 24px rgba(32,243,154,.16)}
@@ -62,22 +62,23 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 .config-empty span{font-size:11px;line-height:1.6}
 
 @media(max-width:1180px){
-  .configs-hero-row{width:min(900px,100%);grid-template-columns:minmax(0,650px) 215px;gap:20px;min-height:176px}
-  .configs-title-art{height:156px}
-  .configs-agent{width:215px;height:176px}
-  .configs-agent img{max-width:215px;height:172px}
-  .configs-agent-glow{width:142px;height:142px}
+  .configs-intro{grid-template-columns:minmax(0,650px) 260px;min-height:242px;column-gap:20px;padding:5px 34px}
+  .configs-title-art{height:145px}
+  .configs-agent{width:260px;min-height:232px}
+  .configs-agent img{max-width:260px}
+  .configs-agent-glow{width:155px;height:155px}
+  .configs-switch{margin-bottom:8px}
   .gear-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 @media(max-width:800px){
-  .configs-intro{padding:24px 24px 24px}
-  .configs-hero-row{width:min(700px,100%);grid-template-columns:minmax(0,1fr) 168px;gap:10px;min-height:144px}
-  .configs-title-art{height:122px}
-  .configs-agent{width:168px;height:144px}
-  .configs-agent img{max-width:168px;height:140px}
-  .configs-agent-glow{width:110px;height:110px}
-  .configs-switch{margin-top:9px}
+  .configs-intro{grid-template-columns:minmax(0,1fr) 190px;grid-template-rows:minmax(118px,1fr) auto;min-height:205px;column-gap:10px;padding:4px 24px}
+  .configs-title-art{height:112px}
+  .configs-agent{width:190px;min-height:197px}
+  .configs-agent img{max-width:190px}
+  .configs-agent-glow{width:116px;height:116px}
+  .configs-switch{gap:8px;margin-bottom:7px}
+  .configs-switch button{min-width:112px;padding:0 14px;font-size:10px}
   .gear-section,.cs-config-section{padding:34px 24px 54px}
   .gear-section-head{align-items:flex-start;flex-direction:column;gap:8px}
   .gear-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -85,14 +86,13 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 }
 
 @media(max-width:520px){
-  .configs-intro{padding:20px 16px 22px}
-  .configs-hero-row{grid-template-columns:minmax(0,1fr) 108px;gap:4px;min-height:100px}
-  .configs-title-art{height:86px}
-  .configs-agent{width:108px;height:100px}
-  .configs-agent img{max-width:108px;height:98px}
-  .configs-agent-glow{width:76px;height:76px}
-  .configs-switch{gap:8px;margin-top:7px}
-  .configs-switch button{min-width:0;flex:1;padding:0 9px;font-size:9px}
+  .configs-intro{grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:minmax(82px,1fr) auto;min-height:145px;column-gap:2px;padding:3px 12px}
+  .configs-title-art{height:80px}
+  .configs-agent{width:104px;min-height:139px}
+  .configs-agent img{max-width:104px}
+  .configs-agent-glow{width:72px;height:72px}
+  .configs-switch{gap:6px;margin-bottom:5px}
+  .configs-switch button{min-width:0;flex:1;padding:0 7px;font-size:8px;min-height:36px}
   .gear-section,.cs-config-section{padding:29px 14px 44px}
   .gear-grid{grid-template-columns:1fr}
   .gear-card-visual{height:220px}
