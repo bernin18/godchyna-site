@@ -93,7 +93,13 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
         <img className="partner-logo" src={partner.logo} alt={partner.name} />
       </div>
       <div className="partner-info">
-        <div className="code-row"><span>Código: <b>{partner.code}</b></span><button onClick={copy} aria-label="Copiar código">{copied?<Check/>:<Copy/>}</button></div>
+        <div className="code-row">
+          <div className="code-block">
+            <span className="code-label">CÓDIGO</span>
+            <b>{partner.code.toUpperCase()}</b>
+          </div>
+          <button onClick={copy} aria-label="Copiar código">{copied?<Check/>:<Copy/>}</button>
+        </div>
         <p>{partner.benefit}</p>
         <a className="partner-cta" href={partner.url} target="_blank" rel="noopener noreferrer sponsored">USAR CÓDIGO</a>
       </div>
@@ -190,7 +196,7 @@ function Home(){
           <div className="services-wrap">
             <div className="services-grid">
               <ServiceCard icon={ShoppingCart}>COMPRO INVENTÁRIOS</ServiceCard>
-              <ServiceCard icon={Tag}>COMPRO E VENDO SKINS</ServiceCard>
+              <ServiceCard icon={Tag}>VENDO SKINS</ServiceCard>
               <ServiceCard icon={TrendingUp}>FAÇO UPGRADES</ServiceCard>
               <ServiceCard icon={ArrowLeftRight}>FAÇO TROCAS</ServiceCard>
             </div>
