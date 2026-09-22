@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
+import ConfigsPage from "./ConfigsPage";
 import "./about.css";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
@@ -116,7 +117,7 @@ function StreamStatus() {
 function Header() {
   const [open,setOpen]=useState(false);
   const path=window.location.pathname.replace(/\/$/,"");
-  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/giveaways")&&!path.endsWith("/loja");
+  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/loja");
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -147,6 +148,7 @@ function Header() {
         <nav className={open ? "nav open" : "nav"}>
           <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
           <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>SOBRE MIM</a>
+          <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>CONFIGS & SPECS</a>
           <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
           <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
@@ -383,6 +385,7 @@ function StorePage(){
 export default function App(){
   const path = window.location.pathname.replace(/\/$/, "");
   if(path.endsWith("/sobre")) return <AboutPage/>;
+  if(path.endsWith("/configs")) return <ConfigsPage Header={Header} Footer={Footer}/>;
   if(path.endsWith("/giveaways")) return <GiveawaysPage/>;
   if(path.endsWith("/loja")) return <StorePage/>;
   return <Home/>;
