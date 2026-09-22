@@ -62,9 +62,29 @@ function Header() {
   return (
     <header className="topbar">
       <div className="topbar-inner">
-        <div className="brand-lockup">
+        <div
+          className="brand-lockup"
+          style={{
+            position:"relative",
+            display:"inline-flex",
+            flexDirection:"row",
+            alignItems:"center",
+            justifyContent:"center",
+            paddingTop:"8px",
+          }}
+        >
           <Brand />
-          <span className="brand-beta">BETA</span>
+          <span
+            className="brand-beta"
+            style={{
+              position:"absolute",
+              top:"-3px",
+              left:"1px",
+              margin:0,
+            }}
+          >
+            BETA
+          </span>
         </div>
         <nav className={open ? "nav open" : "nav"}>
           <a href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
