@@ -197,6 +197,16 @@ function Home(){
                 TIKTOK
               </a>
             </div>
+            <a
+              className="stream-status offline"
+              href={socials.twitch}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Estado da stream na Twitch"
+            >
+              <span className="stream-dot" />
+              <span className="stream-status-text">OFFLINE</span>
+            </a>
           </div>
         </section>
 
