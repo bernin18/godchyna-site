@@ -64,7 +64,7 @@ linear-gradient(145deg,#071015,#090f13 56%,#0c1012);box-shadow:0 28px 70px rgba(
 .faceit-form em{color:#6f7c7e;font-size:11px;font-style:normal}
 .faceit-form-card>small{color:#657376;font-size:9px}
 
-.faceit-stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 28px 0}
+.faceit-stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 28px 0}
 .faceit-stat{min-height:82px;border:1px solid #1c2c31;border-radius:8px;background:#081116;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center}
 .faceit-stat strong{font-family:"Chakra Petch",sans-serif;font-size:20px;line-height:1;color:#eef4f2}
 .faceit-stat span{color:#6e7d80;font-size:8px;font-weight:800;letter-spacing:.14em}
@@ -115,7 +115,6 @@ linear-gradient(145deg,#071015,#090f13 56%,#0c1012);box-shadow:0 28px 70px rgba(
   .faceit-brand-row h2{font-size:24px}
   .faceit-overview{grid-template-columns:1fr;padding:15px 17px 0}
   .faceit-stats-grid{grid-template-columns:repeat(2,1fr);padding:12px 17px 0}
-  .faceit-stat:last-child{grid-column:1/-1}
   .faceit-recent{padding:17px}
   .faceit-recent-title{align-items:flex-start;flex-direction:column;gap:4px}
   .faceit-match-row{grid-template-columns:34px 1fr 1fr auto;gap:8px;padding:9px 10px}
