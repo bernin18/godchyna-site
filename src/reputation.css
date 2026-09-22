@@ -31,18 +31,23 @@ linear-gradient(180deg,rgba(7,14,18,.34),rgba(5,9,12,.12))}
 .rep-comments-label span{font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;letter-spacing:.14em;color:#d8e0df}
 .rep-comments-label small{color:#677679;font-size:9px;letter-spacing:.08em}
 .rep-marquee{position:relative;overflow:hidden;margin-left:-50px;margin-right:-50px;padding:1px 0 4px;mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
-.rep-track{width:max-content;display:flex;gap:14px;padding-left:50px;animation:repMarquee 38s linear infinite;will-change:transform;transform:translate3d(0,0,0)}
-.rep-review-card{width:360px;min-height:116px;flex:0 0 360px;padding:15px 17px;border:1px solid #1b3035;border-radius:9px;background:linear-gradient(145deg,#081217,#060c10);box-shadow:inset 0 0 22px rgba(255,255,255,.008)}
+.rep-track{width:max-content;display:flex;gap:14px;padding-left:50px;animation:repMarquee 50s linear infinite;will-change:transform;transform:translate3d(0,0,0)}
+.rep-review-card{width:360px;min-height:122px;flex:0 0 360px;padding:15px 17px;border:1px solid #1b3035;border-radius:9px;background:linear-gradient(145deg,#081217,#060c10);box-shadow:inset 0 0 22px rgba(255,255,255,.008)}
 .rep-review-card.positive{border-color:rgba(32,243,154,.20)}
 .rep-review-card.neutral{border-color:rgba(160,170,173,.14)}
 .rep-review-card.negative{border-color:rgba(255,78,96,.20)}
-.rep-review-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.rep-review-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+.rep-review-author{display:flex;align-items:center;gap:10px;min-width:0;max-width:72%;transition:.2s ease}
+a.rep-review-author:hover{color:var(--green)}
+.rep-avatar{position:relative;width:34px;height:34px;flex:0 0 34px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:linear-gradient(145deg,#112128,#0a1317);border:1px solid rgba(32,243,154,.25);color:#94aaa6;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;box-shadow:0 0 12px rgba(32,243,154,.05)}
+.rep-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.rep-review-username{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#edf4f1;font-size:12px;font-weight:800;letter-spacing:.015em}
+.rep-review-meta{margin-left:auto;display:flex;align-items:center;gap:7px;flex:0 0 auto}
 .rep-rate{padding:4px 7px;border-radius:4px;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:800;letter-spacing:.08em}
 .rep-rate.positive{color:#20f39a;border:1px solid rgba(32,243,154,.26);background:rgba(32,243,154,.07)}
 .rep-rate.neutral{color:#c0c8c9;border:1px solid rgba(192,200,201,.17);background:rgba(192,200,201,.045)}
 .rep-rate.negative{color:#ff6678;border:1px solid rgba(255,102,120,.24);background:rgba(255,102,120,.055)}
-.rep-review-source{color:#6f7e81;font-size:9px;font-weight:800;letter-spacing:.15em}
-.rep-position{margin-left:auto;color:#758386;font-size:9px;font-weight:700}
+.rep-position{color:#758386;font-size:9px;font-weight:700}
 .rep-review-card p{margin:0;color:#d9dfde;font-size:13px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .rep-empty{min-height:92px;border:1px dashed #1c363c;border-radius:9px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;color:#7f8c8e;font-size:12px;transition:.2s}
 .rep-empty:hover{color:#b8c5c2;border-color:#2a514a}
@@ -61,6 +66,9 @@ linear-gradient(180deg,rgba(7,14,18,.34),rgba(5,9,12,.12))}
  .rep-sync-state{grid-column:auto;border-top:0;padding-top:0}
  .rep-comments-label small{display:none}
  .rep-marquee{margin-left:-20px;margin-right:-20px;mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
- .rep-track{padding-left:20px;animation-duration:31s}
- .rep-review-card{width:290px;flex-basis:290px;min-height:110px}
+ .rep-track{padding-left:20px;animation-duration:42s}
+ .rep-review-card{width:300px;flex-basis:300px;min-height:116px}
+ .rep-review-author{max-width:68%}
+ .rep-avatar{width:32px;height:32px;flex-basis:32px}
+ .rep-review-username{font-size:11px}
 }
