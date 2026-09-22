@@ -195,8 +195,8 @@ pointer-events:none}
   transform-origin:center;
   transform-style:preserve-3d;
   animation:
-    knifeShowcaseSpin 7.2s ease-in-out infinite,
-    knifeGlowPulse 3.2s ease-in-out infinite;
+    knifeShowcaseSpin 5.6s ease-in-out infinite,
+    knifeGlowPulse 2.6s ease-in-out infinite;
   will-change:transform,filter
 }
 .knife-stage:hover{
@@ -232,7 +232,7 @@ pointer-events:none}
   filter:blur(1px);
   mix-blend-mode:screen;
   opacity:0;
-  animation:knifeShineSweep 4.9s ease-in-out infinite;
+  animation:knifeShineSweep 3.4s ease-in-out infinite;
   pointer-events:none
 }
 .knife-sparkle{
@@ -250,24 +250,36 @@ pointer-events:none}
 .sparkle-2{bottom:24%;left:22%;width:8px;height:8px;animation:sparkleTwo 4.1s ease-in-out infinite}
 .sparkle-3{top:48%;left:63%;width:12px;height:12px;animation:sparkleThree 3.7s ease-in-out infinite}
 @keyframes knifeShowcaseSpin{
-  0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-14deg) rotateZ(-1.4deg) scale(1)}
-  25%{transform:translateY(-7px) rotateX(-1deg) rotateY(0deg) rotateZ(.2deg) scale(1.012)}
-  50%{transform:translateY(-12px) rotateX(2deg) rotateY(14deg) rotateZ(1.4deg) scale(1.02)}
-  75%{transform:translateY(-6px) rotateX(0deg) rotateY(0deg) rotateZ(.1deg) scale(1.01)}
+  0%,100%{
+    transform:translate3d(-6px,2px,0) rotateX(4deg) rotateY(-22deg) rotateZ(-5deg) scale(.99)
+  }
+  20%{
+    transform:translate3d(2px,-9px,0) rotateX(-2deg) rotateY(-8deg) rotateZ(-2deg) scale(1.015)
+  }
+  50%{
+    transform:translate3d(8px,-17px,0) rotateX(3deg) rotateY(22deg) rotateZ(5deg) scale(1.035)
+  }
+  80%{
+    transform:translate3d(1px,-8px,0) rotateX(-1deg) rotateY(7deg) rotateZ(2deg) scale(1.015)
+  }
 }
 @keyframes knifeGlowPulse{
-  0%,100%{filter:drop-shadow(0 22px 20px rgba(0,0,0,.78)) drop-shadow(0 0 12px rgba(32,243,154,.10))}
-  50%{filter:drop-shadow(0 25px 22px rgba(0,0,0,.80)) drop-shadow(0 0 27px rgba(32,243,154,.25))}
+  0%,100%{
+    filter:drop-shadow(0 22px 20px rgba(0,0,0,.78)) drop-shadow(0 0 16px rgba(32,243,154,.18))
+  }
+  50%{
+    filter:drop-shadow(0 28px 24px rgba(0,0,0,.84)) drop-shadow(0 0 42px rgba(32,243,154,.44))
+  }
 }
 @keyframes knifeAuraPulse{
   0%,100%{transform:scale(.90);opacity:.58}
   50%{transform:scale(1.10);opacity:1}
 }
 @keyframes knifeShineSweep{
-  0%,57%{left:-48%;opacity:0}
-  61%{opacity:.18}
-  70%{opacity:.95}
-  81%{left:112%;opacity:0}
+  0%,38%{left:-48%;opacity:0}
+  44%{opacity:.24}
+  57%{opacity:1}
+  73%{left:112%;opacity:0}
   100%{left:112%;opacity:0}
 }
 @keyframes sparkleOne{
@@ -361,11 +373,6 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 
 @media (prefers-reduced-motion: reduce){
-  .knife-stage img,
-  .knife-stage::before,
-  .knife-ambient-glow,
-  .knife-shine,
-  .knife-sparkle,
   .stream-status.live .stream-dot,
   .stream-status.live .stream-dot::after{animation:none !important}
 }
