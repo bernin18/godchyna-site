@@ -102,10 +102,7 @@ export default function ReputationSection() {
     <section className="section reputation-section" aria-labelledby="reputation-title">
       <div className="rep-heading">
         <div>
-          <span className="rep-kicker">REPUTAÇÃO</span>
-          <h2 id="reputation-title">
-            REPUTAÇÃO <span>CSGOREP</span>
-          </h2>
+          <h2 id="reputation-title">CSGOREP</h2>
           <p>Feedback público da comunidade sobre compras, vendas e trocas.</p>
         </div>
         <a className="rep-profile-link" href={PROFILE_URL} target="_blank" rel="noopener noreferrer">
