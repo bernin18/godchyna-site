@@ -92,25 +92,138 @@ pointer-events:none}
 .orange .partner-cta{background:#ff4817}
 .blue .partner-cta{background:#087be9}
 .giveaway-card{display:grid;grid-template-columns:.78fr 1.22fr;gap:35px;padding:25px;border:1px solid #1a3035;border-radius:12px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
-.knife-stage{min-height:290px;position:relative;display:flex;align-items:center;justify-content:center;border:1px solid #19343b;border-radius:9px;background:radial-gradient(circle at 50% 30%,#101e24,#050b0e 70%);overflow:hidden}
+.knife-stage{
+  min-height:290px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #19343b;
+  border-radius:9px;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(32,243,154,.08),transparent 24%),
+    radial-gradient(circle at 50% 30%,#101e24,#050b0e 70%);
+  overflow:hidden;
+  isolation:isolate;
+  transition:border-color .25s ease,box-shadow .25s ease
+}
+.knife-stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(circle at 50% 48%,rgba(32,243,154,.07),transparent 42%),
+    linear-gradient(115deg,transparent 10%,rgba(255,255,255,.02) 45%,transparent 70%);
+  animation:stagePulse 4.6s ease-in-out infinite;
+  pointer-events:none
+}
 .knife-stage img{
+  position:relative;
+  z-index:3;
   width:93%;
   height:93%;
   object-fit:contain;
-  filter:drop-shadow(0 20px 18px #000) drop-shadow(0 0 12px rgba(32,243,154,.10));
+  filter:
+    drop-shadow(0 22px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 14px rgba(32,243,154,.12));
   transform-origin:center;
-  animation:knifeFloat 5.5s ease-in-out infinite;
+  animation:
+    knifeFloatPremium 4.8s ease-in-out infinite,
+    knifeGlowPulse 3.6s ease-in-out infinite;
   will-change:transform,filter
 }
+.knife-stage:hover{
+  border-color:#2a6458;
+  box-shadow:inset 0 0 32px rgba(32,243,154,.06),0 0 26px rgba(32,243,154,.08)
+}
 .knife-stage:hover img{
-  animation-duration:3.8s;
-  filter:drop-shadow(0 24px 20px #000) drop-shadow(0 0 18px rgba(32,243,154,.16))
+  animation-duration:3.2s,2.6s;
+  filter:
+    drop-shadow(0 26px 22px rgba(0,0,0,.82))
+    drop-shadow(0 0 24px rgba(32,243,154,.22))
 }
-@keyframes knifeFloat{
-  0%,100%{transform:translateY(0) rotate(-1deg) scale(1)}
-  50%{transform:translateY(-10px) rotate(1.2deg) scale(1.015)}
+.knife-ambient-glow{
+  position:absolute;
+  z-index:1;
+  width:235px;
+  height:235px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(32,243,154,.20) 0%,rgba(32,243,154,.07) 44%,transparent 74%);
+  filter:blur(18px);
+  animation:knifeAuraPulse 3.8s ease-in-out infinite;
+  pointer-events:none
 }
-.knife-stage span{position:absolute;bottom:12px;left:18px;color:#23343a;font-family:"Chakra Petch";font-weight:800;font-style:italic;font-size:29px}
+.knife-shine{
+  position:absolute;
+  top:-34%;
+  left:-48%;
+  z-index:4;
+  width:30%;
+  height:170%;
+  background:linear-gradient(112deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.04) 34%,rgba(255,255,255,.42) 49%,rgba(188,255,228,.22) 58%,rgba(255,255,255,0) 100%);
+  transform:rotate(17deg);
+  filter:blur(1px);
+  mix-blend-mode:screen;
+  opacity:0;
+  animation:knifeShineSweep 4.9s ease-in-out infinite;
+  pointer-events:none
+}
+.knife-sparkle{
+  position:absolute;
+  z-index:5;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(210,255,238,.82) 30%,rgba(32,243,154,0) 72%);
+  box-shadow:0 0 14px rgba(170,255,220,.62);
+  opacity:0;
+  pointer-events:none
+}
+.sparkle-1{top:22%;right:26%;animation:sparkleOne 3.2s ease-in-out infinite}
+.sparkle-2{bottom:24%;left:22%;width:8px;height:8px;animation:sparkleTwo 4.1s ease-in-out infinite}
+.sparkle-3{top:48%;left:63%;width:12px;height:12px;animation:sparkleThree 3.7s ease-in-out infinite}
+@keyframes knifeFloatPremium{
+  0%,100%{transform:translateY(0) rotate(-1.2deg) scale(1)}
+  25%{transform:translateY(-6px) rotate(.2deg) scale(1.008)}
+  50%{transform:translateY(-12px) rotate(1.35deg) scale(1.018)}
+  75%{transform:translateY(-5px) rotate(.15deg) scale(1.01)}
+}
+@keyframes knifeGlowPulse{
+  0%,100%{filter:drop-shadow(0 22px 20px rgba(0,0,0,.78)) drop-shadow(0 0 12px rgba(32,243,154,.10))}
+  50%{filter:drop-shadow(0 25px 22px rgba(0,0,0,.80)) drop-shadow(0 0 27px rgba(32,243,154,.25))}
+}
+@keyframes knifeAuraPulse{
+  0%,100%{transform:scale(.90);opacity:.58}
+  50%{transform:scale(1.10);opacity:1}
+}
+@keyframes knifeShineSweep{
+  0%,57%{left:-48%;opacity:0}
+  61%{opacity:.18}
+  70%{opacity:.95}
+  81%{left:112%;opacity:0}
+  100%{left:112%;opacity:0}
+}
+@keyframes sparkleOne{
+  0%,100%{opacity:0;transform:scale(.45)}
+  14%{opacity:1;transform:scale(1.25)}
+  28%{opacity:0;transform:scale(.6)}
+}
+@keyframes sparkleTwo{
+  0%,34%,100%{opacity:0;transform:scale(.45)}
+  47%{opacity:.9;transform:scale(1.15)}
+  61%{opacity:0;transform:scale(.55)}
+}
+@keyframes sparkleThree{
+  0%,57%,100%{opacity:0;transform:scale(.45)}
+  70%{opacity:1;transform:scale(1.35)}
+  84%{opacity:0;transform:scale(.55)}
+}
+@keyframes stagePulse{
+  0%,100%{opacity:.45}
+  50%{opacity:1}
+}
+.knife-stage span{position:absolute;bottom:12px;left:18px;z-index:6;color:#23343a;font-family:"Chakra Petch";font-weight:800;font-style:italic;font-size:29px}
 .giveaway-info{display:flex;flex-direction:column;justify-content:center}
 .giveaway-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
 .giveaway-head h3{font-size:24px;margin:0 0 4px}
@@ -182,5 +295,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 
 @media (prefers-reduced-motion: reduce){
-  .knife-stage img{animation:none}
+  .knife-stage img,
+  .knife-stage::before,
+  .knife-ambient-glow,
+  .knife-shine,
+  .knife-sparkle{animation:none !important}
 }
