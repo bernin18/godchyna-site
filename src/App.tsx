@@ -62,7 +62,10 @@ function Header() {
   return (
     <header className="topbar">
       <div className="topbar-inner">
-        <Brand />
+        <div className="brand-lockup">
+          <Brand />
+          <span className="brand-beta">BETA</span>
+        </div>
         <nav className={open ? "nav open" : "nav"}>
           <a href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
           <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
