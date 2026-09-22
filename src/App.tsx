@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
+import "./about.css";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
@@ -22,6 +23,12 @@ const socials = {
   tiktok: "https://www.tiktok.com/@godchyna",
   instagram: "https://www.instagram.com/godchyna_/",
   discord: "https://discord.gg/AfPMSzSK8",
+};
+
+const profileLinks = {
+  faceit: "https://www.faceit.com/pt/players/Chyna/cs2",
+  steam: "https://steamcommunity.com/profiles/76561198018758818",
+  shanghaiMasters: "https://x.com/ShanghaiMasters",
 };
 
 const partners = [
@@ -107,6 +114,8 @@ function StreamStatus() {
 
 function Header() {
   const [open,setOpen]=useState(false);
+  const path=window.location.pathname.replace(/\/$/,"");
+  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/giveaways")&&!path.endsWith("/loja");
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -135,10 +144,11 @@ function Header() {
           </span>
         </div>
         <nav className={open ? "nav open" : "nav"}>
-          <a href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
+          <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
+          <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>SOBRE MIM</a>
           <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
-          <a href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
-          <a href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
+          <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
+          <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
         </nav>
         <div className="desktop-social"><SocialIcons /></div>
         <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label="Abrir menu">
@@ -227,6 +237,76 @@ function Footer() {
         <p>Alguns links podem ser links de afiliado. GODCHYNA pode receber uma comissão sem custo adicional para ti.</p>
       </div>
     </footer>
+  );
+}
+
+function ProfileButton({kind,label,url}:{kind:"faceit"|"steam"|"x";label:string;url:string}){
+  const iconUrl=kind==="faceit"
+    ? "https://cdn.simpleicons.org/faceit/FF5500"
+    : kind==="steam"
+      ? "https://cdn.simpleicons.org/steam/FFFFFF"
+      : "https://cdn.simpleicons.org/x/FFFFFF";
+  return (
+    <a className={`about-profile-btn ${kind}`} href={url} target="_blank" rel="noopener noreferrer">
+      <img src={iconUrl} alt="" aria-hidden="true" />
+      <span>{label}</span>
+    </a>
+  );
+}
+
+function AboutPage(){
+  return (
+    <>
+      <Header/>
+      <main className="about-page">
+        <section className="about-hero">
+          <img src={asset("chyna foto.png?v=1")} alt="Gonçalo Chyna Galveia" />
+        </section>
+
+        <section className="about-content">
+          <div className="about-story">
+            <span className="about-kicker">A HISTÓRIA</span>
+            <h1>DO 1.6 ÀS STREAMS</h1>
+            <p>A minha história no Counter-Strike começou em 2010, ainda no CS 1.6. Desde aí passei pelo CS:GO e, mais recentemente, pelo CS2, mantendo sempre o lado competitivo como uma parte importante da minha vida.</p>
+            <p>Ao longo dos anos passei por várias equipas em Portugal e na Suíça e acabei também por criar os <a href={profileLinks.shanghaiMasters} target="_blank" rel="noopener noreferrer">ShanghaiMasters</a>, um projeto que nasceu da mesma vontade de competir e evoluir dentro do jogo.</p>
+            <p>Durante muito tempo tentei transformar o Counter-Strike numa carreira. As diferentes fases da vida acabaram por levar-me por outros caminhos, mas nunca deixei realmente o jogo para trás.</p>
+            <p>Hoje estou mais focado nas <strong>streams</strong>, em continuar a jogar CS a um bom nível e, desde 2024, também no <strong>mercado de skins</strong>, área onde tenho vindo a ganhar cada vez mais experiência.</p>
+            <p className="about-closing">No fim, muita coisa mudou desde 2010 — mas a paixão pelo Counter-Strike continua exatamente a mesma.</p>
+          </div>
+
+          <aside className="about-side">
+            <div className="about-timeline">
+              <span>2010</span><strong>CS 1.6</strong>
+              <i />
+              <span>ERA</span><strong>CS:GO</strong>
+              <i />
+              <span>HOJE</span><strong>CS2</strong>
+              <i />
+              <span>2024</span><strong>MERCADO DE SKINS</strong>
+            </div>
+
+            <div className="about-profiles">
+              <span className="about-kicker">PERFIS & PROJETO</span>
+              <div className="about-profile-grid">
+                <ProfileButton kind="faceit" label="FACEIT" url={profileLinks.faceit}/>
+                <ProfileButton kind="steam" label="STEAM" url={profileLinks.steam}/>
+                <ProfileButton kind="x" label="SHANGHAIMASTERS" url={profileLinks.shanghaiMasters}/>
+              </div>
+            </div>
+
+            <div className="faceit-next-card">
+              <div>
+                <span className="about-kicker">FACEIT LIVE</span>
+                <strong>ESTATÍSTICAS DINÂMICAS</strong>
+              </div>
+              <p>ELO, nível, K/D/A, ADR, HS% e partidas recentes podem ser ligados diretamente à FACEIT.</p>
+              <span className="faceit-api-pill">API A LIGAR</span>
+            </div>
+          </aside>
+        </section>
+      </main>
+      <Footer/>
+    </>
   );
 }
 
@@ -319,6 +399,7 @@ function StorePage(){
 
 export default function App(){
   const path = window.location.pathname.replace(/\/$/, "");
+  if(path.endsWith("/sobre")) return <AboutPage/>;
   if(path.endsWith("/giveaways")) return <GiveawaysPage/>;
   if(path.endsWith("/loja")) return <StorePage/>;
   return <Home/>;
