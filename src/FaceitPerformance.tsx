@@ -83,8 +83,14 @@ export default function FaceitPerformance() {
     return () => { cancelled = true; };
   }, []);
 
-  const form = useMemo(() => (data?.recentResults ?? []).slice(0, 5), [data]);
   const matches = useMemo(() => (data?.recentMatches ?? []).slice(0, 5), [data]);
+  const form = useMemo(
+    () => matches.length ? matches.map((match) => match.result) : (data?.recentResults ?? []).slice(0, 5),
+    [data, matches],
+  );
+  const avgKills = matches.length
+    ? (matches.reduce((sum, match) => sum + match.kills, 0) / matches.length).toFixed(1)
+    : "—";
   const updatedLabel = data?.updatedAt
     ? new Date(data.updatedAt).toLocaleString("pt-PT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })
     : "sincronização automática";
@@ -131,6 +137,7 @@ export default function FaceitPerformance() {
         <Stat label="K/D" value={data?.stats?.kd ?? "—"} />
         <Stat label="ADR" value={data?.stats?.adr ?? "—"} />
         <Stat label="HEADSHOTS" value={data?.stats?.headshots ?? "—"} suffix={data?.stats?.headshots != null ? "%" : ""} />
+        <Stat label="AVG KILLS · 5" value={avgKills} />
         <Stat label="MATCHES" value={data?.stats?.matches?.toLocaleString("pt-PT") ?? "—"} />
       </div>
 
