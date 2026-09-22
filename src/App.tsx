@@ -292,7 +292,7 @@ function AboutPage(){
               <div className="about-profile-grid">
                 <ProfileButton kind="faceit" label="FACEIT" url={profileLinks.faceit}/>
                 <ProfileButton kind="steam" label="STEAM" url={profileLinks.steam}/>
-                <ProfileButton kind="x" label="X · @GODCHYNA" url={profileLinks.x}/>
+                <ProfileButton kind="x" label="GODCHYNA" url={profileLinks.x}/>
                 <ProfileButton kind="x" label="SHANGHAIMASTERS" url={profileLinks.shanghaiMasters}/>
               </div>
             </div>
