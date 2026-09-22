@@ -1,0 +1,22 @@
+{
+  "sourceUrl": "https://settings.gg/user/58493090/cs2",
+  "downloadUrl": "https://gg.settings.gg/api/download/cs2/58493090",
+  "updatedAt": null,
+  "tabs": {
+    "Mouse": [
+      { "label": "Sens (In-game)", "value": "1.4" },
+      { "label": "Mouse DPI", "value": "400" },
+      { "label": "Rate", "value": "4000 Hz" },
+      { "label": "Acceleration", "value": "No" },
+      { "label": "Raw Input", "value": "1" },
+      { "label": "Windows", "value": "6/11" },
+      { "label": "Zoom sensitivity", "value": "1" },
+      { "label": "m_yaw", "value": "0.022" }
+    ],
+    "Video": [],
+    "Viewmodel": [],
+    "HUD": [],
+    "Radar": [],
+    "Audio": []
+  }
+}
