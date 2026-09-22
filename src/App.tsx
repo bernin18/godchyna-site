@@ -29,6 +29,7 @@ const socials = {
 const profileLinks = {
   faceit: "https://www.faceit.com/pt/players/Chyna/cs2",
   steam: "https://steamcommunity.com/profiles/76561198018758818",
+  x: "https://x.com/GODChyna",
   shanghaiMasters: "https://x.com/ShanghaiMasters",
 };
 
@@ -268,16 +269,16 @@ function AboutPage(){
           <div className="about-story">
             <span className="about-kicker">A HISTÓRIA</span>
             <h1>DO 1.6 ÀS STREAMS</h1>
-            <p>A minha história no Counter-Strike começou em 2010, ainda no CS 1.6. Desde aí passei pelo CS:GO e, mais recentemente, pelo CS2, mantendo sempre o lado competitivo como uma parte importante da minha vida.</p>
+            <p>A minha história no Counter-Strike começou em 2009, ainda no CS 1.6. Desde aí passei pelo CS:GO e, mais recentemente, pelo CS2, mantendo sempre o lado competitivo como uma parte importante da minha vida.</p>
             <p>Ao longo dos anos passei por várias equipas em Portugal e na Suíça e acabei também por criar os <a href={profileLinks.shanghaiMasters} target="_blank" rel="noopener noreferrer">ShanghaiMasters</a>, um projeto que nasceu da mesma vontade de competir e evoluir dentro do jogo.</p>
             <p>Durante muito tempo tentei transformar o Counter-Strike numa carreira. As diferentes fases da vida acabaram por levar-me por outros caminhos, mas nunca deixei realmente o jogo para trás.</p>
             <p>Hoje estou mais focado nas <strong>streams</strong>, em continuar a jogar CS a um bom nível e, desde 2024, também no <strong>mercado de skins</strong>, área onde tenho vindo a ganhar cada vez mais experiência.</p>
-            <p className="about-closing">No fim, muita coisa mudou desde 2010 — mas a paixão pelo Counter-Strike continua exatamente a mesma.</p>
+            <p className="about-closing">No fim, muita coisa mudou desde 2009 — mas a paixão pelo Counter-Strike continua exatamente a mesma.</p>
           </div>
 
           <aside className="about-side">
             <div className="about-timeline">
-              <span>2010</span><strong>CS 1.6</strong>
+              <span>2009</span><strong>CS 1.6</strong>
               <i />
               <span>ERA</span><strong>CS:GO</strong>
               <i />
@@ -291,6 +292,7 @@ function AboutPage(){
               <div className="about-profile-grid">
                 <ProfileButton kind="faceit" label="FACEIT" url={profileLinks.faceit}/>
                 <ProfileButton kind="steam" label="STEAM" url={profileLinks.steam}/>
+                <ProfileButton kind="x" label="X · @GODCHYNA" url={profileLinks.x}/>
                 <ProfileButton kind="x" label="SHANGHAIMASTERS" url={profileLinks.shanghaiMasters}/>
               </div>
             </div>
@@ -361,7 +363,7 @@ function Home(){
             </div>
             <div id="contacto" className="contact-row">
               <a className="discord-btn big" href={socials.discord} target="_blank" rel="noopener noreferrer"><MessageCircle/> FALAR NO DISCORD</a>
-              <a className="instagram-btn big" href={socials.instagram} target="_blank" rel="noopener noreferrer"><Instagram/> ENVIAR NO INSTAGRAM</a>
+              <a className="instagram-btn big" href={socials.instagram} target="_blank" rel="noopener noreferrer"><Instagram/> FALAR NO INSTAGRAM</a>
             </div>
           </div>
         </section>
