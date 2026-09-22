@@ -1,0 +1,60 @@
+.configs-page{max-width:1500px;margin:0 auto;min-height:calc(100vh - 74px);background:
+radial-gradient(circle at 12% 8%,rgba(32,243,154,.065),transparent 26rem),
+radial-gradient(circle at 92% 34%,rgba(0,180,255,.045),transparent 25rem),
+linear-gradient(180deg,#05090c,#060b0e 55%,#05090c)}
+
+.configs-intro{padding:72px 50px 34px;border-bottom:1px solid #142429;text-align:center}
+.configs-kicker{display:block;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:800;letter-spacing:.24em;margin-bottom:9px}
+.configs-intro h1{margin:0;font-family:"Chakra Petch",sans-serif;font-size:48px;line-height:1;font-style:italic;letter-spacing:.02em}
+.configs-intro h1 span{color:var(--green)}
+.configs-intro>p{max-width:660px;margin:16px auto 0;color:#aeb9b9;font-size:14px;line-height:1.7}
+
+.configs-switch{display:flex;justify-content:center;gap:10px;margin-top:30px}
+.configs-switch button{min-width:145px;min-height:44px;padding:0 20px;border:1px solid #25383e;border-radius:999px;background:#091116;color:#8f9b9d;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em;cursor:pointer;transition:.2s ease}
+.configs-switch button:hover{border-color:#31545c;color:#eef5f3;transform:translateY(-1px)}
+.configs-switch button.active{color:#03110c;border-color:var(--green);background:linear-gradient(90deg,#20f39a,#16d989);box-shadow:0 0 24px rgba(32,243,154,.16)}
+
+.gear-section{padding:42px 50px 70px}
+.gear-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:24px}
+.gear-section-head>div>span{display:block;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:800;letter-spacing:.22em;margin-bottom:5px}
+.gear-section-head h2{margin:0;font-family:"Chakra Petch",sans-serif;font-size:31px;font-style:italic;letter-spacing:.02em}
+.gear-section-head>p{max-width:430px;margin:0;color:#7e8d90;font-size:12px;text-align:right;line-height:1.55}
+
+.gear-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.gear-card{min-width:0;border:1px solid #1b3137;border-radius:13px;overflow:hidden;background:linear-gradient(145deg,#081217,#060c10);box-shadow:0 18px 48px rgba(0,0,0,.18),inset 0 0 30px rgba(32,243,154,.012);transition:.22s ease}
+.gear-card:hover{transform:translateY(-4px);border-color:#2b5b51;box-shadow:0 22px 55px rgba(0,0,0,.25),0 0 24px rgba(32,243,154,.055)}
+.gear-card-visual{position:relative;height:205px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:
+linear-gradient(rgba(32,243,154,.022) 1px,transparent 1px),
+linear-gradient(90deg,rgba(32,243,154,.022) 1px,transparent 1px),
+radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
+#071015;background-size:28px 28px,28px 28px,auto,auto;border-bottom:1px solid #172b30}
+.gear-card-visual::before{content:"";position:absolute;width:130px;height:130px;border-radius:50%;background:rgba(32,243,154,.055);filter:blur(28px)}
+.gear-placeholder-ring{position:absolute;width:112px;height:112px;border:1px solid rgba(32,243,154,.16);border-radius:50%;box-shadow:0 0 34px rgba(32,243,154,.035),inset 0 0 28px rgba(32,243,154,.025)}
+.gear-card-visual span{position:relative;z-index:1;color:#4f6466;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:800;letter-spacing:.18em}
+.gear-card-copy{min-height:128px;padding:19px 18px 20px}
+.gear-category{display:block;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:800;letter-spacing:.18em;margin-bottom:7px}
+.gear-card h3{margin:0;color:#eef5f2;font-family:"Chakra Petch",sans-serif;font-size:15px;line-height:1.3;letter-spacing:.01em}
+.gear-card p{margin:7px 0 0;color:#78878a;font-size:10px;font-weight:600;line-height:1.45}
+
+@media(max-width:1180px){
+  .gear-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media(max-width:800px){
+  .configs-intro{padding:54px 24px 30px}
+  .configs-intro h1{font-size:40px}
+  .gear-section{padding:34px 24px 54px}
+  .gear-section-head{align-items:flex-start;flex-direction:column;gap:8px}
+  .gear-section-head>p{text-align:left}
+  .gear-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:520px){
+  .configs-intro{padding:44px 16px 26px}
+  .configs-intro h1{font-size:33px}
+  .configs-switch{gap:8px}
+  .configs-switch button{min-width:0;flex:1;padding:0 12px}
+  .gear-section{padding:29px 14px 44px}
+  .gear-grid{grid-template-columns:1fr}
+  .gear-card-visual{height:220px}
+}
