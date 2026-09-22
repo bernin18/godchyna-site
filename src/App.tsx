@@ -3,14 +3,10 @@ import {
   ArrowLeftRight,
   Check,
   Copy,
-  Instagram,
   Menu,
-  MessageCircle,
   ShoppingCart,
   Tag,
   TrendingUp,
-  Twitch,
-  Music2,
   X,
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
@@ -26,6 +22,16 @@ const socials = {
   discord: "https://discord.gg/AfPMSzSK8",
   x: "https://x.com/GODChyna",
 };
+
+const socialIconUrls = {
+  instagram: "https://cdn.simpleicons.org/instagram/FFFFFF",
+  twitch: "https://cdn.simpleicons.org/twitch/FFFFFF",
+  tiktok: "https://cdn.simpleicons.org/tiktok/FFFFFF",
+  x: "https://cdn.simpleicons.org/x/FFFFFF",
+  discord: "https://cdn.simpleicons.org/discord/FFFFFF",
+} as const;
+
+type SocialName = keyof typeof socialIconUrls;
 
 const profileLinks = {
   faceit: "https://www.faceit.com/pt/players/Chyna/cs2",
@@ -57,14 +63,18 @@ function Brand() {
   return <a className="brand" href="./">CHYNA</a>;
 }
 
+function BrandGlyph({network,className=""}:{network:SocialName;className?:string}) {
+  return <img className={`brand-glyph ${className}`.trim()} src={socialIconUrls[network]} alt="" aria-hidden="true" />;
+}
+
 function SocialIcons() {
   return (
     <div className="social-icons">
-      <a href={socials.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a>
-      <a href={socials.twitch} target="_blank" rel="noreferrer" aria-label="Twitch"><Twitch /></a>
-      <a href={socials.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><Music2 /></a>
-      <a href={socials.x} target="_blank" rel="noreferrer" aria-label="X"><X /></a>
-      <a href={socials.discord} target="_blank" rel="noreferrer" aria-label="Discord"><MessageCircle /></a>
+      <a className="social-icon instagram" href={socials.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><BrandGlyph network="instagram" /></a>
+      <a className="social-icon twitch" href={socials.twitch} target="_blank" rel="noreferrer" aria-label="Twitch"><BrandGlyph network="twitch" /></a>
+      <a className="social-icon tiktok" href={socials.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><BrandGlyph network="tiktok" /></a>
+      <a className="social-icon x" href={socials.x} target="_blank" rel="noreferrer" aria-label="X"><BrandGlyph network="x" /></a>
+      <a className="social-icon discord" href={socials.discord} target="_blank" rel="noreferrer" aria-label="Discord"><BrandGlyph network="discord" /></a>
     </div>
   );
 }
@@ -221,8 +231,8 @@ function GiveawayCard() {
         <p className="giveaway-copy">Faz um depósito mínimo de €10 e manda-me uma prova do depósito por Discord ou Instagram para eu saber que estás a participar.</p>
         <div className="giveaway-actions">
           <a className="participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer">PARTICIPAR</a>
-          <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><MessageCircle/> ENVIAR POR DISCORD</a>
-          <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><Instagram/> ENVIAR POR INSTAGRAM</a>
+          <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> ENVIAR POR DISCORD</a>
+          <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> ENVIAR POR INSTAGRAM</a>
         </div>
       </div>
     </article>
@@ -321,7 +331,7 @@ function Home(){
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Twitch />
+                <BrandGlyph network="twitch" />
                 TWITCH
               </a>
               <a
@@ -330,7 +340,7 @@ function Home(){
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Music2 />
+                <BrandGlyph network="tiktok" />
                 TIKTOK
               </a>
             </div>
@@ -352,8 +362,8 @@ function Home(){
               <ServiceCard icon={ArrowLeftRight}>FAÇO TROCAS</ServiceCard>
             </div>
             <div id="contacto" className="contact-row">
-              <a className="discord-btn big" href={socials.discord} target="_blank" rel="noopener noreferrer"><MessageCircle/> FALAR NO DISCORD</a>
-              <a className="instagram-btn big" href={socials.instagram} target="_blank" rel="noopener noreferrer"><Instagram/> FALAR NO INSTAGRAM</a>
+              <a className="discord-btn big" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> FALAR NO DISCORD</a>
+              <a className="instagram-btn big" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> FALAR NO INSTAGRAM</a>
             </div>
           </div>
         </section>
