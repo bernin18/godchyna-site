@@ -3,16 +3,16 @@ radial-gradient(circle at 12% 8%,rgba(32,243,154,.065),transparent 26rem),
 radial-gradient(circle at 92% 34%,rgba(0,180,255,.045),transparent 25rem),
 linear-gradient(180deg,#05090c,#060b0e 55%,#05090c)}
 
-.configs-intro{padding:24px 50px 22px;border-bottom:1px solid #142429;text-align:center;overflow:hidden}
-.configs-hero-row{width:min(900px,100%);min-height:168px;margin:0 auto;display:grid;grid-template-columns:minmax(0,620px) 210px;gap:20px;align-items:center;justify-content:center}
-.configs-title-art{width:100%;height:150px;margin:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden}
-.configs-title-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;filter:drop-shadow(0 7px 18px rgba(0,0,0,.26))}
-.configs-agent{position:relative;width:210px;height:168px;display:flex;align-items:flex-end;justify-content:center;isolation:isolate;overflow:visible}
-.configs-agent-glow{position:absolute;z-index:0;width:138px;height:138px;bottom:0;border-radius:50%;background:radial-gradient(circle,rgba(32,243,154,.13),rgba(32,243,154,.04) 40%,transparent 70%);filter:blur(13px);opacity:.72}
-.configs-agent img{position:relative;z-index:1;display:block;width:auto;max-width:210px;height:164px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 16px 20px rgba(0,0,0,.5)) drop-shadow(0 0 14px rgba(32,243,154,.06));animation:setup-agent-float 5.2s ease-in-out infinite;transform-origin:50% 85%}
+.configs-intro{padding:28px 50px 24px;border-bottom:1px solid #142429;text-align:center;overflow:hidden}
+.configs-hero-row{width:min(1040px,100%);min-height:205px;margin:0 auto;display:grid;grid-template-columns:minmax(0,760px) 245px;gap:28px;align-items:center;justify-content:center}
+.configs-title-art{width:100%;height:182px;margin:0;display:flex;align-items:center;justify-content:flex-end;overflow:visible;background:transparent;isolation:isolate}
+.configs-title-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;mix-blend-mode:screen;filter:drop-shadow(0 9px 20px rgba(0,0,0,.24));opacity:.99}
+.configs-agent{position:relative;width:245px;height:205px;display:flex;align-items:flex-end;justify-content:center;isolation:isolate;overflow:visible}
+.configs-agent-glow{position:absolute;z-index:0;width:162px;height:162px;bottom:0;border-radius:50%;background:radial-gradient(circle,rgba(32,243,154,.13),rgba(32,243,154,.04) 40%,transparent 70%);filter:blur(13px);opacity:.72}
+.configs-agent img{position:relative;z-index:1;display:block;width:auto;max-width:245px;height:200px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 17px 22px rgba(0,0,0,.48)) drop-shadow(0 0 14px rgba(32,243,154,.06));animation:setup-agent-float 5.2s ease-in-out infinite;transform-origin:50% 85%}
 @keyframes setup-agent-float{0%,100%{transform:translate3d(0,0,0) rotate(-.25deg)}50%{transform:translate3d(0,-5px,0) rotate(.3deg)}}
 
-.configs-switch{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.configs-switch{display:flex;justify-content:center;gap:10px;margin-top:12px}
 .configs-switch button{min-width:145px;min-height:44px;padding:0 20px;border:1px solid #25383e;border-radius:999px;background:#091116;color:#8f9b9d;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em;cursor:pointer;transition:.2s ease}
 .configs-switch button:hover{border-color:#31545c;color:#eef5f3;transform:translateY(-1px)}
 .configs-switch button.active{color:#03110c;border-color:var(--green);background:linear-gradient(90deg,#20f39a,#16d989);box-shadow:0 0 24px rgba(32,243,154,.16)}
@@ -62,22 +62,22 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 .config-empty span{font-size:11px;line-height:1.6}
 
 @media(max-width:1180px){
-  .configs-hero-row{width:min(780px,100%);grid-template-columns:minmax(0,545px) 185px;gap:14px;min-height:150px}
-  .configs-title-art{height:132px}
-  .configs-agent{width:185px;height:150px}
-  .configs-agent img{max-width:185px;height:148px}
-  .configs-agent-glow{width:122px;height:122px}
+  .configs-hero-row{width:min(900px,100%);grid-template-columns:minmax(0,650px) 215px;gap:20px;min-height:176px}
+  .configs-title-art{height:156px}
+  .configs-agent{width:215px;height:176px}
+  .configs-agent img{max-width:215px;height:172px}
+  .configs-agent-glow{width:142px;height:142px}
   .gear-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 @media(max-width:800px){
   .configs-intro{padding:24px 24px 24px}
-  .configs-hero-row{width:min(650px,100%);grid-template-columns:minmax(0,1fr) 150px;gap:8px;min-height:128px}
-  .configs-title-art{height:108px}
-  .configs-agent{width:150px;height:128px}
-  .configs-agent img{max-width:150px;height:126px}
-  .configs-agent-glow{width:100px;height:100px}
-  .configs-switch{margin-top:8px}
+  .configs-hero-row{width:min(700px,100%);grid-template-columns:minmax(0,1fr) 168px;gap:10px;min-height:144px}
+  .configs-title-art{height:122px}
+  .configs-agent{width:168px;height:144px}
+  .configs-agent img{max-width:168px;height:140px}
+  .configs-agent-glow{width:110px;height:110px}
+  .configs-switch{margin-top:9px}
   .gear-section,.cs-config-section{padding:34px 24px 54px}
   .gear-section-head{align-items:flex-start;flex-direction:column;gap:8px}
   .gear-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -86,11 +86,11 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 
 @media(max-width:520px){
   .configs-intro{padding:20px 16px 22px}
-  .configs-hero-row{grid-template-columns:minmax(0,1fr) 96px;gap:2px;min-height:92px}
-  .configs-title-art{height:78px}
-  .configs-agent{width:96px;height:92px}
-  .configs-agent img{max-width:96px;height:90px}
-  .configs-agent-glow{width:70px;height:70px}
+  .configs-hero-row{grid-template-columns:minmax(0,1fr) 108px;gap:4px;min-height:100px}
+  .configs-title-art{height:86px}
+  .configs-agent{width:108px;height:100px}
+  .configs-agent img{max-width:108px;height:98px}
+  .configs-agent-glow{width:76px;height:76px}
   .configs-switch{gap:8px;margin-top:7px}
   .configs-switch button{min-width:0;flex:1;padding:0 9px;font-size:9px}
   .gear-section,.cs-config-section{padding:29px 14px 44px}
