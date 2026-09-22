@@ -24,6 +24,7 @@ const socials = {
   tiktok: "https://www.tiktok.com/@godchyna",
   instagram: "https://www.instagram.com/godchyna_/",
   discord: "https://discord.gg/AfPMSzSK8",
+  x: "https://x.com/GODChyna",
 };
 
 const profileLinks = {
@@ -62,6 +63,7 @@ function SocialIcons() {
       <a href={socials.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram /></a>
       <a href={socials.twitch} target="_blank" rel="noreferrer" aria-label="Twitch"><Twitch /></a>
       <a href={socials.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok"><Music2 /></a>
+      <a href={socials.x} target="_blank" rel="noreferrer" aria-label="X"><X /></a>
       <a href={socials.discord} target="_blank" rel="noreferrer" aria-label="Discord"><MessageCircle /></a>
     </div>
   );
@@ -148,9 +150,9 @@ function Header() {
         <nav className={open ? "nav open" : "nav"}>
           <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
           <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>SOBRE MIM</a>
-          <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>CONFIGS & SPECS</a>
           <a href="./#parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
           <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAY</a>
+          <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>SETUP & CONFIGS</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
         </nav>
         <div className="desktop-social"><SocialIcons /></div>
@@ -237,7 +239,6 @@ function Footer() {
       </div>
       <div className="legal">
         <p>18+ | Joga com responsabilidade.</p>
-        <p>Alguns links podem ser links de afiliado. GODCHYNA pode receber uma comissão sem custo adicional para ti.</p>
       </div>
     </footer>
   );
