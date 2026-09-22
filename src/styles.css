@@ -21,7 +21,9 @@ a{color:inherit;text-decoration:none}
 button{font:inherit}
 .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid #152227;background:rgba(5,9,12,.92);backdrop-filter:blur(14px)}
 .topbar-inner{height:74px;max-width:1500px;margin:auto;padding:0 48px;display:flex;align-items:center;gap:48px}
+.brand-lockup{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;line-height:1}
 .brand{font-family:"Exo 2",sans-serif;font-style:italic;font-weight:900;font-size:31px;letter-spacing:-1.7px;transform:skew(-10deg) scaleX(1.06);transform-origin:left center;display:inline-block;text-shadow:0 0 14px rgba(255,255,255,.08)}
+.brand-beta{margin-top:5px;margin-left:2px;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;line-height:1;text-transform:uppercase;opacity:.92;text-shadow:0 0 8px rgba(32,243,154,.58),0 0 18px rgba(32,243,154,.18)}
 .nav{display:flex;gap:38px;margin-right:auto}
 .nav a{font-size:13px;letter-spacing:.08em;color:#d9dede;transition:.2s}
 .nav a:first-child,.nav a:hover{color:var(--green);text-shadow:0 0 16px rgba(32,243,154,.45)}
@@ -342,6 +344,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .topbar-inner{height:66px;padding:0 18px}
  .nav{top:66px}
  .brand{font-size:25px}
+ .brand-beta{font-size:7px;margin-top:4px;letter-spacing:.24em}
  .hero{min-height:680px;padding:44px 20px;background-position:70% center}
  .hero-copy{width:100%;max-width:none}
  .eyebrow{font-size:15px}
