@@ -54,6 +54,10 @@ try {
   const profileData = profileResult.status === "fulfilled" ? profileResult.value ?? {} : {};
   const allReviews = Array.isArray(repsData.data) ? repsData.data : [];
 
+  if (allReviews.length > 0) {
+    console.log("CSGOREP_FIRST_REVIEW_RAW", JSON.stringify(allReviews[0]));
+  }
+
   const normalizedReviews = allReviews
     .map((review) => ({
       rate: Number(review?.rate),
