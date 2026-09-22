@@ -35,6 +35,10 @@ jobs:
         run: node scripts/fetch-csgorep.mjs
         continue-on-error: true
 
+      - name: Refresh FACEIT performance
+        run: node scripts/fetch-faceit.mjs
+        continue-on-error: true
+
       - name: Build
         run: npm run build
 
