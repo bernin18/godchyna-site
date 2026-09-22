@@ -2,19 +2,19 @@
 .partners-page .section-title{margin-bottom:30px}
 .partners-page .partners-grid{margin-top:6px}
 
-.about-profile-btn.faceit-profile-btn{justify-content:space-between;gap:7px;padding:0 9px 0 12px;overflow:hidden}
+.about-profile-btn.faceit-profile-btn{justify-content:flex-start;gap:8px;padding:0 11px 0 12px;overflow:hidden}
 .faceit-profile-main{display:flex;align-items:center;gap:8px;min-width:max-content;flex:0 0 auto}
 .faceit-profile-main>img{width:20px;height:20px;flex:0 0 20px}
 .faceit-profile-main>span{white-space:nowrap}
-.faceit-live-stats{margin-left:auto;display:flex;align-items:center;gap:7px;min-width:0;flex:0 1 auto}
-.faceit-level-badge{width:31px;height:31px;display:grid;place-items:center;flex:0 0 31px;border-radius:50%;border:3px solid #ff2020;background:#0a0f13;color:#ff2020;font-family:"Chakra Petch",sans-serif;font-size:13px;font-weight:800;line-height:1;box-shadow:0 0 13px rgba(255,32,32,.22),inset 0 0 10px rgba(255,32,32,.08)}
+.faceit-live-stats{margin-left:5px;display:flex;align-items:center;gap:8px;min-width:0;flex:0 1 auto}
+.faceit-level-badge{width:27px;height:27px;display:grid;place-items:center;flex:0 0 27px;border-radius:50%;border:2px solid #ff2020;background:#0a0f13;color:#ff2020;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:800;line-height:1;box-shadow:0 0 10px rgba(255,32,32,.18),inset 0 0 8px rgba(255,32,32,.06)}
 .faceit-elo{display:inline-flex;align-items:baseline;color:#f5f7f6;font-family:"Chakra Petch",sans-serif;font-size:13px;font-weight:800;letter-spacing:0;white-space:nowrap}
 .faceit-elo small{display:none}
-.about-profile-btn.faceit-profile-btn:hover .faceit-level-badge{box-shadow:0 0 18px rgba(255,32,32,.34),inset 0 0 10px rgba(255,32,32,.10)}
+.about-profile-btn.faceit-profile-btn:hover .faceit-level-badge{box-shadow:0 0 14px rgba(255,32,32,.28),inset 0 0 8px rgba(255,32,32,.08)}
 
 @media(max-width:620px){
   .partners-page .partners-grid{grid-template-columns:1fr}
   .about-profile-btn.faceit-profile-btn{min-height:58px}
-  .faceit-level-badge{width:29px;height:29px;flex-basis:29px;font-size:12px}
-  .faceit-elo{font-size:13px}
+  .faceit-level-badge{width:25px;height:25px;flex-basis:25px;font-size:10px}
+  .faceit-elo{font-size:12px}
 }
