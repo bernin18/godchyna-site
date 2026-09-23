@@ -400,7 +400,7 @@ function AboutPage(){
       <Header/>
       <main className="about-page">
         <section className="about-hero">
-          <img src={asset("sobre mim.png?v=2")} alt="Gonçalo Chyna Galveia" />
+          <img src={asset("foto sobre.png?v=1")} alt="Gonçalo Chyna Galveia" />
         </section>
 
         <section className="about-content">
