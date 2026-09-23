@@ -352,7 +352,7 @@ pointer-events:none}
 }
 .giveaway-info{display:flex;flex-direction:column;justify-content:center}
 .giveaway-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
-.giveaway-provider-status{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:9px;min-width:116px}
+.giveaway-provider-status{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:9px;min-width:116px}
 .giveaway-provider-logo{display:block;width:108px;height:28px;object-fit:contain;background:transparent}
 .giveaway-provider-logo.topskin{width:92px}
 .giveaway-provider-logo.csgoskins{width:116px}
