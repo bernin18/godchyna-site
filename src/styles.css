@@ -305,8 +305,57 @@ pointer-events:none}
   50%{opacity:1}
 }
 .knife-stage span{position:absolute;bottom:12px;left:18px;z-index:6;color:#23343a;font-family:"Chakra Petch";font-weight:800;font-style:italic;font-size:29px}
+.wildfire-stage{
+  background:
+    radial-gradient(circle at 50% 43%,rgba(255,74,23,.12),transparent 28%),
+    radial-gradient(circle at 50% 35%,#21100d,#070b0e 72%);
+  border-color:rgba(255,92,31,.22)
+}
+.wildfire-stage::before{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(255,74,23,.09),transparent 44%),
+    linear-gradient(115deg,transparent 10%,rgba(255,116,58,.025) 45%,transparent 70%)
+}
+.wildfire-stage .knife-ambient-glow{
+  width:270px;
+  height:210px;
+  background:radial-gradient(circle,rgba(255,72,20,.20) 0%,rgba(255,91,27,.07) 45%,transparent 74%)
+}
+.wildfire-stage .knife-sparkle{
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,187,142,.80) 28%,rgba(255,72,20,0) 72%);
+  box-shadow:0 0 14px rgba(255,104,49,.46)
+}
+.wildfire-stage img{
+  width:95%;
+  height:82%;
+  object-fit:contain;
+  filter:drop-shadow(0 24px 22px rgba(0,0,0,.8)) drop-shadow(0 0 22px rgba(255,75,24,.18));
+  transform-origin:center;
+  transform-style:flat;
+  animation:wildfireFloat 4.8s ease-in-out infinite,wildfireGlow 2.8s ease-in-out infinite
+}
+.wildfire-stage:hover{
+  border-color:rgba(255,102,42,.48);
+  box-shadow:inset 0 0 32px rgba(255,82,25,.045),0 0 25px rgba(255,82,25,.055)
+}
+.wildfire-stage:hover img{
+  animation-duration:3.6s,2.8s;
+  filter:drop-shadow(0 28px 24px rgba(0,0,0,.84)) drop-shadow(0 0 28px rgba(255,75,24,.24))
+}
+@keyframes wildfireFloat{
+  0%,100%{transform:translate3d(-5px,4px,0) rotateZ(-1deg) scale(.99)}
+  50%{transform:translate3d(7px,-9px,0) rotateZ(1deg) scale(1.025)}
+}
+@keyframes wildfireGlow{
+  0%,100%{filter:drop-shadow(0 24px 22px rgba(0,0,0,.80)) drop-shadow(0 0 16px rgba(255,75,24,.16))}
+  50%{filter:drop-shadow(0 28px 24px rgba(0,0,0,.84)) drop-shadow(0 0 34px rgba(255,75,24,.30))}
+}
 .giveaway-info{display:flex;flex-direction:column;justify-content:center}
 .giveaway-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.giveaway-provider-status{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:9px;min-width:116px}
+.giveaway-provider-logo{display:block;width:108px;height:28px;object-fit:contain;background:transparent}
+.giveaway-provider-logo.topskin{width:92px}
+.giveaway-provider-logo.csgoskins{width:116px}
 .giveaway-head h3{font-size:24px;margin:0 0 4px}
 .giveaway-head p{margin:0;color:#d2d9d7}
 .price{display:block;color:var(--green);font-size:24px;margin-top:8px}
@@ -315,6 +364,17 @@ pointer-events:none}
 .minimum{color:var(--green)}
 .giveaway-copy{color:#d0d6d5;line-height:1.6;font-size:14px;max-width:800px}
 .giveaway-actions{display:grid;grid-template-columns:.8fr 1fr 1.08fr;gap:16px;margin-top:12px}
+.giveaway-actions.single-action{grid-template-columns:minmax(190px,270px);justify-content:start}
+.home-giveaway-rotator{position:relative}
+.home-giveaway-slide{animation:giveawaySwapIn .48s cubic-bezier(.2,.72,.25,1)}
+.giveaway-rotator-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:15px}
+.giveaway-rotator-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;background:#314047;cursor:pointer;transition:.25s ease;box-shadow:none}
+.giveaway-rotator-dots button.active{width:22px;border-radius:999px;background:var(--green);box-shadow:0 0 12px rgba(32,243,154,.28)}
+.giveaways-page-list{display:flex;flex-direction:column;gap:24px}
+@keyframes giveawaySwapIn{
+  0%{opacity:0;transform:translateX(22px) scale(.992)}
+  100%{opacity:1;transform:translateX(0) scale(1)}
+}
 .participate{background:linear-gradient(90deg,#10db87,#31efaa);color:#03110a;box-shadow:0 0 17px rgba(31,239,170,.18)}
 footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .footer-main{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
@@ -367,7 +427,12 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .knife-stage{min-height:230px}
  .giveaway-head h3{font-size:20px}
  .active-pill{padding:8px 13px}
+ .giveaway-provider-status{min-width:96px;gap:7px}
+ .giveaway-provider-logo{width:94px;height:24px}
+ .giveaway-provider-logo.topskin{width:82px}
+ .giveaway-provider-logo.csgoskins{width:98px}
  .giveaway-actions{grid-template-columns:1fr}
+ .giveaway-actions.single-action{grid-template-columns:1fr}
  .footer-main{grid-template-columns:1fr;gap:23px;justify-items:center}
  .footer-main .social-icons{justify-content:center}
  .footer-center{font-size:10px;gap:8px}

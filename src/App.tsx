@@ -61,6 +61,55 @@ const partners = [
   },
 ] as const;
 
+type Giveaway = {
+  id:string;
+  title:string;
+  condition:string;
+  price:string;
+  minDeposit:string;
+  image:string;
+  imageAlt:string;
+  provider:"topskin"|"csgoskins";
+  providerName:string;
+  providerLogo:string;
+  url:string;
+  requiresProof:boolean;
+  note?:string;
+};
+
+const giveaways:Giveaway[] = [
+  {
+    id:"ursus-marble-fade",
+    title:"Ursus | Marble Fade",
+    condition:"Factory New / FN",
+    price:"$150.00",
+    minDeposit:"€10",
+    image:"ursus-marble-fade.png",
+    imageAlt:"Ursus Marble Fade Factory New",
+    provider:"topskin",
+    providerName:"TOPSKIN",
+    providerLogo:"topskin-logo.png?v=3",
+    url:"https://topskin.net/utm/godchyna",
+    requiresProof:true,
+    note:"Faz um depósito mínimo de €10 e manda-me uma prova do depósito por Discord ou Instagram para eu saber que estás a participar.",
+  },
+  {
+    id:"awp-wildfire",
+    title:"AWP | Wildfire",
+    condition:"Field-Tested / FT",
+    price:"$60.00",
+    minDeposit:"€4",
+    image:"wildfire.png",
+    imageAlt:"AWP Wildfire Field-Tested",
+    provider:"csgoskins",
+    providerName:"CSGO-SKINS",
+    providerLogo:"csgoskins-logo.png?v=3",
+    url:"https://csgo-skins.com/?ref=GODCHYNA",
+    requiresProof:false,
+    note:"A participação fica registada automaticamente no CSGO-SKINS.",
+  },
+];
+
 function Brand() {
   return <a className="brand" href="./">CHYNA</a>;
 }
@@ -207,37 +256,75 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
   );
 }
 
-function GiveawayCard() {
+function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
+  const isTopskin=giveaway.provider==="topskin";
   return (
-    <article className="giveaway-card">
-      <div className="knife-stage">
+    <article className={`giveaway-card giveaway-${giveaway.provider}`}>
+      <div className={`knife-stage ${isTopskin?"":"wildfire-stage"}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
         <div className="knife-sparkle sparkle-2" />
         <div className="knife-sparkle sparkle-3" />
-        <img src={asset("ursus-marble-fade.png")} alt="Ursus Marble Fade Factory New" />
+        <img src={asset(giveaway.image)} alt={giveaway.imageAlt} />
         <span>CS2</span>
       </div>
       <div className="giveaway-info">
         <div className="giveaway-head">
           <div>
-            <h3>Ursus | Marble Fade</h3>
-            <p>Factory New / FN</p>
-            <strong className="price">$150.00</strong>
+            <h3>{giveaway.title}</h3>
+            <p>{giveaway.condition}</p>
+            <strong className="price">{giveaway.price}</strong>
           </div>
-          <span className="active-pill">ATIVO</span>
+          <div className="giveaway-provider-status">
+            <img className={`giveaway-provider-logo ${giveaway.provider}`} src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
+            <span className="active-pill">ATIVO</span>
+          </div>
         </div>
         <div className="divider"/>
-        <strong className="minimum">Depósito mínimo: €10</strong>
-        <p className="giveaway-copy">Faz um depósito mínimo de €10 e manda-me uma prova do depósito por Discord ou Instagram para eu saber que estás a participar.</p>
-        <div className="giveaway-actions">
-          <a className="participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer">PARTICIPAR</a>
-          <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> ENVIAR POR DISCORD</a>
-          <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> ENVIAR POR INSTAGRAM</a>
+        <strong className="minimum">Depósito mínimo: {giveaway.minDeposit}</strong>
+        {giveaway.note && <p className="giveaway-copy">{giveaway.note}</p>}
+        <div className={`giveaway-actions ${giveaway.requiresProof?"":"single-action"}`}>
+          <a className="participate" href={giveaway.url} target="_blank" rel="noopener noreferrer sponsored">PARTICIPAR</a>
+          {giveaway.requiresProof && <>
+            <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> ENVIAR POR DISCORD</a>
+            <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> ENVIAR POR INSTAGRAM</a>
+          </>}
         </div>
       </div>
     </article>
+  );
+}
+
+function HomeGiveawayRotator(){
+  const [activeIndex,setActiveIndex]=useState(0);
+
+  useEffect(()=>{
+    if(giveaways.length<2) return;
+    const timer=window.setInterval(()=>{
+      setActiveIndex(current=>(current+1)%giveaways.length);
+    },5000);
+    return ()=>window.clearInterval(timer);
+  },[]);
+
+  const activeGiveaway=giveaways[activeIndex];
+  return (
+    <div className="home-giveaway-rotator">
+      <div key={activeGiveaway.id} className="home-giveaway-slide">
+        <GiveawayCard giveaway={activeGiveaway}/>
+      </div>
+      <div className="giveaway-rotator-dots" aria-label="Selecionar giveaway">
+        {giveaways.map((giveaway,index)=>(
+          <button
+            key={giveaway.id}
+            type="button"
+            className={index===activeIndex?"active":""}
+            onClick={()=>setActiveIndex(index)}
+            aria-label={`Mostrar giveaway ${giveaway.title}`}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -416,7 +503,7 @@ function Home(){
 
         <section id="giveaway" className="section">
           <header className="section-title"><h2>GIVEAWAYS EM CURSO</h2><p>Participa e tem a oportunidade de ganhar!</p></header>
-          <GiveawayCard/>
+          <HomeGiveawayRotator/>
         </section>
       </main>
       <Footer/>
@@ -429,7 +516,18 @@ function PartnersPage(){
 }
 
 function GiveawaysPage(){
-  return <><Header/><main className="subpage"><header className="section-title"><h1>GIVEAWAYS</h1><p>Todos os giveaways ativos aparecem nesta página.</p></header><GiveawayCard/></main><Footer/></>;
+  return (
+    <>
+      <Header/>
+      <main className="subpage giveaways-page">
+        <header className="section-title"><h1>GIVEAWAYS</h1><p>Todos os giveaways ativos aparecem nesta página.</p></header>
+        <div className="giveaways-page-list">
+          {giveaways.map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
+        </div>
+      </main>
+      <Footer/>
+    </>
+  );
 }
 
 function StorePage(){
