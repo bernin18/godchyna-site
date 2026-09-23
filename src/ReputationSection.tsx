@@ -11,6 +11,7 @@ type ReputationReview = {
   from_steam_id?: string;
   username?: string;
   avatar?: string;
+  created_at?: string;
 };
 
 type ReputationData = {
@@ -33,16 +34,15 @@ type ReputationData = {
   };
 };
 
-function rateLabel(rate?: number) {
-  if (rate === 1) return "+REP";
-  if (rate === 0) return "NEUTRO";
-  return "-REP";
-}
-
-function positionLabel(position?: number) {
-  if (position === 1) return "1.º";
-  if (position === 2) return "2.º";
-  return null;
+function reviewDateLabel(value?: string) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("pt-PT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(date);
 }
 
 function steamAvatarUrl(avatar?: string) {
@@ -51,8 +51,7 @@ function steamAvatarUrl(avatar?: string) {
 }
 
 function ReviewCard({ review, duplicate = false }: { review: ReputationReview; duplicate?: boolean }) {
-  const label = rateLabel(review.rate);
-  const position = positionLabel(review.trade_position);
+  const dateLabel = reviewDateLabel(review.created_at);
   const tone = review.rate === 1 ? "positive" : review.rate === 0 ? "neutral" : "negative";
   const username = review.username?.trim() || "Utilizador Steam";
   const initial = username.charAt(0).toUpperCase();
@@ -95,8 +94,7 @@ function ReviewCard({ review, duplicate = false }: { review: ReputationReview; d
         )}
 
         <div className="rep-review-meta">
-          {position && <span className="rep-position">{position}</span>}
-          <span className={`rep-rate ${tone}`}>{label}</span>
+          {dateLabel && <time className="rep-review-date" dateTime={review.created_at}>{dateLabel}</time>}
         </div>
       </div>
       <p>“{review.body}”</p>

@@ -62,6 +62,7 @@ try {
       from_steam_id: typeof review?.from_steam_id === "string" ? review.from_steam_id : String(review?.from_steam_id ?? ""),
       username: typeof review?.username === "string" ? review.username.trim() : "",
       avatar: typeof review?.avatar === "string" ? review.avatar.trim() : "",
+      created_at: typeof review?.created_at === "string" ? review.created_at : "",
     }))
     .filter((review) => review.body.length > 0);
 
