@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ComponentType } from "react";
 import "./configs.css";
+import { useLanguage } from "./i18n";
 
 type ConfigsPageProps = {
   Header: ComponentType;
@@ -11,6 +12,7 @@ type GearItem = {
   category: string;
   name: string;
   detail?: string;
+  detailEn?: string;
   image?: string;
   imageWidth?: string;
   imageHeight?: string;
@@ -70,6 +72,7 @@ const pcSpecs: GearItem[] = [
     category: "CPU",
     name: "Intel Core i7-14700K",
     detail: "até 5.6GHz",
+    detailEn: "up to 5.6GHz",
     image: "intel-i7-14700k-14th-gen-desktop-cpu-main-1600px-v1.webp",
     imageWidth: "74%",
     imageHeight: "76%",
@@ -109,6 +112,48 @@ const pcSpecs: GearItem[] = [
 
 const configTabs: ConfigTab[] = ["Mouse", "Video", "Viewmodel", "HUD", "Radar", "Audio"];
 
+const englishConfigText: Record<string,string> = {
+  "Dispositivo de áudio": "Audio device",
+  "Perfil de equalização": "EQ profile",
+  "Correção de perspetiva": "Perspective correction",
+  "Som quando o jogo está em segundo plano": "Play audio when game is in background",
+  "Modo de voz/microfone": "Voice / microphone mode",
+  "Dispositivo de entrada de voz": "Voice input device",
+  "Ouvir a minha própria voz": "Hear my own voice",
+  "Pressionar para falar simplificado": "Streamlined push to talk",
+  "Limiar de ativação do microfone": "Microphone activation threshold",
+  "Silenciar música de MVP se ambas as equipas estiverem vivas": "Mute MVP music if players from both teams are alive",
+  "Equalização - Competitivo": "EQ - Competitive",
+  "Equalização - Casual": "EQ - Casual",
+  "Equalização - Deathmatch": "EQ - Deathmatch",
+  "Equalização - Corrida às Armas": "EQ - Arms Race",
+  "Sim": "Yes",
+  "Não": "No",
+  "Desligado": "Off",
+  "Pressionar para falar": "Push to talk",
+  "Predefinição": "Default",
+};
+
+function englishGearCategory(category:string){
+  return ({
+    "TECLADO":"KEYBOARD",
+    "MONITOR":"MONITOR",
+    "HEADSET":"HEADSET",
+    "MOUSEPAD":"MOUSEPAD",
+    "MOUSE":"MOUSE",
+    "CPU":"CPU",
+    "GPU":"GPU",
+    "MOTHERBOARD":"MOTHERBOARD",
+    "RAM":"RAM",
+    "SSD":"SSD",
+  } as Record<string,string>)[category] ?? category;
+}
+
+function translateConfigText(value:string, lang:"pt"|"en"){
+  return lang==="en" ? (englishConfigText[value] ?? value) : value;
+}
+
+
 const fallbackData: Record<ConfigTab, ConfigRow[]> = {
   Mouse: [
     { label: "Sens (In-game)", value: "1.4" },
@@ -145,6 +190,7 @@ const fallbackData: Record<ConfigTab, ConfigRow[]> = {
 const fallbackDownloadUrl = "https://gg.settings.gg/api/download/cs2/58493090";
 
 function GearCard({ item }: { item: GearItem }) {
+  const { lang, pick } = useLanguage();
   return (
     <article className="gear-card">
       <div className="gear-card-visual">
@@ -166,20 +212,21 @@ function GearCard({ item }: { item: GearItem }) {
         ) : (
           <>
             <div className="gear-placeholder-ring" />
-            <span>IMAGEM EM BREVE</span>
+            <span>{pick("IMAGEM EM BREVE","IMAGE COMING SOON")}</span>
           </>
         )}
       </div>
       <div className="gear-card-copy">
-        <span className="gear-category">{item.category}</span>
+        <span className="gear-category">{lang==="en"?englishGearCategory(item.category):item.category}</span>
         <h3>{item.name}</h3>
-        {item.detail && <p>{item.detail}</p>}
+        {item.detail && <p>{lang==="en"?(item.detailEn ?? item.detail):item.detail}</p>}
       </div>
     </article>
   );
 }
 
 function Cs2Configs() {
+  const { lang, pick } = useLanguage();
   const [configTab, setConfigTab] = useState<ConfigTab>("Mouse");
   const [configData, setConfigData] = useState<Record<ConfigTab, ConfigRow[]>>(fallbackData);
   const [downloadUrl, setDownloadUrl] = useState(fallbackDownloadUrl);
@@ -224,10 +271,10 @@ function Cs2Configs() {
           <span>COUNTER-STRIKE 2</span>
           <h2>CS2 CONFIG</h2>
         </div>
-        <a href={downloadUrl} rel="noopener noreferrer">DOWNLOAD CONFIG</a>
+        <a href={downloadUrl} rel="noopener noreferrer">{pick("DESCARREGAR CONFIG","DOWNLOAD CONFIG")}</a>
       </div>
 
-      <div className="config-subtabs" role="tablist" aria-label="Parâmetros CS2">
+      <div className="config-subtabs" role="tablist" aria-label={pick("Parâmetros CS2","CS2 settings")}>
         {configTabs.map((tab) => (
           <button
             key={tab}
@@ -252,15 +299,15 @@ function Cs2Configs() {
           <div className="config-table">
             {rows.map((row) => (
               <div className="config-row" key={`${configTab}-${row.label}-${row.value}`}>
-                <span>{row.label}</span>
-                <strong>{row.value}</strong>
+                <span>{translateConfigText(row.label,lang)}</span>
+                <strong>{translateConfigText(row.value,lang)}</strong>
               </div>
             ))}
           </div>
         ) : (
           <div className="config-empty">
             <strong>{configTab}</strong>
-            <span>Sem dados públicos disponíveis nesta categoria.</span>
+            <span>{pick("Sem dados públicos disponíveis nesta categoria.","No public data available in this category.")}</span>
           </div>
         )}
       </div>
@@ -269,6 +316,7 @@ function Cs2Configs() {
 }
 
 export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
+  const { lang, pick } = useLanguage();
   const [active, setActive] = useState<"gear" | "pc" | "configs">("gear");
   const items = active === "gear" ? peripherals : pcSpecs;
 
@@ -279,7 +327,7 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
         <section className="configs-intro">
           <div className="configs-hero-row">
             <h1 className="configs-title-art">
-              <img src={asset("chynao.png?v=1")} alt="Setup do Chynao" />
+              <img src={asset("chynao.png?v=1")} alt={pick("Setup do Chynao","Chynao setup")} />
             </h1>
             <div className="configs-agent" aria-hidden="true">
               <div className="configs-agent-glow" />
@@ -287,7 +335,7 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
             </div>
           </div>
 
-          <div className="configs-switch" role="tablist" aria-label="Categorias do setup">
+          <div className="configs-switch" role="tablist" aria-label={pick("Categorias do setup","Setup categories")}>
             <button
               type="button"
               role="tab"
@@ -295,7 +343,7 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
               className={active === "gear" ? "active" : ""}
               onClick={() => setActive("gear")}
             >
-              PERIFÉRICOS
+              {pick("PERIFÉRICOS","PERIPHERALS")}
             </button>
             <button
               type="button"
@@ -325,7 +373,7 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
             <div className="gear-section-head">
               <div>
                 <span>{active === "gear" ? "GEAR" : "HARDWARE"}</span>
-                <h2>{active === "gear" ? "PERIFÉRICOS" : "PC SPECS"}</h2>
+                <h2>{active === "gear" ? pick("PERIFÉRICOS","PERIPHERALS") : "PC SPECS"}</h2>
               </div>
             </div>
 

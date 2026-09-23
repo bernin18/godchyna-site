@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import "./reputation.css";
+import { useLanguage } from "./i18n";
 
 const PROFILE_URL = "https://csgo-rep.com/profile/76561198018758818";
 
@@ -34,11 +35,11 @@ type ReputationData = {
   };
 };
 
-function reviewDateLabel(value?: string) {
+function reviewDateLabel(value: string | undefined, locale: "pt-PT" | "en-GB") {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
-  return new Intl.DateTimeFormat("pt-PT", {
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -51,9 +52,10 @@ function steamAvatarUrl(avatar?: string) {
 }
 
 function ReviewCard({ review, duplicate = false }: { review: ReputationReview; duplicate?: boolean }) {
-  const dateLabel = reviewDateLabel(review.created_at);
+  const { lang, pick } = useLanguage();
+  const dateLabel = reviewDateLabel(review.created_at, lang==="pt"?"pt-PT":"en-GB");
   const tone = review.rate === 1 ? "positive" : review.rate === 0 ? "neutral" : "negative";
-  const username = review.username?.trim() || "Utilizador Steam";
+  const username = review.username?.trim() || pick("Utilizador Steam","Steam user");
   const initial = username.charAt(0).toUpperCase();
   const avatarUrl = steamAvatarUrl(review.avatar);
   const steamUrl = review.from_steam_id
@@ -103,6 +105,7 @@ function ReviewCard({ review, duplicate = false }: { review: ReputationReview; d
 }
 
 export default function ReputationSection() {
+  const { pick } = useLanguage();
   const [data, setData] = useState<ReputationData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -146,10 +149,10 @@ export default function ReputationSection() {
       <div className="rep-heading">
         <div>
           <h2 id="reputation-title">CSGOREP</h2>
-          <p>Feedback público da comunidade sobre compras, vendas e trocas.</p>
+          <p>{pick("Feedback público da comunidade sobre compras, vendas e trocas.","Public community feedback about buying, selling and trading.")}</p>
         </div>
         <a className="rep-profile-link" href={PROFILE_URL} target="_blank" rel="noopener noreferrer">
-          VER PERFIL NO CSGOREP
+          {pick("VER PERFIL NO CSGOREP","VIEW CSGOREP PROFILE")}
         </a>
       </div>
 
@@ -161,14 +164,14 @@ export default function ReputationSection() {
           <div>
             <span>CSGOREP</span>
             <strong>GODCHYNA</strong>
-            <small>PERFIL PÚBLICO</small>
+            <small>{pick("PERFIL PÚBLICO","PUBLIC PROFILE")}</small>
           </div>
         </div>
 
-        <div className="rep-stats" aria-label="Resumo da reputação">
+        <div className="rep-stats" aria-label={pick("Resumo da reputação","Reputation summary")}>
           <div>
             <strong className="rep-positive-number">+{positive}</strong>
-            <span>POSITIVAS</span>
+            <span>{pick("POSITIVAS","POSITIVE")}</span>
           </div>
           <div>
             <strong>{total}</strong>
@@ -179,18 +182,18 @@ export default function ReputationSection() {
         <div className="rep-sync-state">
           <span className="rep-sync-dot" />
           <div>
-            <strong>DADOS CSGOREP</strong>
-            <small>{loading ? "A sincronizar..." : data?.updatedAt ? "Sincronização automática" : "Perfil ligado"}</small>
+            <strong>{pick("DADOS CSGOREP","CSGOREP DATA")}</strong>
+            <small>{loading ? pick("A sincronizar...","Syncing...") : data?.updatedAt ? pick("Sincronização automática","Automatic sync") : pick("Perfil ligado","Profile connected")}</small>
           </div>
         </div>
       </div>
 
       <div className="rep-comments-label">
-        <span>COMENTÁRIOS RECENTES</span>
+        <span>{pick("COMENTÁRIOS RECENTES","RECENT COMMENTS")}</span>
       </div>
 
       {repeatedReviews.length > 0 ? (
-        <div className="rep-marquee" aria-label="Comentários recentes no CSGORep">
+        <div className="rep-marquee" aria-label={pick("Comentários recentes no CSGORep","Recent comments on CSGORep")}>
           <div className="rep-track">
             {repeatedReviews.map((review, index) => (
               <ReviewCard
@@ -203,7 +206,7 @@ export default function ReputationSection() {
         </div>
       ) : (
         <a className="rep-empty" href={PROFILE_URL} target="_blank" rel="noopener noreferrer">
-          {loading ? "A carregar os comentários mais recentes do CSGORep..." : "Ver os comentários no perfil CSGORep"}
+          {loading ? pick("A carregar os comentários mais recentes do CSGORep...","Loading the latest CSGORep comments...") : pick("Ver os comentários no perfil CSGORep","View comments on the CSGORep profile")}
         </a>
       )}
     </section>

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
 import ConfigsPage from "./ConfigsPage";
+import { useLanguage } from "./i18n";
 import "./about.css";
 import "./extra-pages.css";
 
@@ -46,7 +47,8 @@ const partners = [
   {
     name: "TOPSKIN",
     code: "godchyna",
-    benefit: "15% de bónus em todos os depósitos",
+    benefitPt: "15% de bónus em todos os depósitos",
+    benefitEn: "15% bonus on every deposit",
     url: "https://topskin.net/utm/godchyna",
     tone: "orange",
     logo: "topskin-logo.png?v=3",
@@ -54,7 +56,8 @@ const partners = [
   {
     name: "CSGO-SKINS",
     code: "GODCHYNA",
-    benefit: "10% de bónus em todos os depósitos",
+    benefitPt: "10% de bónus em todos os depósitos",
+    benefitEn: "10% bonus on every deposit",
     url: "https://csgo-skins.com/?ref=GODCHYNA",
     tone: "blue",
     logo: "csgoskins-logo.png?v=3",
@@ -74,7 +77,8 @@ type Giveaway = {
   providerLogo:string;
   url:string;
   requiresProof:boolean;
-  note?:string;
+  notePt?:string;
+  noteEn?:string;
 };
 
 const giveaways:Giveaway[] = [
@@ -91,7 +95,8 @@ const giveaways:Giveaway[] = [
     providerLogo:"topskin-logo.png?v=3",
     url:"https://topskin.net/utm/godchyna",
     requiresProof:true,
-    note:"Faz um depósito mínimo de €10 e manda-me uma prova do depósito por Discord ou Instagram para eu saber que estás a participar.",
+    notePt:"Faz um depósito mínimo de €10 e manda-me uma prova do depósito por Discord ou Instagram para eu saber que estás a participar.",
+    noteEn:"Make a minimum €10 deposit and send me proof of the deposit on Discord or Instagram so I know you are participating.",
   },
   {
     id:"awp-wildfire",
@@ -106,7 +111,8 @@ const giveaways:Giveaway[] = [
     providerLogo:"csgoskins-logo.png?v=3",
     url:"https://csgo-skins.com/?ref=GODCHYNA",
     requiresProof:false,
-    note:"A participação fica registada automaticamente no CSGO-SKINS.",
+    notePt:"A participação fica registada automaticamente no CSGO-SKINS.",
+    noteEn:"Your participation is registered automatically on CSGO-SKINS.",
   },
 ];
 
@@ -130,7 +136,19 @@ function SocialIcons() {
   );
 }
 
+function LanguageSwitch() {
+  const { lang, setLang, pick } = useLanguage();
+  return (
+    <div className="language-switch" role="group" aria-label={pick("Idioma do site", "Site language")}>
+      <button type="button" className={lang==="pt"?"active":""} onClick={()=>setLang("pt")} aria-pressed={lang==="pt"}>PT</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" className={lang==="en"?"active":""} onClick={()=>setLang("en")} aria-pressed={lang==="en"}>EN</button>
+    </div>
+  );
+}
+
 function StreamStatus() {
+  const { pick } = useLanguage();
   const [status,setStatus]=useState<"checking"|"live"|"offline">("checking");
 
   useEffect(()=>{
@@ -160,7 +178,7 @@ function StreamStatus() {
   },[]);
 
   const isLive=status==="live";
-  const label=status==="checking"?"A VERIFICAR":isLive?"LIVE":"OFFLINE";
+  const label=status==="checking"?pick("A VERIFICAR","CHECKING"):isLive?"LIVE":"OFFLINE";
 
   return (
     <a
@@ -168,7 +186,7 @@ function StreamStatus() {
       href={socials.twitch}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Estado da stream na Twitch: ${label}`}
+      aria-label={`${pick("Estado da stream na Twitch","Twitch stream status")}: ${label}`}
       aria-live="polite"
     >
       <span className="stream-dot" />
@@ -178,6 +196,7 @@ function StreamStatus() {
 }
 
 function Header() {
+  const { pick } = useLanguage();
   const [open,setOpen]=useState(false);
   const path=window.location.pathname.replace(/\/$/,"");
   const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/loja");
@@ -209,15 +228,15 @@ function Header() {
           </span>
         </div>
         <nav className={open ? "nav open" : "nav"}>
-          <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>INÍCIO</a>
-          <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>SOBRE MIM</a>
-          <a className={path.endsWith("/parcerias")?"active":""} href="./parcerias" onClick={()=>setOpen(false)}>PARCERIAS</a>
+          <a className={isHome?"active":""} href="./#inicio" onClick={()=>setOpen(false)}>{pick("INÍCIO","HOME")}</a>
+          <a className={path.endsWith("/sobre")?"active":""} href="./sobre" onClick={()=>setOpen(false)}>{pick("SOBRE MIM","ABOUT")}</a>
+          <a className={path.endsWith("/parcerias")?"active":""} href="./parcerias" onClick={()=>setOpen(false)}>{pick("PARCERIAS","PARTNERS")}</a>
           <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAYS</a>
           <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>SETUP & CONFIGS</a>
-          <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>LOJA</a>
+          <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>{pick("LOJA","SHOP")}</a>
         </nav>
-        <div className="desktop-social"><SocialIcons /></div>
-        <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label="Abrir menu">
+        <div className="header-actions"><div className="desktop-social"><SocialIcons /></div><LanguageSwitch/></div>
+        <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label={pick("Abrir menu","Open menu")}>
           {open ? <X/> : <Menu/>}
         </button>
       </div>
@@ -230,6 +249,7 @@ function ServiceCard({icon:Icon, children}:{icon:any; children:string}) {
 }
 
 function PartnerCard({partner}:{partner:typeof partners[number]}) {
+  const { pick } = useLanguage();
   const [copied,setCopied]=useState(false);
   async function copy(){
     await navigator.clipboard.writeText(partner.code);
@@ -244,19 +264,20 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
       <div className="partner-info">
         <div className="code-row">
           <div className="code-block">
-            <span className="code-label">CÓDIGO</span>
+            <span className="code-label">{pick("CÓDIGO","CODE")}</span>
             <b>{partner.code.toUpperCase()}</b>
           </div>
-          <button onClick={copy} aria-label="Copiar código">{copied?<Check/>:<Copy/>}</button>
+          <button onClick={copy} aria-label={pick("Copiar código","Copy code")}>{copied?<Check/>:<Copy/>}</button>
         </div>
-        <p>{partner.benefit}</p>
-        <a className="partner-cta" href={partner.url} target="_blank" rel="noopener noreferrer sponsored">USAR CÓDIGO</a>
+        <p>{pick(partner.benefitPt,partner.benefitEn)}</p>
+        <a className="partner-cta" href={partner.url} target="_blank" rel="noopener noreferrer sponsored">{pick("USAR CÓDIGO","USE CODE")}</a>
       </div>
     </article>
   );
 }
 
 function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
+  const { pick } = useLanguage();
   const isTopskin=giveaway.provider==="topskin";
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider}`}>
@@ -277,18 +298,18 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
             <strong className="price">{giveaway.price}</strong>
           </div>
           <div className="giveaway-provider-status">
-            <span className="active-pill">ATIVO</span>
+            <span className="active-pill">{pick("ATIVO","ACTIVE")}</span>
             <img className={`giveaway-provider-logo ${giveaway.provider}`} src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
           </div>
         </div>
         <div className="divider"/>
-        <strong className="minimum">Depósito mínimo: {giveaway.minDeposit}</strong>
-        {giveaway.note && <p className="giveaway-copy">{giveaway.note}</p>}
+        <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
+        {(giveaway.notePt || giveaway.noteEn) && <p className="giveaway-copy">{pick(giveaway.notePt ?? "",giveaway.noteEn ?? "")}</p>}
         <div className={`giveaway-actions ${giveaway.requiresProof?"":"single-action"}`}>
-          <a className="participate" href={giveaway.url} target="_blank" rel="noopener noreferrer sponsored">PARTICIPAR</a>
+          <a className="participate" href={giveaway.url} target="_blank" rel="noopener noreferrer sponsored">{pick("PARTICIPAR","ENTER")}</a>
           {giveaway.requiresProof && <>
-            <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> ENVIAR POR DISCORD</a>
-            <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> ENVIAR POR INSTAGRAM</a>
+            <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> {pick("ENVIAR POR DISCORD","SEND ON DISCORD")}</a>
+            <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> {pick("ENVIAR POR INSTAGRAM","SEND ON INSTAGRAM")}</a>
           </>}
         </div>
       </div>
@@ -297,6 +318,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 }
 
 function HomeGiveawayRotator(){
+  const { pick } = useLanguage();
   const [activeIndex,setActiveIndex]=useState(0);
 
   useEffect(()=>{
@@ -313,14 +335,14 @@ function HomeGiveawayRotator(){
       <div key={activeGiveaway.id} className="home-giveaway-slide">
         <GiveawayCard giveaway={activeGiveaway}/>
       </div>
-      <div className="giveaway-rotator-dots" aria-label="Selecionar giveaway">
+      <div className="giveaway-rotator-dots" aria-label={pick("Selecionar giveaway","Select giveaway")}>
         {giveaways.map((giveaway,index)=>(
           <button
             key={giveaway.id}
             type="button"
             className={index===activeIndex?"active":""}
             onClick={()=>setActiveIndex(index)}
-            aria-label={`Mostrar giveaway ${giveaway.title}`}
+            aria-label={`${pick("Mostrar giveaway","Show giveaway")} ${giveaway.title}`}
           />
         ))}
       </div>
@@ -329,15 +351,16 @@ function HomeGiveawayRotator(){
 }
 
 function Footer() {
+  const { pick } = useLanguage();
   return (
     <footer>
       <div className="footer-main">
         <Brand/>
-        <div className="footer-center"><span>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>COMUNIDADE</span></div>
+        <div className="footer-center"><span>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>{pick("COMUNIDADE","COMMUNITY")}</span></div>
         <SocialIcons/>
       </div>
       <div className="legal">
-        <p>18+ | Joga com responsabilidade.</p>
+        <p>{pick("18+ | Joga com responsabilidade.","18+ | Play responsibly.")}</p>
       </div>
     </footer>
   );
@@ -358,6 +381,7 @@ function ProfileButton({kind,label,url}:{kind:"faceit"|"steam"|"x";label:string;
 }
 
 function FaceitProfileButton(){
+  const { pick } = useLanguage();
   const [stats,setStats]=useState<FaceitSnapshot>({level:10});
 
   useEffect(()=>{
@@ -381,7 +405,7 @@ function FaceitProfileButton(){
   },[]);
 
   return (
-    <a className="about-profile-btn faceit faceit-profile-btn" href={profileLinks.faceit} target="_blank" rel="noopener noreferrer" aria-label={`FACEIT nível ${stats.level ?? 10}, ${stats.elo ?? "—"} ELO`}>
+    <a className="about-profile-btn faceit faceit-profile-btn" href={profileLinks.faceit} target="_blank" rel="noopener noreferrer" aria-label={`FACEIT ${pick("nível","level")} ${stats.level ?? 10}, ${stats.elo ?? "—"} ELO`}>
       <span className="faceit-profile-main">
         <img src="https://cdn.simpleicons.org/faceit/FF5500" alt="" aria-hidden="true" />
         <span>FACEIT</span>
@@ -395,6 +419,7 @@ function FaceitProfileButton(){
 }
 
 function AboutPage(){
+  const { pick } = useLanguage();
   return (
     <>
       <Header/>
@@ -405,18 +430,18 @@ function AboutPage(){
 
         <section className="about-content">
           <div className="about-story">
-            <span className="about-kicker">A HISTÓRIA</span>
-            <h1>DO 1.6 ÀS STREAMS</h1>
-            <p>A minha história no Counter-Strike começou em 2009, ainda no CS 1.6. Desde aí passei pelo CS:GO e, mais recentemente, pelo CS2, mantendo sempre o lado competitivo como uma parte importante da minha vida.</p>
-            <p>Ao longo dos anos passei por várias equipas em Portugal e na Suíça e acabei também por criar os <a href={profileLinks.shanghaiMasters} target="_blank" rel="noopener noreferrer">ShanghaiMasters</a>, um projeto que nasceu da mesma vontade de competir e evoluir dentro do jogo.</p>
-            <p>Durante muito tempo tentei transformar o Counter-Strike numa carreira. As diferentes fases da vida acabaram por levar-me por outros caminhos, mas nunca deixei realmente o jogo para trás.</p>
-            <p>Hoje estou mais focado nas <strong>streams</strong>, em continuar a jogar CS a um bom nível e, desde 2024, também no <strong>mercado de skins</strong>, área onde tenho vindo a ganhar cada vez mais experiência.</p>
-            <p className="about-closing">No fim, muita coisa mudou desde 2009 — mas a paixão pelo Counter-Strike continua exatamente a mesma.</p>
+            <span className="about-kicker">{pick("A HISTÓRIA","THE STORY")}</span>
+            <h1>{pick("DO 1.6 ÀS STREAMS","FROM 1.6 TO STREAMING")}</h1>
+            <p>{pick("A minha história no Counter-Strike começou em 2009, ainda no CS 1.6. Desde aí passei pelo CS:GO e, mais recentemente, pelo CS2, mantendo sempre o lado competitivo como uma parte importante da minha vida.","My Counter-Strike journey started in 2009 with CS 1.6. From there I moved through CS:GO and, more recently, CS2, always keeping competitive play as an important part of my life.")}</p>
+            <p>{pick("Ao longo dos anos passei por várias equipas em Portugal e na Suíça e acabei também por criar os ","Over the years I played for several teams in Portugal and Switzerland and also created ")}<a href={profileLinks.shanghaiMasters} target="_blank" rel="noopener noreferrer">ShanghaiMasters</a>{pick(", um projeto que nasceu da mesma vontade de competir e evoluir dentro do jogo.",", a project born from the same drive to compete and keep improving in the game.")}</p>
+            <p>{pick("Durante muito tempo tentei transformar o Counter-Strike numa carreira. As diferentes fases da vida acabaram por levar-me por outros caminhos, mas nunca deixei realmente o jogo para trás.","For a long time I tried to turn Counter-Strike into a career. Different stages of life eventually took me in other directions, but I never really left the game behind.")}</p>
+            <p>{pick("Hoje estou mais focado nas ","Today I am more focused on ")}<strong>{pick("streams","streaming")}</strong>{pick(", em continuar a jogar CS a um bom nível e, desde 2024, também no ",", keeping a strong level in CS and, since 2024, also working in the ")}<strong>{pick("mercado de skins","skins market")}</strong>{pick(", área onde tenho vindo a ganhar cada vez mais experiência.",", where I have been building more and more experience.")}</p>
+            <p className="about-closing">{pick("No fim, muita coisa mudou desde 2009 — mas a paixão pelo Counter-Strike continua exatamente a mesma.","A lot has changed since 2009 — but the passion for Counter-Strike is exactly the same.")}</p>
           </div>
 
           <aside className="about-side">
             <div className="about-profiles">
-              <span className="about-kicker">PERFIS</span>
+              <span className="about-kicker">{pick("PERFIS","PROFILES")}</span>
               <div className="about-profile-grid">
                 <FaceitProfileButton/>
                 <ProfileButton kind="steam" label="STEAM" url={profileLinks.steam}/>
@@ -433,6 +458,7 @@ function AboutPage(){
 }
 
 function Home(){
+  const { lang, pick } = useLanguage();
   return (
     <>
       <Header/>
@@ -446,10 +472,10 @@ function Home(){
         >
           <div className="hero-glow"/>
           <div className="hero-copy">
-            <p className="eyebrow">BEM-VINDO AO MUNDO DO</p>
+            <p className="eyebrow">{pick("BEM-VINDO AO MUNDO DO","WELCOME TO THE WORLD OF")}</p>
             <h1>CHYNA</h1>
-            <div className="hero-tags"><span>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>COMUNIDADE</span></div>
-            <p className="hero-text">Acompanha as streams, participa nos giveaways,<br className="desktop-break"/> usa os meus códigos e faz parte desta comunidade!</p>
+            <div className="hero-tags"><span>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>{pick("COMUNIDADE","COMMUNITY")}</span></div>
+            <p className="hero-text">{lang==="pt"?<>Acompanha as streams, participa nos giveaways,<br className="desktop-break"/> usa os meus códigos e faz parte desta comunidade!</>:<>Follow the streams, enter the giveaways,<br className="desktop-break"/> use my codes and become part of the community!</>}</p>
             <div className="hero-cta-row">
               <a
                 className="hero-social-btn twitch-btn"
@@ -477,19 +503,19 @@ function Home(){
         <section className="section skins-section">
           <div className="skins-copy">
             <h2>SKINS <span>CS2</span></h2>
-            <h3>COMPRA, VENDA E TROCAS</h3>
-            <p>Compro inventários, vendo skins, faço upgrades e trocas.<br/>Se tiveres interesse, fala comigo por Discord ou Instagram.</p>
+            <h3>{pick("COMPRA, VENDA E TROCAS","BUYING, SELLING & TRADING")}</h3>
+            <p>{pick("Compro inventários, vendo skins, faço upgrades e trocas.","I buy inventories, sell skins, do upgrades and trades.")}<br/>{pick("Se tiveres interesse, fala comigo por Discord ou Instagram.","If you are interested, contact me on Discord or Instagram.")}</p>
           </div>
           <div className="services-wrap">
             <div className="services-grid">
-              <ServiceCard icon={ShoppingCart}>COMPRO INVENTÁRIOS</ServiceCard>
-              <ServiceCard icon={Tag}>VENDO SKINS</ServiceCard>
-              <ServiceCard icon={TrendingUp}>FAÇO UPGRADES</ServiceCard>
-              <ServiceCard icon={ArrowLeftRight}>FAÇO TROCAS</ServiceCard>
+              <ServiceCard icon={ShoppingCart}>{pick("COMPRO INVENTÁRIOS","I BUY INVENTORIES")}</ServiceCard>
+              <ServiceCard icon={Tag}>{pick("VENDO SKINS","I SELL SKINS")}</ServiceCard>
+              <ServiceCard icon={TrendingUp}>{pick("FAÇO UPGRADES","I DO UPGRADES")}</ServiceCard>
+              <ServiceCard icon={ArrowLeftRight}>{pick("FAÇO TROCAS","I DO TRADES")}</ServiceCard>
             </div>
             <div id="contacto" className="contact-row">
-              <a className="discord-btn big" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> FALAR NO DISCORD</a>
-              <a className="instagram-btn big" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> FALAR NO INSTAGRAM</a>
+              <a className="discord-btn big" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> {pick("FALAR NO DISCORD","CONTACT ON DISCORD")}</a>
+              <a className="instagram-btn big" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> {pick("FALAR NO INSTAGRAM","CONTACT ON INSTAGRAM")}</a>
             </div>
           </div>
         </section>
@@ -497,12 +523,12 @@ function Home(){
         <ReputationSection />
 
         <section id="parcerias" className="section">
-          <header className="section-title"><h2>PARCERIAS</h2><p>Usa os meus códigos e apoia o canal!</p></header>
+          <header className="section-title"><h2>{pick("PARCERIAS","PARTNERS")}</h2><p>{pick("Usa os meus códigos e apoia o canal!","Use my codes and support the channel!")}</p></header>
           <div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div>
         </section>
 
         <section id="giveaway" className="section">
-          <header className="section-title"><h2>GIVEAWAYS EM CURSO</h2><p>Participa e tem a oportunidade de ganhar!</p></header>
+          <header className="section-title"><h2>{pick("GIVEAWAYS EM CURSO","ACTIVE GIVEAWAYS")}</h2><p>{pick("Participa e tem a oportunidade de ganhar!","Enter for a chance to win!")}</p></header>
           <HomeGiveawayRotator/>
         </section>
       </main>
@@ -512,15 +538,17 @@ function Home(){
 }
 
 function PartnersPage(){
-  return <><Header/><main className="subpage partners-page"><header className="section-title"><h1>PARCERIAS</h1><p>Usa os meus códigos e apoia o canal!</p></header><div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div></main><Footer/></>;
+  const { pick } = useLanguage();
+  return <><Header/><main className="subpage partners-page"><header className="section-title"><h1>{pick("PARCERIAS","PARTNERS")}</h1><p>{pick("Usa os meus códigos e apoia o canal!","Use my codes and support the channel!")}</p></header><div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div></main><Footer/></>;
 }
 
 function GiveawaysPage(){
+  const { pick } = useLanguage();
   return (
     <>
       <Header/>
       <main className="subpage giveaways-page">
-        <header className="section-title"><h1>GIVEAWAYS</h1><p>Todos os giveaways ativos aparecem nesta página.</p></header>
+        <header className="section-title"><h1>GIVEAWAYS</h1><p>{pick("Todos os giveaways ativos aparecem nesta página.","All active giveaways appear on this page.")}</p></header>
         <div className="giveaways-page-list">
           {giveaways.map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
         </div>
@@ -531,7 +559,8 @@ function GiveawaysPage(){
 }
 
 function StorePage(){
-  return <><Header/><main className="store-page"><h1>LOJA</h1><p>EM BREVE</p></main><Footer/></>;
+  const { pick } = useLanguage();
+  return <><Header/><main className="store-page"><h1>{pick("LOJA","SHOP")}</h1><p>{pick("EM BREVE","COMING SOON")}</p></main><Footer/></>;
 }
 
 export default function App(){

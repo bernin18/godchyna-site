@@ -31,7 +31,13 @@ button{font:inherit}
 .social-icons svg{width:19px;height:19px}
 .social-icons a{opacity:.92;transition:.2s}
 .social-icons a:hover{color:var(--green);transform:translateY(-2px)}
-.menu-btn{display:none;background:none;border:0;color:white}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+.language-switch{height:32px;padding:0 7px;border:1px solid #26363b;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;gap:4px;background:#0a1115;box-shadow:inset 0 0 18px rgba(32,243,154,.015)}
+.language-switch button{height:26px;min-width:25px;padding:0 3px;border:0;background:transparent;color:#748286;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:800;letter-spacing:.08em;cursor:pointer;transition:.2s}
+.language-switch span{color:#314247;font-size:9px}
+.language-switch button:hover{color:#dfe8e5}
+.language-switch button.active{color:var(--green);text-shadow:0 0 10px rgba(32,243,154,.35)}
+.menu-btn{display:none;background:none;border:0;color:white;padding:5px}
 main{overflow:hidden}
 .hero{position:relative;min-height:610px;border-bottom:1px solid #142429;display:flex;align-items:center;max-width:1600px;margin:auto;padding:65px 72px;overflow:hidden;background-color:#05090c;background-size:cover;background-position:right center;background-repeat:no-repeat}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;background:
@@ -390,7 +396,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 @media(max-width:1000px){
  .topbar-inner{padding:0 24px}
  .desktop-social{display:none}
- .menu-btn{display:block;margin-left:auto}
+ .header-actions{margin-left:auto}
+ .menu-btn{display:block;margin-left:0}
  .nav{display:none;position:absolute;left:0;right:0;top:74px;flex-direction:column;background:#060b0e;border-bottom:1px solid #1b2d31;padding:22px 28px;gap:22px}
  .nav.open{display:flex}
  .hero{min-height:700px;padding:55px 30px;align-items:flex-start;background-position:68% center}
