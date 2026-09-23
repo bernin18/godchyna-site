@@ -451,7 +451,3 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .desktop-break{display:none}
 }
 
-@media (prefers-reduced-motion: reduce){
-  .stream-status.live .stream-dot,
-  .stream-status.live .stream-dot::after{animation:none !important}
-}
