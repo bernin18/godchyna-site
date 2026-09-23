@@ -20,7 +20,7 @@ radial-gradient(circle at 94% 76%,rgba(126,0,25,.055),transparent 28rem),
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid #152227;background:rgba(5,9,12,.92);backdrop-filter:blur(14px)}
-.topbar-inner{height:74px;max-width:1500px;margin:auto;padding:0 48px;display:flex;align-items:center;gap:48px}
+.topbar-inner{height:74px;max-width:1600px;margin:auto;padding:0;display:flex;align-items:center;gap:48px}
 .brand-lockup{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;line-height:1}
 .brand{font-family:"Exo 2",sans-serif;font-style:italic;font-weight:900;font-size:31px;letter-spacing:-1.7px;transform:skew(-10deg) scaleX(1.06);transform-origin:left center;display:inline-block;text-shadow:0 0 14px rgba(255,255,255,.08)}
 .brand-beta{margin-top:5px;margin-left:2px;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;line-height:1;text-transform:uppercase;opacity:.92;text-shadow:0 0 8px rgba(32,243,154,.58),0 0 18px rgba(32,243,154,.18)}
@@ -393,6 +393,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-page h1{font-family:"Chakra Petch";font-size:70px;font-style:italic;margin:0}
 .store-page p{color:var(--green);font-family:"Chakra Petch";font-size:26px;letter-spacing:.2em}
 
+@media(max-width:1640px) and (min-width:1001px){
+ .topbar-inner{padding:0 20px}
+}
 @media(max-width:1000px){
  .topbar-inner{padding:0 24px}
  .desktop-social{display:none}

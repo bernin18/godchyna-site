@@ -235,7 +235,7 @@ function Header() {
           <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>SETUP & CONFIGS</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>{pick("LOJA","SHOP")}</a>
         </nav>
-        <div className="header-actions"><div className="desktop-social"><SocialIcons /></div><LanguageSwitch/></div>
+        <div className="header-actions"><LanguageSwitch/><div className="desktop-social"><SocialIcons /></div></div>
         <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label={pick("Abrir menu","Open menu")}>
           {open ? <X/> : <Menu/>}
         </button>
