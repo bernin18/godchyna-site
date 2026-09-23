@@ -350,9 +350,9 @@ pointer-events:none}
   0%,100%{filter:drop-shadow(0 24px 22px rgba(0,0,0,.80)) drop-shadow(0 0 16px rgba(255,75,24,.16))}
   50%{filter:drop-shadow(0 28px 24px rgba(0,0,0,.84)) drop-shadow(0 0 34px rgba(255,75,24,.30))}
 }
-.giveaway-info{display:flex;flex-direction:column;justify-content:center}
+.giveaway-info{position:relative;display:flex;flex-direction:column;justify-content:center}
 .giveaway-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
-.giveaway-provider-status{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:9px;min-width:116px}
+.giveaway-provider-status{position:absolute;top:0;right:0;z-index:2;display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:9px;min-width:116px}
 .giveaway-provider-logo{display:block;width:108px;height:28px;object-fit:contain;background:transparent}
 .giveaway-provider-logo.topskin{width:92px}
 .giveaway-provider-logo.csgoskins{width:116px}
