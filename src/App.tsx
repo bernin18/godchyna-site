@@ -277,8 +277,8 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
             <strong className="price">{giveaway.price}</strong>
           </div>
           <div className="giveaway-provider-status">
-            <img className={`giveaway-provider-logo ${giveaway.provider}`} src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
             <span className="active-pill">ATIVO</span>
+            <img className={`giveaway-provider-logo ${giveaway.provider}`} src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
           </div>
         </div>
         <div className="divider"/>
