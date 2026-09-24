@@ -337,11 +337,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     window.setTimeout(() => {
       setShowPlinko(true);
-    }, 1600);
+    }, 2600);
 
     window.setTimeout(() => {
       setShowPlinkoTransition(false);
-    }, 3400);
+    }, 5000);
   }
 
   function spinWheel() {
