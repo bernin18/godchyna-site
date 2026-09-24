@@ -119,7 +119,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       <Header />
       <main className="wheel-page">
         <section className="wheel-hero">
-          <span className="wheel-kicker">GIVEAWAY TOOL</span>
           <h1>{pick("RODA DO", "CHYNA'S")} <strong>{pick("CHYNAO", "WHEEL")}</strong></h1>
           <p>{pick(
             "Survivor Wheel → TOP 5 → Plinko. Sorteios rápidos, visuais e feitos para stream.",
