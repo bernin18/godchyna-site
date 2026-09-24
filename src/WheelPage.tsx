@@ -122,7 +122,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
+  const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
+  const [eliminationNotice, setEliminationNotice] = useState<{ name: string; remainingEntries: number } | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -263,6 +265,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setParticipantInput("");
     setWinner(null);
     setPendingWinner(null);
+    setPendingWinnerIndex(null);
+    setEliminationNotice(null);
     setParticipantMessage(pick(
       `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
       `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
@@ -276,11 +280,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setParticipantMessage("");
     setWinner(null);
     setPendingWinner(null);
+    setPendingWinnerIndex(null);
+    setEliminationNotice(null);
     setRotation(0);
   }
 
   function spinWheel() {
-    if (spinning || participants.length === 0) return;
+    if (spinning || eliminationNotice || participants.length === 0) return;
 
     const winnerIndex = randomParticipantIndex(participants.length);
     const selectedName = participants[winnerIndex];
@@ -290,6 +296,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     setWinner(null);
     setPendingWinner(selectedName);
+    setPendingWinnerIndex(winnerIndex);
     setSpinning(true);
 
     setRotation((currentRotation) => {
@@ -365,10 +372,34 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     transform: `rotate(${rotation}deg)`,
                   }}
                   onTransitionEnd={(event) => {
-                    if (event.propertyName !== "transform" || !spinning) return;
+                    if (
+                      event.propertyName !== "transform" ||
+                      !spinning ||
+                      pendingWinner === null ||
+                      pendingWinnerIndex === null
+                    ) return;
+
+                    const eliminatedName = pendingWinner;
+                    const eliminatedIndex = pendingWinnerIndex;
+                    const normalizedName = eliminatedName.trim().toLocaleLowerCase();
+
                     setSpinning(false);
-                    setWinner(pendingWinner);
+                    setWinner(eliminatedName);
+                    setParticipants((current) => {
+                      const nextParticipants = current.filter((_, index) => index !== eliminatedIndex);
+                      const remainingEntries = nextParticipants.filter(
+                        (name) => name.trim().toLocaleLowerCase() === normalizedName,
+                      ).length;
+
+                      setEliminationNotice({
+                        name: eliminatedName,
+                        remainingEntries,
+                      });
+
+                      return nextParticipants;
+                    });
                     setPendingWinner(null);
+                    setPendingWinnerIndex(null);
                   }}
                 >
                   <WheelDividers count={participants.length} />
@@ -386,7 +417,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div>
                   <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
                 </div>
-                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning}>
+                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice)}>
                   <ArrowLeft /> {pick("VOLTAR", "BACK")}
                 </button>
               </div>
@@ -408,7 +439,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   "One name per line...\nChyna\nChyna\nChyna\nChyna",
                 )}
                 spellCheck={false}
-                disabled={spinning}
+                disabled={spinning || Boolean(eliminationNotice)}
               />
 
               <p className="participants-note">
@@ -419,10 +450,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </p>
 
               <div className="participants-actions">
-                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning}>
+                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning || Boolean(eliminationNotice)}>
                   {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
                 </button>
-                <button type="button" className="participants-clear" onClick={clearParticipants} disabled={spinning} aria-label={pick("Limpar participantes", "Clear participants")}>
+                <button type="button" className="participants-clear" onClick={clearParticipants} disabled={spinning || Boolean(eliminationNotice)} aria-label={pick("Limpar participantes", "Clear participants")}>
                   <Trash2 />
                 </button>
               </div>
@@ -458,7 +489,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="wheel-spin-btn"
                   onClick={spinWheel}
-                  disabled={spinning}
+                  disabled={spinning || Boolean(eliminationNotice)}
                 >
                   SPINNNNNNNNN
                 </button>
@@ -466,6 +497,47 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </aside>
           </section>
         </main>
+
+        {eliminationNotice && (
+          <div
+            className="wheel-elimination-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="wheel-elimination-title"
+          >
+            <div className="wheel-elimination-modal">
+              <span className="wheel-elimination-kicker">{pick("ELIMINADO", "ELIMINATED")}</span>
+              <h2 id="wheel-elimination-title">
+                <strong>{eliminationNotice.name}</strong>{" "}
+                {pick("foste eliminado!", "you were eliminated!")}
+              </h2>
+              <p>{pick("Obrigado por participares.", "Thanks for taking part.")}</p>
+
+              {eliminationNotice.remainingEntries > 0 && (
+                <div className="wheel-lives-message">
+                  <strong>{eliminationNotice.name}</strong>,{" "}
+                  {pick(
+                    eliminationNotice.remainingEntries === 1
+                      ? "ainda te resta 1 entrada! Não desanimes!"
+                      : `ainda te restam ${eliminationNotice.remainingEntries} entradas! Não desanimes!`,
+                    eliminationNotice.remainingEntries === 1
+                      ? "you still have 1 entry left! Don't give up!"
+                      : `you still have ${eliminationNotice.remainingEntries} entries left! Don't give up!`,
+                  )}
+                </div>
+              )}
+
+              <button
+                type="button"
+                className="wheel-elimination-continue"
+                onClick={() => setEliminationNotice(null)}
+                autoFocus
+              >
+                {pick("CONTINUAR", "CONTINUE")}
+              </button>
+            </div>
+          </div>
+        )}
       </>
     );
   }
