@@ -440,9 +440,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <h1 className="plinko-title"><span>PLINKO DO</span> <em>CHYNAO</em></h1>
                 <p>{pick("ROUND 1 · TOP 5 → TOP 4", "ROUND 1 · TOP 5 → TOP 4")}</p>
               </div>
-              <div className="plinko-round-badge">
-                <span>ROUND</span>
-                <strong>01</strong>
+              <div className="plinko-head-actions">
+                <button
+                  type="button"
+                  className="plinko-back-btn"
+                  onClick={() => {
+                    setShowPlinko(false);
+                    setShowTopFiveModal(true);
+                  }}
+                >
+                  <ArrowLeft /> {pick("VOLTAR AO TOP 5", "BACK TO TOP 5")}
+                </button>
+                <div className="plinko-round-badge">
+                  <span>ROUND</span>
+                  <strong>01</strong>
+                </div>
               </div>
             </header>
 
