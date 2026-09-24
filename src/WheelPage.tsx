@@ -307,27 +307,30 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       ...comparisonResults.map(({ result }) => result.valueEur),
     );
 
-    const lowestEntries = comparisonResults.filter(
+    const minimumEntry = comparisonResults.find(
       ({ result }) => result.valueEur === minimumValue,
     );
+    if (!minimumEntry) return;
 
-    if (lowestEntries.length > 1) {
-      const lowestIndexes = lowestEntries.map(({ index }) => index);
-      const skinNames = new Set(
-        lowestEntries.map(({ result }) => result.skinName),
-      );
+    // A repeated skin at the elimination threshold is a true tie.
+    // Nobody with the same skin can be eliminated directly.
+    const tiedSkinEntries = comparisonResults.filter(
+      ({ result }) => result.skinName === minimumEntry.result.skinName,
+    );
+
+    if (tiedSkinEntries.length > 1) {
+      const tiedIndexes = tiedSkinEntries.map(({ index }) => index);
 
       setPlinkoTieNotice({
-        indexes: lowestIndexes,
-        names: lowestIndexes.map((index) => plinkoPlayers[index]),
-        skinName:
-          skinNames.size === 1 ? lowestEntries[0].result.skinName : null,
-        valueEur: minimumValue,
+        indexes: tiedIndexes,
+        names: tiedIndexes.map((index) => plinkoPlayers[index]),
+        skinName: minimumEntry.result.skinName,
+        valueEur: minimumEntry.result.valueEur,
       });
       return;
     }
 
-    const eliminatedIndex = lowestEntries[0].index;
+    const eliminatedIndex = minimumEntry.index;
     const eliminatedResult = roundResults[eliminatedIndex];
     const survivors = plinkoPlayers.filter((_, index) => index !== eliminatedIndex);
     const winnerIndex =
@@ -1203,7 +1206,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 autoFocus
               >
                 {Object.keys(plinkoDropSlots).length >= plinkoPlayers.length
-                  ? pick("VER RESULTADO DA RONDA", "SEE ROUND RESULT")
+                  ? plinkoTiebreakIndexes
+                    ? pick("VER RESULTADO DO DESEMPATE", "SEE TIEBREAK RESULT")
+                    : pick("VER RESULTADO DA RONDA", "SEE ROUND RESULT")
                   : pick("PRÓXIMO DROP", "NEXT DROP")}
               </button>
             </div>
