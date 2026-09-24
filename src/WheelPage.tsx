@@ -153,6 +153,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [showPlinkoTransition, setShowPlinkoTransition] = useState(false);
   const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
   const [plinkoDropSlots, setPlinkoDropSlots] = useState<Record<number, number>>({});
+  const [plinkoPlayers, setPlinkoPlayers] = useState<string[]>([]);
+  const [plinkoRound, setPlinkoRound] = useState(1);
+  const [plinkoEliminationNotice, setPlinkoEliminationNotice] = useState<{
+    playerName: string;
+    result: PlinkoResult;
+    survivors: string[];
+  } | null>(null);
   const [plinkoDropping, setPlinkoDropping] = useState(false);
   const [plinkoHitPegs, setPlinkoHitPegs] = useState<string[]>([]);
   const [plinkoLandedSlot, setPlinkoLandedSlot] = useState<number | null>(null);
@@ -181,13 +188,75 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return () => data.subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
+  const plinkoRoundLabel =
+    plinkoPlayers.length > 2
+      ? `TOP ${plinkoPlayers.length} → TOP ${plinkoPlayers.length - 1}`
+      : pick("FINAL · TOP 2 → VENCEDOR", "FINAL · TOP 2 → WINNER");
+
+  function closePlinkoRewardNotice() {
+    setPlinkoRewardNotice(null);
+
+    if (!plinkoPlayers.length) return;
+
+    const allDropsDone =
+      Object.keys(plinkoDropSlots).length >= plinkoPlayers.length;
+
+    if (!allDropsDone) return;
+
+    const roundResults = plinkoPlayers.map((_, index) => plinkoResults[index]);
+    if (roundResults.some((result) => !result)) return;
+
+    const minimumValue = Math.min(...roundResults.map((result) => result.valueEur));
+    const lowestIndexes = roundResults
+      .map((result, index) => ({ result, index }))
+      .filter(({ result }) => result.valueEur === minimumValue)
+      .map(({ index }) => index);
+
+    // Tie handling will become a re-drop between the tied players once the skin table is connected.
+    if (lowestIndexes.length !== 1) return;
+
+    const eliminatedIndex = lowestIndexes[0];
+    const eliminatedResult = roundResults[eliminatedIndex];
+    const survivors = plinkoPlayers.filter((_, index) => index !== eliminatedIndex);
+
+    setPlinkoEliminationNotice({
+      playerName: plinkoPlayers[eliminatedIndex],
+      result: eliminatedResult,
+      survivors,
+    });
+  }
+
+  function startNextPlinkoRound() {
+    if (!plinkoEliminationNotice) return;
+
+    setPlinkoPlayers(plinkoEliminationNotice.survivors);
+    setPlinkoRound((round) => round + 1);
     setPlinkoResults({});
     setPlinkoDropSlots({});
     setPlinkoHitPegs([]);
     setPlinkoLandedSlot(null);
     setPlinkoExplosionSlot(null);
     setPlinkoRewardNotice(null);
+    setPlinkoEliminationNotice(null);
+    setPlinkoDropping(false);
+
+    const c4 = plinkoC4Ref.current;
+    if (c4) {
+      c4.getAnimations().forEach((animation) => animation.cancel());
+      c4.style.transform = "translate(0px, 0px) rotate(-3deg)";
+    }
+  }
+
+  useEffect(() => {
+    setPlinkoPlayers(topFive ?? []);
+    setPlinkoRound(1);
+    setPlinkoResults({});
+    setPlinkoDropSlots({});
+    setPlinkoHitPegs([]);
+    setPlinkoLandedSlot(null);
+    setPlinkoExplosionSlot(null);
+    setPlinkoRewardNotice(null);
+    setPlinkoEliminationNotice(null);
     setPlinkoDropping(false);
   }, [topFive]);
 
@@ -380,9 +449,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function startPlinkoDrop() {
-    if (!topFive || plinkoDropping || plinkoRewardNotice) return;
+    if (!topFive || !plinkoPlayers.length || plinkoDropping || plinkoRewardNotice || plinkoEliminationNotice) return;
 
-    const playerIndex = topFive.findIndex((_, index) => plinkoDropSlots[index] === undefined);
+    const playerIndex = plinkoPlayers.findIndex((_, index) => plinkoDropSlots[index] === undefined);
     if (playerIndex < 0) return;
 
     const c4 = plinkoC4Ref.current;
@@ -523,7 +592,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       window.setTimeout(() => {
         setPlinkoExplosionSlot(null);
         setPlinkoRewardNotice({
-          playerName: topFive[playerIndex],
+          playerName: plinkoPlayers[playerIndex],
           reward: plinkoResults[playerIndex] ?? null,
         });
         setPlinkoDropping(false);
@@ -739,7 +808,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <header className="plinko-head">
               <div>
                 <h1 className="plinko-title"><span>PLINKO DO</span> <em>CHYNAO</em></h1>
-                <p>{pick("ROUND 1 · TOP 5 → TOP 4", "ROUND 1 · TOP 5 → TOP 4")}</p>
+                <p>{`ROUND ${plinkoRound} · ${plinkoRoundLabel}`}</p>
               </div>
               <div className="plinko-head-actions">
                 <button
@@ -754,7 +823,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </button>
                 <div className="plinko-round-badge">
                   <span>ROUND</span>
-                  <strong>01</strong>
+                  <strong>{String(plinkoRound).padStart(2, "0")}</strong>
                 </div>
               </div>
             </header>
@@ -762,12 +831,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="plinko-layout">
               <aside className="plinko-finalists">
                 <div className="plinko-panel-title">
-                  <span>TOP 5</span>
+                  <span>{plinkoPlayers.length > 2 ? `TOP ${plinkoPlayers.length}` : "FINAL"}</span>
                   <strong>{pick("FINALISTAS", "FINALISTS")}</strong>
                 </div>
 
                 <div className="plinko-finalist-list">
-                  {topFive.map((name, index) => {
+                  {plinkoPlayers.map((name, index) => {
                     const result = plinkoResults[index];
 
                     return (
@@ -800,7 +869,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="plinko-drop-btn"
                   onClick={startPlinkoDrop}
-                  disabled={plinkoDropping || Boolean(plinkoRewardNotice) || Object.keys(plinkoDropSlots).length >= topFive.length}
+                  disabled={plinkoDropping || Boolean(plinkoRewardNotice) || Boolean(plinkoEliminationNotice) || Object.keys(plinkoDropSlots).length >= plinkoPlayers.length}
                 >
                   {plinkoDropping ? pick("A REBENTAR...", "DROPPING...") : "REBENTAAAAA"}
                 </button>
@@ -954,10 +1023,52 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="plinko-reward-continue"
-                onClick={() => setPlinkoRewardNotice(null)}
+                onClick={closePlinkoRewardNotice}
                 autoFocus
               >
-                {pick("PRÓXIMO DROP", "NEXT DROP")}
+                {Object.keys(plinkoDropSlots).length >= plinkoPlayers.length
+                  ? pick("VER RESULTADO DA RONDA", "SEE ROUND RESULT")
+                  : pick("PRÓXIMO DROP", "NEXT DROP")}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {plinkoEliminationNotice && (
+          <div
+            className="plinko-elimination-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="plinko-elimination-title"
+          >
+            <div className="plinko-elimination-modal">
+              <span className="plinko-elimination-kicker">
+                {pick("FIM DA RONDA", "END OF ROUND")}
+              </span>
+
+              <div className="plinko-elimination-icon" aria-hidden="true">×</div>
+
+              <h2 id="plinko-elimination-title">
+                {pick("Jogador", "Player")}{" "}
+                <strong>{plinkoEliminationNotice.playerName}</strong>,
+                <br />
+                {pick("foste eliminado.", "you've been eliminated.")}
+              </h2>
+
+              <p>
+                {pick(
+                  "Tenta de novo no próximo giveaway! Obrigado por teres participado.",
+                  "Try again in the next giveaway! Thanks for taking part.",
+                )}
+              </p>
+
+              <button
+                type="button"
+                className="plinko-elimination-continue"
+                onClick={startNextPlinkoRound}
+                autoFocus
+              >
+                {pick("PRÓXIMA RONDA", "NEXT ROUND")}
               </button>
             </div>
           </div>
