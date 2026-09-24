@@ -7,6 +7,7 @@ linear-gradient(180deg,#05090c,#060b0e 55%,#05090c)}
 .configs-hero-row{display:contents}
 .configs-title-art{grid-column:1;grid-row:1;width:100%;height:165px;margin:0;display:flex;align-items:center;justify-content:center;align-self:center;overflow:visible}
 .configs-title-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;mix-blend-mode:screen;filter:contrast(1.35) brightness(1.05) saturate(1.06) drop-shadow(0 7px 18px rgba(0,0,0,.24))}
+.configs-title-mobile{display:none}
 .configs-agent{grid-column:2;grid-row:1/span 2;position:relative;width:310px;height:100%;min-height:258px;display:flex;align-items:stretch;justify-content:center;isolation:isolate;overflow:visible}
 .configs-agent-glow{position:absolute;z-index:0;width:190px;height:190px;bottom:2px;border-radius:50%;background:radial-gradient(circle,rgba(32,243,154,.14),rgba(32,243,154,.045) 40%,transparent 70%);filter:blur(13px);opacity:.7}
 .configs-agent img{position:relative;z-index:1;display:block;width:auto;max-width:310px;height:calc(100% - 4px);max-height:none;margin:2px 0;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 16px 20px rgba(0,0,0,.5)) drop-shadow(0 0 14px rgba(32,243,154,.055));animation:setup-agent-float 5.2s ease-in-out infinite;transform-origin:50% 85%}
@@ -88,6 +89,10 @@ radial-gradient(circle at 50% 48%,rgba(32,243,154,.085),transparent 36%),
 @media(max-width:520px){
   .configs-intro{grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:minmax(82px,1fr) auto;min-height:145px;column-gap:2px;padding:3px 12px}
   .configs-title-art{height:80px}
+  .configs-title-art img{display:none}
+  .configs-title-mobile{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;white-space:nowrap;line-height:1}
+  .configs-title-mobile b{color:#f4f4f1;font-family:"Chakra Petch",sans-serif;font-size:24px;font-style:italic;font-weight:900;letter-spacing:-.03em;text-shadow:0 3px 10px rgba(0,0,0,.35)}
+  .configs-title-mobile em{color:#d7a43a;font-family:"Exo 2",sans-serif;font-size:27px;font-style:italic;font-weight:900;letter-spacing:-.04em;text-shadow:0 0 18px rgba(185,133,31,.18)}
   .configs-agent{width:104px;min-height:139px}
   .configs-agent img{max-width:104px}
   .configs-agent-glow{width:72px;height:72px}
