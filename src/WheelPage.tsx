@@ -268,10 +268,10 @@ const ROUND_4_SKINS: PlinkoResult[] = [
     status: "safe",
   },
   {
-    label: "Howl",
-    skinName: "M4A4 | Howl",
-    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_48 (7).png",
-    valueEur: 6500,
+    label: "Wild Lotus",
+    skinName: "AK-47 | Wild Lotus",
+    imageUrl: "/skins/round-4/Ak wild lotus.png",
+    valueEur: 5000,
     status: "safe",
   },
   {
