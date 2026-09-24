@@ -276,9 +276,14 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-reward-overlay{position:fixed;inset:0;z-index:230;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(2,6,8,.80);backdrop-filter:blur(8px);animation:plinko-reward-fade .28s ease both}
 .plinko-reward-modal{width:min(560px,100%);padding:34px;border:1px solid rgba(185,133,31,.58);border-radius:15px;background:linear-gradient(145deg,#091417,#050a0d);text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.62),0 0 42px rgba(185,133,31,.10);animation:plinko-reward-pop .38s cubic-bezier(.2,.8,.2,1) both}
 .plinko-reward-kicker{display:block;color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900;letter-spacing:.2em}
-.plinko-reward-modal h2{margin:12px 0 8px;color:#eef3f1;font-family:"Chakra Petch",sans-serif;font-size:27px;line-height:1.25}
+.plinko-reward-skin{height:150px;margin:12px auto 4px;display:flex;align-items:center;justify-content:center}
+.plinko-reward-skin img{max-width:300px;max-height:145px;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.48)) drop-shadow(0 0 18px rgba(185,133,31,.10))}
+.plinko-reward-skin-placeholder{width:220px;height:118px;border:1px dashed rgba(185,133,31,.34);border-radius:10px;background:radial-gradient(circle at 50% 50%,rgba(185,133,31,.08),transparent 66%);display:flex;align-items:center;justify-content:center}
+.plinko-reward-skin-placeholder span{color:#536261;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.22em}
+.plinko-reward-modal h2{margin:8px 0;color:#eef3f1;font-family:"Chakra Petch",sans-serif;font-size:25px;line-height:1.35}
 .plinko-reward-modal h2 strong{color:#d9a637}
-.plinko-reward-modal p{max-width:430px;margin:0 auto;color:#83918e;font-size:12px;line-height:1.6}
+.plinko-reward-modal h2 em{color:#20f39a;font-style:normal;font-weight:900}
+.plinko-reward-modal p{max-width:430px;margin:4px auto 0;color:#9aa7a4;font-size:13px;font-weight:800;line-height:1.6}
 .plinko-reward-continue{position:relative;width:100%;min-height:46px;margin-top:24px;border:1px solid #c99932;border-radius:7px;background:#b9851f;color:#100c04;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.1em;cursor:pointer;transition:.2s;isolation:isolate}
 .plinko-reward-continue::after{content:"";position:absolute;inset:-5px;border:2px solid #20f39a;border-radius:11px;box-shadow:0 0 10px rgba(32,243,154,.28),0 0 22px rgba(32,243,154,.16);opacity:.72;pointer-events:none;animation:wheel-spin-pulse 1.45s ease-in-out infinite}
 .plinko-reward-continue:hover{filter:brightness(1.08);transform:translateY(-1px)}
