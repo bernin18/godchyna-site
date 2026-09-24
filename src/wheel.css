@@ -220,8 +220,8 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-rule{margin-top:14px;padding:16px 16px 18px;border:1px solid rgba(185,133,31,.24);border-radius:10px;background:rgba(185,133,31,.04)}
 .plinko-rule span{color:#b9851f;font-size:9px;font-weight:900;letter-spacing:.18em}
 .plinko-rule p{margin:8px 0 0;color:#8ea0a3;font-size:13px;line-height:1.6}
-.plinko-machine{position:relative;width:100%;max-width:820px;min-height:760px;padding:14px;border:1px solid rgba(185,133,31,.42);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.07),0 0 22px rgba(32,243,154,.04);overflow:hidden}
-.plinko-machine::before{content:"";position:absolute;inset:7px;border:1px solid rgba(185,133,31,.13);border-radius:11px;pointer-events:none}
+.plinko-machine{position:relative;width:100%;max-width:820px;min-height:760px;padding:14px;border:0;border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.07),0 0 22px rgba(32,243,154,.04);overflow:hidden}
+.plinko-machine::before{content:none}
 .plinko-frame-lights{position:absolute;z-index:5;pointer-events:none;display:flex}
 .plinko-frame-lights.top,.plinko-frame-lights.bottom{left:10px;right:10px;justify-content:space-between}
 .plinko-frame-lights.top{top:8px}
