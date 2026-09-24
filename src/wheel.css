@@ -146,8 +146,9 @@ linear-gradient(145deg,#071014,#05090c);box-shadow:inset 0 0 70px rgba(0,0,0,.25
 .wheel-elimination-modal h2{margin:12px 0 8px;color:#f2f4f3;font-family:"Chakra Petch",sans-serif;font-size:27px;line-height:1.2}
 .wheel-elimination-modal h2 strong{color:#d7a43a}
 .wheel-elimination-modal>p{margin:0;color:#879497;font-size:13px}
-.wheel-lives-message{margin-top:22px;padding:14px 16px;border:1px solid rgba(32,243,154,.26);border-radius:9px;background:rgba(32,243,154,.055);color:#a9bbb5;font-size:12px;line-height:1.55}
-.wheel-lives-message strong{color:#20f39a}
+.wheel-still-in-kicker{color:#20f39a}
+.wheel-elimination-modal h2.wheel-still-in-title{max-width:430px;margin:14px auto 4px;color:#e9efed;font-size:23px;line-height:1.35}
+.wheel-elimination-modal h2.wheel-still-in-title strong{color:#20f39a}
 .wheel-elimination-continue{width:100%;min-height:45px;margin-top:24px;border:1px solid #c99932;border-radius:7px;background:#b9851f;color:#100c04;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.1em;cursor:pointer;transition:.2s}
 .wheel-elimination-continue:hover{filter:brightness(1.08);box-shadow:0 0 22px rgba(185,133,31,.14);transform:translateY(-1px)}
 
