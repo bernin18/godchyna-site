@@ -87,7 +87,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { display_name: displayName.trim() || email.split("@")[0] } },
+        options: {
+          data: { display_name: displayName.trim() || email.split("@")[0] },
+          emailRedirectTo: "https://godchyna.com/wheel",
+        },
       });
 
       if (error) setMessage(error.message);
