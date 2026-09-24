@@ -1182,46 +1182,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 className={`plinko-machine${plinkoExplosionSlot !== null ? " is-flashing" : ""}`}
                 aria-label={pick("Tabuleiro Plinko", "Plinko board")}
               >
-                <div className="plinko-frame-lights top">
-                  {Array.from({ length: 22 }, (_, index) => (
-                    <span
-                      key={`top-${index}`}
-                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
-                      style={{ animationDelay: `${index * 0.08}s` }}
-                    />
-                  ))}
-                </div>
-
-                <div className="plinko-frame-lights bottom">
-                  {Array.from({ length: 22 }, (_, index) => (
-                    <span
-                      key={`bottom-${index}`}
-                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
-                      style={{ animationDelay: `${index * 0.08}s` }}
-                    />
-                  ))}
-                </div>
-
-                <div className="plinko-frame-lights left">
-                  {Array.from({ length: 14 }, (_, index) => (
-                    <span
-                      key={`left-${index}`}
-                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
-                      style={{ animationDelay: `${index * 0.08}s` }}
-                    />
-                  ))}
-                </div>
-
-                <div className="plinko-frame-lights right">
-                  {Array.from({ length: 14 }, (_, index) => (
-                    <span
-                      key={`right-${index}`}
-                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
-                      style={{ animationDelay: `${index * 0.08}s` }}
-                    />
-                  ))}
-                </div>
-
                 <div className="plinko-machine-inner">
                   <div className="plinko-drop-zone">
                     <span>{pick("DROP ZONE", "DROP ZONE")}</span>
