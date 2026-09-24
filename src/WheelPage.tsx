@@ -376,7 +376,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
               {participants.length > 0 && (
                 <button type="button" className="wheel-spin-btn">
-                  SPIN
+                  SPINNNNNNNNN
                 </button>
               )}
             </aside>
