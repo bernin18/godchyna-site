@@ -476,9 +476,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }, []);
 
   const plinkoRoundLabel =
-    plinkoPlayers.length > 2
-      ? `TOP ${plinkoPlayers.length} → TOP ${plinkoPlayers.length - 1}`
-      : pick("FINAL · TOP 2 → VENCEDOR", "FINAL · TOP 2 → WINNER");
+    plinkoRound === 1
+      ? "TOP 5"
+      : plinkoRound === 2
+        ? pick("QUARTOS DE FINAL", "QUARTERFINALS")
+        : plinkoRound === 3
+          ? pick("MEIAS-FINAIS", "SEMIFINALS")
+          : pick("FINAL!", "FINAL!");
 
   const activePlinkoSkins =
     plinkoRound === 2
