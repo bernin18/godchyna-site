@@ -333,8 +333,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   setParticipantMessage("");
                 }}
                 placeholder={pick(
-                  "Um nome por linha...\nRui\nRui\nMiguel\nAna",
-                  "One name per line...\nRui\nRui\nMiguel\nAna",
+                  "Um nome por linha...\nChyna\nChyna\nChyna\nChyna",
+                  "One name per line...\nChyna\nChyna\nChyna\nChyna",
                 )}
                 spellCheck={false}
               />
