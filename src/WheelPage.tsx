@@ -243,6 +243,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     valueEur: number;
   } | null>(null);
   const [plinkoTiebreakIndexes, setPlinkoTiebreakIndexes] = useState<number[] | null>(null);
+  const [plinkoTiebreakResults, setPlinkoTiebreakResults] = useState<Record<number, PlinkoResult>>({});
+  const [plinkoTiebreakDropSlots, setPlinkoTiebreakDropSlots] = useState<Record<number, number>>({});
   const [plinkoWinnerNotice, setPlinkoWinnerNotice] = useState<{
     playerName: string;
     result: PlinkoResult;
@@ -280,121 +282,92 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       ? `TOP ${plinkoPlayers.length} → TOP ${plinkoPlayers.length - 1}`
       : pick("FINAL · TOP 2 → VENCEDOR", "FINAL · TOP 2 → WINNER");
 
+  const plinkoPhaseIndexes =
+    plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0
+      ? plinkoTiebreakIndexes
+      : plinkoPlayers.map((_, index) => index);
+
+  const plinkoPhaseDropSlots =
+    plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0
+      ? plinkoTiebreakDropSlots
+      : plinkoDropSlots;
+
+  const plinkoPhaseComplete =
+    plinkoPhaseIndexes.length > 0 &&
+    plinkoPhaseIndexes.every(
+      (index) => plinkoPhaseDropSlots[index] !== undefined,
+    );
+
   function closePlinkoRewardNotice() {
     setPlinkoRewardNotice(null);
 
-    if (!plinkoPlayers.length) return;
+    if (!plinkoPlayers.length || !plinkoPhaseComplete) return;
 
-    const allDropsDone =
-      Object.keys(plinkoDropSlots).length >= plinkoPlayers.length;
+    const resolvingTiebreak =
+      Boolean(plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0);
 
-    if (!allDropsDone) return;
+    const activeIndexes = resolvingTiebreak
+      ? plinkoTiebreakIndexes!
+      : plinkoPlayers.map((_, index) => index);
 
-    const roundResults = plinkoPlayers.map((_, index) => plinkoResults[index]);
-    if (roundResults.some((result) => !result)) return;
-
-    const comparisonIndexes =
-      plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 1
-        ? plinkoTiebreakIndexes
-        : plinkoPlayers.map((_, index) => index);
-
-    const comparisonResults = comparisonIndexes.map((index) => ({
+    const activeResults = activeIndexes.map((index) => ({
       index,
-      result: roundResults[index],
+      result: resolvingTiebreak
+        ? plinkoTiebreakResults[index]
+        : plinkoResults[index],
     }));
 
+    if (activeResults.some(({ result }) => !result)) return;
+
     const minimumValue = Math.min(
-      ...comparisonResults.map(({ result }) => result.valueEur),
+      ...activeResults.map(({ result }) => result!.valueEur),
     );
 
-    const minimumEntry = comparisonResults.find(
-      ({ result }) => result.valueEur === minimumValue,
+    const lowestEntries = activeResults.filter(
+      ({ result }) => result!.valueEur === minimumValue,
     );
-    if (!minimumEntry) return;
 
-    const minimumSlot = plinkoDropSlots[minimumEntry.index];
-
-    // Defensive rule: the same landing slot means the exact same skin.
-    // If more than one active player landed there, elimination is forbidden
-    // until those players complete a tiebreak.
-    const tiedSkinEntries = comparisonResults.filter(({ index, result }) => {
-      const sameSlot =
-        minimumSlot !== undefined &&
-        plinkoDropSlots[index] === minimumSlot;
-
-      const sameSkinFallback =
-        result.skinName.trim().toLocaleLowerCase() ===
-        minimumEntry.result.skinName.trim().toLocaleLowerCase();
-
-      return sameSlot || sameSkinFallback;
-    });
-
-    if (tiedSkinEntries.length > 1) {
-      const tiedIndexes = tiedSkinEntries.map(({ index }) => index);
+    // A tiebreak exists ONLY when two or more players share the lowest
+    // value of the current phase. Equal higher results are already safe.
+    if (lowestEntries.length > 1) {
+      const tiedIndexes = lowestEntries.map(({ index }) => index);
+      const skinNames = new Set(
+        lowestEntries.map(({ result }) => result!.skinName),
+      );
 
       setPlinkoTieNotice({
         indexes: tiedIndexes,
         names: tiedIndexes.map((index) => plinkoPlayers[index]),
-        skinName: minimumEntry.result.skinName,
-        valueEur: minimumEntry.result.valueEur,
+        skinName:
+          skinNames.size === 1 ? lowestEntries[0].result!.skinName : null,
+        valueEur: minimumValue,
       });
       return;
     }
 
-    const eliminatedIndex = minimumEntry.index;
-    const eliminatedResult = roundResults[eliminatedIndex];
-
-    // Last safety net: never eliminate someone if another active player
-    // has the same slot/skin result.
-    const duplicateOfEliminated = comparisonResults.find(({ index, result }) => {
-      if (index === eliminatedIndex) return false;
-
-      const sameSlot =
-        plinkoDropSlots[eliminatedIndex] !== undefined &&
-        plinkoDropSlots[index] === plinkoDropSlots[eliminatedIndex];
-
-      const sameSkin =
-        result.skinName.trim().toLocaleLowerCase() ===
-        eliminatedResult.skinName.trim().toLocaleLowerCase();
-
-      return sameSlot || sameSkin;
-    });
-
-    if (duplicateOfEliminated) {
-      const tiedIndexes = comparisonResults
-        .filter(({ index, result }) => {
-          const sameSlot =
-            plinkoDropSlots[eliminatedIndex] !== undefined &&
-            plinkoDropSlots[index] === plinkoDropSlots[eliminatedIndex];
-
-          const sameSkin =
-            result.skinName.trim().toLocaleLowerCase() ===
-            eliminatedResult.skinName.trim().toLocaleLowerCase();
-
-          return sameSlot || sameSkin;
-        })
-        .map(({ index }) => index);
-
-      setPlinkoTieNotice({
-        indexes: tiedIndexes,
-        names: tiedIndexes.map((index) => plinkoPlayers[index]),
-        skinName: eliminatedResult.skinName,
-        valueEur: eliminatedResult.valueEur,
-      });
-      return;
-    }
+    const eliminatedIndex = lowestEntries[0].index;
+    const eliminatedResult = lowestEntries[0].result!;
     const survivors = plinkoPlayers.filter((_, index) => index !== eliminatedIndex);
     const winnerIndex =
       survivors.length === 1
         ? plinkoPlayers.findIndex((_, index) => index !== eliminatedIndex)
         : -1;
 
+    const winnerResult =
+      winnerIndex >= 0
+        ? resolvingTiebreak
+          ? plinkoTiebreakResults[winnerIndex] ?? plinkoResults[winnerIndex]
+          : plinkoResults[winnerIndex]
+        : undefined;
+
     setPlinkoTiebreakIndexes(null);
+    setPlinkoTiebreakResults({});
+    setPlinkoTiebreakDropSlots({});
     setPlinkoEliminationNotice({
       playerName: plinkoPlayers[eliminatedIndex],
       result: eliminatedResult,
       survivors,
-      winnerResult: winnerIndex >= 0 ? roundResults[winnerIndex] : undefined,
+      winnerResult,
     });
   }
 
@@ -402,23 +375,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!plinkoTieNotice) return;
 
     setPlinkoTiebreakIndexes(plinkoTieNotice.indexes);
-
-    setPlinkoDropSlots((current) => {
-      const next = { ...current };
-      plinkoTieNotice.indexes.forEach((index) => {
-        delete next[index];
-      });
-      return next;
-    });
-
-    setPlinkoResults((current) => {
-      const next = { ...current };
-      plinkoTieNotice.indexes.forEach((index) => {
-        delete next[index];
-      });
-      return next;
-    });
-
+    setPlinkoTiebreakResults({});
+    setPlinkoTiebreakDropSlots({});
     setPlinkoHitPegs([]);
     setPlinkoLandedSlot(null);
     setPlinkoExplosionSlot(null);
@@ -457,6 +415,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoEliminationNotice(null);
     setPlinkoTieNotice(null);
     setPlinkoTiebreakIndexes(null);
+    setPlinkoTiebreakResults({});
+    setPlinkoTiebreakDropSlots({});
     setPlinkoDropping(false);
 
     const c4 = plinkoC4Ref.current;
@@ -478,6 +438,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoEliminationNotice(null);
     setPlinkoTieNotice(null);
     setPlinkoTiebreakIndexes(null);
+    setPlinkoTiebreakResults({});
+    setPlinkoTiebreakDropSlots({});
     setPlinkoWinnerNotice(null);
     setPlinkoDropping(false);
   }, [topFive]);
@@ -673,8 +635,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function startPlinkoDrop() {
     if (!topFive || !plinkoPlayers.length || plinkoDropping || plinkoRewardNotice || plinkoEliminationNotice || plinkoTieNotice || plinkoWinnerNotice) return;
 
-    const playerIndex = plinkoPlayers.findIndex((_, index) => plinkoDropSlots[index] === undefined);
-    if (playerIndex < 0) return;
+    const resolvingTiebreak =
+      Boolean(plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0);
+
+    const activeIndexes = resolvingTiebreak
+      ? plinkoTiebreakIndexes!
+      : plinkoPlayers.map((_, index) => index);
+
+    const activeDropSlots = resolvingTiebreak
+      ? plinkoTiebreakDropSlots
+      : plinkoDropSlots;
+
+    const playerIndex = activeIndexes.find(
+      (index) => activeDropSlots[index] === undefined,
+    );
+    if (playerIndex === undefined) return;
 
     const c4 = plinkoC4Ref.current;
     const board = plinkoBoardRef.current;
@@ -808,14 +783,26 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       setPlinkoLandedSlot(landedSlotIndex);
       setPlinkoExplosionSlot(landedSlotIndex);
-      setPlinkoDropSlots((current) => ({
-        ...current,
-        [playerIndex]: landedSlotIndex,
-      }));
-      setPlinkoResults((current) => ({
-        ...current,
-        [playerIndex]: landedReward,
-      }));
+
+      if (resolvingTiebreak) {
+        setPlinkoTiebreakDropSlots((current) => ({
+          ...current,
+          [playerIndex]: landedSlotIndex,
+        }));
+        setPlinkoTiebreakResults((current) => ({
+          ...current,
+          [playerIndex]: landedReward,
+        }));
+      } else {
+        setPlinkoDropSlots((current) => ({
+          ...current,
+          [playerIndex]: landedSlotIndex,
+        }));
+        setPlinkoResults((current) => ({
+          ...current,
+          [playerIndex]: landedReward,
+        }));
+      }
 
       window.setTimeout(() => {
         setPlinkoExplosionSlot(null);
@@ -1065,7 +1052,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                 <div className="plinko-finalist-list">
                   {plinkoPlayers.map((name, index) => {
-                    const result = plinkoResults[index];
+                    const inTiebreak =
+                      Boolean(plinkoTiebreakIndexes?.includes(index));
+                    const result = inTiebreak
+                      ? plinkoTiebreakResults[index]
+                      : plinkoResults[index];
+                    const waitingForTiebreak =
+                      inTiebreak && !plinkoTiebreakResults[index];
 
                     return (
                       <div className="plinko-finalist" key={`${name}-${index}`}>
@@ -1080,6 +1073,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                               <span>{result.valueEur.toFixed(2)} €</span>
                             </div>
                           </div>
+                        ) : waitingForTiebreak ? (
+                          <i>{pick("À ESPERA DO DESEMPATE", "WAITING FOR TIEBREAK")}</i>
                         ) : plinkoDropSlots[index] !== undefined ? (
                           <div className="plinko-finalist-slot-result">
                             <span>SLOT</span>
@@ -1097,7 +1092,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="plinko-drop-btn"
                   onClick={startPlinkoDrop}
-                  disabled={plinkoDropping || Boolean(plinkoRewardNotice) || Boolean(plinkoEliminationNotice) || Boolean(plinkoTieNotice) || Boolean(plinkoWinnerNotice) || Object.keys(plinkoDropSlots).length >= plinkoPlayers.length}
+                  disabled={plinkoDropping || Boolean(plinkoRewardNotice) || Boolean(plinkoEliminationNotice) || Boolean(plinkoTieNotice) || Boolean(plinkoWinnerNotice) || plinkoPhaseComplete}
                 >
                   {plinkoDropping ? pick("A REBENTAR...", "DROPPING...") : "REBENTAAAAA"}
                 </button>
@@ -1105,8 +1100,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div className="plinko-rule">
                   <span>{pick("REGRA", "RULE")}</span>
                   <p>{pick(
-                    "Cada jogador terá uma rodada. Quem tirar a skin de menor valor será eliminado.",
-                    "Each player gets one round. Whoever gets the lowest-value skin is eliminated.",
+                    "Cada jogador faz um drop. O menor valor é eliminado; se houver empate no menor valor, só esses jogadores vão a desempate.",
+                    "Each player drops once. The lowest value is eliminated; if the lowest value is tied, only those players go to a tiebreak.",
                   )}</p>
                 </div>
               </aside>
@@ -1256,7 +1251,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 onClick={closePlinkoRewardNotice}
                 autoFocus
               >
-                {Object.keys(plinkoDropSlots).length >= plinkoPlayers.length
+                {plinkoPhaseComplete
                   ? plinkoTiebreakIndexes
                     ? pick("VER RESULTADO DO DESEMPATE", "SEE TIEBREAK RESULT")
                     : pick("VER RESULTADO DA RONDA", "SEE ROUND RESULT")
