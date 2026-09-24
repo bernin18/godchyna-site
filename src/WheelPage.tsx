@@ -156,6 +156,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [plinkoDropping, setPlinkoDropping] = useState(false);
   const [plinkoHitPegs, setPlinkoHitPegs] = useState<string[]>([]);
   const [plinkoLandedSlot, setPlinkoLandedSlot] = useState<number | null>(null);
+  const [plinkoExplosionSlot, setPlinkoExplosionSlot] = useState<number | null>(null);
+  const [plinkoRewardNotice, setPlinkoRewardNotice] = useState<{ playerName: string; slotIndex: number } | null>(null);
   const plinkoC4Ref = useRef<HTMLDivElement | null>(null);
   const plinkoBoardRef = useRef<HTMLElement | null>(null);
   const [busy, setBusy] = useState(false);
@@ -183,6 +185,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoDropSlots({});
     setPlinkoHitPegs([]);
     setPlinkoLandedSlot(null);
+    setPlinkoExplosionSlot(null);
+    setPlinkoRewardNotice(null);
     setPlinkoDropping(false);
   }, [topFive]);
 
@@ -367,7 +371,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   async function startPlinkoDrop() {
-    if (!topFive || plinkoDropping) return;
+    if (!topFive || plinkoDropping || plinkoRewardNotice) return;
 
     const playerIndex = topFive.findIndex((_, index) => plinkoDropSlots[index] === undefined);
     if (playerIndex < 0) return;
@@ -478,11 +482,20 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     await animateTo(finalX, finalY, 2, 430, "cubic-bezier(.2,.7,.18,1)");
 
     setPlinkoLandedSlot(slotIndex);
+    setPlinkoExplosionSlot(slotIndex);
     setPlinkoDropSlots((current) => ({
       ...current,
       [playerIndex]: slotIndex,
     }));
-    setPlinkoDropping(false);
+
+    window.setTimeout(() => {
+      setPlinkoExplosionSlot(null);
+      setPlinkoRewardNotice({
+        playerName: topFive[playerIndex],
+        slotIndex,
+      });
+      setPlinkoDropping(false);
+    }, 520);
   }
 
   function spinWheel() {
@@ -640,7 +653,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="plinko-drop-btn"
                   onClick={startPlinkoDrop}
-                  disabled={plinkoDropping || Object.keys(plinkoDropSlots).length >= topFive.length}
+                  disabled={plinkoDropping || Boolean(plinkoRewardNotice) || Object.keys(plinkoDropSlots).length >= topFive.length}
                 >
                   {plinkoDropping ? pick("A REBENTAR...", "DROPPING...") : "REBENTAAAAA"}
                 </button>
@@ -729,7 +742,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <div className="plinko-slots">
                     {Array.from({ length: slotCount }, (_, index) => (
                       <div
-                        className={`plinko-slot${plinkoLandedSlot === index ? " landed" : ""}`}
+                        className={`plinko-slot${plinkoLandedSlot === index ? " landed" : ""}${plinkoExplosionSlot === index ? " exploding" : ""}`}
                         data-plinko-slot={index}
                         key={index}
                       >
@@ -744,6 +757,38 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
           </section>
         </main>
+
+        {plinkoRewardNotice && (
+          <div
+            className="plinko-reward-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="plinko-reward-title"
+          >
+            <div className="plinko-reward-modal">
+              <span className="plinko-reward-kicker">{pick("DROP CONCLUÍDO", "DROP COMPLETE")}</span>
+              <h2 id="plinko-reward-title">
+                <strong>{plinkoRewardNotice.playerName}</strong>{" "}
+                {pick(
+                  `caiu na SLOT ${String(plinkoRewardNotice.slotIndex + 1).padStart(2, "0")}!`,
+                  `landed on SLOT ${String(plinkoRewardNotice.slotIndex + 1).padStart(2, "0")}!`,
+                )}
+              </h2>
+              <p>{pick(
+                "Quando adicionarmos as skins, aqui aparecerá a skin ganha e o respetivo valor.",
+                "Once skins are added, the won skin and its value will appear here.",
+              )}</p>
+              <button
+                type="button"
+                className="plinko-reward-continue"
+                onClick={() => setPlinkoRewardNotice(null)}
+                autoFocus
+              >
+                {pick("PRÓXIMO DROP", "NEXT DROP")}
+              </button>
+            </div>
+          </div>
+        )}
       </>
     );
   }
