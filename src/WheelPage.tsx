@@ -418,6 +418,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const slotTopY = slotRect.top - boardRect.top;
     const targetY = slotRect.top + slotRect.height * 0.33 - boardRect.top;
 
+    const slotBodies = Array.from(
+      board.querySelectorAll<HTMLElement>("[data-plinko-slot]"),
+    ).map((slotElement, index) => {
+      const rect = slotElement.getBoundingClientRect();
+      return {
+        index,
+        left: rect.left - boardRect.left,
+        right: rect.right - boardRect.left,
+        centerX: rect.left + rect.width / 2 - boardRect.left,
+      };
+    });
+
     const ballRadius = Math.min(c4Rect.width, c4Rect.height) * 0.36;
 
     const pegBodies = Array.from(
@@ -441,7 +453,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     let x = originX;
     let y = originY;
-    let vx = (Math.random() - 0.5) * 18;
+
+    // Give the equal-odds target a gentle influence from the very start,
+    // instead of visibly steering the C4 near the slots.
+    let vx = (targetX - originX) * 0.18 + (Math.random() - 0.5) * 18;
     let vy = 18;
     let angle = -3;
     let angularVelocity = (Math.random() - 0.5) * 20;
@@ -449,7 +464,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const gravity = 255;
     const restitution = 0.54;
     const tangentRetention = 0.965;
-    const hitKeys = new Set<string>();
+    const hitCooldowns = new Map<string, number>();
 
     let lastTimestamp = performance.now();
     let accumulator = 0;
@@ -464,25 +479,45 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     };
 
     const registerHit = (key: string) => {
-      if (hitKeys.has(key)) return;
-      hitKeys.add(key);
-      setPlinkoHitPegs((current) => [...current, key]);
+      const now = performance.now();
+      const lastHit = hitCooldowns.get(key) ?? -Infinity;
+      if (now - lastHit < 150) return;
+
+      hitCooldowns.set(key, now);
+
+      setPlinkoHitPegs((current) =>
+        current.includes(key) ? current : [...current, key],
+      );
+
+      window.setTimeout(() => {
+        setPlinkoHitPegs((current) => current.filter((item) => item !== key));
+      }, 210);
     };
 
     const finishDrop = () => {
       if (finished) return;
       finished = true;
 
-      x = targetX;
+      const actualSlot =
+        slotBodies.find((candidate) => x >= candidate.left && x <= candidate.right) ??
+        slotBodies.reduce((closest, candidate) =>
+          Math.abs(candidate.centerX - x) < Math.abs(closest.centerX - x)
+            ? candidate
+            : closest,
+        );
+
+      const landedSlotIndex = actualSlot.index;
+
+      // No horizontal snap: keep the exact X produced by the physics.
       y = targetY;
-      angle *= 0.2;
+      angle *= 0.35;
       renderC4();
 
-      setPlinkoLandedSlot(slotIndex);
-      setPlinkoExplosionSlot(slotIndex);
+      setPlinkoLandedSlot(landedSlotIndex);
+      setPlinkoExplosionSlot(landedSlotIndex);
       setPlinkoDropSlots((current) => ({
         ...current,
-        [playerIndex]: slotIndex,
+        [playerIndex]: landedSlotIndex,
       }));
 
       window.setTimeout(() => {
@@ -505,22 +540,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       vy *= Math.pow(0.999, dt * 60);
       angularVelocity *= Math.pow(0.985, dt * 60);
 
-      // The final slot is selected fairly before the animation. This subtle force only
-      // reproduces that already-selected result while keeping the actual peg contacts physical.
+      // Any distribution correction happens high in the board and fades out
+      // completely before the last rows. The final section is pure physics.
       const distanceToTarget = targetX - x;
       const verticalProgress = Math.max(
         0,
         Math.min(1, (y - originY) / Math.max(1, slotTopY - originY)),
       );
 
-      const guideStrength = 4 + verticalProgress * 10;
-      vx += Math.max(-guideStrength, Math.min(guideStrength, distanceToTarget * 0.018)) * dt * 60;
-
-      // Stronger but still smooth funnel only after the last peg rows.
-      if (y > slotTopY - 105) {
-        const funnelProgress = Math.max(0, Math.min(1, (y - (slotTopY - 105)) / 105));
-        vx += distanceToTarget * (0.8 + funnelProgress * 2.4) * dt;
-        vx *= Math.pow(0.975, dt * 60);
+      const guideCutoff = 0.72;
+      if (verticalProgress < guideCutoff) {
+        const normalized = verticalProgress / guideCutoff;
+        const guideEnvelope = Math.sin(normalized * Math.PI);
+        const desiredVx = Math.max(-82, Math.min(82, distanceToTarget * 0.28));
+        const steering = Math.min(1, dt * 1.15) * guideEnvelope;
+        vx += (desiredVx - vx) * steering;
       }
 
       x += vx * dt;
@@ -581,12 +615,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         }
       }
 
-      // Once the C4 reaches the slot mouths, progressively settle it into the
-      // already-selected equal-odds slot instead of snapping from the peg field.
-      if (y > slotTopY - 34) {
-        x += (targetX - x) * Math.min(0.12, dt * 5.5);
-      }
-
+      // From the last rows onwards there is no steering at all.
       if (y >= targetY) {
         finishDrop();
       }
