@@ -9,9 +9,8 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .wheel-hero p{color:#aeb9b9;line-height:1.65;margin:0}
 .wheel-showcase{display:grid;grid-template-columns:250px minmax(520px,1fr) minmax(330px,.68fr);gap:26px;align-items:center;max-width:1540px;margin:0 auto}
 .giveaway-history{height:580px;padding:19px 14px 14px;border:1px solid #1f3035;border-radius:14px;background:linear-gradient(180deg,rgba(8,17,22,.96),rgba(5,10,13,.98));box-shadow:0 24px 70px rgba(0,0,0,.22),inset 0 0 34px rgba(32,243,154,.018);display:flex;flex-direction:column;overflow:hidden}
-.giveaway-history-head{padding:2px 7px 14px;border-bottom:1px solid #18282d}
-.giveaway-history-head>span{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.18em}
-.giveaway-history-head h2{margin:5px 0 0;color:#e8efed;font-family:"Chakra Petch",sans-serif;font-size:14px;line-height:1.15;letter-spacing:.025em}
+.giveaway-history-head{padding:7px 7px 15px;border-bottom:1px solid #18282d}
+.giveaway-history-head h2{margin:0;color:#e8efed;font-family:"Chakra Petch",sans-serif;font-size:14px;line-height:1.15;letter-spacing:.025em}
 .giveaway-history-window{position:relative;min-height:0;flex:1;margin-top:12px;overflow:hidden}
 .giveaway-history-window::before,.giveaway-history-window::after{content:"";position:absolute;z-index:3;left:0;right:0;height:42px;pointer-events:none}
 .giveaway-history-window::before{top:0;background:linear-gradient(180deg,#071014,transparent)}
