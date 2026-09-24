@@ -1001,9 +1001,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function spinWheel() {
     if (spinning || eliminationNotice || topFive || participants.length === 0) return;
 
-    const uniqueNames = uniqueParticipantNames(participants);
-    if (uniqueNames.length <= 5) {
-      setTopFive(uniqueNames.slice(0, 5));
+    if (participants.length === 5) {
+      setTopFive(participants.slice(0, 5));
       setShowTopFiveModal(true);
       return;
     }
@@ -1031,7 +1030,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     [participantInput],
   );
 
-  const fastWheelSpin = uniqueParticipantNames(participants).length > 10;
+  const fastWheelSpin = participants.length > 10;
 
   const configGradient = useMemo(() => wheelGradient(participants.length), [participants.length]);
 
@@ -1482,15 +1481,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         (name) => name.trim().toLocaleLowerCase() === normalizedName,
                       ).length;
 
-                      const survivingNames = uniqueParticipantNames(nextParticipants);
-
                       setEliminationNotice({
                         name: eliminatedName,
                         remainingEntries,
                       });
 
-                      if (survivingNames.length === 5) {
-                        setPendingTopFive(survivingNames);
+                      if (nextParticipants.length === 5) {
+                        setPendingTopFive(nextParticipants.slice(0, 5));
                       }
 
                       return nextParticipants;
