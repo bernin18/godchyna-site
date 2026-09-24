@@ -170,14 +170,14 @@ linear-gradient(145deg,#071014,#05090c);box-shadow:inset 0 0 70px rgba(0,0,0,.25
 .wheel-top-five-close:hover::after{opacity:1;box-shadow:0 0 14px rgba(32,243,154,.42),0 0 28px rgba(32,243,154,.24)}
 
 /* Plinko transition */
-.plinko-transition-overlay{position:fixed;inset:0;z-index:220;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#020405;animation:plinko-blackout-in .42s ease forwards}
-.plinko-transition-overlay-out{animation:plinko-blackout-out .85s ease .45s forwards}
+.plinko-transition-overlay{position:fixed;inset:0;z-index:220;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#020405;animation:plinko-blackout-in .85s ease forwards}
+.plinko-transition-overlay-out{animation:plinko-blackout-out 1.65s ease .18s forwards}
 .plinko-transition-cloud{position:absolute;inset:-14%;background:
 radial-gradient(circle at 50% 50%,rgba(185,133,31,.18),transparent 19%),
 radial-gradient(circle at 36% 56%,rgba(32,243,154,.10),transparent 17%),
 radial-gradient(circle at 67% 42%,rgba(255,255,255,.045),transparent 13%),
-radial-gradient(circle at 50% 50%,rgba(4,8,10,.36),#020405 68%);filter:blur(28px);transform:scale(.96);animation:plinko-cloud-bloom 1.55s ease forwards}
-.plinko-transition-content{position:relative;z-index:2;text-align:center;animation:plinko-transition-title 1.15s cubic-bezier(.2,.8,.2,1) forwards}
+radial-gradient(circle at 50% 50%,rgba(4,8,10,.36),#020405 68%);filter:blur(28px);transform:scale(.96);animation:plinko-cloud-bloom 2.4s ease forwards}
+.plinko-transition-content{position:relative;z-index:2;text-align:center;animation:plinko-transition-title 1.55s cubic-bezier(.2,.8,.2,1) forwards}
 .plinko-transition-content span{display:block;margin-bottom:9px;color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:12px;font-weight:900;letter-spacing:.23em;text-shadow:0 0 18px rgba(32,243,154,.28)}
 .plinko-transition-content strong{display:block;color:#d9a637;font-family:"Exo 2",sans-serif;font-size:58px;font-style:italic;font-weight:900;line-height:1;letter-spacing:-.035em;text-shadow:0 0 28px rgba(185,133,31,.28),0 6px 26px rgba(0,0,0,.55)}
 @keyframes plinko-blackout-in{from{opacity:0}to{opacity:1}}
@@ -186,7 +186,7 @@ radial-gradient(circle at 50% 50%,rgba(4,8,10,.36),#020405 68%);filter:blur(28px
 @keyframes plinko-transition-title{0%{opacity:0;transform:translateY(12px) scale(.92)}28%{opacity:1;transform:translateY(0) scale(1.03)}100%{opacity:1;transform:translateY(0) scale(1)}}
 
 /* Plinko workspace */
-.plinko-page{min-height:calc(100vh - 74px);padding:18px 28px 20px;animation:plinko-page-reveal .72s cubic-bezier(.2,.8,.2,1) both;background:
+.plinko-page{min-height:calc(100vh - 74px);padding:18px 28px 20px;animation:plinko-page-reveal 1.35s cubic-bezier(.2,.8,.2,1) both;background:
 radial-gradient(circle at 50% 34%,rgba(185,133,31,.075),transparent 31rem),
 radial-gradient(circle at 18% 62%,rgba(32,243,154,.045),transparent 24rem),
 linear-gradient(180deg,#05090c,#060b0e)}
