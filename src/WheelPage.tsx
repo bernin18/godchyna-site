@@ -76,12 +76,12 @@ function WheelDividers({ count }: { count: number }) {
 }
 
 function nameFontSize(name: string, count: number) {
-  if (count > 70) return 5;
-  if (count > 50) return 6;
-  if (count > 34) return 7;
-  if (name.length > 18) return 7;
-  if (name.length > 13) return 8;
-  return 9;
+  if (count > 70) return 6;
+  if (count > 50) return 7;
+  if (count > 34) return 8;
+  if (name.length > 18) return 8;
+  if (name.length > 13) return 9;
+  return 10;
 }
 
 export default function WheelPage({ Header, Footer }: WheelPageProps) {
