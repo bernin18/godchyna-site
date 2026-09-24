@@ -160,6 +160,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [plinkoRewardNotice, setPlinkoRewardNotice] = useState<{ playerName: string; reward: PlinkoResult | null } | null>(null);
   const plinkoC4Ref = useRef<HTMLDivElement | null>(null);
   const plinkoBoardRef = useRef<HTMLElement | null>(null);
+  const plinkoAnimationRef = useRef<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -189,6 +190,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoRewardNotice(null);
     setPlinkoDropping(false);
   }, [topFive]);
+
+  useEffect(() => {
+    return () => {
+      if (plinkoAnimationRef.current !== null) {
+        window.cancelAnimationFrame(plinkoAnimationRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!session?.user.id) return;
@@ -370,7 +379,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }, 5000);
   }
 
-  async function startPlinkoDrop() {
+  function startPlinkoDrop() {
     if (!topFive || plinkoDropping || plinkoRewardNotice) return;
 
     const playerIndex = topFive.findIndex((_, index) => plinkoDropSlots[index] === undefined);
@@ -380,18 +389,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const board = plinkoBoardRef.current;
     if (!c4 || !board) return;
 
-    // Every slot keeps exactly the same probability: 1 / 9.
+    // The outcome remains perfectly uniform: every slot is 1 / 9.
     const slotIndex = randomParticipantIndex(9);
     const slot = board.querySelector<HTMLElement>(`[data-plinko-slot="${slotIndex}"]`);
     if (!slot) return;
 
-    const rows = Array.from({ length: 11 }, (_, rowIndex) =>
-      Array.from(
-        board.querySelectorAll<HTMLElement>(
-          `[data-plinko-row="${rowIndex}"] [data-plinko-peg]`,
-        ),
-      ),
-    );
+    if (plinkoAnimationRef.current !== null) {
+      window.cancelAnimationFrame(plinkoAnimationRef.current);
+      plinkoAnimationRef.current = null;
+    }
 
     setPlinkoDropping(true);
     setPlinkoHitPegs([]);
@@ -401,199 +407,213 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     c4.getAnimations().forEach((animation) => animation.cancel());
     c4.style.transform = "translate(0px, 0px) rotate(-3deg)";
 
-    const startRect = c4.getBoundingClientRect();
+    const boardRect = board.getBoundingClientRect();
+    const c4Rect = c4.getBoundingClientRect();
     const slotRect = slot.getBoundingClientRect();
 
-    const startCenterX = startRect.left + startRect.width / 2;
-    const startCenterY = startRect.top + startRect.height / 2;
-    const c4HalfWidth = startRect.width / 2;
-    const c4HalfHeight = startRect.height / 2;
+    const originX = c4Rect.left + c4Rect.width / 2 - boardRect.left;
+    const originY = c4Rect.top + c4Rect.height / 2 - boardRect.top;
 
-    const slotCenterX = slotRect.left + slotRect.width / 2;
-    const slotCenterY = slotRect.top + slotRect.height * 0.32;
+    const targetX = slotRect.left + slotRect.width / 2 - boardRect.left;
+    const slotTopY = slotRect.top - boardRect.top;
+    const targetY = slotRect.top + slotRect.height * 0.33 - boardRect.top;
 
-    let currentX = 0;
-    let currentY = 0;
-    let currentRotation = -3;
-    let lastDirection: -1 | 1 = Math.random() > 0.5 ? 1 : -1;
-    let repeatedDirectionCount = 0;
+    const ballRadius = Math.min(c4Rect.width, c4Rect.height) * 0.36;
 
-    const pause = (ms: number) =>
-      new Promise<void>((resolve) => {
-        window.setTimeout(resolve, ms);
-      });
+    const pegBodies = Array.from(
+      board.querySelectorAll<HTMLElement>("[data-plinko-peg]"),
+    ).map((peg) => {
+      const rect = peg.getBoundingClientRect();
+      const row = peg.parentElement?.dataset.plinkoRow ?? "0";
+      const index = peg.dataset.plinkoPeg ?? "0";
 
-    const animateTo = async (
-      x: number,
-      y: number,
-      rotation: number,
-      duration: number,
-      easing = "cubic-bezier(.34,.08,.25,1)",
-    ) => {
-      const animation = c4.animate(
-        [
-          { transform: `translate(${currentX}px, ${currentY}px) rotate(${currentRotation}deg)` },
-          { transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)` },
-        ],
-        { duration, easing, fill: "forwards" },
-      );
+      return {
+        key: `${row}-${index}`,
+        x: rect.left + rect.width / 2 - boardRect.left,
+        y: rect.top + rect.height / 2 - boardRect.top,
+        radius: rect.width / 2,
+      };
+    });
 
-      await animation.finished;
-      currentX = x;
-      currentY = y;
-      currentRotation = rotation;
-      c4.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
-      animation.cancel();
+    const pegXs = pegBodies.map((peg) => peg.x);
+    const fieldLeft = Math.max(18, Math.min(...pegXs) - 44);
+    const fieldRight = Math.min(boardRect.width - 18, Math.max(...pegXs) + 44);
+
+    let x = originX;
+    let y = originY;
+    let vx = (Math.random() - 0.5) * 18;
+    let vy = 18;
+    let angle = -3;
+    let angularVelocity = (Math.random() - 0.5) * 20;
+
+    const gravity = 255;
+    const restitution = 0.54;
+    const tangentRetention = 0.965;
+    const hitKeys = new Set<string>();
+
+    let lastTimestamp = performance.now();
+    let accumulator = 0;
+    const fixedStep = 1 / 120;
+    let finished = false;
+
+    const renderC4 = () => {
+      const translateX = x - originX;
+      const translateY = y - originY;
+      c4.style.transform =
+        `translate(${translateX}px, ${translateY}px) rotate(${angle}deg)`;
     };
 
-    for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
-      const rowPegs = rows[rowIndex];
-      if (!rowPegs.length) continue;
+    const registerHit = (key: string) => {
+      if (hitKeys.has(key)) return;
+      hitKeys.add(key);
+      setPlinkoHitPegs((current) => [...current, key]);
+    };
 
-      const currentAbsoluteX = startCenterX + currentX;
-      const progress = (rowIndex + 1) / (rows.length + 1);
+    const finishDrop = () => {
+      if (finished) return;
+      finished = true;
 
-      const guidedTargetX =
-        currentAbsoluteX +
-        (slotCenterX - currentAbsoluteX) * (0.34 + progress * 0.18);
+      x = targetX;
+      y = targetY;
+      angle *= 0.2;
+      renderC4();
 
-      const spacing =
-        rowPegs.length > 1
-          ? Math.abs(
-              (rowPegs[1].getBoundingClientRect().left +
-                rowPegs[1].getBoundingClientRect().width / 2) -
-                (rowPegs[0].getBoundingClientRect().left +
-                  rowPegs[0].getBoundingClientRect().width / 2),
-            )
-          : 26;
-
-      const jitter = (Math.random() - 0.5) * Math.min(spacing * 0.25, 8);
-      const desiredX = guidedTargetX + jitter;
-
-      let chosenPegIndex = 0;
-      let bestScore = Number.POSITIVE_INFINITY;
-
-      rowPegs.forEach((peg, pegIndex) => {
-        const rect = peg.getBoundingClientRect();
-        const pegCenterX = rect.left + rect.width / 2;
-        const score = Math.abs(pegCenterX - desiredX);
-
-        if (score < bestScore) {
-          bestScore = score;
-          chosenPegIndex = pegIndex;
-        }
-      });
-
-      const peg = rowPegs[chosenPegIndex];
-      const pegRect = peg.getBoundingClientRect();
-      const pegCenterX = pegRect.left + pegRect.width / 2;
-      const pegCenterY = pegRect.top + pegRect.height / 2;
-      const pegRadius = pegRect.width / 2;
-
-      let direction: -1 | 1;
-
-      if (slotCenterX > currentAbsoluteX + spacing * 0.12) {
-        direction = 1;
-      } else if (slotCenterX < currentAbsoluteX - spacing * 0.12) {
-        direction = -1;
-      } else {
-        direction = Math.random() > 0.5 ? 1 : -1;
-      }
-
-      if (direction === lastDirection) {
-        repeatedDirectionCount += 1;
-      } else {
-        repeatedDirectionCount = 1;
-      }
-
-      if (repeatedDirectionCount >= 3) {
-        direction = direction === 1 ? -1 : 1;
-        repeatedDirectionCount = 1;
-      }
-
-      lastDirection = direction;
-
-      const clearance = c4HalfWidth + pegRadius + 2;
-
-      const contactXAbs = pegCenterX - direction * clearance;
-      const contactYAbs = pegCenterY;
-
-      const approachXAbs = contactXAbs - direction * 6;
-      const approachYAbs = pegCenterY - c4HalfHeight - pegRadius - 9;
-
-      const recoilXAbs =
-        pegCenterX + direction * Math.min(spacing * 0.38, 16);
-      const recoilYAbs =
-        pegCenterY + c4HalfHeight * 0.7 + 10;
-
-      await animateTo(
-        approachXAbs - startCenterX,
-        approachYAbs - startCenterY,
-        direction * 4,
-        210 + rowIndex * 8,
-        "cubic-bezier(.35,.08,.3,1)",
-      );
-
-      await animateTo(
-        contactXAbs - startCenterX,
-        contactYAbs - startCenterY,
-        direction * 14,
-        145,
-        "cubic-bezier(.12,.75,.22,1)",
-      );
-
-      setPlinkoHitPegs((current) => [
+      setPlinkoLandedSlot(slotIndex);
+      setPlinkoExplosionSlot(slotIndex);
+      setPlinkoDropSlots((current) => ({
         ...current,
-        `${rowIndex}-${chosenPegIndex}`,
-      ]);
+        [playerIndex]: slotIndex,
+      }));
 
-      await pause(45);
+      window.setTimeout(() => {
+        setPlinkoExplosionSlot(null);
+        setPlinkoRewardNotice({
+          playerName: topFive[playerIndex],
+          reward: plinkoResults[playerIndex] ?? null,
+        });
+        setPlinkoDropping(false);
+      }, 520);
+    };
 
-      await animateTo(
-        recoilXAbs - startCenterX,
-        recoilYAbs - startCenterY,
-        direction * -8,
-        175,
-        "cubic-bezier(.15,.82,.22,1)",
+    const simulateStep = (dt: number) => {
+      // Gravity is continuous; there are no scripted peg-to-peg waypoints.
+      vy += gravity * dt;
+
+      // Very light air resistance keeps the C4 from becoming unrealistically fast.
+      const air = Math.pow(0.995, dt * 60);
+      vx *= air;
+      vy *= Math.pow(0.999, dt * 60);
+      angularVelocity *= Math.pow(0.985, dt * 60);
+
+      // The final slot is selected fairly before the animation. This subtle force only
+      // reproduces that already-selected result while keeping the actual peg contacts physical.
+      const distanceToTarget = targetX - x;
+      const verticalProgress = Math.max(
+        0,
+        Math.min(1, (y - originY) / Math.max(1, slotTopY - originY)),
       );
-    }
 
-    const currentAbsoluteX = startCenterX + currentX;
-    const finalApproachX =
-      currentAbsoluteX + (slotCenterX - currentAbsoluteX) * 0.72;
-    const finalApproachY = slotCenterY - 18;
+      const guideStrength = 4 + verticalProgress * 10;
+      vx += Math.max(-guideStrength, Math.min(guideStrength, distanceToTarget * 0.018)) * dt * 60;
 
-    await animateTo(
-      finalApproachX - startCenterX,
-      finalApproachY - startCenterY,
-      0,
-      240,
-      "cubic-bezier(.2,.75,.18,1)",
-    );
+      // Stronger but still smooth funnel only after the last peg rows.
+      if (y > slotTopY - 105) {
+        const funnelProgress = Math.max(0, Math.min(1, (y - (slotTopY - 105)) / 105));
+        vx += distanceToTarget * (0.8 + funnelProgress * 2.4) * dt;
+        vx *= Math.pow(0.975, dt * 60);
+      }
 
-    await animateTo(
-      slotCenterX - startCenterX,
-      slotCenterY - startCenterY,
-      2,
-      320,
-      "cubic-bezier(.18,.8,.18,1)",
-    );
+      x += vx * dt;
+      y += vy * dt;
+      angle += angularVelocity * dt;
 
-    setPlinkoLandedSlot(slotIndex);
-    setPlinkoExplosionSlot(slotIndex);
-    setPlinkoDropSlots((current) => ({
-      ...current,
-      [playerIndex]: slotIndex,
-    }));
+      // Soft side walls.
+      if (x - ballRadius < fieldLeft) {
+        x = fieldLeft + ballRadius;
+        if (vx < 0) vx = -vx * 0.58;
+        angularVelocity += 24;
+      } else if (x + ballRadius > fieldRight) {
+        x = fieldRight - ballRadius;
+        if (vx > 0) vx = -vx * 0.58;
+        angularVelocity -= 24;
+      }
 
-    window.setTimeout(() => {
-      setPlinkoExplosionSlot(null);
-      setPlinkoRewardNotice({
-        playerName: topFive[playerIndex],
-        reward: plinkoResults[playerIndex] ?? null,
-      });
-      setPlinkoDropping(false);
-    }, 520);
+      // Resolve every real collision. A frame can hit any peg(s); there is no "one peg per row".
+      for (const peg of pegBodies) {
+        const dx = x - peg.x;
+        const dy = y - peg.y;
+        const minDistance = ballRadius + peg.radius;
+        const distanceSquared = dx * dx + dy * dy;
+
+        if (distanceSquared >= minDistance * minDistance) continue;
+
+        const distance = Math.sqrt(Math.max(distanceSquared, 0.0001));
+        const nx = dx / distance;
+        const ny = dy / distance;
+        const overlap = minDistance - distance;
+
+        // Push the C4 out of the peg so it can never travel through its centre.
+        x += nx * (overlap + 0.35);
+        y += ny * (overlap + 0.35);
+
+        const normalVelocity = vx * nx + vy * ny;
+
+        if (normalVelocity < 0) {
+          const tx = -ny;
+          const ty = nx;
+          const tangentVelocity = vx * tx + vy * ty;
+
+          const bouncedNormal = -normalVelocity * restitution;
+          const keptTangent = tangentVelocity * tangentRetention;
+
+          vx = nx * bouncedNormal + tx * keptTangent;
+          vy = ny * bouncedNormal + ty * keptTangent;
+
+          // Tiny imperfect-contact impulse prevents sterile mirrored paths.
+          vx += (Math.random() - 0.5) * 7;
+
+          // A real impact also rotates the rectangular C4.
+          angularVelocity +=
+            (tx * vx + ty * vy) * 0.32 +
+            (Math.random() - 0.5) * 34;
+
+          registerHit(peg.key);
+        }
+      }
+
+      // Once the C4 reaches the slot mouths, progressively settle it into the
+      // already-selected equal-odds slot instead of snapping from the peg field.
+      if (y > slotTopY - 34) {
+        x += (targetX - x) * Math.min(0.12, dt * 5.5);
+      }
+
+      if (y >= targetY) {
+        finishDrop();
+      }
+    };
+
+    const frame = (timestamp: number) => {
+      if (finished) return;
+
+      const frameSeconds = Math.min(0.035, (timestamp - lastTimestamp) / 1000);
+      lastTimestamp = timestamp;
+      accumulator += frameSeconds;
+
+      while (accumulator >= fixedStep && !finished) {
+        simulateStep(fixedStep);
+        accumulator -= fixedStep;
+      }
+
+      renderC4();
+
+      if (!finished) {
+        plinkoAnimationRef.current = window.requestAnimationFrame(frame);
+      } else {
+        plinkoAnimationRef.current = null;
+      }
+    };
+
+    plinkoAnimationRef.current = window.requestAnimationFrame(frame);
   }
 
   function spinWheel() {
