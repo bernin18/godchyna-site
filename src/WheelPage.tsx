@@ -137,7 +137,22 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="wheel-preview-center"><span>RODA DO</span><small>CHYNAO</small></div>
               {previewNames.map((name,index) => {
                 const angle = index * (360 / previewNames.length) + (360 / previewNames.length) / 2;
-                return <span key={name} className="wheel-preview-name" style={{ transform: `rotate(${angle}deg) translateY(-185px) rotate(${-angle}deg)` }}>{name}</span>;
+                const normalized = ((angle % 360) + 360) % 360;
+                const flip = normalized > 90 && normalized < 270 ? 180 : 0;
+                const fontSize = name.length > 16 ? 7 : name.length > 12 ? 8 : 9;
+
+                return (
+                  <span
+                    key={`${name}-${index}`}
+                    className="wheel-preview-name"
+                    style={{
+                      fontSize: `${fontSize}px`,
+                      transform: `rotate(${angle}deg) translateY(-185px) rotate(${90 + flip}deg)`,
+                    }}
+                  >
+                    {name}
+                  </span>
+                );
               })}
             </div>
             <div className="wheel-stage-label"><span>01</span> SURVIVOR WHEEL <i>→</i> TOP 5 <i>→</i> PLINKO</div>
