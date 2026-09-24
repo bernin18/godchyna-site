@@ -497,25 +497,32 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-labelledby="wheel-elimination-title"
           >
             <div className="wheel-elimination-modal">
-              <span className="wheel-elimination-kicker">{pick("ELIMINADO", "ELIMINATED")}</span>
-              <h2 id="wheel-elimination-title">
-                <strong>{eliminationNotice.name}</strong>{" "}
-                {pick("foste eliminado!", "you were eliminated!")}
-              </h2>
-              <p>{pick("Obrigado por participares.", "Thanks for taking part.")}</p>
-
-              {eliminationNotice.remainingEntries > 0 && (
-                <div className="wheel-lives-message">
-                  <strong>{eliminationNotice.name}</strong>,{" "}
-                  {pick(
-                    eliminationNotice.remainingEntries === 1
-                      ? "ainda te resta 1 entrada! Não desanimes!"
-                      : `ainda te restam ${eliminationNotice.remainingEntries} entradas! Não desanimes!`,
-                    eliminationNotice.remainingEntries === 1
-                      ? "you still have 1 entry left! Don't give up!"
-                      : `you still have ${eliminationNotice.remainingEntries} entries left! Don't give up!`,
-                  )}
-                </div>
+              {eliminationNotice.remainingEntries > 0 ? (
+                <>
+                  <span className="wheel-elimination-kicker wheel-still-in-kicker">
+                    {pick("AINDA ESTÁS EM JOGO", "STILL IN THE GAME")}
+                  </span>
+                  <h2 id="wheel-elimination-title" className="wheel-still-in-title">
+                    <strong>{eliminationNotice.name}</strong>,{" "}
+                    {pick(
+                      eliminationNotice.remainingEntries === 1
+                        ? "ainda te resta 1 entrada! Não desanimes!"
+                        : `ainda te restam ${eliminationNotice.remainingEntries} entradas! Não desanimes!`,
+                      eliminationNotice.remainingEntries === 1
+                        ? "you still have 1 entry left! Don't give up!"
+                        : `you still have ${eliminationNotice.remainingEntries} entries left! Don't give up!`,
+                    )}
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <span className="wheel-elimination-kicker">{pick("ELIMINADO", "ELIMINATED")}</span>
+                  <h2 id="wheel-elimination-title">
+                    <strong>{eliminationNotice.name}</strong>{" "}
+                    {pick("foste eliminado!", "you were eliminated!")}
+                  </h2>
+                  <p>{pick("Obrigado por participares.", "Thanks for taking part.")}</p>
+                </>
               )}
 
               <button
