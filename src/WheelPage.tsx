@@ -412,9 +412,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   if (configuring && session && showPlinko && topFive) {
     const pegRows = Array.from({ length: 9 }, (_, rowIndex) =>
-      Array.from({ length: rowIndex % 2 === 0 ? 8 : 9 }, (_, pegIndex) => pegIndex),
+      Array.from({ length: rowIndex + 3 }, (_, pegIndex) => pegIndex),
     );
-    const slotCount = 7;
+    const slotCount = 9;
 
     return (
       <>
@@ -482,13 +482,20 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div className="plinko-machine-inner">
                   <div className="plinko-drop-zone">
                     <span>{pick("DROP ZONE", "DROP ZONE")}</span>
-                    <div className="plinko-ball-placeholder" />
+                    <div className="plinko-drop-port" />
+                    <div className="plinko-c4-placeholder" aria-hidden="true">
+                      <span className="plinko-c4-screen">00:40</span>
+                      <span className="plinko-c4-keypad" />
+                      <span className="plinko-c4-wire wire-a" />
+                      <span className="plinko-c4-wire wire-b" />
+                    </div>
                   </div>
 
                   <div className="plinko-pegs">
                     {pegRows.map((row, rowIndex) => (
                       <div
-                        className={`plinko-peg-row${rowIndex % 2 === 0 ? " even" : " odd"}`}
+                        className="plinko-peg-row"
+                        style={{ width: `${28 + rowIndex * 8}%` }}
                         key={rowIndex}
                       >
                         {row.map((pegIndex) => (
