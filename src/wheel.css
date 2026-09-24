@@ -11,7 +11,9 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 radial-gradient(circle at 50% 45%,rgba(244,191,47,.08),transparent 28%),
 linear-gradient(145deg,#091116,#05090c);overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.30),inset 0 0 45px rgba(244,191,47,.018)}
 .wheel-preview-glow{position:absolute;width:440px;height:440px;border-radius:50%;background:rgba(244,191,47,.08);filter:blur(55px)}
-.wheel-preview{position:relative;width:440px;height:440px;border-radius:50%;border:8px solid #111b20;background:conic-gradient(
+.wheel-preview{position:relative;width:440px;height:440px;border-radius:50%;border:8px solid #111b20;background:
+repeating-conic-gradient(from 0deg,#4f3a1b 0deg .42deg,transparent .42deg 30deg),
+conic-gradient(
 #b9851f 0deg 30deg,#111a20 30deg 60deg,#754b1a 60deg 90deg,#263238 90deg 120deg,
 #b9851f 120deg 150deg,#111a20 150deg 180deg,#754b1a 180deg 210deg,#263238 210deg 240deg,
 #b9851f 240deg 270deg,#111a20 270deg 300deg,#754b1a 300deg 330deg,#263238 330deg 360deg);
