@@ -157,7 +157,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [plinkoHitPegs, setPlinkoHitPegs] = useState<string[]>([]);
   const [plinkoLandedSlot, setPlinkoLandedSlot] = useState<number | null>(null);
   const [plinkoExplosionSlot, setPlinkoExplosionSlot] = useState<number | null>(null);
-  const [plinkoRewardNotice, setPlinkoRewardNotice] = useState<{ playerName: string; slotIndex: number } | null>(null);
+  const [plinkoRewardNotice, setPlinkoRewardNotice] = useState<{ playerName: string; reward: PlinkoResult | null } | null>(null);
   const plinkoC4Ref = useRef<HTMLDivElement | null>(null);
   const plinkoBoardRef = useRef<HTMLElement | null>(null);
   const [busy, setBusy] = useState(false);
@@ -540,7 +540,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setPlinkoExplosionSlot(null);
       setPlinkoRewardNotice({
         playerName: topFive[playerIndex],
-        slotIndex,
+        reward: plinkoResults[playerIndex] ?? null,
       });
       setPlinkoDropping(false);
     }, 520);
@@ -815,16 +815,38 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           >
             <div className="plinko-reward-modal">
               <span className="plinko-reward-kicker">{pick("DROP CONCLUÍDO", "DROP COMPLETE")}</span>
+
+              <div className="plinko-reward-skin">
+                {plinkoRewardNotice.reward ? (
+                  <img
+                    src={plinkoRewardNotice.reward.imageUrl}
+                    alt={plinkoRewardNotice.reward.skinName}
+                  />
+                ) : (
+                  <div className="plinko-reward-skin-placeholder" aria-hidden="true">
+                    <span>SKIN</span>
+                  </div>
+                )}
+              </div>
+
               <h2 id="plinko-reward-title">
+                {pick("O player", "Player")}{" "}
                 <strong>{plinkoRewardNotice.playerName}</strong>{" "}
-                {pick(
-                  `caiu na SLOT ${String(plinkoRewardNotice.slotIndex + 1).padStart(2, "0")}!`,
-                  `landed on SLOT ${String(plinkoRewardNotice.slotIndex + 1).padStart(2, "0")}!`,
+                {pick("tirou uma", "pulled a")}{" "}
+                {plinkoRewardNotice.reward ? (
+                  <>
+                    <strong>{plinkoRewardNotice.reward.skinName}</strong>{" "}
+                    {pick("no valor de", "worth")}{" "}
+                    <em>{plinkoRewardNotice.reward.valueEur.toFixed(2)} €</em>!
+                  </>
+                ) : (
+                  <>{pick("skin!", "skin!")}</>
                 )}
               </h2>
+
               <p>{pick(
-                "Quando adicionarmos as skins, aqui aparecerá a skin ganha e o respetivo valor.",
-                "Once skins are added, the won skin and its value will appear here.",
+                "Parabéns e boa sorte!",
+                "Congratulations and good luck!",
               )}</p>
               <button
                 type="button"
