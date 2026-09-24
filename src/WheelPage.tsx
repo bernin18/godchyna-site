@@ -1,7 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
-import type { ComponentType } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import type { ComponentType, CSSProperties } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { ArrowRight, LogIn, LogOut, Ticket, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, LogIn, LogOut, Ticket, Trash2, UserRound, Users } from "lucide-react";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import "./wheel.css";
@@ -19,6 +19,27 @@ type AccountData = {
 };
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
+const WHEEL_GOLD = "#b9851f";
+const WHEEL_DARK = "#111a20";
+
+function wheelGradient(count: number) {
+  const segmentCount = Math.max(count, 12);
+  const step = 360 / segmentCount;
+
+  return `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
+    const color = index % 2 === 0 ? WHEEL_GOLD : WHEEL_DARK;
+    return `${color} ${index * step}deg ${(index + 1) * step}deg`;
+  }).join(",")})`;
+}
+
+function nameFontSize(name: string, count: number) {
+  if (count > 70) return 5;
+  if (count > 50) return 6;
+  if (count > 34) return 7;
+  if (name.length > 18) return 7;
+  if (name.length > 13) return 8;
+  return 9;
+}
 
 export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const { pick } = useLanguage();
@@ -27,10 +48,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [loadingSession, setLoadingSession] = useState(true);
   const [loadingAccount, setLoadingAccount] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [configuring, setConfiguring] = useState(false);
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [participantInput, setParticipantInput] = useState("");
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [participantMessage, setParticipantMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -42,7 +67,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
-      if (!nextSession) setAccount(null);
+      if (!nextSession) {
+        setAccount(null);
+        setConfiguring(false);
+      }
     });
 
     return () => data.subscription.unsubscribe();
@@ -117,6 +145,205 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const activeUntil = account?.activeUntil ? new Date(account.activeUntil) : null;
   const hasActivePass = account?.role === "admin" || Boolean(activeUntil && activeUntil.getTime() > Date.now());
 
+  async function openConfigurator() {
+    if (!account || loadingAccount) return;
+
+    if (account.role === "admin" || hasActivePass) {
+      setConfiguring(true);
+      return;
+    }
+
+    if (account.dayPasses > 0) {
+      setBusy(true);
+      const { data, error } = await supabase.rpc("activate_day_pass");
+      setBusy(false);
+
+      if (error || !data?.[0]) {
+        setMessage(pick("Não foi possível ativar o Day Pass.", "Unable to activate the Day Pass."));
+        return;
+      }
+
+      setAccount((current) => current ? {
+        ...current,
+        dayPasses: data[0].day_passes,
+        activeUntil: data[0].active_until,
+      } : current);
+      setConfiguring(true);
+      return;
+    }
+
+    setMessage(pick(
+      "Precisas de um Day Pass ativo para configurar um sorteio.",
+      "You need an active Day Pass to set up a giveaway.",
+    ));
+  }
+
+  function loadParticipants() {
+    const entries = participantInput
+      .split(/\r?\n/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+
+    if (entries.length < 2) {
+      setParticipantMessage(pick(
+        "Adiciona pelo menos 2 entradas, uma por linha.",
+        "Add at least 2 entries, one per line.",
+      ));
+      return;
+    }
+
+    setParticipants(entries);
+    setParticipantMessage(pick(
+      `${entries.length} entradas carregadas. Nomes repetidos contam como entradas separadas.`,
+      `${entries.length} entries loaded. Repeated names count as separate entries.`,
+    ));
+  }
+
+  function clearParticipants() {
+    setParticipantInput("");
+    setParticipants([]);
+    setParticipantMessage("");
+  }
+
+  const draftCount = useMemo(
+    () => participantInput.split(/\r?\n/).map((entry) => entry.trim()).filter(Boolean).length,
+    [participantInput],
+  );
+
+  const configGradient = useMemo(() => wheelGradient(participants.length), [participants.length]);
+
+  const renderWheelNames = (names: string[], preview = false) => names.map((name, index) => {
+    const angle = index * (360 / names.length) + (360 / names.length) / 2;
+    const fontSize = nameFontSize(name, names.length);
+
+    if (preview) {
+      return (
+        <span
+          key={`${name}-${index}`}
+          className="wheel-preview-name"
+          style={{
+            fontSize: `${fontSize}px`,
+            transform: `rotate(${angle}deg) translateY(-185px) rotate(-90deg)`,
+          }}
+        >
+          {name}
+        </span>
+      );
+    }
+
+    const style = {
+      "--wheel-name-angle": `${angle}deg`,
+      "--wheel-name-size": `${fontSize}px`,
+    } as CSSProperties;
+
+    return (
+      <span key={`${name}-${index}`} className="giveaway-wheel-name" style={style}>
+        {name}
+      </span>
+    );
+  });
+
+  if (configuring && session) {
+    return (
+      <>
+        <Header />
+        <main className="wheel-page wheel-page-config">
+          <section className="wheel-config-layout">
+            <div className="wheel-config-stage">
+              <div className="wheel-config-glow" />
+              <div className="wheel-config-pointer" />
+              <div
+                className="giveaway-wheel"
+                style={{ background: configGradient }}
+                aria-label={pick("Roda do sorteio", "Giveaway wheel")}
+              >
+                <div className="giveaway-wheel-center">
+                  <span>RODA DO</span>
+                  <strong>CHYNAO</strong>
+                </div>
+                {participants.length > 0 && renderWheelNames(participants)}
+              </div>
+            </div>
+
+            <aside className="participants-panel">
+              <div className="participants-panel-head">
+                <div>
+                  <span>{pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")}</span>
+                  <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
+                </div>
+                <button type="button" className="participants-back" onClick={() => setConfiguring(false)}>
+                  <ArrowLeft /> {pick("VOLTAR", "BACK")}
+                </button>
+              </div>
+
+              <div className="participants-count-row">
+                <span>{pick("ENTRADAS NA LISTA", "ENTRIES IN LIST")}</span>
+                <strong>{draftCount}</strong>
+              </div>
+
+              <textarea
+                className="participants-input"
+                value={participantInput}
+                onChange={(event) => {
+                  setParticipantInput(event.target.value);
+                  setParticipantMessage("");
+                }}
+                placeholder={pick(
+                  "Um nome por linha...\nRui\nRui\nMiguel\nAna",
+                  "One name per line...\nRui\nRui\nMiguel\nAna",
+                )}
+                spellCheck={false}
+              />
+
+              <p className="participants-note">
+                {pick(
+                  "Nomes repetidos são permitidos e contam como entradas diferentes.",
+                  "Repeated names are allowed and count as separate entries.",
+                )}
+              </p>
+
+              <div className="participants-actions">
+                <button type="button" className="participants-load" onClick={loadParticipants}>
+                  {pick("CARREGAR NA RODA", "LOAD INTO WHEEL")} <ArrowRight />
+                </button>
+                <button type="button" className="participants-clear" onClick={clearParticipants} aria-label={pick("Limpar participantes", "Clear participants")}>
+                  <Trash2 />
+                </button>
+              </div>
+
+              {participantMessage && <p className="participants-message">{participantMessage}</p>}
+
+              <div className="participants-loaded">
+                <div className="participants-loaded-head">
+                  <span>{pick("NA RODA", "ON WHEEL")}</span>
+                  <strong>{participants.length}</strong>
+                </div>
+                <div className="participants-list">
+                  {participants.length === 0 ? (
+                    <p>{pick("Ainda não carregaste participantes.", "No participants loaded yet.")}</p>
+                  ) : participants.map((participant, index) => (
+                    <div className="participant-row" key={`${participant}-${index}`}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <strong>{participant}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {participants.length > 0 && (
+                <div className="wheel-ready-status">
+                  <i />
+                  <span>{pick("RODA PRONTA", "WHEEL READY")}</span>
+                  <small>{pick("A rotação será o próximo passo.", "Spinning is the next step.")}</small>
+                </div>
+              )}
+            </aside>
+          </section>
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -135,23 +362,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="wheel-pointer" />
             <div className="wheel-preview" aria-label={pick("Pré-visualização da roda", "Wheel preview")}>
               <div className="wheel-preview-center"><span>RODA DO</span><small>CHYNAO</small></div>
-              {previewNames.map((name,index) => {
-                const angle = index * (360 / previewNames.length) + (360 / previewNames.length) / 2;
-                const fontSize = name.length > 16 ? 7 : name.length > 12 ? 8 : 9;
-
-                return (
-                  <span
-                    key={`${name}-${index}`}
-                    className="wheel-preview-name"
-                    style={{
-                      fontSize: `${fontSize}px`,
-                      transform: `rotate(${angle}deg) translateY(-185px) rotate(-90deg)`,
-                    }}
-                  >
-                    {name}
-                  </span>
-                );
-              })}
+              {renderWheelNames(previewNames, true)}
             </div>
             <div className="wheel-stage-label"><span>01</span> SURVIVOR WHEEL <i>→</i> TOP 5 <i>→</i> PLINKO</div>
           </div>
@@ -246,9 +457,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
                 </div>
 
-                <button className="wheel-use-btn logged" type="button">
-                  {pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")} <ArrowRight />
+                <button className="wheel-use-btn logged" type="button" onClick={openConfigurator} disabled={busy || loadingAccount}>
+                  {busy ? pick("A ATIVAR...", "ACTIVATING...") : pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")} <ArrowRight />
                 </button>
+                {message && <p className="wheel-auth-message">{message}</p>}
               </div>
             )}
           </aside>
