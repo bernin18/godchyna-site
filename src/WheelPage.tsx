@@ -84,6 +84,18 @@ function nameFontSize(name: string, count: number) {
   return 10;
 }
 
+function uniqueParticipantNames(entries: string[]) {
+  const unique = new Map<string, string>();
+
+  entries.forEach((entry) => {
+    const trimmed = entry.trim();
+    const key = trimmed.toLocaleLowerCase();
+    if (trimmed && !unique.has(key)) unique.set(key, trimmed);
+  });
+
+  return Array.from(unique.values());
+}
+
 function randomParticipantIndex(count: number) {
   if (count <= 1) return 0;
 
@@ -125,6 +137,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
   const [eliminationNotice, setEliminationNotice] = useState<{ name: string; remainingEntries: number } | null>(null);
+  const [pendingTopFive, setPendingTopFive] = useState<string[] | null>(null);
+  const [topFive, setTopFive] = useState<string[] | null>(null);
+  const [showTopFiveModal, setShowTopFiveModal] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -267,6 +282,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinner(null);
     setPendingWinnerIndex(null);
     setEliminationNotice(null);
+    setPendingTopFive(null);
+    setTopFive(null);
+    setShowTopFiveModal(false);
     setParticipantMessage(pick(
       `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
       `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
@@ -282,11 +300,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinner(null);
     setPendingWinnerIndex(null);
     setEliminationNotice(null);
+    setPendingTopFive(null);
+    setTopFive(null);
+    setShowTopFiveModal(false);
     setRotation(0);
   }
 
   function spinWheel() {
-    if (spinning || eliminationNotice || participants.length === 0) return;
+    if (spinning || eliminationNotice || topFive || participants.length === 0) return;
+
+    const uniqueNames = uniqueParticipantNames(participants);
+    if (uniqueNames.length <= 5) {
+      setTopFive(uniqueNames.slice(0, 5));
+      setShowTopFiveModal(true);
+      return;
+    }
 
     const winnerIndex = randomParticipantIndex(participants.length);
     const selectedName = participants[winnerIndex];
@@ -391,10 +419,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         (name) => name.trim().toLocaleLowerCase() === normalizedName,
                       ).length;
 
+                      const survivingNames = uniqueParticipantNames(nextParticipants);
+
                       setEliminationNotice({
                         name: eliminatedName,
                         remainingEntries,
                       });
+
+                      if (survivingNames.length === 5) {
+                        setPendingTopFive(survivingNames);
+                      }
 
                       return nextParticipants;
                     });
@@ -417,7 +451,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div>
                   <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
                 </div>
-                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice)}>
+                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}>
                   <ArrowLeft /> {pick("VOLTAR", "BACK")}
                 </button>
               </div>
@@ -439,11 +473,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   "One name per line...\nChyna\nChyna\nChyna\nChyna",
                 )}
                 spellCheck={false}
-                disabled={spinning || Boolean(eliminationNotice)}
+                disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}
               />
 
               <div className="participants-actions">
-                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning || Boolean(eliminationNotice)}>
+                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}>
                   {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
                 </button>
                 <button type="button" className="participants-clear" onClick={clearParticipants} disabled={spinning || Boolean(eliminationNotice)} aria-label={pick("Limpar participantes", "Clear participants")}>
@@ -468,7 +502,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
               </div>
 
-              {participants.length > 0 && (
+              {participants.length > 0 && !topFive && (
                 <button
                   type="button"
                   className="wheel-spin-btn"
@@ -477,6 +511,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 >
                   SPINNNNNNNNN
                 </button>
+              )}
+
+              {topFive && (
+                <div className="wheel-top-five-status">
+                  <span>TOP 5</span>
+                  <strong>{pick("DEFINIDO", "LOCKED IN")}</strong>
+                </div>
               )}
             </aside>
           </section>
@@ -521,10 +562,53 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="wheel-elimination-continue"
-                onClick={() => setEliminationNotice(null)}
+                onClick={() => {
+                  setEliminationNotice(null);
+                  if (pendingTopFive) {
+                    setTopFive(pendingTopFive);
+                    setPendingTopFive(null);
+                    setShowTopFiveModal(true);
+                  }
+                }}
                 autoFocus
               >
                 {pick("CONTINUAR", "CONTINUE")}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {topFive && showTopFiveModal && (
+          <div
+            className="wheel-elimination-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="wheel-top-five-title"
+          >
+            <div className="wheel-top-five-modal">
+              <span className="wheel-top-five-kicker">TOP 5</span>
+              <h2 id="wheel-top-five-title">{pick("FINALISTAS DEFINIDOS!", "FINALISTS LOCKED IN!")}</h2>
+              <p>{pick(
+                "A Roda do Chynao terminou. Estes 5 seguem para o Plinko.",
+                "The Chyna Wheel is finished. These 5 move on to Plinko.",
+              )}</p>
+
+              <div className="wheel-top-five-list">
+                {topFive.map((name, index) => (
+                  <div className="wheel-top-five-row" key={`${name}-${index}`}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{name}</strong>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="wheel-top-five-close"
+                onClick={() => setShowTopFiveModal(false)}
+                autoFocus
+              >
+                {pick("VER TOP 5 NA RODA", "VIEW TOP 5 ON WHEEL")}
               </button>
             </div>
           </div>
