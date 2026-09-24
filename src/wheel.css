@@ -198,8 +198,8 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-round-badge{width:78px;height:58px;border:1px solid rgba(185,133,31,.38);border-radius:9px;background:#081014;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(185,133,31,.06)}
 .plinko-round-badge span{color:#657477;font-size:7px;font-weight:900;letter-spacing:.16em}
 .plinko-round-badge strong{margin-top:2px;color:#d9aa43;font-family:"Chakra Petch",sans-serif;font-size:24px;line-height:1}
-.plinko-layout{display:grid;grid-template-columns:300px minmax(620px,1fr);gap:24px;align-items:stretch}
-.plinko-finalists{min-height:590px;padding:20px;border:1px solid #203238;border-radius:14px;background:linear-gradient(145deg,#081217,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.23);display:flex;flex-direction:column}
+.plinko-layout{display:grid;grid-template-columns:300px minmax(0,640px);gap:32px;align-items:start;justify-content:center}
+.plinko-finalists{min-height:640px;padding:20px;border:1px solid #203238;border-radius:14px;background:linear-gradient(145deg,#081217,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.23);display:flex;flex-direction:column}
 .plinko-panel-title{padding-bottom:13px;border-bottom:1px solid #192a2f;display:flex;align-items:end;justify-content:space-between}
 .plinko-panel-title span{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:22px;font-weight:900}
 .plinko-panel-title strong{color:#869496;font-size:8px;letter-spacing:.15em}
@@ -211,27 +211,32 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-rule{margin-top:auto;padding:13px;border:1px solid rgba(185,133,31,.20);border-radius:8px;background:rgba(185,133,31,.035)}
 .plinko-rule span{color:#b9851f;font-size:7px;font-weight:900;letter-spacing:.16em}
 .plinko-rule p{margin:5px 0 0;color:#758486;font-size:9px;line-height:1.5}
-.plinko-machine{position:relative;min-height:590px;padding:15px;border:1px solid rgba(185,133,31,.42);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.07);overflow:hidden}
+.plinko-machine{position:relative;width:100%;max-width:640px;min-height:640px;padding:14px;border:1px solid rgba(185,133,31,.42);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.07);overflow:hidden}
 .plinko-machine::before{content:"";position:absolute;inset:7px;border:1px solid rgba(185,133,31,.13);border-radius:11px;pointer-events:none}
 .plinko-marquee{position:absolute;z-index:4;inset:5px 12px auto;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
 .plinko-marquee span{width:7px;height:7px;border-radius:50%;background:#b9851f;box-shadow:0 0 8px rgba(185,133,31,.55)}
 .plinko-marquee span:nth-child(3n){background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.55)}
-.plinko-machine-inner{height:100%;min-height:558px;padding:35px 28px 20px;border-radius:10px;background:
+.plinko-machine-inner{height:100%;min-height:610px;padding:24px 24px 18px;border-radius:10px;background:
 linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
 linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px),
 radial-gradient(circle at 50% 18%,rgba(185,133,31,.06),transparent 34%),
 linear-gradient(180deg,#071014,#050a0d);background-size:26px 26px,26px 26px,auto,auto;display:flex;flex-direction:column}
-.plinko-drop-zone{height:54px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.plinko-drop-zone{position:relative;height:92px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .plinko-drop-zone>span{color:#617071;font-size:7px;font-weight:900;letter-spacing:.16em}
-.plinko-ball-placeholder{width:22px;height:22px;margin-top:8px;border:2px solid #20f39a;border-radius:50%;background:radial-gradient(circle at 35% 30%,#eafff7,#20f39a 35%,#08784e 75%);box-shadow:0 0 18px rgba(32,243,154,.38)}
-.plinko-pegs{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;padding:6px 7% 12px}
-.plinko-peg-row{display:flex;align-items:center;justify-content:space-between}
-.plinko-peg-row.odd{padding:0 5.7%}
-.plinko-peg{width:11px;height:11px;border-radius:50%;border:1px solid #c99835;background:radial-gradient(circle at 35% 30%,#f1d28b,#9b6a1b 62%,#4b3011);box-shadow:0 0 8px rgba(185,133,31,.24),0 2px 4px rgba(0,0,0,.55)}
-.plinko-slots{height:92px;display:grid;grid-template-columns:repeat(7,1fr);gap:7px;align-items:end}
-.plinko-slot{height:78px;padding:8px 4px;border:1px solid #293a3f;border-radius:7px;background:linear-gradient(180deg,#0b161b,#070c0f);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 18px rgba(0,0,0,.35)}
+.plinko-drop-port{width:42px;height:14px;margin-top:8px;border:1px solid rgba(185,133,31,.42);border-radius:999px;background:#020507;box-shadow:inset 0 0 12px rgba(0,0,0,.8),0 0 12px rgba(185,133,31,.09)}
+.plinko-c4-placeholder{position:relative;width:42px;height:34px;margin-top:7px;border:1px solid #3e494b;border-radius:4px;background:linear-gradient(145deg,#2a3030,#151919);box-shadow:0 5px 10px rgba(0,0,0,.5),0 0 11px rgba(32,243,154,.09);transform:rotate(-3deg)}
+.plinko-c4-screen{position:absolute;left:5px;top:5px;width:22px;height:9px;border-radius:2px;background:#07110c;color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:5px;font-weight:900;display:grid;place-items:center;box-shadow:inset 0 0 6px rgba(32,243,154,.16)}
+.plinko-c4-keypad{position:absolute;left:6px;bottom:5px;width:20px;height:10px;background:repeating-linear-gradient(90deg,#737a76 0 3px,#272d2d 3px 5px),repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.35) 3px 4px);opacity:.8}
+.plinko-c4-wire{position:absolute;right:3px;width:11px;height:2px;border-radius:999px;transform-origin:right center}
+.plinko-c4-wire.wire-a{top:10px;background:#d8ad3d;transform:rotate(28deg)}
+.plinko-c4-wire.wire-b{top:17px;background:#20f39a;transform:rotate(-24deg)}
+.plinko-pegs{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:2px 4% 10px}
+.plinko-peg-row{display:flex;align-items:center;justify-content:space-between;transition:width .2s ease}
+.plinko-peg{width:10px;height:10px;border-radius:50%;border:1px solid #d4aa4b;background:radial-gradient(circle at 35% 30%,#f3e5be,#c39437 48%,#74521b 82%);box-shadow:0 0 7px rgba(185,133,31,.22),0 2px 4px rgba(0,0,0,.58)}
+.plinko-slots{height:78px;display:grid;grid-template-columns:repeat(9,1fr);gap:4px;align-items:end}
+.plinko-slot{height:64px;padding:6px 2px;border:1px solid #293a3f;border-radius:6px;background:linear-gradient(180deg,#0b161b,#070c0f);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 18px rgba(0,0,0,.35)}
 .plinko-slot span{color:#576669;font-size:6px;font-weight:900;letter-spacing:.12em}
-.plinko-slot strong{margin-top:4px;color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:16px}
+.plinko-slot strong{margin-top:4px;color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:14px}
 .plinko-actions{height:61px;margin-top:12px;display:flex;justify-content:space-between;gap:12px}
 .plinko-back-btn,.plinko-drop-btn{min-height:45px;border-radius:7px;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.1em}
 .plinko-back-btn{padding:0 14px;border:1px solid #293b40;background:#081116;color:#859294;display:flex;align-items:center;gap:7px;cursor:pointer}
@@ -243,12 +248,12 @@ linear-gradient(180deg,#071014,#050a0d);background-size:26px 26px,26px 26px,auto
  .plinko-page{height:calc(100vh - 74px);min-height:0;padding:10px 22px 12px;overflow:hidden}
  .plinko-head{height:72px}
  .plinko-head h1{font-size:39px}
- .plinko-layout{grid-template-columns:280px minmax(600px,1fr)}
+ .plinko-layout{grid-template-columns:280px minmax(0,560px);gap:24px}
  .plinko-finalists,.plinko-machine{min-height:0;height:calc(100vh - 167px)}
  .plinko-machine-inner{min-height:0;height:100%}
  .plinko-finalist{min-height:46px}
- .plinko-slots{height:78px}
- .plinko-slot{height:66px}
+ .plinko-slots{height:70px}
+ .plinko-slot{height:58px}
  .plinko-actions{height:50px;margin-top:8px}
 }
 
