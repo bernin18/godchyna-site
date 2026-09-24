@@ -380,6 +380,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const board = plinkoBoardRef.current;
     if (!c4 || !board) return;
 
+    // Every slot has exactly the same probability: 1 / 9.
     const slotIndex = randomParticipantIndex(9);
     const slot = board.querySelector<HTMLElement>(`[data-plinko-slot="${slotIndex}"]`);
     if (!slot) return;
@@ -394,6 +395,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const startRect = c4.getBoundingClientRect();
     const startCenterX = startRect.left + startRect.width / 2;
     const startCenterY = startRect.top + startRect.height / 2;
+    const c4HalfWidth = startRect.width / 2;
+    const c4HalfHeight = startRect.height / 2;
+
     const slotRect = slot.getBoundingClientRect();
     const slotCenterX = slotRect.left + slotRect.width / 2;
     const slotCenterY = slotRect.top + slotRect.height * 0.32;
@@ -425,11 +429,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       animation.cancel();
     };
 
+    const pause = (ms: number) => new Promise<void>((resolve) => {
+      window.setTimeout(resolve, ms);
+    });
+
     for (let rowIndex = 0; rowIndex < 11; rowIndex += 1) {
       const rowPegs = Array.from(
         board.querySelectorAll<HTMLElement>(`[data-plinko-row="${rowIndex}"] [data-plinko-peg]`),
       );
-
       if (!rowPegs.length) continue;
 
       const progress = (rowIndex + 1) / 12;
@@ -440,41 +447,82 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             (rowPegs[0].getBoundingClientRect().left + rowPegs[0].getBoundingClientRect().width / 2),
           )
         : 24;
-      const jitter = (Math.random() - 0.5) * Math.min(spacing * 0.55, 18);
+      const jitter = (Math.random() - 0.5) * Math.min(spacing * 0.42, 13);
       const desiredX = naturalX + jitter;
 
       let chosenIndex = 0;
+      let chosenSide: -1 | 1 = 1;
+      let chosenContactX = startCenterX;
       let chosenDistance = Number.POSITIVE_INFINITY;
 
       rowPegs.forEach((peg, pegIndex) => {
         const rect = peg.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const distance = Math.abs(centerX - desiredX);
-        if (distance < chosenDistance) {
-          chosenDistance = distance;
-          chosenIndex = pegIndex;
-        }
+        const pegCenterX = rect.left + rect.width / 2;
+        const clearance = c4HalfWidth + rect.width / 2 + 1.5;
+
+        ([-1, 1] as const).forEach((side) => {
+          const contactX = pegCenterX + side * clearance;
+          const currentAbsoluteX = startCenterX + currentX;
+          const score =
+            Math.abs(contactX - desiredX) +
+            Math.abs(contactX - currentAbsoluteX) * 0.18;
+
+          if (score < chosenDistance) {
+            chosenDistance = score;
+            chosenIndex = pegIndex;
+            chosenSide = side;
+            chosenContactX = contactX;
+          }
+        });
       });
 
       const peg = rowPegs[chosenIndex];
       const pegRect = peg.getBoundingClientRect();
       const pegCenterX = pegRect.left + pegRect.width / 2;
       const pegCenterY = pegRect.top + pegRect.height / 2;
-      const side = rowIndex % 2 === 0 ? -1 : 1;
-      const touchX = pegCenterX - startCenterX + side * 7;
-      const touchY = pegCenterY - startCenterY - 2;
-      const touchRotation = side * (8 + (rowIndex % 3) * 3);
+      const pegRadius = pegRect.width / 2;
 
-      await animateTo(touchX, touchY, touchRotation, 245 + rowIndex * 7);
+      // First move just above the peg, then hit its side instead of crossing over it.
+      const approachAbsoluteX =
+        (startCenterX + currentX) * 0.35 + chosenContactX * 0.65;
+      const approachAbsoluteY =
+        pegCenterY - c4HalfHeight - pegRadius - 6;
+
+      await animateTo(
+        approachAbsoluteX - startCenterX,
+        approachAbsoluteY - startCenterY,
+        chosenSide * 5,
+        150 + rowIndex * 4,
+        "cubic-bezier(.35,.08,.3,1)",
+      );
+
+      const contactY = pegCenterY - startCenterY;
+      await animateTo(
+        chosenContactX - startCenterX,
+        contactY,
+        chosenSide * 13,
+        105,
+        "cubic-bezier(.12,.75,.22,1)",
+      );
 
       setPlinkoHitPegs((current) => [
         ...current,
         `${rowIndex}-${chosenIndex}`,
       ]);
 
-      const bounceX = touchX + side * 7;
-      const bounceY = touchY + 5;
-      await animateTo(bounceX, bounceY, -touchRotation * 0.55, 90, "ease-out");
+      await pause(55);
+
+      // Recoil away from the peg and continue downwards.
+      const recoilAbsoluteX = chosenContactX + chosenSide * (9 + Math.random() * 4);
+      const recoilAbsoluteY = pegCenterY + c4HalfHeight * 0.55 + 10;
+
+      await animateTo(
+        recoilAbsoluteX - startCenterX,
+        recoilAbsoluteY - startCenterY,
+        chosenSide * -8,
+        105,
+        "cubic-bezier(.15,.82,.22,1)",
+      );
     }
 
     const finalX = slotCenterX - startCenterX;
