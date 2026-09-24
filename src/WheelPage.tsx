@@ -516,9 +516,43 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </aside>
 
               <section className="plinko-machine" aria-label={pick("Tabuleiro Plinko", "Plinko board")}>
-                <div className="plinko-marquee">
+                <div className="plinko-frame-lights top">
                   {Array.from({ length: 22 }, (_, index) => (
-                    <span key={index} />
+                    <span
+                      key={`top-${index}`}
+                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                      style={{ animationDelay: `${index * 0.08}s` }}
+                    />
+                  ))}
+                </div>
+
+                <div className="plinko-frame-lights bottom">
+                  {Array.from({ length: 22 }, (_, index) => (
+                    <span
+                      key={`bottom-${index}`}
+                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                      style={{ animationDelay: `${index * 0.08}s` }}
+                    />
+                  ))}
+                </div>
+
+                <div className="plinko-frame-lights left">
+                  {Array.from({ length: 16 }, (_, index) => (
+                    <span
+                      key={`left-${index}`}
+                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                      style={{ animationDelay: `${index * 0.08}s` }}
+                    />
+                  ))}
+                </div>
+
+                <div className="plinko-frame-lights right">
+                  {Array.from({ length: 16 }, (_, index) => (
+                    <span
+                      key={`right-${index}`}
+                      className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                      style={{ animationDelay: `${index * 0.08}s` }}
+                    />
                   ))}
                 </div>
 
