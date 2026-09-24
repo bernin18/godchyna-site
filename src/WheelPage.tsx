@@ -306,6 +306,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setRotation(0);
   }
 
+  function removeParticipant(indexToRemove: number) {
+    if (spinning || eliminationNotice || topFive) return;
+
+    setParticipants((current) => current.filter((_, index) => index !== indexToRemove));
+    setWinner(null);
+    setPendingWinner(null);
+    setPendingWinnerIndex(null);
+  }
+
   function spinWheel() {
     if (spinning || eliminationNotice || topFive || participants.length === 0) return;
 
@@ -497,6 +506,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <div className="participant-row" key={`${participant}-${index}`}>
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <strong>{participant}</strong>
+                      <button
+                        type="button"
+                        className="participant-remove"
+                        onClick={() => removeParticipant(index)}
+                        disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}
+                        aria-label={pick(`Remover ${participant}`, `Remove ${participant}`)}
+                        title={pick("Remover esta entrada", "Remove this entry")}
+                      >
+                        <Trash2 />
+                      </button>
                     </div>
                   ))}
                 </div>
