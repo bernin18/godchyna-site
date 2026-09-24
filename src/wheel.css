@@ -211,7 +211,12 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-finalist{min-height:54px;padding:0 10px;display:grid;grid-template-columns:34px 1fr auto;align-items:center;border-bottom:1px solid #14252a}
 .plinko-finalist>span{color:#556568;font-family:"Chakra Petch",sans-serif;font-size:8px}
 .plinko-finalist>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e8eeec;font-family:"Chakra Petch",sans-serif;font-size:12px}
-.plinko-finalist>i{font-style:normal;color:#52615f;font-size:7px;font-weight:900;letter-spacing:.1em}
+.plinko-finalist>i{font-style:normal;color:#627371;font-size:8px;font-weight:900;letter-spacing:.08em}
+.plinko-finalist-result{min-width:128px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.plinko-finalist-result img{width:38px;height:30px;object-fit:contain;border:1px solid rgba(185,133,31,.20);border-radius:5px;background:#071014}
+.plinko-finalist-result>div{min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.plinko-finalist-result b{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d8e2df;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:800}
+.plinko-finalist-result span{color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900}
 .plinko-rule{margin-top:14px;padding:16px 16px 18px;border:1px solid rgba(185,133,31,.24);border-radius:10px;background:rgba(185,133,31,.04)}
 .plinko-rule span{color:#b9851f;font-size:9px;font-weight:900;letter-spacing:.18em}
 .plinko-rule p{margin:8px 0 0;color:#8ea0a3;font-size:13px;line-height:1.6}
@@ -221,10 +226,8 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-marquee span{width:7px;height:7px;border-radius:50%;background:#b9851f;box-shadow:0 0 8px rgba(185,133,31,.55)}
 .plinko-marquee span:nth-child(3n){background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.55)}
 .plinko-machine-inner{height:100%;min-height:730px;padding:24px 6px 18px;border-radius:10px;background:
-linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px),
 radial-gradient(circle at 50% 18%,rgba(185,133,31,.06),transparent 34%),
-linear-gradient(180deg,#071014,#050a0d);background-size:26px 26px,26px 26px,auto,auto;display:flex;flex-direction:column}
+linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-drop-zone{position:relative;height:92px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .plinko-drop-zone>span{color:#617071;font-size:7px;font-weight:900;letter-spacing:.16em}
 .plinko-drop-port{width:34px;height:10px;margin-top:8px;border:1px solid rgba(185,133,31,.42);border-radius:999px;background:#020507;box-shadow:inset 0 0 12px rgba(0,0,0,.8),0 0 12px rgba(185,133,31,.09)}
