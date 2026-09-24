@@ -1692,7 +1692,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         <section className="wheel-showcase">
           <aside className="giveaway-history" aria-label={pick("Vencedores dos giveaways", "Giveaway winners")}>
             <div className="giveaway-history-head">
-              <span>{pick("HISTÓRICO", "HISTORY")}</span>
               <h2>{pick("VENCEDORES DOS GIVEAWAYS", "GIVEAWAY WINNERS")}</h2>
             </div>
 
