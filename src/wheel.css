@@ -254,22 +254,22 @@ linear-gradient(180deg,#05090c,#060b0e)}
  inherits:false;
  initial-value:0deg;
 }
-.plinko-machine{position:relative;width:100%;max-width:820px;min-height:760px;padding:14px;border:1px solid rgba(185,133,31,.20);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.06),0 0 24px rgba(32,243,154,.04);overflow:hidden;isolation:isolate}
-.plinko-machine::before,.plinko-machine::after{content:"";position:absolute;inset:4px;border-radius:13px;padding:2px;pointer-events:none;
+.plinko-machine{position:relative;width:100%;max-width:820px;min-height:760px;padding:14px;border:1px solid rgba(185,133,31,.24);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 48px rgba(185,133,31,.10),0 0 34px rgba(32,243,154,.08);overflow:hidden;isolation:isolate}
+.plinko-machine::before,.plinko-machine::after{content:"";position:absolute;inset:4px;border-radius:13px;padding:3px;pointer-events:none;
  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
  -webkit-mask-composite:xor;
  mask-composite:exclude}
 .plinko-machine::before{z-index:6;background:conic-gradient(
  from var(--plinko-snake-angle),
  transparent 0deg 258deg,
- rgba(243,244,242,.08) 268deg,
- #f3f4f2 280deg,
+ rgba(243,244,242,.18) 268deg,
+ #ffffff 280deg,
  #20f39a 302deg,
- #b9851f 326deg,
- rgba(185,133,31,.24) 342deg,
+ #d19a2a 326deg,
+ rgba(185,133,31,.38) 342deg,
  transparent 354deg 360deg
-);filter:drop-shadow(0 0 3px rgba(243,244,242,.32)) drop-shadow(0 0 7px rgba(32,243,154,.28)) drop-shadow(0 0 10px rgba(185,133,31,.22));animation:plinko-snake-run 3.1s linear infinite}
-.plinko-machine::after{z-index:5;padding:1px;background:linear-gradient(90deg,rgba(185,133,31,.18),rgba(32,243,154,.10),rgba(243,244,242,.08),rgba(185,133,31,.18));opacity:.72}
+);filter:drop-shadow(0 0 5px rgba(255,255,255,.52)) drop-shadow(0 0 11px rgba(32,243,154,.46)) drop-shadow(0 0 16px rgba(185,133,31,.34));animation:plinko-snake-run 3.1s linear infinite}
+.plinko-machine::after{z-index:5;padding:1px;background:linear-gradient(90deg,rgba(185,133,31,.26),rgba(32,243,154,.18),rgba(243,244,242,.14),rgba(185,133,31,.26));opacity:.86}
 @keyframes plinko-snake-run{to{--plinko-snake-angle:360deg}}
 .plinko-machine-inner{height:100%;min-height:730px;padding:24px 6px 18px;border-radius:10px;background:
 radial-gradient(circle at 50% 18%,rgba(185,133,31,.06),transparent 34%),
