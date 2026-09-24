@@ -406,6 +406,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .menu-btn{display:block;margin-left:0}
  .nav{display:none;position:absolute;left:0;right:0;top:74px;flex-direction:column;background:#060b0e;border-bottom:1px solid #1b2d31;padding:22px 28px;gap:22px}
  .nav.open{display:flex}
+ .nav a.wheel-nav-link{display:none}
  .hero{min-height:700px;padding:55px 30px;align-items:flex-start;background-position:68% center}
  .hero-copy{width:70%}
  .hero h1{font-size:82px}
