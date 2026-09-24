@@ -84,6 +84,26 @@ function nameFontSize(name: string, count: number) {
   return 10;
 }
 
+function randomParticipantIndex(count: number) {
+  if (count <= 1) return 0;
+
+  if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
+    const range = 0x100000000;
+    const limit = range - (range % count);
+    const values = new Uint32Array(1);
+    let value = 0;
+
+    do {
+      window.crypto.getRandomValues(values);
+      value = values[0];
+    } while (value >= limit);
+
+    return value % count;
+  }
+
+  return Math.floor(Math.random() * count);
+}
+
 export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const { pick } = useLanguage();
   const [session, setSession] = useState<Session | null>(null);
@@ -99,6 +119,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [participantInput, setParticipantInput] = useState("");
   const [participants, setParticipants] = useState<string[]>([]);
   const [participantMessage, setParticipantMessage] = useState("");
+  const [rotation, setRotation] = useState(0);
+  const [spinning, setSpinning] = useState(false);
+  const [pendingWinner, setPendingWinner] = useState<string | null>(null);
+  const [winner, setWinner] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -237,6 +261,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     setParticipants((current) => [...current, ...entries]);
     setParticipantInput("");
+    setWinner(null);
+    setPendingWinner(null);
     setParticipantMessage(pick(
       `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
       `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
@@ -244,9 +270,33 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function clearParticipants() {
+    if (spinning) return;
     setParticipantInput("");
     setParticipants([]);
     setParticipantMessage("");
+    setWinner(null);
+    setPendingWinner(null);
+    setRotation(0);
+  }
+
+  function spinWheel() {
+    if (spinning || participants.length === 0) return;
+
+    const winnerIndex = randomParticipantIndex(participants.length);
+    const selectedName = participants[winnerIndex];
+    const step = 360 / participants.length;
+    const selectedCenter = winnerIndex * step + step / 2;
+    const targetAngle = (360 - (selectedCenter % 360)) % 360;
+
+    setWinner(null);
+    setPendingWinner(selectedName);
+    setSpinning(true);
+
+    setRotation((currentRotation) => {
+      const currentAngle = ((currentRotation % 360) + 360) % 360;
+      const alignment = (targetAngle - currentAngle + 360) % 360;
+      return currentRotation + 6 * 360 + alignment;
+    });
   }
 
   const draftCount = useMemo(
@@ -306,15 +356,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="wheel-config-pointer" />
               <div
                 className="giveaway-wheel"
-                style={{ background: configGradient }}
                 aria-label={pick("Roda do sorteio", "Giveaway wheel")}
               >
-                <WheelDividers count={participants.length} />
+                <div
+                  className={`giveaway-wheel-rotor${spinning ? " is-spinning" : ""}`}
+                  style={{
+                    background: configGradient,
+                    transform: `rotate(${rotation}deg)`,
+                  }}
+                  onTransitionEnd={(event) => {
+                    if (event.propertyName !== "transform" || !spinning) return;
+                    setSpinning(false);
+                    setWinner(pendingWinner);
+                    setPendingWinner(null);
+                  }}
+                >
+                  <WheelDividers count={participants.length} />
+                  {participants.length > 0 && renderWheelNames(participants)}
+                </div>
                 <div className="giveaway-wheel-center">
                   <span>RODA DO</span>
                   <strong>CHYNAO</strong>
                 </div>
-                {participants.length > 0 && renderWheelNames(participants)}
               </div>
             </div>
 
@@ -323,7 +386,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div>
                   <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
                 </div>
-                <button type="button" className="participants-back" onClick={() => setConfiguring(false)}>
+                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning}>
                   <ArrowLeft /> {pick("VOLTAR", "BACK")}
                 </button>
               </div>
@@ -345,6 +408,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   "One name per line...\nChyna\nChyna\nChyna\nChyna",
                 )}
                 spellCheck={false}
+                disabled={spinning}
               />
 
               <p className="participants-note">
@@ -355,10 +419,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </p>
 
               <div className="participants-actions">
-                <button type="button" className="participants-load" onClick={loadParticipants}>
+                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning}>
                   {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
                 </button>
-                <button type="button" className="participants-clear" onClick={clearParticipants} aria-label={pick("Limpar participantes", "Clear participants")}>
+                <button type="button" className="participants-clear" onClick={clearParticipants} disabled={spinning} aria-label={pick("Limpar participantes", "Clear participants")}>
                   <Trash2 />
                 </button>
               </div>
@@ -382,8 +446,20 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
               </div>
 
+              {winner && (
+                <div className="wheel-spin-result" aria-live="polite">
+                  <span>{pick("CAIU EM", "LANDED ON")}</span>
+                  <strong>{winner}</strong>
+                </div>
+              )}
+
               {participants.length > 0 && (
-                <button type="button" className="wheel-spin-btn">
+                <button
+                  type="button"
+                  className="wheel-spin-btn"
+                  onClick={spinWheel}
+                  disabled={spinning}
+                >
                   SPINNNNNNNNN
                 </button>
               )}
