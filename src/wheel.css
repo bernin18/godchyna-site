@@ -193,7 +193,10 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-shell{width:min(1600px,100%);margin:0 auto}
 @keyframes plinko-page-reveal{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
 .plinko-head{height:88px;display:flex;align-items:center;justify-content:space-between;padding:0 4px}
-.plinko-head h1{margin:2px 0 0;color:#f3f4f2;font-family:"Exo 2",sans-serif;font-size:46px;font-style:italic;font-weight:900;line-height:.95;letter-spacing:-.035em}
+.plinko-head h1{margin:2px 0 0;font-family:"Exo 2",sans-serif;font-size:46px;font-style:italic;font-weight:900;line-height:.95;letter-spacing:-.035em}
+.plinko-title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.plinko-title span{color:#f3f4f2}
+.plinko-title em{color:#d9a637;font-style:italic;text-shadow:0 0 18px rgba(185,133,31,.16)}
 .plinko-head p{margin:7px 0 0;color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900;letter-spacing:.13em}
 .plinko-round-badge{width:78px;height:58px;border:1px solid rgba(185,133,31,.38);border-radius:9px;background:#081014;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(185,133,31,.06)}
 .plinko-round-badge span{color:#657477;font-size:7px;font-weight:900;letter-spacing:.16em}
