@@ -1322,10 +1322,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <h2 id="plinko-winner-title">
                 {pick("O player", "Player")}{" "}
                 <strong>{plinkoWinnerNotice.playerName}</strong>{" "}
-                {pick(
-                  "foi o vencedor do PLINKO DO CHYNAO!",
-                  "is the winner of CHYNAO'S PLINKO!",
-                )}
+                {pick("foi o vencedor do PLINKO DO", "is the winner of")}{" "}
+                <span className="plinko-winner-brand">CHYNAO</span>
+                {pick("!", "'S PLINKO!")}
               </h2>
 
               <p className="plinko-winner-congrats">
