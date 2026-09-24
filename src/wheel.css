@@ -219,7 +219,7 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-marquee{position:absolute;z-index:4;inset:5px 12px auto;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
 .plinko-marquee span{width:7px;height:7px;border-radius:50%;background:#b9851f;box-shadow:0 0 8px rgba(185,133,31,.55)}
 .plinko-marquee span:nth-child(3n){background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.55)}
-.plinko-machine-inner{height:100%;min-height:730px;padding:24px 18px 18px;border-radius:10px;background:
+.plinko-machine-inner{height:100%;min-height:730px;padding:24px 6px 18px;border-radius:10px;background:
 linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
 linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px),
 radial-gradient(circle at 50% 18%,rgba(185,133,31,.06),transparent 34%),
@@ -233,7 +233,7 @@ linear-gradient(180deg,#071014,#050a0d);background-size:26px 26px,26px 26px,auto
 .plinko-c4-wire{position:absolute;right:3px;width:11px;height:2px;border-radius:999px;transform-origin:right center}
 .plinko-c4-wire.wire-a{top:10px;background:#d8ad3d;transform:rotate(28deg)}
 .plinko-c4-wire.wire-b{top:17px;background:#20f39a;transform:rotate(-24deg)}
-.plinko-pegs{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:12px 2% 14px}
+.plinko-pegs{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:12px 0 14px}
 .plinko-peg-row{display:flex;align-items:center;justify-content:space-between;transition:width .2s ease}
 .plinko-peg{width:11px;height:11px;border-radius:50%;border:1px solid #d4aa4b;background:radial-gradient(circle at 35% 30%,#f3e5be,#c39437 48%,#74521b 82%);box-shadow:0 0 7px rgba(185,133,31,.22),0 2px 4px rgba(0,0,0,.58)}
 .plinko-slots{height:92px;display:grid;grid-template-columns:repeat(9,1fr);gap:6px;align-items:end}
