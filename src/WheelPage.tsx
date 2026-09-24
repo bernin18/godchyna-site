@@ -588,11 +588,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="wheel-top-five-modal">
               <span className="wheel-top-five-kicker">TOP 5</span>
               <h2 id="wheel-top-five-title">{pick("FINALISTAS DEFINIDOS!", "FINALISTS LOCKED IN!")}</h2>
-              <p>{pick(
-                "A Roda do Chynao terminou. Estes 5 seguem para o Plinko.",
-                "The Chyna Wheel is finished. These 5 move on to Plinko.",
-              )}</p>
-
               <div className="wheel-top-five-list">
                 {topFive.map((name, index) => (
                   <div className="wheel-top-five-row" key={`${name}-${index}`}>
@@ -608,7 +603,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 onClick={() => setShowTopFiveModal(false)}
                 autoFocus
               >
-                {pick("VER TOP 5 NA RODA", "VIEW TOP 5 ON WHEEL")}
+                FINALISSIMAAAA
               </button>
             </div>
           </div>
