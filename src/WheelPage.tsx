@@ -986,7 +986,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-labelledby="plinko-reward-title"
           >
             <div className="plinko-reward-modal">
-              <span className="plinko-reward-kicker">{pick("DROP CONCLUÍDO", "DROP COMPLETE")}</span>
 
               <div className="plinko-reward-skin">
                 {plinkoRewardNotice.reward ? (
