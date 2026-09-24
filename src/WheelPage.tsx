@@ -192,10 +192,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
-    setParticipants(entries);
+    setParticipants((current) => [...current, ...entries]);
+    setParticipantInput("");
     setParticipantMessage(pick(
-      `${entries.length} entradas carregadas. Nomes repetidos contam como entradas separadas.`,
-      `${entries.length} entries loaded. Repeated names count as separate entries.`,
+      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
+      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
     ));
   }
 
