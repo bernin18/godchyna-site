@@ -1,0 +1,46 @@
+.wheel-page{max-width:1600px;margin:auto;min-height:78vh;padding:58px 72px 90px;background:
+radial-gradient(circle at 12% 4%,rgba(248,193,45,.075),transparent 26rem),
+radial-gradient(circle at 90% 70%,rgba(32,243,154,.035),transparent 30rem)}
+.wheel-hero{max-width:920px;margin:0 auto 28px;text-align:center}
+.wheel-kicker{color:#f4bf2f;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:800;letter-spacing:.24em}
+.wheel-hero h1{font-family:"Exo 2",sans-serif;font-size:64px;font-style:italic;line-height:.95;margin:9px 0 16px;letter-spacing:-.045em}
+.wheel-hero h1 strong{color:#f4bf2f;text-shadow:0 0 26px rgba(244,191,47,.18)}
+.wheel-hero p{color:#aeb9b9;line-height:1.65;margin:0}
+.wheel-account-card{max-width:760px;margin:0 auto;padding:28px;border:1px solid #293338;border-radius:14px;background:linear-gradient(145deg,#091116,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.25),inset 0 0 35px rgba(244,191,47,.018)}
+.wheel-loading{text-align:center;color:#849194}
+.wheel-auth-head{display:flex;align-items:center;gap:13px}
+.wheel-auth-head>svg{width:37px;height:37px;padding:8px;border-radius:9px;color:#f4bf2f;border:1px solid rgba(244,191,47,.26);background:rgba(244,191,47,.05)}
+.wheel-auth-head span,.wheel-coming>span{display:block;color:#f4bf2f;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:800;letter-spacing:.17em}
+.wheel-auth-head h2{font-family:"Chakra Petch",sans-serif;font-size:22px;margin:2px 0 0}
+.wheel-auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:25px 0 18px;padding:4px;border:1px solid #1b292e;border-radius:9px;background:#070c0f}
+.wheel-auth-tabs button{min-height:40px;border:0;border-radius:6px;background:transparent;color:#738185;font-size:10px;font-weight:800;letter-spacing:.09em;cursor:pointer}
+.wheel-auth-tabs button.active{color:#111;background:#f4bf2f;box-shadow:0 0 17px rgba(244,191,47,.12)}
+.wheel-auth-form{display:grid;gap:14px}
+.wheel-auth-form label{display:grid;gap:7px}
+.wheel-auth-form label>span{color:#7e8a8c;font-size:9px;font-weight:800;letter-spacing:.13em}
+.wheel-auth-form input{width:100%;height:48px;padding:0 14px;border:1px solid #24353a;border-radius:7px;background:#080e12;color:#f4f7f6;outline:none;transition:.2s}
+.wheel-auth-form input:focus{border-color:rgba(244,191,47,.55);box-shadow:0 0 0 3px rgba(244,191,47,.055)}
+.wheel-primary-btn{height:50px;margin-top:4px;border:1px solid #ffd65b;border-radius:7px;display:flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(90deg,#dca51f,#f4bf2f);color:#120e03;font-size:11px;font-weight:900;letter-spacing:.08em;cursor:pointer}
+.wheel-primary-btn svg{width:17px}
+.wheel-primary-btn:disabled{opacity:.55;cursor:wait}
+.wheel-auth-message{margin:15px 0 0;padding:12px 14px;border:1px solid #28363a;border-radius:7px;color:#bdc6c5;background:#091116;font-size:12px;line-height:1.5}
+.wheel-account-top{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.wheel-signout{min-height:38px;padding:0 12px;border:1px solid #2a373b;border-radius:7px;display:flex;align-items:center;gap:7px;background:#0a1115;color:#b8c1c1;font-size:9px;font-weight:800;letter-spacing:.08em;cursor:pointer}
+.wheel-signout svg{width:15px}
+.wheel-account-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.wheel-account-grid>div{min-height:118px;padding:17px;border:1px solid #1c2d32;border-radius:10px;background:#071015;display:flex;flex-direction:column;justify-content:center}
+.wheel-account-grid svg{width:22px;color:#f4bf2f;margin-bottom:8px}
+.wheel-account-grid span{color:#778487;font-size:9px;font-weight:800;letter-spacing:.13em}
+.wheel-account-grid strong{font-family:"Chakra Petch",sans-serif;font-size:25px;margin-top:4px}
+.wheel-account-grid strong.active{color:#20f39a}
+.wheel-account-grid small{color:#718083;margin-top:4px;font-size:9px}
+.wheel-coming{margin-top:16px;padding:18px;border:1px solid rgba(244,191,47,.16);border-radius:10px;background:linear-gradient(90deg,rgba(244,191,47,.035),rgba(32,243,154,.018))}
+.wheel-coming h3{font-family:"Chakra Petch",sans-serif;margin:6px 0;font-size:19px;color:#f2f5f3}
+.wheel-coming p{margin:0;color:#94a0a1;font-size:12px;line-height:1.55}
+@media(max-width:720px){
+ .wheel-page{padding:40px 18px 65px}
+ .wheel-hero h1{font-size:45px}
+ .wheel-account-card{padding:20px}
+ .wheel-account-top{align-items:flex-start}
+ .wheel-account-grid{grid-template-columns:1fr}
+}

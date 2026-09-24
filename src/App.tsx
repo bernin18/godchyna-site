@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
 import ConfigsPage from "./ConfigsPage";
+import WheelPage from "./WheelPage";
 import { useLanguage } from "./i18n";
 import "./about.css";
 import "./extra-pages.css";
@@ -199,7 +200,7 @@ function Header() {
   const { pick } = useLanguage();
   const [open,setOpen]=useState(false);
   const path=window.location.pathname.replace(/\/$/,"");
-  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/loja");
+  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/wheel")&&!path.endsWith("/loja");
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -233,6 +234,7 @@ function Header() {
           <a className={path.endsWith("/parcerias")?"active":""} href="./parcerias" onClick={()=>setOpen(false)}>{pick("PARCERIAS","PARTNERS")}</a>
           <a className={path.endsWith("/giveaways")?"active":""} href="./giveaways" onClick={()=>setOpen(false)}>GIVEAWAYS</a>
           <a className={path.endsWith("/configs")?"active":""} href="./configs" onClick={()=>setOpen(false)}>SETUP & CONFIGS</a>
+          <a className={path.endsWith("/wheel")?"active wheel-nav-link": "wheel-nav-link"} href="./wheel" onClick={()=>setOpen(false)}>{pick("RODA DO CHYNAO","CHYNA WHEEL")}</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>{pick("LOJA","SHOP")}</a>
         </nav>
         <div className="header-actions"><LanguageSwitch/><div className="desktop-social"><SocialIcons /></div></div>
@@ -567,6 +569,7 @@ export default function App(){
   const path = window.location.pathname.replace(/\/$/, "");
   if(path.endsWith("/sobre")) return <AboutPage/>;
   if(path.endsWith("/configs")) return <ConfigsPage Header={Header} Footer={Footer}/>;
+  if(path.endsWith("/wheel")) return <WheelPage Header={Header} Footer={Footer}/>;
   if(path.endsWith("/parcerias")) return <PartnersPage/>;
   if(path.endsWith("/giveaways")) return <GiveawaysPage/>;
   if(path.endsWith("/loja")) return <StorePage/>;

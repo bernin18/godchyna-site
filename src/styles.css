@@ -26,6 +26,9 @@ button{font:inherit}
 .brand-beta{margin-top:5px;margin-left:2px;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;line-height:1;text-transform:uppercase;opacity:.92;text-shadow:0 0 8px rgba(32,243,154,.58),0 0 18px rgba(32,243,154,.18)}
 .nav{display:flex;gap:38px;margin-right:auto}
 .nav a{font-size:13px;letter-spacing:.08em;color:#d9dede;transition:.2s}
+.nav a.wheel-nav-link{color:#e7b630}
+.nav a.wheel-nav-link:hover,.nav a.wheel-nav-link.active{color:#ffd75b;text-shadow:0 0 16px rgba(244,191,47,.30)}
+
 .nav a:first-child,.nav a:hover{color:var(--green);text-shadow:0 0 16px rgba(32,243,154,.45)}
 .social-icons{display:flex;align-items:center;gap:21px}
 .social-icons svg{width:19px;height:19px}
