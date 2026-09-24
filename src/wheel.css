@@ -7,7 +7,29 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .wheel-hero h1{font-family:"Exo 2",sans-serif;font-size:64px;font-style:italic;line-height:.95;margin:9px 0 16px;letter-spacing:-.045em}
 .wheel-hero h1 strong{color:#f4bf2f;text-shadow:0 0 26px rgba(244,191,47,.18)}
 .wheel-hero p{color:#aeb9b9;line-height:1.65;margin:0}
-.wheel-showcase{display:grid;grid-template-columns:minmax(520px,1.25fr) minmax(330px,.75fr);gap:34px;align-items:center;max-width:1260px;margin:0 auto}
+.wheel-showcase{display:grid;grid-template-columns:250px minmax(520px,1fr) minmax(330px,.68fr);gap:26px;align-items:center;max-width:1540px;margin:0 auto}
+.giveaway-history{height:580px;padding:19px 14px 14px;border:1px solid #1f3035;border-radius:14px;background:linear-gradient(180deg,rgba(8,17,22,.96),rgba(5,10,13,.98));box-shadow:0 24px 70px rgba(0,0,0,.22),inset 0 0 34px rgba(32,243,154,.018);display:flex;flex-direction:column;overflow:hidden}
+.giveaway-history-head{padding:2px 7px 14px;border-bottom:1px solid #18282d}
+.giveaway-history-head>span{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.18em}
+.giveaway-history-head h2{margin:5px 0 0;color:#e8efed;font-family:"Chakra Petch",sans-serif;font-size:14px;line-height:1.15;letter-spacing:.025em}
+.giveaway-history-window{position:relative;min-height:0;flex:1;margin-top:12px;overflow:hidden}
+.giveaway-history-window::before,.giveaway-history-window::after{content:"";position:absolute;z-index:3;left:0;right:0;height:42px;pointer-events:none}
+.giveaway-history-window::before{top:0;background:linear-gradient(180deg,#071014,transparent)}
+.giveaway-history-window::after{bottom:0;background:linear-gradient(0deg,#060c0f,transparent)}
+.giveaway-history-track{display:flex;flex-direction:column;gap:10px;animation:giveaway-history-roll 22s linear infinite;will-change:transform}
+.giveaway-history:hover .giveaway-history-track{animation-play-state:paused}
+.giveaway-history-group{display:flex;flex-direction:column;gap:10px}
+.giveaway-history-card{min-height:66px;padding:10px 9px;border:1px solid #1c2d31;border-radius:8px;background:linear-gradient(145deg,#091317,#070d10);display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:8px;box-shadow:inset 0 0 18px rgba(0,0,0,.18)}
+.giveaway-history-number{width:27px;height:27px;border:1px solid rgba(185,133,31,.28);border-radius:6px;display:grid;place-items:center;color:#b9851f;background:rgba(185,133,31,.035);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900}
+.giveaway-history-info{min-width:0;display:flex;flex-direction:column;gap:3px}
+.giveaway-history-info strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#eef3f1;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900}
+.giveaway-history-info span{color:#657578;font-size:7px;font-weight:800;letter-spacing:.075em}
+.giveaway-history-card small{padding:3px 4px;border:1px solid rgba(32,243,154,.2);border-radius:4px;color:#20f39a;background:rgba(32,243,154,.025);font-size:5px;font-weight:900;letter-spacing:.08em}
+.giveaway-history-live{height:34px;margin-top:9px;border-top:1px solid #16262a;display:flex;align-items:flex-end;justify-content:center;gap:7px;color:#617174;font-size:6px;font-weight:900;letter-spacing:.12em}
+.giveaway-history-live i{width:6px;height:6px;border-radius:50%;background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.5);animation:giveaway-history-live 1.5s ease-in-out infinite}
+@keyframes giveaway-history-roll{from{transform:translateY(0)}to{transform:translateY(calc(-50% - 5px))}}
+@keyframes giveaway-history-live{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+
 .wheel-preview-wrap{position:relative;min-height:580px;display:flex;align-items:center;justify-content:center;border:1px solid #243137;border-radius:16px;background:
 radial-gradient(circle at 50% 45%,rgba(244,191,47,.08),transparent 28%),
 linear-gradient(145deg,#091116,#05090c);overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.30),inset 0 0 45px rgba(244,191,47,.018)}
@@ -58,6 +80,10 @@ box-shadow:0 0 0 2px rgba(185,133,31,.30),0 0 58px rgba(185,133,31,.16),inset 0 
 .wheel-account-grid span{color:#778487;font-size:8px;font-weight:800;letter-spacing:.12em}
 .wheel-account-grid strong{font-family:"Chakra Petch",sans-serif;font-size:21px;margin-top:4px}
 .wheel-account-grid strong.active{color:#20f39a}.wheel-account-grid small{color:#718083;margin-top:4px;font-size:9px}
+@media(max-width:1320px) and (min-width:1001px){
+ .wheel-showcase{grid-template-columns:minmax(520px,1fr) minmax(330px,.72fr);max-width:1180px}
+ .giveaway-history{display:none}
+}
 @media(max-width:1000px){
  .wheel-page{display:none}
  .wheel-mobile-block{min-height:calc(100vh - 74px);padding:56px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 42%,rgba(185,133,31,.08),transparent 24rem),#05090c}
