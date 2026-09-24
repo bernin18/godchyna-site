@@ -134,7 +134,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="wheel-preview-glow" />
             <div className="wheel-pointer" />
             <div className="wheel-preview" aria-label={pick("Pré-visualização da roda", "Wheel preview")}>
-              <div className="wheel-preview-center"><span>CHYNA</span><small>WHEEL</small></div>
+              <div className="wheel-preview-center"><span>RODA DO</span><small>CHYNAO</small></div>
               {previewNames.map((name,index) => {
                 const angle = index * (360 / previewNames.length) + (360 / previewNames.length) / 2;
                 return <span key={name} className="wheel-preview-name" style={{ transform: `rotate(${angle}deg) translateY(-185px) rotate(${-angle}deg)` }}>{name}</span>;
