@@ -328,6 +328,9 @@ export default function ConfigsPage({ Header, Footer }: ConfigsPageProps) {
           <div className="configs-hero-row">
             <h1 className="configs-title-art">
               <img src={asset("chynao.png?v=1")} alt={pick("Setup do Chynao","Chynao setup")} />
+              <span className="configs-title-mobile" aria-hidden="true">
+                <b>SETUP DO</b> <em>CHYNAO</em>
+              </span>
             </h1>
             <div className="configs-agent" aria-hidden="true">
               <div className="configs-agent-glow" />
