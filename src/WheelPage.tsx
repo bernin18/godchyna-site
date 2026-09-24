@@ -92,6 +92,72 @@ const ROUND_1_SKINS: PlinkoResult[] = [
   },
 ];
 
+const ROUND_2_SKINS: PlinkoResult[] = [
+  {
+    label: "Bloodsport",
+    skinName: "AK-47 | Bloodsport",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_30 (1).png",
+    valueEur: 155,
+    status: "safe",
+  },
+  {
+    label: "Aquamarine Revenge",
+    skinName: "AK-47 | Aquamarine Revenge",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_30 (2).png",
+    valueEur: 175,
+    status: "safe",
+  },
+  {
+    label: "Neon Rider",
+    skinName: "AK-47 | Neon Rider",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_30 (3).png",
+    valueEur: 225,
+    status: "safe",
+  },
+  {
+    label: "Kill Confirmed",
+    skinName: "USP-S | Kill Confirmed",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_31 (4).png",
+    valueEur: 240,
+    status: "safe",
+  },
+  {
+    label: "The Emperor",
+    skinName: "M4A4 | The Emperor",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_31 (5).png",
+    valueEur: 250,
+    status: "safe",
+  },
+  {
+    label: "Chantico's Fire",
+    skinName: "M4A1-S | Chantico's Fire",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_32 (6).png",
+    valueEur: 265,
+    status: "safe",
+  },
+  {
+    label: "Fuel Injector",
+    skinName: "AK-47 | Fuel Injector",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_32 (7).png",
+    valueEur: 360,
+    status: "safe",
+  },
+  {
+    label: "Printstream",
+    skinName: "M4A1-S | Printstream",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_32 (8).png",
+    valueEur: 410,
+    status: "safe",
+  },
+  {
+    label: "Containment Breach",
+    skinName: "AWP | Containment Breach",
+    imageUrl: "/skins/round-2/ChatGPT Image 24_09_2026, 19_14_33 (9).png",
+    valueEur: 425,
+    status: "safe",
+  },
+];
+
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const giveawayHistoryDemo = [
   { player: "PLAYER_01", giveaway: "GIVEAWAY #006" },
@@ -281,6 +347,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     plinkoPlayers.length > 2
       ? `TOP ${plinkoPlayers.length} → TOP ${plinkoPlayers.length - 1}`
       : pick("FINAL · TOP 2 → VENCEDOR", "FINAL · TOP 2 → WINNER");
+
+  const activePlinkoSkins =
+    plinkoRound === 2 ? ROUND_2_SKINS : ROUND_1_SKINS;
 
   const plinkoPhaseIndexes =
     plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0
@@ -656,7 +725,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!c4 || !board) return;
 
     // The outcome remains perfectly uniform: every slot is 1 / 9.
-    const slotIndex = randomParticipantIndex(ROUND_1_SKINS.length);
+    const slotIndex = randomParticipantIndex(activePlinkoSkins.length);
     const slot = board.querySelector<HTMLElement>(`[data-plinko-slot="${slotIndex}"]`);
     if (!slot) return;
 
@@ -779,7 +848,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       angle *= 0.35;
       renderC4();
 
-      const landedReward = ROUND_1_SKINS[landedSlotIndex];
+      const landedReward = activePlinkoSkins[landedSlotIndex];
 
       setPlinkoLandedSlot(landedSlotIndex);
       setPlinkoExplosionSlot(landedSlotIndex);
@@ -962,6 +1031,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     [participantInput],
   );
 
+  const fastWheelSpin = uniqueParticipantNames(participants).length > 10;
+
   const configGradient = useMemo(() => wheelGradient(participants.length), [participants.length]);
 
   const renderWheelNames = (names: string[], preview = false) => names.map((name, index) => {
@@ -999,7 +1070,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const pegRows = Array.from({ length: 11 }, (_, rowIndex) =>
       Array.from({ length: rowIndex + 3 }, (_, pegIndex) => pegIndex),
     );
-    const slotCount = ROUND_1_SKINS.length;
+    const slotCount = activePlinkoSkins.length;
 
     return (
       <>
@@ -1183,7 +1254,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
 
                   <div className="plinko-slots">
-                    {ROUND_1_SKINS.map((skin, index) => (
+                    {activePlinkoSkins.map((skin, index) => (
                       <div
                         className={`plinko-slot${plinkoLandedSlot === index ? " landed" : ""}${plinkoExplosionSlot === index ? " exploding" : ""}`}
                         data-plinko-slot={index}
@@ -1426,7 +1497,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 aria-label={pick("Roda do sorteio", "Giveaway wheel")}
               >
                 <div
-                  className={`giveaway-wheel-rotor${spinning ? " is-spinning" : ""}`}
+                  className={`giveaway-wheel-rotor${spinning ? " is-spinning" : ""}${spinning && fastWheelSpin ? " is-fast" : ""}`}
                   style={{
                     background: configGradient,
                     transform: `rotate(${rotation}deg)`,
