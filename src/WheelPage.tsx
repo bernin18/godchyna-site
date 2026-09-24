@@ -21,13 +21,22 @@ type AccountData = {
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_GOLD = "#b9851f";
 const WHEEL_DARK = "#111a20";
+const WHEEL_DARK_ALT = "#162129";
 
 function wheelGradient(count: number) {
   const segmentCount = Math.max(count, 1);
   const step = 360 / segmentCount;
 
   return `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
-    const color = index % 2 === 0 ? WHEEL_GOLD : WHEEL_DARK;
+    const isOddWheel = segmentCount > 1 && segmentCount % 2 === 1;
+    const isLastSegment = index === segmentCount - 1;
+
+    const color = isOddWheel && isLastSegment
+      ? WHEEL_DARK_ALT
+      : index % 2 === 0
+        ? WHEEL_GOLD
+        : WHEEL_DARK;
+
     return `${color} ${index * step}deg ${(index + 1) * step}deg`;
   }).join(",")})`;
 }
