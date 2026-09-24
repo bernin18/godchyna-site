@@ -262,10 +262,14 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-slot.landed{border-color:rgba(32,243,154,.72);background:linear-gradient(180deg,rgba(32,243,154,.13),#07100d);box-shadow:inset 0 0 22px rgba(32,243,154,.08),0 0 18px rgba(32,243,154,.16)}
 .plinko-slot.landed span{color:#8ccab1}
 .plinko-slot.landed strong{color:#20f39a;text-shadow:0 0 10px rgba(32,243,154,.36)}
-.plinko-slot.exploding{animation:plinko-slot-explosion .52s ease-out}
-.plinko-slot.exploding::after{content:"";position:absolute;left:50%;top:45%;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff7d6 0 16%,#f4ba32 17% 38%,rgba(32,243,154,.72) 39% 58%,transparent 70%);transform:translate(-50%,-50%);animation:plinko-explosion-burst .52s ease-out forwards;pointer-events:none}
-@keyframes plinko-slot-explosion{0%{filter:brightness(1)}30%{filter:brightness(2.2)}100%{filter:brightness(1)}}
-@keyframes plinko-explosion-burst{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(6)}}
+.plinko-machine.is-flashing::after{content:"";position:absolute;inset:0;z-index:20;border-radius:inherit;background:rgba(255,255,255,.88);pointer-events:none;animation:plinko-board-flash .34s ease-out forwards}
+.plinko-slot.exploding{z-index:22;animation:plinko-slot-explosion .46s ease-out}
+.plinko-slot.exploding::before{content:"";position:absolute;left:50%;top:42%;width:18px;height:18px;border:2px solid rgba(255,255,255,.95);border-radius:50%;transform:translate(-50%,-50%) scale(.2);box-shadow:0 0 16px rgba(255,255,255,.9),0 0 28px rgba(32,243,154,.5),0 0 40px rgba(185,133,31,.45);animation:plinko-explosion-ring .46s ease-out forwards;pointer-events:none}
+.plinko-slot.exploding::after{content:"";position:absolute;left:50%;top:42%;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#fff 0 20%,#fff4c6 21% 34%,#f1b12d 35% 50%,rgba(32,243,154,.8) 51% 64%,transparent 72%);transform:translate(-50%,-50%) scale(.18);filter:blur(.2px);animation:plinko-explosion-burst .46s ease-out forwards;pointer-events:none}
+@keyframes plinko-board-flash{0%{opacity:0}12%{opacity:.72}38%{opacity:.2}100%{opacity:0}}
+@keyframes plinko-slot-explosion{0%{filter:brightness(1)}22%{filter:brightness(3)}100%{filter:brightness(1)}}
+@keyframes plinko-explosion-burst{0%{opacity:0;transform:translate(-50%,-50%) scale(.18)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(6.4)}}
+@keyframes plinko-explosion-ring{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}22%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(4.8)}}
 .plinko-back-btn{min-height:45px;border-radius:7px;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.1em}
 .plinko-back-btn{padding:0 14px;border:1px solid #293b40;background:#081116;color:#859294;display:flex;align-items:center;gap:7px;cursor:pointer}
 .plinko-back-btn svg{width:14px}
