@@ -814,7 +814,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
               </aside>
 
-              <section ref={plinkoBoardRef} className="plinko-machine" aria-label={pick("Tabuleiro Plinko", "Plinko board")}>
+              <section
+                ref={plinkoBoardRef}
+                className={`plinko-machine${plinkoExplosionSlot !== null ? " is-flashing" : ""}`}
+                aria-label={pick("Tabuleiro Plinko", "Plinko board")}
+              >
                 <div className="plinko-frame-lights top">
                   {Array.from({ length: 22 }, (_, index) => (
                     <span
