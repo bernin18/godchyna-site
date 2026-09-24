@@ -143,6 +143,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [topFive, setTopFive] = useState<string[] | null>(null);
   const [showTopFiveModal, setShowTopFiveModal] = useState(false);
   const [showPlinko, setShowPlinko] = useState(false);
+  const [showPlinkoTransition, setShowPlinkoTransition] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -297,6 +298,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setTopFive(null);
     setShowTopFiveModal(false);
     setShowPlinko(false);
+    setShowPlinkoTransition(false);
     setParticipantMessage(pick(
       `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
       `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
@@ -316,6 +318,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setTopFive(null);
     setShowTopFiveModal(false);
     setShowPlinko(false);
+    setShowPlinkoTransition(false);
     setRotation(0);
   }
 
@@ -326,6 +329,19 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setWinner(null);
     setPendingWinner(null);
     setPendingWinnerIndex(null);
+  }
+
+  function startPlinkoTransition() {
+    setShowTopFiveModal(false);
+    setShowPlinkoTransition(true);
+
+    window.setTimeout(() => {
+      setShowPlinko(true);
+    }, 850);
+
+    window.setTimeout(() => {
+      setShowPlinkoTransition(false);
+    }, 1700);
   }
 
   function spinWheel() {
@@ -413,10 +429,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </main>
 
         <main className="plinko-page">
+          {showPlinkoTransition && (
+            <div className="plinko-transition-overlay plinko-transition-overlay-out" aria-hidden="true">
+              <div className="plinko-transition-cloud" />
+              <div className="plinko-transition-content">
+                <span>FINALISSIMAAAA</span>
+                <strong>PLINKO MODE</strong>
+              </div>
+            </div>
+          )}
           <section className="plinko-shell">
             <header className="plinko-head">
               <div>
-                <span className="plinko-kicker">GODCHYNA GIVEAWAYS</span>
                 <h1>PLINKO</h1>
                 <p>{pick("ROUND 1 · TOP 5 → TOP 4", "ROUND 1 · TOP 5 → TOP 4")}</p>
               </div>
@@ -727,6 +751,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           </div>
         )}
 
+        {showPlinkoTransition && (
+          <div className="plinko-transition-overlay" aria-hidden="true">
+            <div className="plinko-transition-cloud" />
+            <div className="plinko-transition-content">
+              <span>FINALISSIMAAAA</span>
+              <strong>PLINKO MODE</strong>
+            </div>
+          </div>
+        )}
+
         {topFive && showTopFiveModal && (
           <div
             className="wheel-elimination-overlay"
@@ -749,10 +783,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="wheel-top-five-close"
-                onClick={() => {
-                  setShowTopFiveModal(false);
-                  setShowPlinko(true);
-                }}
+                onClick={startPlinkoTransition}
                 autoFocus
               >
                 FINALISSIMAAAA
