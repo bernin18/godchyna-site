@@ -348,7 +348,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
               <div className="participants-actions">
                 <button type="button" className="participants-load" onClick={loadParticipants}>
-                  {pick("CARREGAR NA RODA", "LOAD INTO WHEEL")} <ArrowRight />
+                  {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
                 </button>
                 <button type="button" className="participants-clear" onClick={clearParticipants} aria-label={pick("Limpar participantes", "Clear participants")}>
                   <Trash2 />
@@ -376,7 +376,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
               {participants.length > 0 && (
                 <button type="button" className="wheel-spin-btn">
-                  SPINNNNN <ArrowRight />
+                  SPIN
                 </button>
               )}
             </aside>
