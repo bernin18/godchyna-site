@@ -627,8 +627,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         <section className="wheel-hero">
           <h1>{pick("RODA DO", "CHYNA'S")} <strong>{pick("CHYNAO", "WHEEL")}</strong></h1>
           <p>{pick(
-            "Survivor Wheel → TOP 5 → Plinko. Sorteios rápidos, visuais e feitos para stream.",
-            "Survivor Wheel → TOP 5 → Plinko. Fast, visual giveaways built for stream.",
+            "Survivor Wheel → TOP 5 → Plinko. Sorteios rápidos, visuais e feitos para giveaways.",
+            "Survivor Wheel → TOP 5 → Plinko. Fast, visual and built for giveaways.",
           )}</p>
         </section>
 
@@ -641,7 +641,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="wheel-preview-center"><span>RODA DO</span><small>CHYNAO</small></div>
               {renderWheelNames(previewNames, true)}
             </div>
-            <div className="wheel-stage-label"><span>01</span> SURVIVOR WHEEL <i>→</i> TOP 5 <i>→</i> PLINKO</div>
+            <div className="wheel-stage-label">SURVIVOR WHEEL &amp; PLINKO</div>
           </div>
 
           <aside className="wheel-side-panel">
