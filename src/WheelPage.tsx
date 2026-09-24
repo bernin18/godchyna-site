@@ -499,7 +499,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     {pegRows.map((row, rowIndex) => (
                       <div
                         className="plinko-peg-row"
-                        style={{ width: `${24 + rowIndex * 6.2}%` }}
+                        style={{ width: `${34 + rowIndex * 6.6}%` }}
                         key={rowIndex}
                       >
                         {row.map((pegIndex) => (
