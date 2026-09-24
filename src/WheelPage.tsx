@@ -313,7 +313,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <aside className="participants-panel">
               <div className="participants-panel-head">
                 <div>
-                  <span>{pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")}</span>
                   <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
                 </div>
                 <button type="button" className="participants-back" onClick={() => setConfiguring(false)}>
