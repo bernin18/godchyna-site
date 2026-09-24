@@ -442,13 +442,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 disabled={spinning || Boolean(eliminationNotice)}
               />
 
-              <p className="participants-note">
-                {pick(
-                  "Nomes repetidos são permitidos e contam como entradas diferentes.",
-                  "Repeated names are allowed and count as separate entries.",
-                )}
-              </p>
-
               <div className="participants-actions">
                 <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning || Boolean(eliminationNotice)}>
                   {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
@@ -457,8 +450,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <Trash2 />
                 </button>
               </div>
-
-              {participantMessage && <p className="participants-message">{participantMessage}</p>}
 
               <div className="participants-loaded">
                 <div className="participants-loaded-head">
