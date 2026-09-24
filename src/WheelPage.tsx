@@ -291,6 +291,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return (
       <>
         <Header />
+        <main className="wheel-mobile-block">
+          <span>{pick("APENAS PC", "DESKTOP ONLY")}</span>
+          <h1>{pick("RODA DO CHYNAO", "CHYNA WHEEL")}</h1>
+          <p>{pick(
+            "Esta ferramenta foi feita para usar no PC durante as streams.",
+            "This tool was built for desktop use during streams.",
+          )}</p>
+        </main>
         <main className="wheel-page wheel-page-config">
           <section className="wheel-config-layout">
             <div className="wheel-config-stage">
@@ -389,6 +397,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   return (
     <>
       <Header />
+      <main className="wheel-mobile-block">
+        <span>{pick("APENAS PC", "DESKTOP ONLY")}</span>
+        <h1>{pick("RODA DO CHYNAO", "CHYNA WHEEL")}</h1>
+        <p>{pick(
+          "Esta ferramenta foi feita para usar no PC durante as streams.",
+          "This tool was built for desktop use during streams.",
+        )}</p>
+      </main>
       <main className="wheel-page">
         <section className="wheel-hero">
           <h1>{pick("RODA DO", "CHYNA'S")} <strong>{pick("CHYNAO", "WHEEL")}</strong></h1>
