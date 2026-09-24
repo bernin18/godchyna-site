@@ -411,7 +411,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   });
 
   if (configuring && session && showPlinko && topFive) {
-    const pegRows = Array.from({ length: 9 }, (_, rowIndex) =>
+    const pegRows = Array.from({ length: 11 }, (_, rowIndex) =>
       Array.from({ length: rowIndex + 3 }, (_, pegIndex) => pegIndex),
     );
     const slotCount = 9;
@@ -463,11 +463,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   ))}
                 </div>
 
+                <button type="button" className="plinko-drop-btn" disabled>
+                  REBENTAAAAA
+                </button>
+
                 <div className="plinko-rule">
                   <span>{pick("REGRA", "RULE")}</span>
                   <p>{pick(
-                    "Cada jogador terá um drop. O menor resultado será eliminado.",
-                    "Each player gets one drop. The lowest result is eliminated.",
+                    "Cada jogador terá uma rodada. Quem tirar a skin de menor valor será eliminado.",
+                    "Each player gets one round. Whoever gets the lowest-value skin is eliminated.",
                   )}</p>
                 </div>
               </aside>
@@ -495,7 +499,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     {pegRows.map((row, rowIndex) => (
                       <div
                         className="plinko-peg-row"
-                        style={{ width: `${28 + rowIndex * 8}%` }}
+                        style={{ width: `${24 + rowIndex * 6.2}%` }}
                         key={rowIndex}
                       >
                         {row.map((pegIndex) => (
@@ -528,9 +532,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               >
                 <ArrowLeft /> {pick("VOLTAR AO TOP 5", "BACK TO TOP 5")}
               </button>
-              <button type="button" className="plinko-drop-btn" disabled>
-                {pick("DROP — EM BREVE", "DROP — COMING SOON")}
-              </button>
+
             </div>
           </section>
         </main>
