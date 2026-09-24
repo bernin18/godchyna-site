@@ -158,6 +158,72 @@ const ROUND_2_SKINS: PlinkoResult[] = [
   },
 ];
 
+const ROUND_3_SKINS: PlinkoResult[] = [
+  {
+    label: "Blue Phosphor",
+    skinName: "M4A1-S | Blue Phosphor",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_42 (1).png",
+    valueEur: 525,
+    status: "safe",
+  },
+  {
+    label: "Fade",
+    skinName: "AWP | Fade",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_42 (2).png",
+    valueEur: 680,
+    status: "safe",
+  },
+  {
+    label: "Vulcan",
+    skinName: "AK-47 | Vulcan",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_42 (3).png",
+    valueEur: 585,
+    status: "safe",
+  },
+  {
+    label: "Icarus Fell",
+    skinName: "M4A1-S | Icarus Fell",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_43 (4).png",
+    valueEur: 460,
+    status: "safe",
+  },
+  {
+    label: "Oni Taiji",
+    skinName: "AWP | Oni Taiji",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_43 (5).png",
+    valueEur: 570,
+    status: "safe",
+  },
+  {
+    label: "Blaze",
+    skinName: "Desert Eagle | Blaze",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_43 (6).png",
+    valueEur: 600,
+    status: "safe",
+  },
+  {
+    label: "Lightning Strike",
+    skinName: "AWP | Lightning Strike",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_43 (7).png",
+    valueEur: 450,
+    status: "safe",
+  },
+  {
+    label: "Eye of Horus",
+    skinName: "M4A4 | Eye of Horus",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_43 (8).png",
+    valueEur: 700,
+    status: "safe",
+  },
+  {
+    label: "Jet Set",
+    skinName: "AK-47 | Jet Set",
+    imageUrl: "/skins/round-3/ChatGPT Image 25_09_2026, 01_03_43 (9).png",
+    valueEur: 1040,
+    status: "safe",
+  },
+];
+
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const giveawayHistoryDemo = [
   { player: "PLAYER_01", giveaway: "GIVEAWAY #006" },
@@ -349,7 +415,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       : pick("FINAL · TOP 2 → VENCEDOR", "FINAL · TOP 2 → WINNER");
 
   const activePlinkoSkins =
-    plinkoRound === 2 ? ROUND_2_SKINS : ROUND_1_SKINS;
+    plinkoRound === 2
+      ? ROUND_2_SKINS
+      : plinkoRound === 3
+        ? ROUND_3_SKINS
+        : ROUND_1_SKINS;
 
   const plinkoPhaseIndexes =
     plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0
