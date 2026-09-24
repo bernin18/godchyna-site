@@ -312,11 +312,22 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
     if (!minimumEntry) return;
 
-    // A repeated skin at the elimination threshold is a true tie.
-    // Nobody with the same skin can be eliminated directly.
-    const tiedSkinEntries = comparisonResults.filter(
-      ({ result }) => result.skinName === minimumEntry.result.skinName,
-    );
+    const minimumSlot = plinkoDropSlots[minimumEntry.index];
+
+    // Defensive rule: the same landing slot means the exact same skin.
+    // If more than one active player landed there, elimination is forbidden
+    // until those players complete a tiebreak.
+    const tiedSkinEntries = comparisonResults.filter(({ index, result }) => {
+      const sameSlot =
+        minimumSlot !== undefined &&
+        plinkoDropSlots[index] === minimumSlot;
+
+      const sameSkinFallback =
+        result.skinName.trim().toLocaleLowerCase() ===
+        minimumEntry.result.skinName.trim().toLocaleLowerCase();
+
+      return sameSlot || sameSkinFallback;
+    });
 
     if (tiedSkinEntries.length > 1) {
       const tiedIndexes = tiedSkinEntries.map(({ index }) => index);
@@ -332,6 +343,46 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const eliminatedIndex = minimumEntry.index;
     const eliminatedResult = roundResults[eliminatedIndex];
+
+    // Last safety net: never eliminate someone if another active player
+    // has the same slot/skin result.
+    const duplicateOfEliminated = comparisonResults.find(({ index, result }) => {
+      if (index === eliminatedIndex) return false;
+
+      const sameSlot =
+        plinkoDropSlots[eliminatedIndex] !== undefined &&
+        plinkoDropSlots[index] === plinkoDropSlots[eliminatedIndex];
+
+      const sameSkin =
+        result.skinName.trim().toLocaleLowerCase() ===
+        eliminatedResult.skinName.trim().toLocaleLowerCase();
+
+      return sameSlot || sameSkin;
+    });
+
+    if (duplicateOfEliminated) {
+      const tiedIndexes = comparisonResults
+        .filter(({ index, result }) => {
+          const sameSlot =
+            plinkoDropSlots[eliminatedIndex] !== undefined &&
+            plinkoDropSlots[index] === plinkoDropSlots[eliminatedIndex];
+
+          const sameSkin =
+            result.skinName.trim().toLocaleLowerCase() ===
+            eliminatedResult.skinName.trim().toLocaleLowerCase();
+
+          return sameSlot || sameSkin;
+        })
+        .map(({ index }) => index);
+
+      setPlinkoTieNotice({
+        indexes: tiedIndexes,
+        names: tiedIndexes.map((index) => plinkoPlayers[index]),
+        skinName: eliminatedResult.skinName,
+        valueEur: eliminatedResult.valueEur,
+      });
+      return;
+    }
     const survivors = plinkoPlayers.filter((_, index) => index !== eliminatedIndex);
     const winnerIndex =
       survivors.length === 1
