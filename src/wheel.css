@@ -226,7 +226,7 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-frame-lights.top,.plinko-frame-lights.bottom{left:10px;right:10px;justify-content:space-between}
 .plinko-frame-lights.top{top:8px}
 .plinko-frame-lights.bottom{bottom:8px}
-.plinko-frame-lights.left,.plinko-frame-lights.right{top:30px;bottom:30px;flex-direction:column;justify-content:space-between}
+.plinko-frame-lights.left,.plinko-frame-lights.right{top:54px;bottom:54px;flex-direction:column;justify-content:space-between}
 .plinko-frame-lights.left{left:8px}
 .plinko-frame-lights.right{right:8px}
 .plinko-bulb{width:8px;height:8px;border-radius:50%;opacity:.9;animation:plinko-bulb-pulse 1.8s ease-in-out infinite}
