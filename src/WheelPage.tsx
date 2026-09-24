@@ -21,6 +21,8 @@ type AccountData = {
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
+// TODO: Set this to false once Survivor Wheel + Plinko are complete and ready for users.
+const ADMIN_ONLY_WHEEL = true;
 
 function wheelGradient(count: number) {
   const segmentCount = Math.max(count, 1);
@@ -231,6 +233,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   async function openConfigurator() {
     if (!account || loadingAccount) return;
+
+    if (ADMIN_ONLY_WHEEL && account.role !== "admin") {
+      setMessage(pick(
+        "A ferramenta ainda está em desenvolvimento e, por agora, só está disponível para admins.",
+        "This tool is still in development and is currently available to admins only.",
+      ));
+      return;
+    }
 
     if (account.role === "admin" || hasActivePass) {
       setConfiguring(true);
@@ -746,15 +756,31 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
                   <div>
                     <span>{pick("ACESSO", "ACCESS")}</span>
-                    <strong className={hasActivePass ? "active" : ""}>
-                      {account?.role === "admin" ? "UNLIMITED" : hasActivePass ? pick("ATIVO", "ACTIVE") : pick("SEM PASSE ATIVO", "NO ACTIVE PASS")}
+                    <strong className={account?.role === "admin" || (!ADMIN_ONLY_WHEEL && hasActivePass) ? "active" : ""}>
+                      {account?.role === "admin"
+                        ? "UNLIMITED"
+                        : ADMIN_ONLY_WHEEL
+                          ? pick("EM DESENVOLVIMENTO", "IN DEVELOPMENT")
+                          : hasActivePass
+                            ? pick("ATIVO", "ACTIVE")
+                            : pick("SEM PASSE ATIVO", "NO ACTIVE PASS")}
                     </strong>
                     {activeUntil && hasActivePass && account?.role !== "admin" && <small>{pick("Até", "Until")} {activeUntil.toLocaleString()}</small>}
                   </div>
                 </div>
 
-                <button className="wheel-use-btn logged" type="button" onClick={openConfigurator} disabled={busy || loadingAccount}>
-                  {busy ? pick("A ATIVAR...", "ACTIVATING...") : pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")} <ArrowRight />
+                <button
+                  className="wheel-use-btn logged"
+                  type="button"
+                  onClick={openConfigurator}
+                  disabled={busy || loadingAccount || (ADMIN_ONLY_WHEEL && account?.role !== "admin")}
+                >
+                  {ADMIN_ONLY_WHEEL && account?.role !== "admin"
+                    ? pick("EM DESENVOLVIMENTO", "IN DEVELOPMENT")
+                    : busy
+                      ? pick("A ATIVAR...", "ACTIVATING...")
+                      : pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")}{" "}
+                  {(!ADMIN_ONLY_WHEEL || account?.role === "admin") && <ArrowRight />}
                 </button>
                 {message && <p className="wheel-auth-message">{message}</p>}
               </div>
