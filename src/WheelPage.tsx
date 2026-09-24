@@ -19,11 +19,78 @@ type AccountData = {
 };
 
 type PlinkoResult = {
+  label: string;
   skinName: string;
   imageUrl: string;
   valueEur: number;
   status: "safe" | "eliminated";
 };
+
+const ROUND_1_SKINS: PlinkoResult[] = [
+  {
+    label: "Neo-Noir",
+    skinName: "AWP | Neo-Noir",
+    imageUrl: "/skins/round-1/awp-neo-noir.png",
+    valueEur: 40,
+    status: "safe",
+  },
+  {
+    label: "Decimator",
+    skinName: "M4A1-S | Decimator",
+    imageUrl: "/skins/round-1/m4a1s-decimator.png",
+    valueEur: 45,
+    status: "safe",
+  },
+  {
+    label: "Reactor",
+    skinName: "Glock-18 | Reactor",
+    imageUrl: "/skins/round-1/glock-reactor.png",
+    valueEur: 65,
+    status: "safe",
+  },
+  {
+    label: "Monster Mashup",
+    skinName: "USP-S | Monster Mashup",
+    imageUrl: "/skins/round-1/usps-monster-mashup.png",
+    valueEur: 80,
+    status: "safe",
+  },
+  {
+    label: "In Living Color",
+    skinName: "M4A4 | In Living Color",
+    imageUrl: "/skins/round-1/m4a4-in-living-color.png",
+    valueEur: 90,
+    status: "safe",
+  },
+  {
+    label: "Temukau",
+    skinName: "M4A4 | Temukau",
+    imageUrl: "/skins/round-1/m4a4-temukau.png",
+    valueEur: 95,
+    status: "safe",
+  },
+  {
+    label: "Gamma Doppler",
+    skinName: "Glock-18 | Gamma Doppler",
+    imageUrl: "/skins/round-1/glock-gamma-doppler.png",
+    valueEur: 110,
+    status: "safe",
+  },
+  {
+    label: "Frontside Misty",
+    skinName: "AK-47 | Frontside Misty",
+    imageUrl: "/skins/round-1/ak-frontside-misty.png",
+    valueEur: 120,
+    status: "safe",
+  },
+  {
+    label: "Hyper Beast",
+    skinName: "AWP | Hyper Beast",
+    imageUrl: "/skins/round-1/awp-hyper-beast.png",
+    valueEur: 145,
+    status: "safe",
+  },
+];
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
@@ -459,7 +526,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!c4 || !board) return;
 
     // The outcome remains perfectly uniform: every slot is 1 / 9.
-    const slotIndex = randomParticipantIndex(9);
+    const slotIndex = randomParticipantIndex(ROUND_1_SKINS.length);
     const slot = board.querySelector<HTMLElement>(`[data-plinko-slot="${slotIndex}"]`);
     if (!slot) return;
 
@@ -582,18 +649,24 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       angle *= 0.35;
       renderC4();
 
+      const landedReward = ROUND_1_SKINS[landedSlotIndex];
+
       setPlinkoLandedSlot(landedSlotIndex);
       setPlinkoExplosionSlot(landedSlotIndex);
       setPlinkoDropSlots((current) => ({
         ...current,
         [playerIndex]: landedSlotIndex,
       }));
+      setPlinkoResults((current) => ({
+        ...current,
+        [playerIndex]: landedReward,
+      }));
 
       window.setTimeout(() => {
         setPlinkoExplosionSlot(null);
         setPlinkoRewardNotice({
           playerName: plinkoPlayers[playerIndex],
-          reward: plinkoResults[playerIndex] ?? null,
+          reward: landedReward,
         });
         setPlinkoDropping(false);
       }, 520);
@@ -784,7 +857,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const pegRows = Array.from({ length: 11 }, (_, rowIndex) =>
       Array.from({ length: rowIndex + 3 }, (_, pegIndex) => pegIndex),
     );
-    const slotCount = 9;
+    const slotCount = ROUND_1_SKINS.length;
 
     return (
       <>
@@ -960,14 +1033,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
 
                   <div className="plinko-slots">
-                    {Array.from({ length: slotCount }, (_, index) => (
+                    {ROUND_1_SKINS.map((skin, index) => (
                       <div
                         className={`plinko-slot${plinkoLandedSlot === index ? " landed" : ""}${plinkoExplosionSlot === index ? " exploding" : ""}`}
                         data-plinko-slot={index}
-                        key={index}
+                        key={skin.skinName}
+                        title={skin.skinName}
                       >
-                        <span>{pick("SLOT", "SLOT")}</span>
-                        <strong>{String(index + 1).padStart(2, "0")}</strong>
+                        <div className="plinko-slot-media">
+                          <img src={skin.imageUrl} alt={skin.skinName} />
+                        </div>
+                        <div className="plinko-slot-name">{skin.label}</div>
                       </div>
                     ))}
                   </div>
