@@ -323,6 +323,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-tie-modal h2 strong{color:#d9a637}
 .plinko-tie-modal p,.plinko-winner-modal p{max-width:450px;margin:0 auto;color:#929f9c;font-size:13px;line-height:1.65}
 .plinko-tie-modal p strong,.plinko-winner-modal h2 strong{color:#d9a637}
+.plinko-winner-brand{color:#d9a637;font-weight:900;text-shadow:0 0 16px rgba(217,166,55,.18)}
 .plinko-tie-modal button,.plinko-winner-close{position:relative;width:100%;min-height:47px;margin-top:26px;border:1px solid #c99932;border-radius:7px;background:#b9851f;color:#100c04;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.11em;cursor:pointer;transition:.2s;isolation:isolate}
 .plinko-tie-modal button::after,.plinko-winner-close::after{content:"";position:absolute;inset:-5px;border:2px solid #20f39a;border-radius:11px;box-shadow:0 0 10px rgba(32,243,154,.28),0 0 22px rgba(32,243,154,.16);opacity:.72;pointer-events:none;animation:wheel-spin-pulse 1.45s ease-in-out infinite}
 .plinko-tie-modal button:hover,.plinko-winner-close:hover{filter:brightness(1.08);transform:translateY(-1px)}
