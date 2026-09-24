@@ -1186,10 +1186,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <span>{pick("DROP ZONE", "DROP ZONE")}</span>
                     <div className="plinko-drop-port" />
                     <div ref={plinkoC4Ref} className={`plinko-c4-placeholder${plinkoDropping ? " is-dropping" : ""}`} aria-hidden="true">
-                      <span className="plinko-c4-screen">00:40</span>
-                      <span className="plinko-c4-keypad" />
-                      <span className="plinko-c4-wire wire-a" />
-                      <span className="plinko-c4-wire wire-b" />
+                      <img
+                        src="/bolacs2.png"
+                        alt=""
+                        className="plinko-c4-image"
+                        draggable={false}
+                      />
                     </div>
                   </div>
 
