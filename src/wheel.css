@@ -130,9 +130,6 @@ linear-gradient(145deg,#071014,#05090c);box-shadow:inset 0 0 70px rgba(0,0,0,.25
 .participant-row{min-height:29px;display:grid;grid-template-columns:30px 1fr;align-items:center;border-bottom:1px solid #142328}
 .participant-row>span{color:#58686b;font-family:"Chakra Petch",sans-serif;font-size:8px}
 .participant-row>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#cbd3d2;font-size:10px;font-weight:700}
-.wheel-spin-result{margin-top:12px;padding:11px 12px;border:1px solid rgba(32,243,154,.28);border-radius:8px;background:rgba(32,243,154,.045);display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 0 18px rgba(32,243,154,.05)}
-.wheel-spin-result span{color:#6d827d;font-size:9px;font-weight:900;letter-spacing:.14em}
-.wheel-spin-result strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:15px;font-weight:900;text-shadow:0 0 12px rgba(32,243,154,.22)}
 .wheel-spin-btn{position:relative;width:100%;min-height:45px;margin-top:12px;border:1px solid #c99932;border-radius:7px;background:#b9851f;color:#100c04;display:flex;align-items:center;justify-content:center;font-family:"Chakra Petch",sans-serif;font-size:18px;font-weight:900;letter-spacing:.08em;line-height:1;cursor:pointer;transition:.2s;isolation:isolate}
 .wheel-spin-btn::after{content:"";position:absolute;inset:-5px;border:2px solid #20f39a;border-radius:11px;box-shadow:0 0 10px rgba(32,243,154,.28),0 0 22px rgba(32,243,154,.16);opacity:.72;pointer-events:none;animation:wheel-spin-pulse 1.45s ease-in-out infinite}
 .wheel-spin-btn:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 0 20px rgba(185,133,31,.13);transform:translateY(-1px)}
