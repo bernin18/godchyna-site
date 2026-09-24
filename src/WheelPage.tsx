@@ -231,7 +231,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [plinkoTieNotice, setPlinkoTieNotice] = useState<{
     indexes: number[];
     names: string[];
+    skinName: string | null;
+    valueEur: number;
   } | null>(null);
+  const [plinkoTiebreakIndexes, setPlinkoTiebreakIndexes] = useState<number[] | null>(null);
   const [plinkoWinnerNotice, setPlinkoWinnerNotice] = useState<{
     playerName: string;
     result: PlinkoResult;
@@ -282,21 +285,41 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const roundResults = plinkoPlayers.map((_, index) => plinkoResults[index]);
     if (roundResults.some((result) => !result)) return;
 
-    const minimumValue = Math.min(...roundResults.map((result) => result.valueEur));
-    const lowestIndexes = roundResults
-      .map((result, index) => ({ result, index }))
-      .filter(({ result }) => result.valueEur === minimumValue)
-      .map(({ index }) => index);
+    const comparisonIndexes =
+      plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 1
+        ? plinkoTiebreakIndexes
+        : plinkoPlayers.map((_, index) => index);
 
-    if (lowestIndexes.length > 1) {
+    const comparisonResults = comparisonIndexes.map((index) => ({
+      index,
+      result: roundResults[index],
+    }));
+
+    const minimumValue = Math.min(
+      ...comparisonResults.map(({ result }) => result.valueEur),
+    );
+
+    const lowestEntries = comparisonResults.filter(
+      ({ result }) => result.valueEur === minimumValue,
+    );
+
+    if (lowestEntries.length > 1) {
+      const lowestIndexes = lowestEntries.map(({ index }) => index);
+      const skinNames = new Set(
+        lowestEntries.map(({ result }) => result.skinName),
+      );
+
       setPlinkoTieNotice({
         indexes: lowestIndexes,
         names: lowestIndexes.map((index) => plinkoPlayers[index]),
+        skinName:
+          skinNames.size === 1 ? lowestEntries[0].result.skinName : null,
+        valueEur: minimumValue,
       });
       return;
     }
 
-    const eliminatedIndex = lowestIndexes[0];
+    const eliminatedIndex = lowestEntries[0].index;
     const eliminatedResult = roundResults[eliminatedIndex];
     const survivors = plinkoPlayers.filter((_, index) => index !== eliminatedIndex);
     const winnerIndex =
@@ -304,6 +327,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         ? plinkoPlayers.findIndex((_, index) => index !== eliminatedIndex)
         : -1;
 
+    setPlinkoTiebreakIndexes(null);
     setPlinkoEliminationNotice({
       playerName: plinkoPlayers[eliminatedIndex],
       result: eliminatedResult,
@@ -314,6 +338,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   function startPlinkoTiebreak() {
     if (!plinkoTieNotice) return;
+
+    setPlinkoTiebreakIndexes(plinkoTieNotice.indexes);
 
     setPlinkoDropSlots((current) => {
       const next = { ...current };
@@ -368,6 +394,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoRewardNotice(null);
     setPlinkoEliminationNotice(null);
     setPlinkoTieNotice(null);
+    setPlinkoTiebreakIndexes(null);
     setPlinkoDropping(false);
 
     const c4 = plinkoC4Ref.current;
@@ -388,6 +415,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoRewardNotice(null);
     setPlinkoEliminationNotice(null);
     setPlinkoTieNotice(null);
+    setPlinkoTiebreakIndexes(null);
     setPlinkoWinnerNotice(null);
     setPlinkoDropping(false);
   }, [topFive]);
@@ -1224,19 +1252,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-labelledby="plinko-tie-title"
           >
             <div className="plinko-tie-modal">
-              <span>{pick("EMPATE!", "TIE!")}</span>
+              <span>{pick("DESEMPATE!", "TIEBREAK!")}</span>
               <h2 id="plinko-tie-title">
-                {pick(
-                  "Temos empate no menor valor.",
-                  "We have a tie for the lowest value.",
-                )}
+                <strong>
+                  {plinkoTieNotice.names.join(
+                    plinkoTieNotice.names.length === 2 ? " e " : " · ",
+                  )}
+                </strong>
+                <br />
+                {plinkoTieNotice.skinName
+                  ? pick(
+                      `tiraram uma ${plinkoTieNotice.skinName}!`,
+                      `pulled the same ${plinkoTieNotice.skinName}!`,
+                    )
+                  : pick(
+                      `empataram com o menor valor: ${plinkoTieNotice.valueEur.toFixed(2)} €!`,
+                      `tied for the lowest value: ${plinkoTieNotice.valueEur.toFixed(2)} €!`,
+                    )}
               </h2>
               <p>
-                <strong>{plinkoTieNotice.names.join(" · ")}</strong>
-                <br />
                 {pick(
-                  "Só estes jogadores vão fazer um novo drop.",
-                  "Only these players will drop again.",
+                  "Só estes jogadores vão fazer um novo drop para decidir quem é eliminado.",
+                  "Only these players will drop again to decide who is eliminated.",
                 )}
               </p>
               <button type="button" onClick={startPlinkoTiebreak} autoFocus>
