@@ -1448,7 +1448,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="plinko-elimination-icon" aria-hidden="true">×</div>
 
               <h2 id="plinko-elimination-title">
-                {pick("Jogador", "Player")}{" "}
                 <strong>{plinkoEliminationNotice.playerName}</strong>,
                 <br />
                 {pick("foste eliminado.", "you've been eliminated.")}
