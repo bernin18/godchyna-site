@@ -511,7 +511,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     {pegRows.map((row, rowIndex) => (
                       <div
                         className="plinko-peg-row"
-                        style={{ width: `${34 + rowIndex * 6.6}%` }}
+                        style={{ width: `${23 + rowIndex * 6.6}%` }}
                         key={rowIndex}
                       >
                         {row.map((pegIndex) => (
@@ -533,19 +533,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </section>
             </div>
 
-            <div className="plinko-actions">
-              <button
-                type="button"
-                className="plinko-back-btn"
-                onClick={() => {
-                  setShowPlinko(false);
-                  setShowTopFiveModal(true);
-                }}
-              >
-                <ArrowLeft /> {pick("VOLTAR AO TOP 5", "BACK TO TOP 5")}
-              </button>
-
-            </div>
           </section>
         </main>
       </>
