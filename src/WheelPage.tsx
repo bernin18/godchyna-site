@@ -19,23 +19,22 @@ type AccountData = {
 };
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
-const WHEEL_GOLD = "#b9851f";
-const WHEEL_DARK = "#111a20";
-const WHEEL_DARK_ALT = "#162129";
+const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 
 function wheelGradient(count: number) {
   const segmentCount = Math.max(count, 1);
   const step = 360 / segmentCount;
 
   return `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
-    const isOddWheel = segmentCount > 1 && segmentCount % 2 === 1;
-    const isLastSegment = index === segmentCount - 1;
+    let color = WHEEL_COLORS[index % WHEEL_COLORS.length];
 
-    const color = isOddWheel && isLastSegment
-      ? WHEEL_DARK_ALT
-      : index % 2 === 0
-        ? WHEEL_GOLD
-        : WHEEL_DARK;
+    if (
+      segmentCount > 1 &&
+      index === segmentCount - 1 &&
+      color === WHEEL_COLORS[0]
+    ) {
+      color = WHEEL_COLORS[1];
+    }
 
     return `${color} ${index * step}deg ${(index + 1) * step}deg`;
   }).join(",")})`;
