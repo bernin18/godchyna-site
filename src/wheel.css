@@ -249,20 +249,28 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-rule{margin-top:14px;padding:16px 16px 18px;border:1px solid rgba(185,133,31,.24);border-radius:10px;background:rgba(185,133,31,.04)}
 .plinko-rule span{color:#b9851f;font-size:9px;font-weight:900;letter-spacing:.18em}
 .plinko-rule p{margin:8px 0 0;color:#8ea0a3;font-size:13px;line-height:1.6}
-.plinko-machine{position:relative;width:100%;max-width:820px;min-height:760px;padding:14px;border:1px solid rgba(185,133,31,.42);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.07),0 0 22px rgba(32,243,154,.04);overflow:hidden}
-.plinko-machine::before{content:none}
-.plinko-frame-lights{position:absolute;z-index:5;pointer-events:none;display:flex}
-.plinko-frame-lights.top,.plinko-frame-lights.bottom{left:10px;right:10px;justify-content:space-between}
-.plinko-frame-lights.top{top:8px}
-.plinko-frame-lights.bottom{bottom:8px}
-.plinko-frame-lights.left,.plinko-frame-lights.right{top:54px;bottom:54px;flex-direction:column;justify-content:space-between}
-.plinko-frame-lights.left{left:8px}
-.plinko-frame-lights.right{right:8px}
-.plinko-bulb{width:8px;height:8px;border-radius:50%;opacity:.9;animation:plinko-bulb-pulse 1.8s ease-in-out infinite}
-.plinko-bulb.gold{background:#b9851f;box-shadow:0 0 8px rgba(185,133,31,.55),0 0 16px rgba(185,133,31,.30)}
-.plinko-bulb.green{background:#20f39a;box-shadow:0 0 8px rgba(32,243,154,.55),0 0 16px rgba(32,243,154,.28)}
-.plinko-bulb.white{background:#f3f4f2;box-shadow:0 0 8px rgba(255,255,255,.55),0 0 16px rgba(255,255,255,.22)}
-@keyframes plinko-bulb-pulse{0%,100%{transform:scale(.82);opacity:.52}50%{transform:scale(1.18);opacity:1}}
+@property --plinko-snake-angle{
+ syntax:"<angle>";
+ inherits:false;
+ initial-value:0deg;
+}
+.plinko-machine{position:relative;width:100%;max-width:820px;min-height:760px;padding:14px;border:1px solid rgba(185,133,31,.20);border-radius:16px;background:#080d10;box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 42px rgba(185,133,31,.06),0 0 24px rgba(32,243,154,.04);overflow:hidden;isolation:isolate}
+.plinko-machine::before,.plinko-machine::after{content:"";position:absolute;inset:4px;border-radius:13px;padding:2px;pointer-events:none;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;
+ mask-composite:exclude}
+.plinko-machine::before{z-index:6;background:conic-gradient(
+ from var(--plinko-snake-angle),
+ transparent 0deg 258deg,
+ rgba(243,244,242,.08) 268deg,
+ #f3f4f2 280deg,
+ #20f39a 302deg,
+ #b9851f 326deg,
+ rgba(185,133,31,.24) 342deg,
+ transparent 354deg 360deg
+);filter:drop-shadow(0 0 3px rgba(243,244,242,.32)) drop-shadow(0 0 7px rgba(32,243,154,.28)) drop-shadow(0 0 10px rgba(185,133,31,.22));animation:plinko-snake-run 3.1s linear infinite}
+.plinko-machine::after{z-index:5;padding:1px;background:linear-gradient(90deg,rgba(185,133,31,.18),rgba(32,243,154,.10),rgba(243,244,242,.08),rgba(185,133,31,.18));opacity:.72}
+@keyframes plinko-snake-run{to{--plinko-snake-angle:360deg}}
 .plinko-machine-inner{height:100%;min-height:730px;padding:24px 6px 18px;border-radius:10px;background:
 radial-gradient(circle at 50% 18%,rgba(185,133,31,.06),transparent 34%),
 linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
