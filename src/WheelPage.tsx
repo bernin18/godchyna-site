@@ -224,6 +224,72 @@ const ROUND_3_SKINS: PlinkoResult[] = [
   },
 ];
 
+const ROUND_4_SKINS: PlinkoResult[] = [
+  {
+    label: "Fire Serpent",
+    skinName: "AK-47 | Fire Serpent",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_47 (1).png",
+    valueEur: 1500,
+    status: "safe",
+  },
+  {
+    label: "Welcome to the Jungle",
+    skinName: "M4A1-S | Welcome to the Jungle",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_47 (2).png",
+    valueEur: 2000,
+    status: "safe",
+  },
+  {
+    label: "Poseidon",
+    skinName: "M4A4 | Poseidon",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_47 (3).png",
+    valueEur: 2500,
+    status: "safe",
+  },
+  {
+    label: "Medusa",
+    skinName: "AWP | Medusa",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_47 (4).png",
+    valueEur: 3000,
+    status: "safe",
+  },
+  {
+    label: "Desert Hydra",
+    skinName: "AWP | Desert Hydra",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_47 (5).png",
+    valueEur: 4000,
+    status: "safe",
+  },
+  {
+    label: "Howl",
+    skinName: "M4A4 | Howl",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_48 (6).png",
+    valueEur: 6500,
+    status: "safe",
+  },
+  {
+    label: "Howl",
+    skinName: "M4A4 | Howl",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_48 (7).png",
+    valueEur: 6500,
+    status: "safe",
+  },
+  {
+    label: "Gungnir",
+    skinName: "AWP | Gungnir",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_48 (8).png",
+    valueEur: 8000,
+    status: "safe",
+  },
+  {
+    label: "Dragon Lore",
+    skinName: "AWP | Dragon Lore",
+    imageUrl: "/skins/round-4/ChatGPT Image 25_09_2026, 01_28_48 (9).png",
+    valueEur: 10000,
+    status: "safe",
+  },
+];
+
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const giveawayHistoryDemo = [
   { player: "PLAYER_01", giveaway: "GIVEAWAY #006" },
@@ -419,7 +485,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       ? ROUND_2_SKINS
       : plinkoRound === 3
         ? ROUND_3_SKINS
-        : ROUND_1_SKINS;
+        : plinkoRound === 4
+          ? ROUND_4_SKINS
+          : ROUND_1_SKINS;
 
   const plinkoPhaseIndexes =
     plinkoTiebreakIndexes && plinkoTiebreakIndexes.length > 0
