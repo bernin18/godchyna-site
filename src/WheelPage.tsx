@@ -23,7 +23,7 @@ const WHEEL_GOLD = "#b9851f";
 const WHEEL_DARK = "#111a20";
 
 function wheelGradient(count: number) {
-  const segmentCount = Math.max(count, 12);
+  const segmentCount = Math.max(count, 1);
   const step = 360 / segmentCount;
 
   return `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
@@ -184,10 +184,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       .map((entry) => entry.trim())
       .filter(Boolean);
 
-    if (entries.length < 2) {
+    if (entries.length < 1) {
       setParticipantMessage(pick(
-        "Adiciona pelo menos 2 entradas, uma por linha.",
-        "Add at least 2 entries, one per line.",
+        "Adiciona pelo menos 1 entrada.",
+        "Add at least 1 entry.",
       ));
       return;
     }
