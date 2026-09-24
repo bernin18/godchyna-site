@@ -18,6 +18,13 @@ type AccountData = {
   activeUntil: string | null;
 };
 
+type PlinkoResult = {
+  skinName: string;
+  imageUrl: string;
+  valueEur: number;
+  status: "safe" | "eliminated";
+};
+
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
@@ -144,6 +151,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [showTopFiveModal, setShowTopFiveModal] = useState(false);
   const [showPlinko, setShowPlinko] = useState(false);
   const [showPlinkoTransition, setShowPlinkoTransition] = useState(false);
+  const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -163,6 +171,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     return () => data.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    setPlinkoResults({});
+  }, [topFive]);
 
   useEffect(() => {
     if (!session?.user.id) return;
@@ -466,13 +478,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
 
                 <div className="plinko-finalist-list">
-                  {topFive.map((name, index) => (
-                    <div className="plinko-finalist" key={`${name}-${index}`}>
-                      <span>{String(index + 1).padStart(2, "0")}</span>
-                      <strong>{name}</strong>
-                      <i>{pick("AGUARDA DROP", "WAITING")}</i>
-                    </div>
-                  ))}
+                  {topFive.map((name, index) => {
+                    const result = plinkoResults[index];
+
+                    return (
+                      <div className="plinko-finalist" key={`${name}-${index}`}>
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <strong>{name}</strong>
+
+                        {result ? (
+                          <div className="plinko-finalist-result">
+                            <img src={result.imageUrl} alt={result.skinName} />
+                            <div>
+                              <b>{result.skinName}</b>
+                              <span>{result.valueEur.toFixed(2)} €</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <i>{pick("À ESPERA DO DROP", "WAITING FOR DROP")}</i>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <button type="button" className="plinko-drop-btn" disabled>
