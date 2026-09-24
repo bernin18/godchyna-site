@@ -468,13 +468,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
               </div>
 
-              {winner && (
-                <div className="wheel-spin-result" aria-live="polite">
-                  <span>{pick("CAIU EM", "LANDED ON")}</span>
-                  <strong>{winner}</strong>
-                </div>
-              )}
-
               {participants.length > 0 && (
                 <button
                   type="button"
