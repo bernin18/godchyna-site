@@ -537,7 +537,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
 
                 <div className="plinko-frame-lights left">
-                  {Array.from({ length: 16 }, (_, index) => (
+                  {Array.from({ length: 14 }, (_, index) => (
                     <span
                       key={`left-${index}`}
                       className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
@@ -547,7 +547,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
 
                 <div className="plinko-frame-lights right">
-                  {Array.from({ length: 16 }, (_, index) => (
+                  {Array.from({ length: 14 }, (_, index) => (
                     <span
                       key={`right-${index}`}
                       className={`plinko-bulb ${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
