@@ -142,6 +142,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [pendingTopFive, setPendingTopFive] = useState<string[] | null>(null);
   const [topFive, setTopFive] = useState<string[] | null>(null);
   const [showTopFiveModal, setShowTopFiveModal] = useState(false);
+  const [showPlinko, setShowPlinko] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -295,6 +296,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingTopFive(null);
     setTopFive(null);
     setShowTopFiveModal(false);
+    setShowPlinko(false);
     setParticipantMessage(pick(
       `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
       `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
@@ -313,6 +315,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingTopFive(null);
     setTopFive(null);
     setShowTopFiveModal(false);
+    setShowPlinko(false);
     setRotation(0);
   }
 
@@ -390,6 +393,123 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       </span>
     );
   });
+
+  if (configuring && session && showPlinko && topFive) {
+    const pegRows = Array.from({ length: 9 }, (_, rowIndex) =>
+      Array.from({ length: rowIndex % 2 === 0 ? 8 : 9 }, (_, pegIndex) => pegIndex),
+    );
+    const slotCount = 7;
+
+    return (
+      <>
+        <Header />
+        <main className="wheel-mobile-block">
+          <span>{pick("APENAS PC", "DESKTOP ONLY")}</span>
+          <h1>PLINKO</h1>
+          <p>{pick(
+            "Esta ferramenta foi feita para usar no PC durante os giveaways.",
+            "This tool was built for desktop giveaway use.",
+          )}</p>
+        </main>
+
+        <main className="plinko-page">
+          <section className="plinko-shell">
+            <header className="plinko-head">
+              <div>
+                <span className="plinko-kicker">GODCHYNA GIVEAWAYS</span>
+                <h1>PLINKO</h1>
+                <p>{pick("ROUND 1 · TOP 5 → TOP 4", "ROUND 1 · TOP 5 → TOP 4")}</p>
+              </div>
+              <div className="plinko-round-badge">
+                <span>ROUND</span>
+                <strong>01</strong>
+              </div>
+            </header>
+
+            <div className="plinko-layout">
+              <aside className="plinko-finalists">
+                <div className="plinko-panel-title">
+                  <span>TOP 5</span>
+                  <strong>{pick("FINALISTAS", "FINALISTS")}</strong>
+                </div>
+
+                <div className="plinko-finalist-list">
+                  {topFive.map((name, index) => (
+                    <div className="plinko-finalist" key={`${name}-${index}`}>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <strong>{name}</strong>
+                      <i>{pick("AGUARDA DROP", "WAITING")}</i>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="plinko-rule">
+                  <span>{pick("REGRA", "RULE")}</span>
+                  <p>{pick(
+                    "Cada jogador terá um drop. O menor resultado será eliminado.",
+                    "Each player gets one drop. The lowest result is eliminated.",
+                  )}</p>
+                </div>
+              </aside>
+
+              <section className="plinko-machine" aria-label={pick("Tabuleiro Plinko", "Plinko board")}>
+                <div className="plinko-marquee">
+                  {Array.from({ length: 22 }, (_, index) => (
+                    <span key={index} />
+                  ))}
+                </div>
+
+                <div className="plinko-machine-inner">
+                  <div className="plinko-drop-zone">
+                    <span>{pick("DROP ZONE", "DROP ZONE")}</span>
+                    <div className="plinko-ball-placeholder" />
+                  </div>
+
+                  <div className="plinko-pegs">
+                    {pegRows.map((row, rowIndex) => (
+                      <div
+                        className={`plinko-peg-row${rowIndex % 2 === 0 ? " even" : " odd"}`}
+                        key={rowIndex}
+                      >
+                        {row.map((pegIndex) => (
+                          <span className="plinko-peg" key={pegIndex} />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="plinko-slots">
+                    {Array.from({ length: slotCount }, (_, index) => (
+                      <div className="plinko-slot" key={index}>
+                        <span>{pick("SLOT", "SLOT")}</span>
+                        <strong>{String(index + 1).padStart(2, "0")}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="plinko-actions">
+              <button
+                type="button"
+                className="plinko-back-btn"
+                onClick={() => {
+                  setShowPlinko(false);
+                  setShowTopFiveModal(true);
+                }}
+              >
+                <ArrowLeft /> {pick("VOLTAR AO TOP 5", "BACK TO TOP 5")}
+              </button>
+              <button type="button" className="plinko-drop-btn" disabled>
+                {pick("DROP — EM BREVE", "DROP — COMING SOON")}
+              </button>
+            </div>
+          </section>
+        </main>
+      </>
+    );
+  }
 
   if (configuring && session) {
     return (
@@ -629,7 +749,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="wheel-top-five-close"
-                onClick={() => setShowTopFiveModal(false)}
+                onClick={() => {
+                  setShowTopFiveModal(false);
+                  setShowPlinko(true);
+                }}
                 autoFocus
               >
                 FINALISSIMAAAA
