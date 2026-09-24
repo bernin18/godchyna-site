@@ -20,12 +20,13 @@ type AccountData = {
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
+const WHEEL_DIVIDER_COLOR = "#4f3a1b";
 
 function wheelGradient(count: number) {
   const segmentCount = Math.max(count, 1);
   const step = 360 / segmentCount;
 
-  return `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
+  const colorGradient = `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
     let color = WHEEL_COLORS[index % WHEEL_COLORS.length];
 
     if (
@@ -38,6 +39,15 @@ function wheelGradient(count: number) {
 
     return `${color} ${index * step}deg ${(index + 1) * step}deg`;
   }).join(",")})`;
+
+  if (segmentCount === 1) return colorGradient;
+
+  // Thin separators stay visible without becoming heavy when the wheel has many entries.
+  const dividerWidth = Math.min(0.42, Math.max(0.14, step * 0.07));
+  const dividerGradient =
+    `repeating-conic-gradient(from 0deg, ${WHEEL_DIVIDER_COLOR} 0deg ${dividerWidth}deg, transparent ${dividerWidth}deg ${step}deg)`;
+
+  return `${dividerGradient}, ${colorGradient}`;
 }
 
 function nameFontSize(name: string, count: number) {
