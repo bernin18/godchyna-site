@@ -26,7 +26,7 @@ function wheelGradient(count: number) {
   const segmentCount = Math.max(count, 1);
   const step = 360 / segmentCount;
 
-  const colorGradient = `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
+  return `conic-gradient(${Array.from({ length: segmentCount }, (_, index) => {
     let color = WHEEL_COLORS[index % WHEEL_COLORS.length];
 
     if (
@@ -39,15 +39,40 @@ function wheelGradient(count: number) {
 
     return `${color} ${index * step}deg ${(index + 1) * step}deg`;
   }).join(",")})`;
+}
 
-  if (segmentCount === 1) return colorGradient;
+function WheelDividers({ count }: { count: number }) {
+  if (count <= 1) return null;
 
-  // Thin separators stay visible without becoming heavy when the wheel has many entries.
-  const dividerWidth = Math.min(0.42, Math.max(0.14, step * 0.07));
-  const dividerGradient =
-    `repeating-conic-gradient(from 0deg, ${WHEEL_DIVIDER_COLOR} 0deg ${dividerWidth}deg, transparent ${dividerWidth}deg ${step}deg)`;
+  const step = 360 / count;
 
-  return `${dividerGradient}, ${colorGradient}`;
+  return (
+    <svg
+      className="wheel-segment-dividers"
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+      shapeRendering="geometricPrecision"
+    >
+      {Array.from({ length: count }, (_, index) => {
+        const angle = (index * step - 90) * (Math.PI / 180);
+        const x = 50 + 50 * Math.cos(angle);
+        const y = 50 + 50 * Math.sin(angle);
+
+        return (
+          <line
+            key={index}
+            x1="50"
+            y1="50"
+            x2={x}
+            y2={y}
+            stroke={WHEEL_DIVIDER_COLOR}
+            strokeWidth="1.5"
+            vectorEffect="non-scaling-stroke"
+          />
+        );
+      })}
+    </svg>
+  );
 }
 
 function nameFontSize(name: string, count: number) {
@@ -276,6 +301,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 style={{ background: configGradient }}
                 aria-label={pick("Roda do sorteio", "Giveaway wheel")}
               >
+                <WheelDividers count={participants.length} />
                 <div className="giveaway-wheel-center">
                   <span>RODA DO</span>
                   <strong>CHYNAO</strong>
@@ -380,6 +406,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="wheel-preview-glow" />
             <div className="wheel-pointer" />
             <div className="wheel-preview" aria-label={pick("Pré-visualização da roda", "Wheel preview")}>
+              <WheelDividers count={previewNames.length} />
               <div className="wheel-preview-center"><span>RODA DO</span><small>CHYNAO</small></div>
               {renderWheelNames(previewNames, true)}
             </div>
