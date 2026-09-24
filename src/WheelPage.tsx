@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { ComponentType, CSSProperties } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { ArrowLeft, ArrowRight, LogIn, LogOut, Ticket, Trash2, UserRound, Users } from "lucide-react";
@@ -152,6 +152,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [showPlinko, setShowPlinko] = useState(false);
   const [showPlinkoTransition, setShowPlinkoTransition] = useState(false);
   const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
+  const [plinkoDropSlots, setPlinkoDropSlots] = useState<Record<number, number>>({});
+  const [plinkoDropping, setPlinkoDropping] = useState(false);
+  const [plinkoHitPegs, setPlinkoHitPegs] = useState<string[]>([]);
+  const [plinkoLandedSlot, setPlinkoLandedSlot] = useState<number | null>(null);
+  const plinkoC4Ref = useRef<HTMLDivElement | null>(null);
+  const plinkoBoardRef = useRef<HTMLElement | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -174,6 +180,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   useEffect(() => {
     setPlinkoResults({});
+    setPlinkoDropSlots({});
+    setPlinkoHitPegs([]);
+    setPlinkoLandedSlot(null);
+    setPlinkoDropping(false);
   }, [topFive]);
 
   useEffect(() => {
@@ -356,6 +366,125 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }, 5000);
   }
 
+  async function startPlinkoDrop() {
+    if (!topFive || plinkoDropping) return;
+
+    const playerIndex = topFive.findIndex((_, index) => plinkoDropSlots[index] === undefined);
+    if (playerIndex < 0) return;
+
+    const c4 = plinkoC4Ref.current;
+    const board = plinkoBoardRef.current;
+    if (!c4 || !board) return;
+
+    const slotIndex = randomParticipantIndex(9);
+    const slot = board.querySelector<HTMLElement>(`[data-plinko-slot="${slotIndex}"]`);
+    if (!slot) return;
+
+    setPlinkoDropping(true);
+    setPlinkoHitPegs([]);
+    setPlinkoLandedSlot(null);
+
+    c4.getAnimations().forEach((animation) => animation.cancel());
+    c4.style.transform = "translate(0px, 0px) rotate(-3deg)";
+
+    const startRect = c4.getBoundingClientRect();
+    const startCenterX = startRect.left + startRect.width / 2;
+    const startCenterY = startRect.top + startRect.height / 2;
+    const slotRect = slot.getBoundingClientRect();
+    const slotCenterX = slotRect.left + slotRect.width / 2;
+    const slotCenterY = slotRect.top + slotRect.height * 0.32;
+
+    let currentX = 0;
+    let currentY = 0;
+    let currentRotation = -3;
+
+    const animateTo = async (
+      x: number,
+      y: number,
+      rotation: number,
+      duration: number,
+      easing = "cubic-bezier(.34,.08,.25,1)",
+    ) => {
+      const animation = c4.animate(
+        [
+          { transform: `translate(${currentX}px, ${currentY}px) rotate(${currentRotation}deg)` },
+          { transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)` },
+        ],
+        { duration, easing, fill: "forwards" },
+      );
+
+      await animation.finished;
+      currentX = x;
+      currentY = y;
+      currentRotation = rotation;
+      c4.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+      animation.cancel();
+    };
+
+    for (let rowIndex = 0; rowIndex < 11; rowIndex += 1) {
+      const rowPegs = Array.from(
+        board.querySelectorAll<HTMLElement>(`[data-plinko-row="${rowIndex}"] [data-plinko-peg]`),
+      );
+
+      if (!rowPegs.length) continue;
+
+      const progress = (rowIndex + 1) / 12;
+      const naturalX = startCenterX + (slotCenterX - startCenterX) * progress;
+      const spacing = rowPegs.length > 1
+        ? Math.abs(
+            (rowPegs[1].getBoundingClientRect().left + rowPegs[1].getBoundingClientRect().width / 2) -
+            (rowPegs[0].getBoundingClientRect().left + rowPegs[0].getBoundingClientRect().width / 2),
+          )
+        : 24;
+      const jitter = (Math.random() - 0.5) * Math.min(spacing * 0.55, 18);
+      const desiredX = naturalX + jitter;
+
+      let chosenIndex = 0;
+      let chosenDistance = Number.POSITIVE_INFINITY;
+
+      rowPegs.forEach((peg, pegIndex) => {
+        const rect = peg.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const distance = Math.abs(centerX - desiredX);
+        if (distance < chosenDistance) {
+          chosenDistance = distance;
+          chosenIndex = pegIndex;
+        }
+      });
+
+      const peg = rowPegs[chosenIndex];
+      const pegRect = peg.getBoundingClientRect();
+      const pegCenterX = pegRect.left + pegRect.width / 2;
+      const pegCenterY = pegRect.top + pegRect.height / 2;
+      const side = rowIndex % 2 === 0 ? -1 : 1;
+      const touchX = pegCenterX - startCenterX + side * 7;
+      const touchY = pegCenterY - startCenterY - 2;
+      const touchRotation = side * (8 + (rowIndex % 3) * 3);
+
+      await animateTo(touchX, touchY, touchRotation, 245 + rowIndex * 7);
+
+      setPlinkoHitPegs((current) => [
+        ...current,
+        `${rowIndex}-${chosenIndex}`,
+      ]);
+
+      const bounceX = touchX + side * 7;
+      const bounceY = touchY + 5;
+      await animateTo(bounceX, bounceY, -touchRotation * 0.55, 90, "ease-out");
+    }
+
+    const finalX = slotCenterX - startCenterX;
+    const finalY = slotCenterY - startCenterY;
+    await animateTo(finalX, finalY, 2, 430, "cubic-bezier(.2,.7,.18,1)");
+
+    setPlinkoLandedSlot(slotIndex);
+    setPlinkoDropSlots((current) => ({
+      ...current,
+      [playerIndex]: slotIndex,
+    }));
+    setPlinkoDropping(false);
+  }
+
   function spinWheel() {
     if (spinning || eliminationNotice || topFive || participants.length === 0) return;
 
@@ -494,6 +623,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                               <span>{result.valueEur.toFixed(2)} €</span>
                             </div>
                           </div>
+                        ) : plinkoDropSlots[index] !== undefined ? (
+                          <div className="plinko-finalist-slot-result">
+                            <span>SLOT</span>
+                            <strong>{String(plinkoDropSlots[index] + 1).padStart(2, "0")}</strong>
+                          </div>
                         ) : (
                           <i>{pick("À ESPERA DO DROP", "WAITING FOR DROP")}</i>
                         )}
@@ -502,8 +636,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   })}
                 </div>
 
-                <button type="button" className="plinko-drop-btn" disabled>
-                  REBENTAAAAA
+                <button
+                  type="button"
+                  className="plinko-drop-btn"
+                  onClick={startPlinkoDrop}
+                  disabled={plinkoDropping || Object.keys(plinkoDropSlots).length >= topFive.length}
+                >
+                  {plinkoDropping ? pick("A REBENTAR...", "DROPPING...") : "REBENTAAAAA"}
                 </button>
 
                 <div className="plinko-rule">
@@ -515,7 +654,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
               </aside>
 
-              <section className="plinko-machine" aria-label={pick("Tabuleiro Plinko", "Plinko board")}>
+              <section ref={plinkoBoardRef} className="plinko-machine" aria-label={pick("Tabuleiro Plinko", "Plinko board")}>
                 <div className="plinko-frame-lights top">
                   {Array.from({ length: 22 }, (_, index) => (
                     <span
@@ -560,7 +699,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <div className="plinko-drop-zone">
                     <span>{pick("DROP ZONE", "DROP ZONE")}</span>
                     <div className="plinko-drop-port" />
-                    <div className="plinko-c4-placeholder" aria-hidden="true">
+                    <div ref={plinkoC4Ref} className={`plinko-c4-placeholder${plinkoDropping ? " is-dropping" : ""}`} aria-hidden="true">
                       <span className="plinko-c4-screen">00:40</span>
                       <span className="plinko-c4-keypad" />
                       <span className="plinko-c4-wire wire-a" />
@@ -572,11 +711,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     {pegRows.map((row, rowIndex) => (
                       <div
                         className="plinko-peg-row"
+                        data-plinko-row={rowIndex}
                         style={{ width: `${23 + rowIndex * 6.6}%` }}
                         key={rowIndex}
                       >
                         {row.map((pegIndex) => (
-                          <span className="plinko-peg" key={pegIndex} />
+                          <span
+                            className={`plinko-peg${plinkoHitPegs.includes(`${rowIndex}-${pegIndex}`) ? " hit" : ""}`}
+                            data-plinko-peg={pegIndex}
+                            key={pegIndex}
+                          />
                         ))}
                       </div>
                     ))}
@@ -584,7 +728,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                   <div className="plinko-slots">
                     {Array.from({ length: slotCount }, (_, index) => (
-                      <div className="plinko-slot" key={index}>
+                      <div
+                        className={`plinko-slot${plinkoLandedSlot === index ? " landed" : ""}`}
+                        data-plinko-slot={index}
+                        key={index}
+                      >
                         <span>{pick("SLOT", "SLOT")}</span>
                         <strong>{String(index + 1).padStart(2, "0")}</strong>
                       </div>
