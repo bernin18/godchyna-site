@@ -198,6 +198,7 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-title span{color:#f3f4f2}
 .plinko-title em{color:#d9a637;font-style:italic;text-shadow:0 0 18px rgba(185,133,31,.16)}
 .plinko-head p{margin:7px 0 0;color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900;letter-spacing:.13em}
+.plinko-head-actions{display:flex;align-items:center;gap:10px}
 .plinko-round-badge{width:78px;height:58px;border:1px solid rgba(185,133,31,.38);border-radius:9px;background:#081014;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(185,133,31,.06)}
 .plinko-round-badge span{color:#657477;font-size:7px;font-weight:900;letter-spacing:.16em}
 .plinko-round-badge strong{margin-top:2px;color:#d9aa43;font-family:"Chakra Petch",sans-serif;font-size:24px;line-height:1}
@@ -240,7 +241,6 @@ linear-gradient(180deg,#071014,#050a0d);background-size:26px 26px,26px 26px,auto
 .plinko-slot{height:78px;padding:8px 2px;border:1px solid #293a3f;border-radius:6px;background:linear-gradient(180deg,#0b161b,#070c0f);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 18px rgba(0,0,0,.35)}
 .plinko-slot span{color:#576669;font-size:6px;font-weight:900;letter-spacing:.12em}
 .plinko-slot strong{margin-top:4px;color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:15px}
-.plinko-actions{height:61px;margin-top:12px;display:flex;justify-content:flex-start;gap:12px}
 .plinko-back-btn{min-height:45px;border-radius:7px;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.1em}
 .plinko-back-btn{padding:0 14px;border:1px solid #293b40;background:#081116;color:#859294;display:flex;align-items:center;gap:7px;cursor:pointer}
 .plinko-back-btn svg{width:14px}
@@ -257,7 +257,6 @@ linear-gradient(180deg,#071014,#050a0d);background-size:26px 26px,26px 26px,auto
  .plinko-finalist{min-height:46px}
  .plinko-slots{height:76px}
  .plinko-slot{height:64px}
- .plinko-actions{height:50px;margin-top:8px}
 }
 
 @keyframes wheel-spin-pulse{
