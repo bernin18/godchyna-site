@@ -1290,26 +1290,44 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-modal="true"
             aria-labelledby="plinko-winner-title"
           >
+            <div className="plinko-confetti" aria-hidden="true">
+              {Array.from({ length: 42 }, (_, index) => (
+                <span
+                  key={index}
+                  className={`confetti-${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                  style={{
+                    "--confetti-left": `${(index * 37) % 100}%`,
+                    "--confetti-delay": `${-((index * 0.19) % 4.2)}s`,
+                    "--confetti-duration": `${3.2 + (index % 7) * 0.23}s`,
+                    "--confetti-drift": `${-42 + (index % 9) * 11}px`,
+                    "--confetti-rotate": `${180 + (index % 8) * 90}deg`,
+                  } as CSSProperties}
+                />
+              ))}
+            </div>
+
             <div className="plinko-winner-modal">
               <span className="plinko-winner-kicker">
                 {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
               </span>
 
-              <div className="plinko-winner-skin">
-                <img
-                  src={plinkoWinnerNotice.result.imageUrl}
-                  alt={plinkoWinnerNotice.result.skinName}
-                />
-              </div>
-
               <h2 id="plinko-winner-title">
-                <strong>{plinkoWinnerNotice.playerName}</strong>
+                {pick("O player", "Player")}{" "}
+                <strong>{plinkoWinnerNotice.playerName}</strong>{" "}
+                {pick(
+                  "foi o vencedor do PLINKO DO CHYNAO!",
+                  "is the winner of CHYNAO'S PLINKO!",
+                )}
               </h2>
 
-              <p>
+              <p className="plinko-winner-congrats">
+                {pick("PARABÉNS!", "CONGRATULATIONS!")}
+              </p>
+
+              <p className="plinko-winner-trade">
                 {pick(
-                  `venceu o Plinko do Chynao com uma ${plinkoWinnerNotice.result.skinName} no valor de ${plinkoWinnerNotice.result.valueEur.toFixed(2)} €!`,
-                  `won Chynao's Plinko with a ${plinkoWinnerNotice.result.skinName} worth ${plinkoWinnerNotice.result.valueEur.toFixed(2)} €!`,
+                  "Manda já o teu trade link no chat para poderes receber o teu giveaway!",
+                  "Send your trade link in chat now so you can receive your giveaway!",
                 )}
               </p>
 
