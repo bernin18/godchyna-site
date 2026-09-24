@@ -290,6 +290,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-elimination-continue:hover{filter:brightness(1.08);transform:translateY(-1px)}
 
 .plinko-tie-overlay,.plinko-winner-overlay{position:fixed;inset:0;z-index:250;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(2,6,8,.86);backdrop-filter:blur(9px);animation:plinko-reward-fade .28s ease both}
+.plinko-winner-overlay{overflow:hidden}
 .plinko-tie-modal,.plinko-winner-modal{width:min(560px,100%);padding:36px 34px;border:1px solid rgba(185,133,31,.58);border-radius:15px;background:linear-gradient(145deg,#091417,#050a0d);text-align:center;box-shadow:0 30px 95px rgba(0,0,0,.68),0 0 42px rgba(185,133,31,.11);animation:plinko-reward-pop .38s cubic-bezier(.2,.8,.2,1) both}
 .plinko-tie-modal>span,.plinko-winner-kicker{display:block;color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900;letter-spacing:.18em}
 .plinko-tie-modal h2,.plinko-winner-modal h2{margin:14px 0 8px;color:#eef3f1;font-family:"Chakra Petch",sans-serif;font-size:28px;line-height:1.25}
@@ -299,10 +300,19 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-tie-modal button,.plinko-winner-close{position:relative;width:100%;min-height:47px;margin-top:26px;border:1px solid #c99932;border-radius:7px;background:#b9851f;color:#100c04;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.11em;cursor:pointer;transition:.2s;isolation:isolate}
 .plinko-tie-modal button::after,.plinko-winner-close::after{content:"";position:absolute;inset:-5px;border:2px solid #20f39a;border-radius:11px;box-shadow:0 0 10px rgba(32,243,154,.28),0 0 22px rgba(32,243,154,.16);opacity:.72;pointer-events:none;animation:wheel-spin-pulse 1.45s ease-in-out infinite}
 .plinko-tie-modal button:hover,.plinko-winner-close:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.plinko-winner-modal{border-color:rgba(217,166,55,.72);box-shadow:0 30px 100px rgba(0,0,0,.7),0 0 55px rgba(217,166,55,.14),0 0 36px rgba(32,243,154,.08)}
-.plinko-winner-skin{height:165px;margin:14px auto 2px;display:flex;align-items:center;justify-content:center}
-.plinko-winner-skin img{max-width:330px;max-height:155px;object-fit:contain;filter:drop-shadow(0 15px 24px rgba(0,0,0,.5)) drop-shadow(0 0 20px rgba(217,166,55,.12))}
-.plinko-winner-modal p{color:#a7b3b0;font-weight:700}
+.plinko-winner-modal{position:relative;z-index:3;border:2px solid #20f39a;box-shadow:0 30px 100px rgba(0,0,0,.72),0 0 18px rgba(32,243,154,.32),0 0 48px rgba(32,243,154,.16),0 0 76px rgba(217,166,55,.08);animation:plinko-winner-pop .42s cubic-bezier(.2,.8,.2,1) both,plinko-winner-frame-pulse 1.55s ease-in-out .42s infinite}
+.plinko-winner-modal h2{margin:20px auto 10px;max-width:470px;font-size:29px;line-height:1.3}
+.plinko-winner-modal h2 strong{color:#d9a637}
+.plinko-winner-congrats{margin:10px auto 0!important;color:#20f39a!important;font-family:"Chakra Petch",sans-serif;font-size:24px!important;font-weight:900!important;letter-spacing:.08em;text-shadow:0 0 18px rgba(32,243,154,.25)}
+.plinko-winner-trade{max-width:455px!important;margin:14px auto 0!important;color:#d8e2df!important;font-size:14px!important;font-weight:800!important;line-height:1.65!important}
+.plinko-confetti{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.plinko-confetti span{position:absolute;top:-8%;left:var(--confetti-left);width:8px;height:14px;border-radius:2px;opacity:.95;animation:plinko-confetti-fall var(--confetti-duration) linear var(--confetti-delay) infinite;will-change:transform}
+.plinko-confetti .confetti-gold{background:#d9a637;box-shadow:0 0 8px rgba(217,166,55,.22)}
+.plinko-confetti .confetti-green{background:#20f39a;box-shadow:0 0 8px rgba(32,243,154,.22)}
+.plinko-confetti .confetti-white{background:#eef3f1;box-shadow:0 0 8px rgba(255,255,255,.16)}
+@keyframes plinko-winner-pop{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes plinko-winner-frame-pulse{0%,100%{border-color:rgba(32,243,154,.58);box-shadow:0 30px 100px rgba(0,0,0,.72),0 0 12px rgba(32,243,154,.18),0 0 34px rgba(32,243,154,.10)}50%{border-color:#20f39a;box-shadow:0 30px 100px rgba(0,0,0,.72),0 0 24px rgba(32,243,154,.55),0 0 58px rgba(32,243,154,.24)}}
+@keyframes plinko-confetti-fall{0%{transform:translate3d(0,-10vh,0) rotate(0deg);opacity:0}8%{opacity:1}100%{transform:translate3d(var(--confetti-drift),112vh,0) rotate(var(--confetti-rotate));opacity:.92}}
 
 .plinko-reward-overlay{position:fixed;inset:0;z-index:230;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(2,6,8,.80);backdrop-filter:blur(8px);animation:plinko-reward-fade .28s ease both}
 .plinko-reward-modal{width:min(560px,100%);padding:34px;border:1px solid rgba(185,133,31,.58);border-radius:15px;background:linear-gradient(145deg,#091417,#050a0d);text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.62),0 0 42px rgba(185,133,31,.10);animation:plinko-reward-pop .38s cubic-bezier(.2,.8,.2,1) both}
