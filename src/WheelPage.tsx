@@ -337,11 +337,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     window.setTimeout(() => {
       setShowPlinko(true);
-    }, 850);
+    }, 1600);
 
     window.setTimeout(() => {
       setShowPlinkoTransition(false);
-    }, 1700);
+    }, 3400);
   }
 
   function spinWheel() {
@@ -432,10 +432,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           {showPlinkoTransition && (
             <div className="plinko-transition-overlay plinko-transition-overlay-out" aria-hidden="true">
               <div className="plinko-transition-cloud" />
-              <div className="plinko-transition-content">
-                <span>FINALISSIMAAAA</span>
-                <strong>PLINKO MODE</strong>
-              </div>
             </div>
           )}
           <section className="plinko-shell">
