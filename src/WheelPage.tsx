@@ -93,6 +93,14 @@ const ROUND_1_SKINS: PlinkoResult[] = [
 ];
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
+const giveawayHistoryDemo = [
+  { player: "PLAYER_01", giveaway: "GIVEAWAY #006" },
+  { player: "PLAYER_02", giveaway: "GIVEAWAY #005" },
+  { player: "PLAYER_03", giveaway: "GIVEAWAY #004" },
+  { player: "PLAYER_04", giveaway: "GIVEAWAY #003" },
+  { player: "PLAYER_05", giveaway: "GIVEAWAY #002" },
+  { player: "PLAYER_06", giveaway: "GIVEAWAY #001" },
+];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
 // TODO: Set this to false once Survivor Wheel + Plinko are complete and ready for users.
@@ -1627,6 +1635,43 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </section>
 
         <section className="wheel-showcase">
+          <aside className="giveaway-history" aria-label={pick("Vencedores dos giveaways", "Giveaway winners")}>
+            <div className="giveaway-history-head">
+              <span>{pick("HISTÓRICO", "HISTORY")}</span>
+              <h2>{pick("VENCEDORES DOS GIVEAWAYS", "GIVEAWAY WINNERS")}</h2>
+            </div>
+
+            <div className="giveaway-history-window">
+              <div className="giveaway-history-track">
+                {[0, 1].map((groupIndex) => (
+                  <div
+                    className="giveaway-history-group"
+                    key={groupIndex}
+                    aria-hidden={groupIndex === 1}
+                  >
+                    {giveawayHistoryDemo.map((item, index) => (
+                      <article className="giveaway-history-card" key={`${groupIndex}-${item.giveaway}`}>
+                        <div className="giveaway-history-number">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <div className="giveaway-history-info">
+                          <strong>{item.player}</strong>
+                          <span>{item.giveaway}</span>
+                        </div>
+                        <small>DEMO</small>
+                      </article>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="giveaway-history-live">
+              <i />
+              <span>{pick("ÚLTIMOS VENCEDORES", "LATEST WINNERS")}</span>
+            </div>
+          </aside>
+
           <div className="wheel-preview-wrap">
             <div className="wheel-preview-glow" />
             <div className="wheel-pointer" />
