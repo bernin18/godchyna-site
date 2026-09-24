@@ -375,11 +375,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </div>
 
               {participants.length > 0 && (
-                <div className="wheel-ready-status">
-                  <i />
-                  <span>{pick("RODA PRONTA", "WHEEL READY")}</span>
-                  <small>{pick("A rotação será o próximo passo.", "Spinning is the next step.")}</small>
-                </div>
+                <button type="button" className="wheel-spin-btn">
+                  SPINNNNN <ArrowRight />
+                </button>
               )}
             </aside>
           </section>
