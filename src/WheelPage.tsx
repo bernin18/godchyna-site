@@ -835,7 +835,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       };
     });
 
-    const ballRadius = Math.min(c4Rect.width, c4Rect.height) * 0.36;
+    const ballRadius = Math.min(c4Rect.width, c4Rect.height) * 0.30;
 
     const pegBodies = Array.from(
       board.querySelectorAll<HTMLElement>("[data-plinko-peg]"),
@@ -859,16 +859,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     let x = originX;
     let y = originY;
 
-    // Give the equal-odds target a gentle influence from the very start,
-    // instead of visibly steering the C4 near the slots.
-    let vx = (targetX - originX) * 0.18 + (Math.random() - 0.5) * 18;
-    let vy = 18;
-    let angle = -3;
-    let angularVelocity = (Math.random() - 0.5) * 20;
+    // Start with a natural throw. The selected slot only influences the very
+    // top of the board, then the final rows are entirely physics-driven.
+    let vx = (targetX - originX) * 0.13 + (Math.random() - 0.5) * 26;
+    let vy = 14;
+    let angle = -8 + (Math.random() - 0.5) * 12;
+    let angularVelocity = (Math.random() - 0.5) * 95;
 
-    const gravity = 255;
-    const restitution = 0.54;
-    const tangentRetention = 0.965;
+    const gravity = 270;
+    const restitution = 0.62;
+    const tangentRetention = 0.988;
     const hitCooldowns = new Map<string, number>();
 
     let lastTimestamp = performance.now();
@@ -915,7 +915,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       // No horizontal snap: keep the exact X produced by the physics.
       y = targetY;
-      angle *= 0.35;
+      angle += angularVelocity * 0.018;
       renderC4();
 
       const landedReward = activePlinkoSkins[landedSlotIndex];
@@ -961,7 +961,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       const air = Math.pow(0.995, dt * 60);
       vx *= air;
       vy *= Math.pow(0.999, dt * 60);
-      angularVelocity *= Math.pow(0.985, dt * 60);
+      angularVelocity *= Math.pow(0.996, dt * 60);
 
       // Any distribution correction happens high in the board and fades out
       // completely before the last rows. The final section is pure physics.
@@ -971,12 +971,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         Math.min(1, (y - originY) / Math.max(1, slotTopY - originY)),
       );
 
-      const guideCutoff = 0.72;
+      const guideCutoff = 0.42;
       if (verticalProgress < guideCutoff) {
         const normalized = verticalProgress / guideCutoff;
         const guideEnvelope = Math.sin(normalized * Math.PI);
-        const desiredVx = Math.max(-82, Math.min(82, distanceToTarget * 0.28));
-        const steering = Math.min(1, dt * 1.15) * guideEnvelope;
+        const desiredVx = Math.max(-72, Math.min(72, distanceToTarget * 0.18));
+        const steering = Math.min(1, dt * 0.62) * guideEnvelope;
         vx += (desiredVx - vx) * steering;
       }
 
@@ -1026,13 +1026,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           vx = nx * bouncedNormal + tx * keptTangent;
           vy = ny * bouncedNormal + ty * keptTangent;
 
-          // Tiny imperfect-contact impulse prevents sterile mirrored paths.
-          vx += (Math.random() - 0.5) * 7;
+          // Imperfect contact keeps the C4 from looking magnetised to a peg.
+          const sideKick = (Math.random() - 0.5) * 14;
+          vx += tx * sideKick + (Math.random() - 0.5) * 5;
+          vy += ty * sideKick * 0.18;
 
-          // A real impact also rotates the rectangular C4.
+          // The rectangular prop should visibly tumble after each impact.
           angularVelocity +=
-            (tx * vx + ty * vy) * 0.32 +
-            (Math.random() - 0.5) * 34;
+            tangentVelocity * 0.58 +
+            normalVelocity * -0.16 +
+            (Math.random() - 0.5) * 72;
 
           registerHit(peg.key);
         }
@@ -1329,7 +1332,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </div>
 
               <h2 id="plinko-reward-title">
-                {pick("O player", "Player")}{" "}
                 <strong>{plinkoRewardNotice.playerName}</strong>{" "}
                 {pick("tirou uma", "pulled a")}{" "}
                 {plinkoRewardNotice.reward ? (
@@ -1473,7 +1475,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </span>
 
               <h2 id="plinko-winner-title">
-                {pick("O player", "Player")}{" "}
                 <strong>{plinkoWinnerNotice.playerName}</strong>{" "}
                 {pick("foi o vencedor do PLINKO DO", "is the winner of")}{" "}
                 <span className="plinko-winner-brand">CHYNAO</span>
