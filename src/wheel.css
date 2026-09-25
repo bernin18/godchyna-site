@@ -132,6 +132,9 @@ linear-gradient(145deg,#071014,#05090c);box-shadow:inset 0 0 70px rgba(0,0,0,.25
 .giveaway-wheel-center strong{margin-top:6px;color:#b9851f;font-family:"Exo 2",sans-serif;font-size:31px;font-style:italic;font-weight:900;line-height:1}
 .giveaway-wheel-name{position:absolute;z-index:3;left:50%;top:50%;width:170px;margin-left:-85px;margin-top:-7px;color:#fffdf8;text-align:center;white-space:nowrap;font-family:"Chakra Petch",sans-serif;font-size:var(--wheel-name-size);font-weight:900;letter-spacing:.02em;-webkit-text-stroke:1.3px #050505;paint-order:stroke fill;text-shadow:0 1px 0 rgba(0,0,0,.95),0 0 6px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.45);transform:rotate(var(--wheel-name-angle)) translateY(calc(-1 * var(--label-radius))) rotate(-90deg)}
 .wheel-config-pointer{position:absolute;z-index:8;top:calc(50% - 354px);left:50%;width:0;height:0;transform:translateX(-50%);border-left:19px solid transparent;border-right:19px solid transparent;border-top:35px solid #20f39a;filter:drop-shadow(0 0 12px rgba(32,243,154,.36))}
+.wheel-rule{position:absolute;z-index:10;right:22px;bottom:22px;width:255px;padding:16px 16px 18px;border:1px solid rgba(185,133,31,.24);border-radius:10px;background:rgba(185,133,31,.04);backdrop-filter:blur(5px)}
+.wheel-rule span{color:#b9851f;font-size:9px;font-weight:900;letter-spacing:.18em}
+.wheel-rule p{margin:8px 0 0;color:#8ea0a3;font-size:13px;line-height:1.6}
 .participants-panel{min-height:720px;padding:23px;border:1px solid #223339;border-radius:14px;background:linear-gradient(145deg,#081116,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.24);display:flex;flex-direction:column}
 .participants-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
 .participants-panel-head>div>span{color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:800;letter-spacing:.17em}
@@ -404,6 +407,8 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 }
 
 @media(min-width:1001px) and (max-height:850px){
+ .wheel-rule{right:14px;bottom:14px;width:225px;padding:13px 14px 14px}
+ .wheel-rule p{font-size:11px;line-height:1.5}
  .wheel-page-config{height:calc(100vh - 74px);min-height:0;padding:14px 24px 16px;overflow:hidden}
  .wheel-config-layout{height:100%;min-height:0}
  .wheel-config-stage,.participants-panel{height:100%;min-height:0}
