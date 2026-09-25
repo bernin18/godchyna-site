@@ -444,8 +444,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const winnerApplauseIntervalRef = useRef<number | null>(null);
   const wheelRotorRef = useRef<HTMLDivElement | null>(null);
-  const wheelSpinOscillatorRef = useRef<OscillatorNode | null>(null);
-  const wheelSpinGainRef = useRef<GainNode | null>(null);
   const wheelSpinAnimationRef = useRef<number | null>(null);
   const wheelLastSectorRef = useRef<number | null>(null);
   const wheelLastDividerSoundRef = useRef(0);
@@ -1494,57 +1492,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       wheelSpinAnimationRef.current = null;
     }
 
-    const context = audioContextRef.current;
-    const oscillator = wheelSpinOscillatorRef.current;
-    const gain = wheelSpinGainRef.current;
-
-    if (context && oscillator && gain) {
-      const now = context.currentTime;
-      try {
-        gain.gain.cancelScheduledValues(now);
-        gain.gain.setValueAtTime(Math.max(0.0001, gain.gain.value), now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
-        oscillator.stop(now + 0.11);
-      } catch {
-        // The oscillator may already have stopped.
-      }
-    }
-
-    wheelSpinOscillatorRef.current = null;
-    wheelSpinGainRef.current = null;
     wheelLastSectorRef.current = null;
   }
 
   function startWheelSpinAudio(entryCount: number) {
     stopWheelSpinAudio();
 
-    const context = getAudioContext();
     const rotor = wheelRotorRef.current;
-    if (!context || !rotor || entryCount <= 0) return;
+    if (!rotor || entryCount <= 0 || !soundEnabled) return;
 
-    const now = context.currentTime;
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const filter = context.createBiquadFilter();
-
-    oscillator.type = "sawtooth";
-    oscillator.frequency.setValueAtTime(76, now);
-    oscillator.frequency.exponentialRampToValueAtTime(118, now + 0.20);
-
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(560, now);
-    filter.Q.setValueAtTime(0.8, now);
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.018, now + 0.08);
-
-    oscillator.connect(filter);
-    filter.connect(gain);
-    gain.connect(context.destination);
-    oscillator.start(now);
-
-    wheelSpinOscillatorRef.current = oscillator;
-    wheelSpinGainRef.current = gain;
     wheelLastSectorRef.current = null;
     wheelLastDividerSoundRef.current = performance.now();
 
@@ -1552,7 +1508,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const sampleWheel = () => {
       const element = wheelRotorRef.current;
-      if (!element || !wheelSpinOscillatorRef.current) return;
+      if (!element || !spinning) return;
 
       const transform = window.getComputedStyle(element).transform;
       if (transform && transform !== "none") {
@@ -1585,6 +1541,72 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     };
 
     wheelSpinAnimationRef.current = window.requestAnimationFrame(sampleWheel);
+  }
+
+  function playEliminatedSound() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const gain = context.createGain();
+    const low = context.createOscillator();
+    const wobble = context.createOscillator();
+    const wobbleGain = context.createGain();
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.085, now + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.58);
+
+    low.type = "sawtooth";
+    low.frequency.setValueAtTime(210, now);
+    low.frequency.exponentialRampToValueAtTime(72, now + 0.50);
+
+    wobble.type = "square";
+    wobble.frequency.setValueAtTime(155, now);
+    wobble.frequency.exponentialRampToValueAtTime(92, now + 0.34);
+    wobbleGain.gain.setValueAtTime(0.028, now);
+    wobbleGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.40);
+
+    low.connect(gain);
+    wobble.connect(wobbleGain);
+    wobbleGain.connect(gain);
+    gain.connect(context.destination);
+
+    low.start(now);
+    wobble.start(now + 0.035);
+    low.stop(now + 0.60);
+    wobble.stop(now + 0.43);
+  }
+
+  function playStillAlivePlim() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const gain = context.createGain();
+    const first = context.createOscillator();
+    const second = context.createOscillator();
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.065, now + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+
+    first.type = "sine";
+    first.frequency.setValueAtTime(740, now);
+    first.frequency.exponentialRampToValueAtTime(940, now + 0.10);
+
+    second.type = "sine";
+    second.frequency.setValueAtTime(1110, now + 0.10);
+    second.frequency.exponentialRampToValueAtTime(1480, now + 0.18);
+
+    first.connect(gain);
+    second.connect(gain);
+    gain.connect(context.destination);
+
+    first.start(now);
+    first.stop(now + 0.20);
+    second.start(now + 0.09);
+    second.stop(now + 0.32);
   }
 
   function playArcadeMusicStep() {
@@ -2889,6 +2911,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         name: eliminatedName,
                         remainingEntries,
                       });
+
+                      if (remainingEntries > 0) {
+                        playStillAlivePlim();
+                      } else {
+                        playEliminatedSound();
+                      }
 
                       if (nextParticipants.length === 5) {
                         setPendingTopFive(nextParticipants.slice(0, 5));
