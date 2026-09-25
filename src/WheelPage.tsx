@@ -421,6 +421,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [giveawayPrizeImageUrl, setGiveawayPrizeImageUrl] = useState("");
   const [giveawayPrizeSaving, setGiveawayPrizeSaving] = useState(false);
   const [giveawayPrizeMessage, setGiveawayPrizeMessage] = useState("");
+  const [giveawayPrizeEditing, setGiveawayPrizeEditing] = useState(true);
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
@@ -505,6 +506,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setGiveawayPrizeImagePath(null);
       setGiveawayPrizeImageUrl("");
       setGiveawayPrizeMessage("");
+      setGiveawayPrizeEditing(true);
       return;
     }
 
@@ -513,7 +515,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     async function loadGiveawayPrize() {
       const { data, error } = await supabase
         .from("giveaway_prize_drafts")
-        .select("skin_name, skin_value, image_path")
+        .select("skin_name, skin_value, image_path, is_saved")
         .eq("user_id", session!.user.id)
         .maybeSingle();
 
@@ -533,6 +535,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           : String(data.skin_value),
       );
       setGiveawayPrizeImagePath(data?.image_path ?? null);
+      setGiveawayPrizeEditing(!(data?.is_saved ?? false));
 
       if (data?.image_path) {
         const { data: publicData } = supabase.storage
@@ -906,6 +909,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         skin_name: giveawayPrizeName.trim(),
         skin_value: giveawayPrizeNumericValue(),
         image_path: giveawayPrizeImagePath,
+        is_saved: true,
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
@@ -916,7 +920,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
-    setGiveawayPrizeMessage(pick("Prémio guardado.", "Prize saved."));
+    setGiveawayPrizeMessage("");
+    setGiveawayPrizeEditing(false);
   }
 
   async function uploadGiveawayPrizeImage(event: ChangeEvent<HTMLInputElement>) {
@@ -974,6 +979,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         skin_name: giveawayPrizeName.trim(),
         skin_value: giveawayPrizeNumericValue(),
         image_path: nextPath,
+        is_saved: false,
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
@@ -1026,6 +1032,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setGiveawayPrizeValue("");
     setGiveawayPrizeImagePath(null);
     setGiveawayPrizeImageUrl("");
+    setGiveawayPrizeEditing(true);
     setGiveawayPrizeMessage(pick("Prémio removido.", "Prize removed."));
   }
 
@@ -2257,110 +2264,150 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="wheel-config-glow" />
               <div className="wheel-config-pointer" />
 
-              <div className="wheel-prize-card">
+              <div className={`wheel-prize-card${giveawayPrizeEditing ? "" : " is-display"}`}>
                 <div className="wheel-prize-card-head">
                   <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
-                  <small>{pick("PRÉMIO", "PRIZE")}</small>
-                </div>
 
-                <button
-                  type="button"
-                  className={`wheel-prize-preview${giveawayPrizeImageUrl ? " has-image" : ""}`}
-                  onClick={() => prizeImageInputRef.current?.click()}
-                  disabled={giveawayPrizeSaving}
-                  title={pick("Carregar ou trocar imagem", "Upload or replace image")}
-                >
-                  {giveawayPrizeImageUrl ? (
-                    <img
-                      src={giveawayPrizeImageUrl}
-                      alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
-                    />
+                  {giveawayPrizeEditing ? (
+                    <small>{pick("PRÉMIO", "PRIZE")}</small>
                   ) : (
-                    <>
-                      <Upload />
-                      <strong>{pick("UPLOAD DA SKIN", "UPLOAD SKIN")}</strong>
-                      <small>PNG · JPG · WEBP · 5 MB</small>
-                    </>
-                  )}
-                </button>
-
-                <input
-                  ref={prizeImageInputRef}
-                  className="wheel-prize-file-input"
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  onChange={uploadGiveawayPrizeImage}
-                  tabIndex={-1}
-                />
-
-                <label className="wheel-prize-field">
-                  <span>{pick("NOME DA SKIN", "SKIN NAME")}</span>
-                  <input
-                    type="text"
-                    value={giveawayPrizeName}
-                    onChange={(event) => {
-                      setGiveawayPrizeName(event.target.value);
-                      setGiveawayPrizeMessage("");
-                    }}
-                    placeholder="AK-47 | Wild Lotus"
-                    disabled={giveawayPrizeSaving}
-                  />
-                </label>
-
-                <label className="wheel-prize-field">
-                  <span>{pick("VALOR", "VALUE")}</span>
-                  <div className="wheel-prize-value-input">
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      value={giveawayPrizeValue}
-                      onChange={(event) => {
-                        setGiveawayPrizeValue(event.target.value);
+                    <button
+                      type="button"
+                      className="wheel-prize-back"
+                      onClick={() => {
+                        setGiveawayPrizeEditing(true);
                         setGiveawayPrizeMessage("");
                       }}
-                      placeholder="100.00"
-                      disabled={giveawayPrizeSaving}
-                    />
-                    <b>€</b>
-                  </div>
-                </label>
-
-                <div className="wheel-prize-actions">
-                  <button
-                    type="button"
-                    className="wheel-prize-upload"
-                    onClick={() => prizeImageInputRef.current?.click()}
-                    disabled={giveawayPrizeSaving}
-                  >
-                    <Upload />
-                    {giveawayPrizeImageUrl ? pick("TROCAR", "REPLACE") : pick("UPLOAD", "UPLOAD")}
-                  </button>
-
-                  <button
-                    type="button"
-                    className="wheel-prize-save"
-                    onClick={saveGiveawayPrize}
-                    disabled={giveawayPrizeSaving}
-                  >
-                    <Save />
-                    {giveawayPrizeSaving ? pick("A GUARDAR...", "SAVING...") : pick("GUARDAR", "SAVE")}
-                  </button>
+                    >
+                      <ArrowLeft />
+                      {pick("VOLTAR", "BACK")}
+                    </button>
+                  )}
                 </div>
 
-                {(giveawayPrizeImagePath || giveawayPrizeName || giveawayPrizeValue) && (
-                  <button
-                    type="button"
-                    className="wheel-prize-remove"
-                    onClick={removeGiveawayPrize}
-                    disabled={giveawayPrizeSaving}
-                  >
-                    <Trash2 />
-                    {pick("REMOVER PRÉMIO", "REMOVE PRIZE")}
-                  </button>
-                )}
+                {giveawayPrizeEditing ? (
+                  <>
+                    <button
+                      type="button"
+                      className={`wheel-prize-preview${giveawayPrizeImageUrl ? " has-image" : ""}`}
+                      onClick={() => prizeImageInputRef.current?.click()}
+                      disabled={giveawayPrizeSaving}
+                      title={pick("Carregar ou trocar imagem", "Upload or replace image")}
+                    >
+                      {giveawayPrizeImageUrl ? (
+                        <img
+                          src={giveawayPrizeImageUrl}
+                          alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                        />
+                      ) : (
+                        <>
+                          <Upload />
+                          <strong>{pick("UPLOAD DA SKIN", "UPLOAD SKIN")}</strong>
+                          <small>PNG · JPG · WEBP · 5 MB</small>
+                        </>
+                      )}
+                    </button>
 
-                {giveawayPrizeMessage && (
-                  <small className="wheel-prize-message">{giveawayPrizeMessage}</small>
+                    <input
+                      ref={prizeImageInputRef}
+                      className="wheel-prize-file-input"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      onChange={uploadGiveawayPrizeImage}
+                      tabIndex={-1}
+                    />
+
+                    <label className="wheel-prize-field">
+                      <span>{pick("NOME DA SKIN", "SKIN NAME")}</span>
+                      <input
+                        type="text"
+                        value={giveawayPrizeName}
+                        onChange={(event) => {
+                          setGiveawayPrizeName(event.target.value);
+                          setGiveawayPrizeMessage("");
+                        }}
+                        placeholder="AK-47 | Wild Lotus"
+                        disabled={giveawayPrizeSaving}
+                      />
+                    </label>
+
+                    <label className="wheel-prize-field">
+                      <span>{pick("VALOR", "VALUE")}</span>
+                      <div className="wheel-prize-value-input">
+                        <input
+                          type="text"
+                          inputMode="decimal"
+                          value={giveawayPrizeValue}
+                          onChange={(event) => {
+                            setGiveawayPrizeValue(event.target.value);
+                            setGiveawayPrizeMessage("");
+                          }}
+                          placeholder="100.00"
+                          disabled={giveawayPrizeSaving}
+                        />
+                        <b>€</b>
+                      </div>
+                    </label>
+
+                    <div className="wheel-prize-actions">
+                      <button
+                        type="button"
+                        className="wheel-prize-upload"
+                        onClick={() => prizeImageInputRef.current?.click()}
+                        disabled={giveawayPrizeSaving}
+                      >
+                        <Upload />
+                        {giveawayPrizeImageUrl ? pick("TROCAR", "REPLACE") : pick("UPLOAD", "UPLOAD")}
+                      </button>
+
+                      <button
+                        type="button"
+                        className="wheel-prize-save"
+                        onClick={saveGiveawayPrize}
+                        disabled={giveawayPrizeSaving}
+                      >
+                        <Save />
+                        {giveawayPrizeSaving ? pick("A GUARDAR...", "SAVING...") : pick("GUARDAR", "SAVE")}
+                      </button>
+                    </div>
+
+                    {(giveawayPrizeImagePath || giveawayPrizeName || giveawayPrizeValue) && (
+                      <button
+                        type="button"
+                        className="wheel-prize-remove"
+                        onClick={removeGiveawayPrize}
+                        disabled={giveawayPrizeSaving}
+                      >
+                        <Trash2 />
+                        {pick("REMOVER PRÉMIO", "REMOVE PRIZE")}
+                      </button>
+                    )}
+
+                    {giveawayPrizeMessage && (
+                      <small className="wheel-prize-message">{giveawayPrizeMessage}</small>
+                    )}
+                  </>
+                ) : (
+                  <div className="wheel-prize-showcase">
+                    <div className="wheel-prize-showcase-media">
+                      {giveawayPrizeImageUrl ? (
+                        <img
+                          src={giveawayPrizeImageUrl}
+                          alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                        />
+                      ) : (
+                        <span>{pick("SEM IMAGEM", "NO IMAGE")}</span>
+                      )}
+                    </div>
+
+                    <strong title={giveawayPrizeName}>
+                      {giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                    </strong>
+
+                    {giveawayPrizeValue && (
+                      <b>{Number(giveawayPrizeValue.replace(",", ".")).toFixed(2)} €</b>
+                    )}
+                  </div>
                 )}
               </div>
               <div
