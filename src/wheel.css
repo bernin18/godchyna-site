@@ -422,6 +422,8 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .plinko-tie-modal button::after,.plinko-winner-close::after{content:"";position:absolute;inset:-5px;border:2px solid #20f39a;border-radius:11px;box-shadow:0 0 10px rgba(32,243,154,.28),0 0 22px rgba(32,243,154,.16);opacity:.72;pointer-events:none;animation:wheel-spin-pulse 1.45s ease-in-out infinite}
 .plinko-tie-modal button:hover,.plinko-winner-close:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .plinko-winner-modal{position:relative;z-index:3;border:2px solid #20f39a;box-shadow:0 30px 100px rgba(0,0,0,.72),0 0 18px rgba(32,243,154,.32),0 0 48px rgba(32,243,154,.16),0 0 76px rgba(217,166,55,.08);animation:plinko-winner-pop .42s cubic-bezier(.2,.8,.2,1) both,plinko-winner-frame-pulse 1.55s ease-in-out .42s infinite}
+.plinko-winner-prize-image{width:min(390px,92%);height:160px;margin:16px auto 2px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(185,133,31,.18);border-radius:10px;background:radial-gradient(circle at 50% 48%,rgba(185,133,31,.08),rgba(5,10,13,.22) 68%);overflow:hidden}
+.plinko-winner-prize-image img{display:block;max-width:94%;max-height:148px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(0,0,0,.48)) drop-shadow(0 0 10px rgba(217,166,55,.08))}
 .plinko-winner-modal h2{margin:20px auto 10px;max-width:470px;font-size:29px;line-height:1.3}
 .plinko-winner-modal h2 strong{color:#d9a637}
 .plinko-winner-congrats{margin:10px auto 0!important;color:#20f39a!important;font-family:"Chakra Petch",sans-serif;font-size:24px!important;font-weight:900!important;letter-spacing:.08em;text-shadow:0 0 18px rgba(32,243,154,.25)}
