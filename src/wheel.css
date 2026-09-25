@@ -23,7 +23,7 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .giveaway-history-info{min-width:0;display:flex;flex-direction:column;gap:3px}
 .giveaway-history-info strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#eef3f1;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900}
 .giveaway-history-info span{color:#657578;font-size:7px;font-weight:800;letter-spacing:.075em}
-.giveaway-history-card small{padding:3px 4px;border:1px solid rgba(32,243,154,.2);border-radius:4px;color:#20f39a;background:rgba(32,243,154,.025);font-size:5px;font-weight:900;letter-spacing:.08em}
+.giveaway-history-card small{padding:3px 5px;border:1px solid rgba(185,133,31,.20);border-radius:4px;color:#b9a36f;background:rgba(185,133,31,.035);font-size:6px;font-weight:900;letter-spacing:.055em;white-space:nowrap}
 .giveaway-history-live{height:34px;margin-top:9px;border-top:1px solid #16262a;display:flex;align-items:flex-end;justify-content:center;gap:7px;color:#617174;font-size:6px;font-weight:900;letter-spacing:.12em}
 .giveaway-history-live i{width:6px;height:6px;border-radius:50%;background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.5);animation:giveaway-history-live 1.5s ease-in-out infinite}
 @keyframes giveaway-history-roll{from{transform:translateY(0)}to{transform:translateY(calc(-50% - 5px))}}
