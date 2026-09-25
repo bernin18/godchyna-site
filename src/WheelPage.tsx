@@ -425,6 +425,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
   });
   const audioContextRef = useRef<AudioContext | null>(null);
+  const winnerApplauseIntervalRef = useRef<number | null>(null);
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
@@ -672,6 +673,27 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (winnerApplauseIntervalRef.current !== null) {
+      window.clearInterval(winnerApplauseIntervalRef.current);
+      winnerApplauseIntervalRef.current = null;
+    }
+
+    if (!plinkoWinnerNotice || !soundEnabled) return;
+
+    playApplauseBurst();
+    winnerApplauseIntervalRef.current = window.setInterval(() => {
+      playApplauseBurst();
+    }, 950);
+
+    return () => {
+      if (winnerApplauseIntervalRef.current !== null) {
+        window.clearInterval(winnerApplauseIntervalRef.current);
+        winnerApplauseIntervalRef.current = null;
+      }
+    };
+  }, [plinkoWinnerNotice, soundEnabled]);
 
   useEffect(() => {
     if (!session?.user.id) return;
@@ -994,6 +1016,65 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     body.stop(now + 0.50);
     punch.stop(now + 0.12);
     noise.stop(now + 0.22);
+  }
+
+  function playApplauseBurst() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const clapCount = 9;
+
+    for (let clapIndex = 0; clapIndex < clapCount; clapIndex += 1) {
+      const startAt =
+        now +
+        clapIndex * 0.095 +
+        Math.random() * 0.055;
+
+      const duration = 0.045 + Math.random() * 0.035;
+      const frameCount = Math.max(
+        1,
+        Math.floor(context.sampleRate * duration),
+      );
+      const buffer = context.createBuffer(1, frameCount, context.sampleRate);
+      const samples = buffer.getChannelData(0);
+
+      for (let sampleIndex = 0; sampleIndex < samples.length; sampleIndex += 1) {
+        const progress = sampleIndex / samples.length;
+        const envelope = Math.pow(1 - progress, 2.2);
+        samples[sampleIndex] =
+          (Math.random() * 2 - 1) *
+          envelope *
+          (0.72 + Math.random() * 0.28);
+      }
+
+      const source = context.createBufferSource();
+      const filter = context.createBiquadFilter();
+      const gain = context.createGain();
+
+      source.buffer = buffer;
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(
+        1050 + Math.random() * 850,
+        startAt,
+      );
+      filter.Q.setValueAtTime(0.65 + Math.random() * 0.45, startAt);
+
+      const peak = 0.018 + Math.random() * 0.016;
+      gain.gain.setValueAtTime(0.0001, startAt);
+      gain.gain.exponentialRampToValueAtTime(peak, startAt + 0.004);
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        startAt + duration,
+      );
+
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(context.destination);
+
+      source.start(startAt);
+      source.stop(startAt + duration + 0.01);
+    }
   }
 
   function toggleSound() {
