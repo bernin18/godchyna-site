@@ -415,6 +415,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [participantMessage, setParticipantMessage] = useState("");
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
+  const [previewRotation, setPreviewRotation] = useState(0);
+  const [previewSpinning, setPreviewSpinning] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(() => {
     if (typeof window === "undefined") return true;
 
@@ -1423,6 +1425,57 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     plinkoAnimationRef.current = window.requestAnimationFrame(frame);
   }
 
+  function playPreviewPlim() {
+    if (typeof window === "undefined") return;
+
+    let context = audioContextRef.current;
+
+    if (!context) {
+      context = new AudioContext();
+      audioContextRef.current = context;
+    }
+
+    if (context.state === "suspended") {
+      void context.resume();
+    }
+
+    const now = context.currentTime;
+    const gain = context.createGain();
+    const bell = context.createOscillator();
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.07, now + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+
+    bell.type = "sine";
+    bell.frequency.setValueAtTime(920, now);
+    bell.frequency.exponentialRampToValueAtTime(1380, now + 0.05);
+
+    bell.connect(gain);
+    gain.connect(context.destination);
+
+    bell.start(now);
+    bell.stop(now + 0.36);
+  }
+
+  function spinPreviewWheel() {
+    if (previewSpinning || previewNames.length === 0) return;
+
+    playPreviewPlim();
+
+    const selectedIndex = randomParticipantIndex(previewNames.length);
+    const step = 360 / previewNames.length;
+    const selectedCenter = selectedIndex * step + step / 2;
+    const targetAngle = (360 - (selectedCenter % 360)) % 360;
+
+    setPreviewSpinning(true);
+    setPreviewRotation((currentRotation) => {
+      const currentAngle = ((currentRotation % 360) + 360) % 360;
+      const alignment = (targetAngle - currentAngle + 360) % 360;
+      return currentRotation + 5 * 360 + alignment;
+    });
+  }
+
   function spinWheel() {
     if (spinning || eliminationNotice || topFive || wheelWinnerNotice || participants.length <= 1) return;
 
@@ -2262,9 +2315,29 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="wheel-preview-glow" />
             <div className="wheel-pointer" />
             <div className="wheel-preview" aria-label={pick("Pré-visualização da roda", "Wheel preview")}>
-              <WheelDividers count={previewNames.length} />
-              <div className="wheel-preview-center"><span>RODA DO</span><small>CHYNAO</small></div>
-              {renderWheelNames(previewNames, true)}
+              <div
+                className={`wheel-preview-rotor${previewSpinning ? " is-spinning" : ""}`}
+                style={{ transform: `rotate(${previewRotation}deg)` }}
+                onTransitionEnd={(event) => {
+                  if (event.propertyName === "transform") {
+                    setPreviewSpinning(false);
+                  }
+                }}
+              >
+                <WheelDividers count={previewNames.length} />
+                {renderWheelNames(previewNames, true)}
+              </div>
+
+              <button
+                type="button"
+                className="wheel-preview-center"
+                onClick={spinPreviewWheel}
+                disabled={previewSpinning}
+                aria-label={pick("Rodar a roda de demonstração", "Spin demo wheel")}
+              >
+                <span>RODA DO</span>
+                <small>CHYNAO</small>
+              </button>
             </div>
             <div className="wheel-stage-label">SURVIVOR WHEEL &amp; PLINKO</div>
           </div>
