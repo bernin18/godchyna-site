@@ -2059,6 +2059,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <strong>CHYNAO</strong>
                 </div>
               </div>
+
+              <div className="wheel-rule">
+                <span>{pick("REGRA", "RULE")}</span>
+                <p>
+                  {pick(
+                    "Em cada rodada, a entrada escolhida pela roda é eliminada. Quando restarem apenas 5 entradas, o TOP 5 avança para o Plinko, onde será decidido o vencedor final do sorteio.",
+                    "Each round, the entry selected by the wheel is eliminated. When only 5 entries remain, the TOP 5 advances to Plinko, where the final giveaway winner will be decided.",
+                  )}
+                </p>
+              </div>
             </div>
 
             <aside className="participants-panel">
