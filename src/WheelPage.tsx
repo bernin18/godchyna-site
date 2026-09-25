@@ -422,6 +422,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [giveawayPrizeSaving, setGiveawayPrizeSaving] = useState(false);
   const [giveawayPrizeMessage, setGiveawayPrizeMessage] = useState("");
   const [giveawayPrizeEditing, setGiveawayPrizeEditing] = useState(true);
+  const [winnerGiveawayPrizeName, setWinnerGiveawayPrizeName] = useState("");
   const giveawayFinalizedRef = useRef(false);
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const [rotation, setRotation] = useState(0);
@@ -1044,6 +1045,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   async function finalizeCurrentGiveaway(winnerName: string) {
     if (!session?.user.id || giveawayFinalizedRef.current) return;
 
+    setWinnerGiveawayPrizeName(giveawayPrizeName.trim());
     giveawayFinalizedRef.current = true;
 
     const { data, error } = await supabase.rpc("finalize_giveaway", {
@@ -1065,6 +1067,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       Array.isArray(data) && data.length > 0
         ? data[0]?.archived_image_path ?? null
         : null;
+    const archivedSkinName =
+      Array.isArray(data) && data.length > 0
+        ? data[0]?.archived_skin_name ?? ""
+        : "";
+
+    if (archivedSkinName) {
+      setWinnerGiveawayPrizeName(archivedSkinName);
+    }
 
     if (archivedImagePath) {
       await supabase.storage
@@ -2257,14 +2267,19 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </span>
 
               <h2 id="plinko-winner-title">
-                <strong>{plinkoWinnerNotice.playerName}</strong>{" "}
-                {pick("foi o vencedor do PLINKO DO", "is the winner of")}{" "}
-                <span className="plinko-winner-brand">CHYNAO</span>
-                {pick("!", "'S PLINKO!")}
+                <strong>{plinkoWinnerNotice.playerName}</strong>
+                {winnerGiveawayPrizeName ? (
+                  <>
+                    {pick(", ganhaste o giveaway desta ", ", you won the giveaway for this ")}
+                    <span className="plinko-winner-brand">{winnerGiveawayPrizeName}</span>!
+                  </>
+                ) : (
+                  <>{pick(", ganhaste o giveaway!", ", you won the giveaway!")}</>
+                )}
               </h2>
 
               <p className="plinko-winner-congrats">
-                {pick("PARABÉNS!", "CONGRATULATIONS!")}
+                {pick("MUITOS PARABÉNS!", "CONGRATULATIONS!")}
               </p>
 
               <p className="plinko-winner-trade">
@@ -2277,7 +2292,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="plinko-winner-close"
-                onClick={() => setPlinkoWinnerNotice(null)}
+                onClick={() => {
+                  setPlinkoWinnerNotice(null);
+                  setWinnerGiveawayPrizeName("");
+                }}
                 autoFocus
               >
                 {pick("FECHAR", "CLOSE")}
@@ -2779,14 +2797,19 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </span>
 
               <h2 id="wheel-winner-title">
-                <strong>{wheelWinnerNotice}</strong>{" "}
-                {pick("foi o vencedor da RODA DO", "is the winner of the")}{" "}
-                <span className="plinko-winner-brand">CHYNAO</span>
-                {pick("!", " WHEEL!")}
+                <strong>{wheelWinnerNotice}</strong>
+                {winnerGiveawayPrizeName ? (
+                  <>
+                    {pick(", ganhaste o giveaway desta ", ", you won the giveaway for this ")}
+                    <span className="plinko-winner-brand">{winnerGiveawayPrizeName}</span>!
+                  </>
+                ) : (
+                  <>{pick(", ganhaste o giveaway!", ", you won the giveaway!")}</>
+                )}
               </h2>
 
               <p className="plinko-winner-congrats">
-                {pick("PARABÉNS!", "CONGRATULATIONS!")}
+                {pick("MUITOS PARABÉNS!", "CONGRATULATIONS!")}
               </p>
 
               <p className="plinko-winner-trade">
@@ -2799,7 +2822,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="plinko-winner-close"
-                onClick={() => setWheelWinnerNotice(null)}
+                onClick={() => {
+                  setWheelWinnerNotice(null);
+                  setWinnerGiveawayPrizeName("");
+                }}
                 autoFocus
               >
                 {pick("FECHAR", "CLOSE")}
