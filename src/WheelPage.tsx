@@ -423,6 +423,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [giveawayPrizeMessage, setGiveawayPrizeMessage] = useState("");
   const [giveawayPrizeEditing, setGiveawayPrizeEditing] = useState(true);
   const [winnerGiveawayPrizeName, setWinnerGiveawayPrizeName] = useState("");
+  const [winnerGiveawayPrizeImageUrl, setWinnerGiveawayPrizeImageUrl] = useState("");
+  const [winnerGiveawayPrizeCleanupPath, setWinnerGiveawayPrizeCleanupPath] = useState<string | null>(null);
+  const winnerCelebrationVisibleRef = useRef(false);
   const giveawayFinalizedRef = useRef(false);
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const [rotation, setRotation] = useState(0);
@@ -1046,6 +1049,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!session?.user.id || giveawayFinalizedRef.current) return;
 
     setWinnerGiveawayPrizeName(giveawayPrizeName.trim());
+    setWinnerGiveawayPrizeImageUrl(giveawayPrizeImageUrl);
+    winnerCelebrationVisibleRef.current = true;
     giveawayFinalizedRef.current = true;
 
     const { data, error } = await supabase.rpc("finalize_giveaway", {
@@ -1077,9 +1082,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
 
     if (archivedImagePath) {
-      await supabase.storage
-        .from("giveaway-prizes")
-        .remove([archivedImagePath]);
+      if (winnerCelebrationVisibleRef.current) {
+        setWinnerGiveawayPrizeCleanupPath(archivedImagePath);
+      } else {
+        await supabase.storage
+          .from("giveaway-prizes")
+          .remove([archivedImagePath]);
+      }
     }
 
     setGiveawayPrizeName("");
@@ -1088,6 +1097,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setGiveawayPrizeImageUrl("");
     setGiveawayPrizeEditing(true);
     setGiveawayPrizeMessage("");
+  }
+
+  function closeWinnerCelebration(source: "wheel" | "plinko") {
+    winnerCelebrationVisibleRef.current = false;
+
+    if (source === "wheel") {
+      setWheelWinnerNotice(null);
+    } else {
+      setPlinkoWinnerNotice(null);
+    }
+
+    const cleanupPath = winnerGiveawayPrizeCleanupPath;
+
+    setWinnerGiveawayPrizeName("");
+    setWinnerGiveawayPrizeImageUrl("");
+    setWinnerGiveawayPrizeCleanupPath(null);
+
+    if (cleanupPath) {
+      void supabase.storage
+        .from("giveaway-prizes")
+        .remove([cleanupPath]);
+    }
   }
 
   function loadParticipants() {
@@ -2266,6 +2297,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
               </span>
 
+              {winnerGiveawayPrizeImageUrl && (
+                <div className="plinko-winner-prize-image">
+                  <img
+                    src={winnerGiveawayPrizeImageUrl}
+                    alt={winnerGiveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                  />
+                </div>
+              )}
+
               <h2 id="plinko-winner-title">
                 <strong>{plinkoWinnerNotice.playerName}</strong>
                 {winnerGiveawayPrizeName ? (
@@ -2292,10 +2332,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="plinko-winner-close"
-                onClick={() => {
-                  setPlinkoWinnerNotice(null);
-                  setWinnerGiveawayPrizeName("");
-                }}
+                onClick={() => closeWinnerCelebration("plinko")}
                 autoFocus
               >
                 {pick("FECHAR", "CLOSE")}
@@ -2796,6 +2833,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
               </span>
 
+              {winnerGiveawayPrizeImageUrl && (
+                <div className="plinko-winner-prize-image">
+                  <img
+                    src={winnerGiveawayPrizeImageUrl}
+                    alt={winnerGiveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                  />
+                </div>
+              )}
+
               <h2 id="wheel-winner-title">
                 <strong>{wheelWinnerNotice}</strong>
                 {winnerGiveawayPrizeName ? (
@@ -2822,10 +2868,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="plinko-winner-close"
-                onClick={() => {
-                  setWheelWinnerNotice(null);
-                  setWinnerGiveawayPrizeName("");
-                }}
+                onClick={() => closeWinnerCelebration("wheel")}
                 autoFocus
               >
                 {pick("FECHAR", "CLOSE")}
