@@ -1023,15 +1023,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!context) return;
 
     const now = context.currentTime;
-    const clapCount = 9;
+    const clapCount = 13;
 
     for (let clapIndex = 0; clapIndex < clapCount; clapIndex += 1) {
       const startAt =
         now +
-        clapIndex * 0.095 +
-        Math.random() * 0.055;
+        clapIndex * 0.072 +
+        Math.random() * 0.075;
 
-      const duration = 0.045 + Math.random() * 0.035;
+      const duration = 0.085 + Math.random() * 0.04;
       const frameCount = Math.max(
         1,
         Math.floor(context.sampleRate * duration),
@@ -1040,40 +1040,55 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       const samples = buffer.getChannelData(0);
 
       for (let sampleIndex = 0; sampleIndex < samples.length; sampleIndex += 1) {
-        const progress = sampleIndex / samples.length;
-        const envelope = Math.pow(1 - progress, 2.2);
+        const time = sampleIndex / context.sampleRate;
+        const mainDecay = Math.exp(-time * 34);
+        const slapOne = Math.exp(-Math.pow((time - 0.014) / 0.006, 2));
+        const slapTwo = Math.exp(-Math.pow((time - 0.032) / 0.008, 2));
+        const envelope = Math.min(
+          1,
+          mainDecay * 0.72 + slapOne * 0.55 + slapTwo * 0.34,
+        );
+
         samples[sampleIndex] =
           (Math.random() * 2 - 1) *
           envelope *
-          (0.72 + Math.random() * 0.28);
+          (0.78 + Math.random() * 0.22);
       }
 
       const source = context.createBufferSource();
-      const filter = context.createBiquadFilter();
+      const highpass = context.createBiquadFilter();
+      const presence = context.createBiquadFilter();
       const gain = context.createGain();
+      const panner = context.createStereoPanner();
 
       source.buffer = buffer;
-      filter.type = "bandpass";
-      filter.frequency.setValueAtTime(
-        1050 + Math.random() * 850,
-        startAt,
-      );
-      filter.Q.setValueAtTime(0.65 + Math.random() * 0.45, startAt);
 
-      const peak = 0.018 + Math.random() * 0.016;
+      highpass.type = "highpass";
+      highpass.frequency.setValueAtTime(620 + Math.random() * 180, startAt);
+
+      presence.type = "peaking";
+      presence.frequency.setValueAtTime(1750 + Math.random() * 950, startAt);
+      presence.Q.setValueAtTime(0.9, startAt);
+      presence.gain.setValueAtTime(5 + Math.random() * 3, startAt);
+
+      panner.pan.setValueAtTime((Math.random() - 0.5) * 1.15, startAt);
+
+      const peak = 0.042 + Math.random() * 0.026;
       gain.gain.setValueAtTime(0.0001, startAt);
-      gain.gain.exponentialRampToValueAtTime(peak, startAt + 0.004);
+      gain.gain.exponentialRampToValueAtTime(peak, startAt + 0.003);
       gain.gain.exponentialRampToValueAtTime(
         0.0001,
         startAt + duration,
       );
 
-      source.connect(filter);
-      filter.connect(gain);
-      gain.connect(context.destination);
+      source.connect(highpass);
+      highpass.connect(presence);
+      presence.connect(gain);
+      gain.connect(panner);
+      panner.connect(context.destination);
 
       source.start(startAt);
-      source.stop(startAt + duration + 0.01);
+      source.stop(startAt + duration + 0.012);
     }
   }
 
