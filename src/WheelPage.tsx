@@ -1686,7 +1686,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     return (
                       <div className="plinko-finalist" key={`${name}-${index}`}>
                         <span>{String(index + 1).padStart(2, "0")}</span>
-                        <strong>{name}</strong>
+                        <strong title={name}>{name}</strong>
 
                         {result ? (
                           <div className="plinko-finalist-result">
