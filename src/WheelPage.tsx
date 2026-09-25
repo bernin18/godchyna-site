@@ -292,12 +292,12 @@ const ROUND_4_SKINS: PlinkoResult[] = [
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const giveawayHistoryDemo = [
-  { player: "PLAYER_01", giveaway: "GIVEAWAY #006" },
-  { player: "PLAYER_02", giveaway: "GIVEAWAY #005" },
-  { player: "PLAYER_03", giveaway: "GIVEAWAY #004" },
-  { player: "PLAYER_04", giveaway: "GIVEAWAY #003" },
-  { player: "PLAYER_05", giveaway: "GIVEAWAY #002" },
-  { player: "PLAYER_06", giveaway: "GIVEAWAY #001" },
+  { player: "PLAYER_01", giveaway: "GIVEAWAY #006", date: "25/09/2026" },
+  { player: "PLAYER_02", giveaway: "GIVEAWAY #005", date: "24/09/2026" },
+  { player: "PLAYER_03", giveaway: "GIVEAWAY #004", date: "23/09/2026" },
+  { player: "PLAYER_04", giveaway: "GIVEAWAY #003", date: "22/09/2026" },
+  { player: "PLAYER_05", giveaway: "GIVEAWAY #002", date: "21/09/2026" },
+  { player: "PLAYER_06", giveaway: "GIVEAWAY #001", date: "20/09/2026" },
 ];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
@@ -2850,7 +2850,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                           <strong>{item.player}</strong>
                           <span>{item.giveaway}</span>
                         </div>
-                        <small>DEMO</small>
+                        <small>{item.date}</small>
                       </article>
                     ))}
                   </div>
