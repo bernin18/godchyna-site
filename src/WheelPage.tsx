@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import type { ComponentType, CSSProperties } from "react";
+import type { ChangeEvent, ComponentType, CSSProperties } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { ArrowLeft, ArrowRight, LogIn, LogOut, Ticket, Trash2, UserRound, Users, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, ArrowRight, LogIn, LogOut, Save, Ticket, Trash2, Upload, UserRound, Users, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import "./wheel.css";
@@ -415,6 +415,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [quickParticipantCount, setQuickParticipantCount] = useState(1);
   const [participants, setParticipants] = useState<string[]>([]);
   const [participantMessage, setParticipantMessage] = useState("");
+  const [giveawayPrizeName, setGiveawayPrizeName] = useState("");
+  const [giveawayPrizeValue, setGiveawayPrizeValue] = useState("");
+  const [giveawayPrizeImagePath, setGiveawayPrizeImagePath] = useState<string | null>(null);
+  const [giveawayPrizeImageUrl, setGiveawayPrizeImageUrl] = useState("");
+  const [giveawayPrizeSaving, setGiveawayPrizeSaving] = useState(false);
+  const [giveawayPrizeMessage, setGiveawayPrizeMessage] = useState("");
+  const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [previewRotation, setPreviewRotation] = useState(0);
@@ -490,6 +497,59 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     return () => data.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!session?.user.id) {
+      setGiveawayPrizeName("");
+      setGiveawayPrizeValue("");
+      setGiveawayPrizeImagePath(null);
+      setGiveawayPrizeImageUrl("");
+      setGiveawayPrizeMessage("");
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadGiveawayPrize() {
+      const { data, error } = await supabase
+        .from("giveaway_prize_drafts")
+        .select("skin_name, skin_value, image_path")
+        .eq("user_id", session!.user.id)
+        .maybeSingle();
+
+      if (cancelled) return;
+
+      if (error) {
+        setGiveawayPrizeMessage(
+          pick("Não foi possível carregar a skin guardada.", "Unable to load the saved skin."),
+        );
+        return;
+      }
+
+      setGiveawayPrizeName(data?.skin_name ?? "");
+      setGiveawayPrizeValue(
+        data?.skin_value === null || data?.skin_value === undefined
+          ? ""
+          : String(data.skin_value),
+      );
+      setGiveawayPrizeImagePath(data?.image_path ?? null);
+
+      if (data?.image_path) {
+        const { data: publicData } = supabase.storage
+          .from("giveaway-prizes")
+          .getPublicUrl(data.image_path);
+        setGiveawayPrizeImageUrl(publicData.publicUrl);
+      } else {
+        setGiveawayPrizeImageUrl("");
+      }
+    }
+
+    void loadGiveawayPrize();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.user.id, pick]);
 
   const plinkoRoundLabel =
     plinkoRound === 1
@@ -817,6 +877,156 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       "Precisas de um Day Pass ativo para configurar um sorteio.",
       "You need an active Day Pass to set up a giveaway.",
     ));
+  }
+
+  function giveawayPrizeNumericValue() {
+    const normalized = giveawayPrizeValue.trim().replace(",", ".");
+    if (!normalized) return null;
+
+    const value = Number(normalized);
+    return Number.isFinite(value) && value >= 0 ? value : null;
+  }
+
+  async function saveGiveawayPrize() {
+    if (!session?.user.id || giveawayPrizeSaving) return;
+
+    const normalizedValue = giveawayPrizeValue.trim().replace(",", ".");
+    if (normalizedValue && giveawayPrizeNumericValue() === null) {
+      setGiveawayPrizeMessage(pick("Confirma o valor da skin.", "Check the skin value."));
+      return;
+    }
+
+    setGiveawayPrizeSaving(true);
+    setGiveawayPrizeMessage("");
+
+    const { error } = await supabase
+      .from("giveaway_prize_drafts")
+      .upsert({
+        user_id: session.user.id,
+        skin_name: giveawayPrizeName.trim(),
+        skin_value: giveawayPrizeNumericValue(),
+        image_path: giveawayPrizeImagePath,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "user_id" });
+
+    setGiveawayPrizeSaving(false);
+
+    if (error) {
+      setGiveawayPrizeMessage(pick("Não foi possível guardar o prémio.", "Unable to save the prize."));
+      return;
+    }
+
+    setGiveawayPrizeMessage(pick("Prémio guardado.", "Prize saved."));
+  }
+
+  async function uploadGiveawayPrizeImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file || !session?.user.id || giveawayPrizeSaving) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      setGiveawayPrizeMessage(
+        pick("Usa uma imagem PNG, JPG ou WebP.", "Use a PNG, JPG or WebP image."),
+      );
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setGiveawayPrizeMessage(
+        pick("A imagem não pode ultrapassar 5 MB.", "The image cannot exceed 5 MB."),
+      );
+      return;
+    }
+
+    setGiveawayPrizeSaving(true);
+    setGiveawayPrizeMessage("");
+
+    const extension =
+      file.type === "image/png"
+        ? "png"
+        : file.type === "image/webp"
+          ? "webp"
+          : "jpg";
+    const nextPath = `${session.user.id}/${crypto.randomUUID()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("giveaway-prizes")
+      .upload(nextPath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
+
+    if (uploadError) {
+      setGiveawayPrizeSaving(false);
+      setGiveawayPrizeMessage(
+        pick("Não foi possível fazer upload da imagem.", "Unable to upload the image."),
+      );
+      return;
+    }
+
+    const { error: saveError } = await supabase
+      .from("giveaway_prize_drafts")
+      .upsert({
+        user_id: session.user.id,
+        skin_name: giveawayPrizeName.trim(),
+        skin_value: giveawayPrizeNumericValue(),
+        image_path: nextPath,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "user_id" });
+
+    if (saveError) {
+      await supabase.storage.from("giveaway-prizes").remove([nextPath]);
+      setGiveawayPrizeSaving(false);
+      setGiveawayPrizeMessage(
+        pick("A imagem foi enviada, mas não foi possível guardá-la.", "The image uploaded, but could not be saved."),
+      );
+      return;
+    }
+
+    if (giveawayPrizeImagePath) {
+      await supabase.storage.from("giveaway-prizes").remove([giveawayPrizeImagePath]);
+    }
+
+    const { data: publicData } = supabase.storage
+      .from("giveaway-prizes")
+      .getPublicUrl(nextPath);
+
+    setGiveawayPrizeImagePath(nextPath);
+    setGiveawayPrizeImageUrl(publicData.publicUrl);
+    setGiveawayPrizeSaving(false);
+    setGiveawayPrizeMessage(pick("Imagem carregada.", "Image uploaded."));
+  }
+
+  async function removeGiveawayPrize() {
+    if (!session?.user.id || giveawayPrizeSaving) return;
+
+    setGiveawayPrizeSaving(true);
+    setGiveawayPrizeMessage("");
+
+    if (giveawayPrizeImagePath) {
+      await supabase.storage.from("giveaway-prizes").remove([giveawayPrizeImagePath]);
+    }
+
+    const { error } = await supabase
+      .from("giveaway_prize_drafts")
+      .delete()
+      .eq("user_id", session.user.id);
+
+    setGiveawayPrizeSaving(false);
+
+    if (error) {
+      setGiveawayPrizeMessage(pick("Não foi possível remover o prémio.", "Unable to remove the prize."));
+      return;
+    }
+
+    setGiveawayPrizeName("");
+    setGiveawayPrizeValue("");
+    setGiveawayPrizeImagePath(null);
+    setGiveawayPrizeImageUrl("");
+    setGiveawayPrizeMessage(pick("Prémio removido.", "Prize removed."));
   }
 
   function loadParticipants() {
@@ -2046,6 +2256,113 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="wheel-config-stage">
               <div className="wheel-config-glow" />
               <div className="wheel-config-pointer" />
+
+              <div className="wheel-prize-card">
+                <div className="wheel-prize-card-head">
+                  <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
+                  <small>{pick("PRÉMIO", "PRIZE")}</small>
+                </div>
+
+                <button
+                  type="button"
+                  className={`wheel-prize-preview${giveawayPrizeImageUrl ? " has-image" : ""}`}
+                  onClick={() => prizeImageInputRef.current?.click()}
+                  disabled={giveawayPrizeSaving}
+                  title={pick("Carregar ou trocar imagem", "Upload or replace image")}
+                >
+                  {giveawayPrizeImageUrl ? (
+                    <img
+                      src={giveawayPrizeImageUrl}
+                      alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                    />
+                  ) : (
+                    <>
+                      <Upload />
+                      <strong>{pick("UPLOAD DA SKIN", "UPLOAD SKIN")}</strong>
+                      <small>PNG · JPG · WEBP · 5 MB</small>
+                    </>
+                  )}
+                </button>
+
+                <input
+                  ref={prizeImageInputRef}
+                  className="wheel-prize-file-input"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={uploadGiveawayPrizeImage}
+                  tabIndex={-1}
+                />
+
+                <label className="wheel-prize-field">
+                  <span>{pick("NOME DA SKIN", "SKIN NAME")}</span>
+                  <input
+                    type="text"
+                    value={giveawayPrizeName}
+                    onChange={(event) => {
+                      setGiveawayPrizeName(event.target.value);
+                      setGiveawayPrizeMessage("");
+                    }}
+                    placeholder="AK-47 | Wild Lotus"
+                    disabled={giveawayPrizeSaving}
+                  />
+                </label>
+
+                <label className="wheel-prize-field">
+                  <span>{pick("VALOR", "VALUE")}</span>
+                  <div className="wheel-prize-value-input">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={giveawayPrizeValue}
+                      onChange={(event) => {
+                        setGiveawayPrizeValue(event.target.value);
+                        setGiveawayPrizeMessage("");
+                      }}
+                      placeholder="100.00"
+                      disabled={giveawayPrizeSaving}
+                    />
+                    <b>€</b>
+                  </div>
+                </label>
+
+                <div className="wheel-prize-actions">
+                  <button
+                    type="button"
+                    className="wheel-prize-upload"
+                    onClick={() => prizeImageInputRef.current?.click()}
+                    disabled={giveawayPrizeSaving}
+                  >
+                    <Upload />
+                    {giveawayPrizeImageUrl ? pick("TROCAR", "REPLACE") : pick("UPLOAD", "UPLOAD")}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="wheel-prize-save"
+                    onClick={saveGiveawayPrize}
+                    disabled={giveawayPrizeSaving}
+                  >
+                    <Save />
+                    {giveawayPrizeSaving ? pick("A GUARDAR...", "SAVING...") : pick("GUARDAR", "SAVE")}
+                  </button>
+                </div>
+
+                {(giveawayPrizeImagePath || giveawayPrizeName || giveawayPrizeValue) && (
+                  <button
+                    type="button"
+                    className="wheel-prize-remove"
+                    onClick={removeGiveawayPrize}
+                    disabled={giveawayPrizeSaving}
+                  >
+                    <Trash2 />
+                    {pick("REMOVER PRÉMIO", "REMOVE PRIZE")}
+                  </button>
+                )}
+
+                {giveawayPrizeMessage && (
+                  <small className="wheel-prize-message">{giveawayPrizeMessage}</small>
+                )}
+              </div>
               <div
                 className="giveaway-wheel"
                 aria-label={pick("Roda do sorteio", "Giveaway wheel")}
