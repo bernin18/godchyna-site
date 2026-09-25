@@ -320,9 +320,9 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-round-badge{width:78px;height:58px;border:1px solid rgba(185,133,31,.38);border-radius:9px;background:#081014;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(185,133,31,.06)}
 .plinko-round-badge span{color:#657477;font-size:7px;font-weight:900;letter-spacing:.16em}
 .plinko-round-badge strong{margin-top:2px;color:#d9aa43;font-family:"Chakra Petch",sans-serif;font-size:24px;line-height:1}
-.plinko-layout{display:grid;grid-template-columns:320px minmax(0,820px) 260px;gap:24px;align-items:start;justify-content:center}
+.plinko-layout{display:grid;grid-template-columns:320px minmax(0,820px) 225px;gap:20px;align-items:start;justify-content:center}
 .plinko-finalists{min-height:760px;padding:22px;border:1px solid #203238;border-radius:14px;background:linear-gradient(145deg,#081217,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.23);display:flex;flex-direction:column}
-.plinko-giveaway-prize{position:relative;min-height:320px;padding:15px;border:1px solid transparent;border-radius:12px;background:linear-gradient(145deg,#081217,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.23),0 0 28px rgba(185,133,31,.06);display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden;isolation:isolate}
+.plinko-giveaway-prize{position:relative;min-height:0;padding:12px;border:1px solid transparent;border-radius:12px;background:linear-gradient(145deg,#081217,#060b0e);box-shadow:0 24px 70px rgba(0,0,0,.23),0 0 28px rgba(185,133,31,.06);display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden;isolation:isolate}
 .plinko-giveaway-prize::before{content:"";position:absolute;z-index:1;inset:0;border-radius:12px;padding:3px;pointer-events:none;background:conic-gradient(
  from var(--plinko-snake-angle),
  transparent 0deg 198deg,
@@ -340,12 +340,12 @@ linear-gradient(180deg,#05090c,#060b0e)}
 .plinko-giveaway-prize-head{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
 .plinko-giveaway-prize-head span{color:#b9851f;font-size:8px;font-weight:900;letter-spacing:.15em}
 .plinko-giveaway-prize-head small{color:#617174;font-size:6px;font-weight:900;letter-spacing:.12em}
-.plinko-giveaway-prize-media{width:100%;height:150px;border:1px solid rgba(185,133,31,.18);border-radius:8px;background:radial-gradient(circle at 50% 48%,rgba(185,133,31,.075),#050b0e 72%);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.plinko-giveaway-prize-media img{display:block;max-width:94%;max-height:140px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 9px 13px rgba(0,0,0,.48))}
+.plinko-giveaway-prize-media{width:100%;height:118px;border:1px solid rgba(185,133,31,.18);border-radius:8px;background:radial-gradient(circle at 50% 48%,rgba(185,133,31,.075),#050b0e 72%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.plinko-giveaway-prize-media img{display:block;max-width:94%;max-height:108px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 9px 13px rgba(0,0,0,.48))}
 .plinko-giveaway-prize-media span{color:#566669;font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.11em}
-.plinko-giveaway-prize>strong{max-width:100%;margin-top:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#edf3f1;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900}
-.plinko-giveaway-prize>b{margin-top:4px;color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:17px;font-weight:900}
-.plinko-giveaway-prize>p{margin:10px 0 0;color:#657578;font-size:8px;line-height:1.45}
+.plinko-giveaway-prize>strong{max-width:100%;margin-top:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#edf3f1;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900}
+.plinko-giveaway-prize>b{margin-top:4px;color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:15px;font-weight:900}
+.plinko-giveaway-prize>p{display:none}
 .plinko-panel-title{padding-bottom:13px;border-bottom:1px solid #192a2f;display:flex;align-items:end;justify-content:space-between}
 .plinko-panel-title span{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:22px;font-weight:900}
 .plinko-panel-title strong{color:#869496;font-size:8px;letter-spacing:.15em}
@@ -499,7 +499,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .plinko-page{height:calc(100vh - 74px);min-height:0;padding:10px 22px 12px;overflow:hidden}
  .plinko-head{height:72px}
  .plinko-head h1{font-size:39px}
- .plinko-layout{grid-template-columns:280px minmax(0,690px) 230px;gap:18px}
+ .plinko-layout{grid-template-columns:280px minmax(0,690px) 205px;gap:16px}
  .plinko-finalists,.plinko-machine{min-height:0;height:calc(100vh - 167px)}
  .plinko-giveaway-prize{min-height:0;height:max-content;padding:12px}
  .plinko-giveaway-prize-media{height:112px}
@@ -580,9 +580,23 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 
 @media(min-width:1001px) and (max-width:1450px){
  .plinko-shell{width:min(1380px,100%)}
- .plinko-layout{grid-template-columns:250px minmax(0,650px) 210px;gap:16px}
+ .plinko-layout{grid-template-columns:250px minmax(0,650px) 190px;gap:14px}
  .plinko-giveaway-prize{padding:11px}
  .plinko-giveaway-prize-media{height:105px}
  .plinko-giveaway-prize-media img{max-height:96px}
  .plinko-giveaway-prize>p{display:none}
+}
+
+@media(min-width:1700px){
+ .plinko-shell{
+  width:calc(100% - 300px);
+  max-width:1500px;
+  margin-left:0;
+  margin-right:auto;
+ }
+ .plinko-layout{
+  grid-template-columns:300px minmax(0,790px) 225px;
+  gap:20px;
+  justify-content:start;
+ }
 }
