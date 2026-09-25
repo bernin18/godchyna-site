@@ -1518,7 +1518,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     [participantInput],
   );
 
-  const fastWheelSpin = participants.length > 10;
+  const fastWheelSpin = participants.length >= 10;
 
   const configGradient = useMemo(() => wheelGradient(participants.length), [participants.length]);
 
