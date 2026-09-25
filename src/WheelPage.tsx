@@ -1587,64 +1587,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </main>
 
         <main className="plinko-page">
-          {wheelWinnerNotice && (
-          <div
-            className="plinko-winner-overlay"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="wheel-winner-title"
-          >
-            <div className="plinko-confetti" aria-hidden="true">
-              {Array.from({ length: 42 }, (_, index) => (
-                <span
-                  key={index}
-                  className={`confetti-${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
-                  style={{
-                    "--confetti-left": `${(index * 37) % 100}%`,
-                    "--confetti-delay": `${-((index * 0.19) % 4.2)}s`,
-                    "--confetti-duration": `${3.2 + (index % 7) * 0.23}s`,
-                    "--confetti-drift": `${-42 + (index % 9) * 11}px`,
-                    "--confetti-rotate": `${180 + (index % 8) * 90}deg`,
-                  } as CSSProperties}
-                />
-              ))}
-            </div>
-
-            <div className="plinko-winner-modal">
-              <span className="plinko-winner-kicker">
-                {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
-              </span>
-
-              <h2 id="wheel-winner-title">
-                <strong>{wheelWinnerNotice}</strong>{" "}
-                {pick("foi o vencedor da RODA DO", "is the winner of the")}{" "}
-                <span className="plinko-winner-brand">CHYNAO</span>
-                {pick("!", " WHEEL!")}
-              </h2>
-
-              <p className="plinko-winner-congrats">
-                {pick("PARABÉNS!", "CONGRATULATIONS!")}
-              </p>
-
-              <p className="plinko-winner-trade">
-                {pick(
-                  "Manda já o teu trade link no chat para poderes receber o teu giveaway!",
-                  "Send your trade link in chat now so you can receive your giveaway!",
-                )}
-              </p>
-
-              <button
-                type="button"
-                className="plinko-winner-close"
-                onClick={() => setWheelWinnerNotice(null)}
-                autoFocus
-              >
-                {pick("FECHAR", "CLOSE")}
-              </button>
-            </div>
-          </div>
-        )}
-
         {showPlinkoTransition && (
             <div className="plinko-transition-overlay plinko-transition-overlay-out" aria-hidden="true">
               <div className="plinko-transition-cloud" />
@@ -2220,6 +2162,64 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 autoFocus
               >
                 {pick("CONTINUAR", "CONTINUE")}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {wheelWinnerNotice && (
+          <div
+            className="plinko-winner-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="wheel-winner-title"
+          >
+            <div className="plinko-confetti" aria-hidden="true">
+              {Array.from({ length: 42 }, (_, index) => (
+                <span
+                  key={index}
+                  className={`confetti-${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                  style={{
+                    "--confetti-left": `${(index * 37) % 100}%`,
+                    "--confetti-delay": `${-((index * 0.19) % 4.2)}s`,
+                    "--confetti-duration": `${3.2 + (index % 7) * 0.23}s`,
+                    "--confetti-drift": `${-42 + (index % 9) * 11}px`,
+                    "--confetti-rotate": `${180 + (index % 8) * 90}deg`,
+                  } as CSSProperties}
+                />
+              ))}
+            </div>
+
+            <div className="plinko-winner-modal">
+              <span className="plinko-winner-kicker">
+                {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
+              </span>
+
+              <h2 id="wheel-winner-title">
+                <strong>{wheelWinnerNotice}</strong>{" "}
+                {pick("foi o vencedor da RODA DO", "is the winner of the")}{" "}
+                <span className="plinko-winner-brand">CHYNAO</span>
+                {pick("!", " WHEEL!")}
+              </h2>
+
+              <p className="plinko-winner-congrats">
+                {pick("PARABÉNS!", "CONGRATULATIONS!")}
+              </p>
+
+              <p className="plinko-winner-trade">
+                {pick(
+                  "Manda já o teu trade link no chat para poderes receber o teu giveaway!",
+                  "Send your trade link in chat now so you can receive your giveaway!",
+                )}
+              </p>
+
+              <button
+                type="button"
+                className="plinko-winner-close"
+                onClick={() => setWheelWinnerNotice(null)}
+                autoFocus
+              >
+                {pick("FECHAR", "CLOSE")}
               </button>
             </div>
           </div>
