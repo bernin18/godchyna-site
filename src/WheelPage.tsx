@@ -291,14 +291,6 @@ const ROUND_4_SKINS: PlinkoResult[] = [
 ];
 
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
-const giveawayHistoryDemo = [
-  { player: "PLAYER_01", giveaway: "GIVEAWAY #006", date: "25/09/2026" },
-  { player: "PLAYER_02", giveaway: "GIVEAWAY #005", date: "24/09/2026" },
-  { player: "PLAYER_03", giveaway: "GIVEAWAY #004", date: "23/09/2026" },
-  { player: "PLAYER_04", giveaway: "GIVEAWAY #003", date: "22/09/2026" },
-  { player: "PLAYER_05", giveaway: "GIVEAWAY #002", date: "21/09/2026" },
-  { player: "PLAYER_06", giveaway: "GIVEAWAY #001", date: "20/09/2026" },
-];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
 // TODO: Set this to false once Survivor Wheel + Plinko are complete and ready for users.
@@ -406,6 +398,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [loadingAccount, setLoadingAccount] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [configuring, setConfiguring] = useState(false);
+  const [isTestGiveaway, setIsTestGiveaway] = useState(false);
+  const [giveawayHistory, setGiveawayHistory] = useState<Array<{
+    id: number;
+    offeredBy: string;
+    winnerName: string;
+    skinName: string;
+    completedAt: string;
+  }>>([]);
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -558,6 +558,37 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       cancelled = true;
     };
   }, [session?.user.id, pick]);
+
+  async function loadGiveawayHistory() {
+    const { data, error } = await supabase
+      .from("giveaway_history")
+      .select("id, offered_by, winner_name, skin_name, completed_at")
+      .order("completed_at", { ascending: false })
+      .limit(6);
+
+    if (error) return;
+
+    setGiveawayHistory(
+      (data ?? []).map((item) => ({
+        id: item.id,
+        offeredBy: item.offered_by || "Chyna",
+        winnerName: item.winner_name,
+        skinName: item.skin_name || "",
+        completedAt: item.completed_at,
+      })),
+    );
+  }
+
+  useEffect(() => {
+    void loadGiveawayHistory();
+  }, []);
+
+  function formatHistoryDate(value: string) {
+    return new Date(value).toLocaleDateString(
+      pick("pt-PT", "en-GB"),
+      { day: "2-digit", month: "2-digit", year: "numeric" },
+    );
+  }
 
   const plinkoRoundLabel =
     plinkoRound === 1
@@ -851,6 +882,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   async function openConfigurator() {
     if (!account || loadingAccount) return;
 
+    setIsTestGiveaway(false);
+    giveawayFinalizedRef.current = false;
+    setWinnerGiveawayPrizeName("");
+    setWinnerGiveawayPrizeImageUrl("");
+    setWinnerGiveawayPrizeCleanupPath(null);
+
     if (ADMIN_ONLY_WHEEL && account.role !== "admin") {
       setMessage(pick(
         "A ferramenta ainda está em desenvolvimento e, por agora, só está disponível para admins.",
@@ -887,6 +924,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       "Precisas de um Day Pass ativo para configurar um sorteio.",
       "You need an active Day Pass to set up a giveaway.",
     ));
+  }
+
+  function openTestConfigurator() {
+    if (!account || loadingAccount || account.role !== "admin") return;
+
+    setIsTestGiveaway(true);
+    giveawayFinalizedRef.current = false;
+    setWinnerGiveawayPrizeName("");
+    setWinnerGiveawayPrizeImageUrl("");
+    setWinnerGiveawayPrizeCleanupPath(null);
+    setMessage("");
+    setConfiguring(true);
   }
 
   function giveawayPrizeNumericValue() {
@@ -1053,6 +1102,42 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     winnerCelebrationVisibleRef.current = true;
     giveawayFinalizedRef.current = true;
 
+    if (isTestGiveaway) {
+      const cleanupPath = giveawayPrizeImagePath;
+
+      const { error: testCleanupError } = await supabase
+        .from("giveaway_prize_drafts")
+        .delete()
+        .eq("user_id", session.user.id);
+
+      if (testCleanupError) {
+        giveawayFinalizedRef.current = false;
+        setGiveawayPrizeMessage(
+          pick(
+            "O teste terminou, mas não foi possível limpar o prémio.",
+            "The test finished, but the prize could not be reset.",
+          ),
+        );
+        return;
+      }
+
+      if (cleanupPath) {
+        if (winnerCelebrationVisibleRef.current) {
+          setWinnerGiveawayPrizeCleanupPath(cleanupPath);
+        } else {
+          await supabase.storage.from("giveaway-prizes").remove([cleanupPath]);
+        }
+      }
+
+      setGiveawayPrizeName("");
+      setGiveawayPrizeValue("");
+      setGiveawayPrizeImagePath(null);
+      setGiveawayPrizeImageUrl("");
+      setGiveawayPrizeEditing(true);
+      setGiveawayPrizeMessage("");
+      return;
+    }
+
     const { data, error } = await supabase.rpc("finalize_giveaway", {
       p_winner_name: winnerName,
     });
@@ -1080,6 +1165,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (archivedSkinName) {
       setWinnerGiveawayPrizeName(archivedSkinName);
     }
+
+    void loadGiveawayHistory();
 
     if (archivedImagePath) {
       if (winnerCelebrationVisibleRef.current) {
@@ -2584,6 +2671,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="participants-panel-head">
                 <div>
                   <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
+                  {isTestGiveaway && (
+                    <span className="participants-test-mode">
+                      {pick("MODO TESTE · NÃO ENTRA NO HISTÓRICO", "TEST MODE · NOT SAVED TO HISTORY")}
+                    </span>
+                  )}
                 </div>
                 <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}>
                   <ArrowLeft /> {pick("VOLTAR", "BACK")}
@@ -2948,28 +3040,34 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </div>
 
             <div className="giveaway-history-window">
-              <div className="giveaway-history-track">
-                {[0, 1].map((groupIndex) => (
-                  <div
-                    className="giveaway-history-group"
-                    key={groupIndex}
-                    aria-hidden={groupIndex === 1}
-                  >
-                    {giveawayHistoryDemo.map((item, index) => (
-                      <article className="giveaway-history-card" key={`${groupIndex}-${item.giveaway}`}>
-                        <div className="giveaway-history-number">
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <div className="giveaway-history-info">
-                          <strong>{item.player}</strong>
-                          <span>{item.giveaway}</span>
-                        </div>
-                        <small>{item.date}</small>
-                      </article>
-                    ))}
-                  </div>
-                ))}
-              </div>
+              {giveawayHistory.length > 0 ? (
+                <div className="giveaway-history-track">
+                  {[0, 1].map((groupIndex) => (
+                    <div
+                      className="giveaway-history-group"
+                      key={groupIndex}
+                      aria-hidden={groupIndex === 1}
+                    >
+                      {giveawayHistory.map((item) => (
+                        <article className="giveaway-history-card" key={`${groupIndex}-${item.id}`}>
+                          <div className="giveaway-history-info">
+                            <em>{pick("OFERECIDO POR", "OFFERED BY")} · {item.offeredBy}</em>
+                            <strong>{pick("VENCEDOR", "WINNER")}: {item.winnerName}</strong>
+                            <span>
+                              {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName || pick("Prémio não indicado", "Prize not specified")}
+                            </span>
+                          </div>
+                          <small>{formatHistoryDate(item.completedAt)}</small>
+                        </article>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="giveaway-history-empty">
+                  {pick("Ainda não há giveaways concluídos.", "No completed giveaways yet.")}
+                </div>
+              )}
             </div>
 
             <div className="giveaway-history-live">
@@ -3118,6 +3216,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       : pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")}{" "}
                   {(!ADMIN_ONLY_WHEEL || account?.role === "admin") && <ArrowRight />}
                 </button>
+                {account?.role === "admin" && (
+                  <button
+                    className="wheel-test-btn"
+                    type="button"
+                    onClick={openTestConfigurator}
+                    disabled={busy || loadingAccount}
+                  >
+                    {pick("TESTE", "TEST")}
+                  </button>
+                )}
                 {message && <p className="wheel-auth-message">{message}</p>}
               </div>
             )}
