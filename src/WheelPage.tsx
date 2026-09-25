@@ -893,6 +893,43 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     shimmer.stop(now + 0.30);
   }
 
+  function playPegPlim() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const gain = context.createGain();
+    const ping = context.createOscillator();
+    const overtone = context.createOscillator();
+    const overtoneGain = context.createGain();
+    const baseFrequency = 1850 + (Math.random() - 0.5) * 360;
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.020, now + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
+
+    overtoneGain.gain.setValueAtTime(0.0001, now);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.006, now + 0.002);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+    ping.type = "sine";
+    ping.frequency.setValueAtTime(baseFrequency, now);
+    ping.frequency.exponentialRampToValueAtTime(baseFrequency * 0.88, now + 0.07);
+
+    overtone.type = "triangle";
+    overtone.frequency.setValueAtTime(baseFrequency * 1.72, now);
+
+    ping.connect(gain);
+    overtone.connect(overtoneGain);
+    overtoneGain.connect(gain);
+    gain.connect(context.destination);
+
+    ping.start(now);
+    overtone.start(now);
+    ping.stop(now + 0.08);
+    overtone.stop(now + 0.05);
+  }
+
   function playLandingBoom() {
     const context = getAudioContext();
     if (!context) return;
@@ -900,32 +937,63 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const now = context.currentTime;
     const master = context.createGain();
     const body = context.createOscillator();
-    const click = context.createOscillator();
-    const clickGain = context.createGain();
+    const punch = context.createOscillator();
+    const punchGain = context.createGain();
+    const noiseGain = context.createGain();
+    const noiseFilter = context.createBiquadFilter();
 
     master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(0.085, now + 0.006);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+    master.gain.exponentialRampToValueAtTime(0.145, now + 0.004);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
 
     body.type = "sine";
-    body.frequency.setValueAtTime(105, now);
-    body.frequency.exponentialRampToValueAtTime(42, now + 0.30);
+    body.frequency.setValueAtTime(125, now);
+    body.frequency.exponentialRampToValueAtTime(36, now + 0.42);
 
-    clickGain.gain.setValueAtTime(0.028, now);
-    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
-    click.type = "triangle";
-    click.frequency.setValueAtTime(210, now);
-    click.frequency.exponentialRampToValueAtTime(82, now + 0.07);
+    punchGain.gain.setValueAtTime(0.065, now);
+    punchGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.115);
+    punch.type = "triangle";
+    punch.frequency.setValueAtTime(260, now);
+    punch.frequency.exponentialRampToValueAtTime(58, now + 0.11);
+
+    const noiseBuffer = context.createBuffer(
+      1,
+      Math.max(1, Math.floor(context.sampleRate * 0.22)),
+      context.sampleRate,
+    );
+    const noiseData = noiseBuffer.getChannelData(0);
+
+    for (let index = 0; index < noiseData.length; index += 1) {
+      const envelope = 1 - index / noiseData.length;
+      noiseData[index] = (Math.random() * 2 - 1) * envelope;
+    }
+
+    const noise = context.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    noiseFilter.type = "lowpass";
+    noiseFilter.frequency.setValueAtTime(720, now);
+    noiseFilter.frequency.exponentialRampToValueAtTime(150, now + 0.20);
+    noiseFilter.Q.setValueAtTime(0.7, now);
+
+    noiseGain.gain.setValueAtTime(0.050, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.21);
 
     body.connect(master);
-    click.connect(clickGain);
-    clickGain.connect(master);
+    punch.connect(punchGain);
+    punchGain.connect(master);
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(master);
     master.connect(context.destination);
 
     body.start(now);
-    click.start(now);
-    body.stop(now + 0.36);
-    click.stop(now + 0.08);
+    punch.start(now);
+    noise.start(now);
+
+    body.stop(now + 0.50);
+    punch.stop(now + 0.12);
+    noise.stop(now + 0.22);
   }
 
   function toggleSound() {
@@ -1073,6 +1141,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       if (now - lastHit < 150) return;
 
       hitCooldowns.set(key, now);
+      playPegPlim();
 
       setPlinkoHitPegs((current) =>
         current.includes(key) ? current : [...current, key],
