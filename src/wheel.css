@@ -146,7 +146,21 @@ linear-gradient(145deg,#071014,#05090c);box-shadow:inset 0 0 70px rgba(0,0,0,.25
 .participants-count-row{margin-top:19px;padding:10px 12px;border:1px solid #1d2c31;border-radius:8px;background:#071014;display:flex;align-items:center;justify-content:space-between}
 .participants-count-row span{color:#738083;font-size:8px;font-weight:800;letter-spacing:.12em}
 .participants-count-row strong{font-family:"Chakra Petch",sans-serif;color:#b9851f;font-size:19px}
-.participants-input{width:100%;height:180px;margin-top:11px;padding:13px 14px;resize:vertical;border:1px solid #25363b;border-radius:8px;background:#050b0e;color:#edf3f1;outline:none;font-family:"Chakra Petch",sans-serif;font-size:12px;line-height:1.6}
+.participants-quick-add{margin-top:11px;padding:10px;border:1px solid #1d2c31;border-radius:8px;background:#071014;display:grid;grid-template-columns:minmax(0,1fr) 118px;gap:8px}
+.participants-quick-name,.participants-quick-multiplier{min-width:0;display:flex;flex-direction:column;gap:5px}
+.participants-quick-name>span,.participants-quick-multiplier>span{color:#657477;font-size:7px;font-weight:900;letter-spacing:.12em}
+.participants-quick-name input{width:100%;height:34px;padding:0 9px;border:1px solid #25363b;border-radius:6px;background:#050b0e;color:#edf3f1;outline:none;font-family:"Chakra Petch",sans-serif;font-size:10px}
+.participants-quick-name input:focus,.participants-quick-multiplier input:focus{border-color:rgba(185,133,31,.58);box-shadow:0 0 0 2px rgba(185,133,31,.05)}
+.participants-quick-multiplier>div{height:34px;display:grid;grid-template-columns:30px 1fr 30px;border:1px solid #25363b;border-radius:6px;overflow:hidden;background:#050b0e}
+.participants-quick-multiplier button{border:0;background:#0b1519;color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:14px;font-weight:900;cursor:pointer}
+.participants-quick-multiplier button:hover:not(:disabled){background:rgba(185,133,31,.10);color:#e0ad3f}
+.participants-quick-multiplier button:disabled{cursor:not-allowed;opacity:.35}
+.participants-quick-multiplier input{min-width:0;width:100%;border:0;border-left:1px solid #1b2b30;border-right:1px solid #1b2b30;background:#050b0e;color:#edf3f1;text-align:center;outline:none;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;-moz-appearance:textfield}
+.participants-quick-multiplier input::-webkit-outer-spin-button,.participants-quick-multiplier input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.participants-quick-submit{grid-column:1/-1;height:34px;border:1px solid rgba(185,133,31,.65);border-radius:6px;background:rgba(185,133,31,.11);color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.1em;cursor:pointer;transition:.16s ease}
+.participants-quick-submit:hover:not(:disabled){background:rgba(185,133,31,.18);box-shadow:0 0 14px rgba(185,133,31,.08)}
+.participants-quick-submit:disabled,.participants-quick-name input:disabled,.participants-quick-multiplier input:disabled{cursor:not-allowed;opacity:.5}
+.participants-input{width:100%;height:130px;margin-top:11px;padding:13px 14px;resize:vertical;border:1px solid #25363b;border-radius:8px;background:#050b0e;color:#edf3f1;outline:none;font-family:"Chakra Petch",sans-serif;font-size:12px;line-height:1.6}
 .participants-input:focus{border-color:rgba(185,133,31,.58);box-shadow:0 0 0 3px rgba(185,133,31,.055)}
 .participants-input::placeholder{color:#46565a}
 .participants-actions{display:grid;grid-template-columns:1fr 44px;gap:8px;margin-top:13px}
@@ -163,8 +177,13 @@ linear-gradient(145deg,#071014,#05090c);box-shadow:inset 0 0 70px rgba(0,0,0,.25
 .participants-list{min-height:86px;max-height:220px;margin-top:7px;overflow:auto;padding-right:4px}
 .participants-list>p{color:#5f6e71;font-size:10px}
 .participant-row{min-height:31px;display:grid;grid-template-columns:30px 1fr 28px;align-items:center;border-bottom:1px solid #142328}
+.participant-row-grouped{grid-template-columns:30px minmax(0,1fr) 38px 34px 28px;gap:3px}
 .participant-row>span{color:#58686b;font-family:"Chakra Petch",sans-serif;font-size:8px}
-.participant-row>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#cbd3d2;font-size:10px;font-weight:700}
+.participant-row>strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#cbd3d2;font-size:10px;font-weight:700}
+.participant-row-grouped>b{color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:10px;text-align:center}
+.participant-remove-one{width:31px;height:23px;border:1px solid #24343a;border-radius:5px;background:#091116;color:#849296;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;cursor:pointer;transition:.16s ease}
+.participant-remove-one:hover:not(:disabled){color:#d9a637;border-color:rgba(185,133,31,.34);background:rgba(185,133,31,.06)}
+.participant-remove-one:disabled{cursor:not-allowed;opacity:.35}
 .participant-remove{width:24px;height:24px;border:0;border-radius:5px;background:transparent;color:#58686b;display:grid;place-items:center;cursor:pointer;transition:.18s}
 .participant-remove svg{width:14px;height:14px}
 .participant-remove:hover:not(:disabled){color:#ff7887;background:rgba(255,120,135,.07)}
@@ -417,7 +436,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .wheel-config-pointer{top:calc(50% - 300px)}
  .participants-panel{padding:18px 20px}
  .participants-count-row{margin-top:13px}
- .participants-input{height:150px}
+ .participants-input{height:105px}
  .participants-actions{margin-top:10px}
  .participants-loaded{margin-top:11px}
  .participants-list{max-height:170px}
@@ -427,7 +446,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .giveaway-wheel{--label-radius:212px;width:515px;height:515px}
  .wheel-config-glow{width:525px;height:525px}
  .wheel-config-pointer{top:calc(50% - 272px)}
- .participants-input{height:125px}
+ .participants-input{height:90px}
  .participants-list{max-height:135px}
 }
 
