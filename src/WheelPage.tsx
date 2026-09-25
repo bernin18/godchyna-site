@@ -411,6 +411,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [participantInput, setParticipantInput] = useState("");
+  const [quickParticipantName, setQuickParticipantName] = useState("");
+  const [quickParticipantCount, setQuickParticipantCount] = useState(1);
   const [participants, setParticipants] = useState<string[]>([]);
   const [participantMessage, setParticipantMessage] = useState("");
   const [rotation, setRotation] = useState(0);
@@ -848,9 +850,82 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     ));
   }
 
+  function addQuickParticipant() {
+    if (spinning || eliminationNotice || topFive || wheelWinnerNotice) return;
+
+    const name = quickParticipantName.trim();
+    const count = Math.max(1, Math.min(100, Math.floor(quickParticipantCount || 1)));
+
+    if (!name) {
+      setParticipantMessage(pick(
+        "Escreve o nome do viewer.",
+        "Enter the viewer name.",
+      ));
+      return;
+    }
+
+    setParticipants((current) => [
+      ...current,
+      ...Array.from({ length: count }, () => name),
+    ]);
+    setQuickParticipantName("");
+    setQuickParticipantCount(1);
+    setWinner(null);
+    setPendingWinner(null);
+    setPendingWinnerIndex(null);
+    setEliminationNotice(null);
+    setPendingTopFive(null);
+    setTopFive(null);
+    setShowTopFiveModal(false);
+    setShowPlinko(false);
+    setShowPlinkoTransition(false);
+    setParticipantMessage(pick(
+      `${name} foi adicionado com ${count} ${count === 1 ? "entrada" : "entradas"}.`,
+      `${name} was added with ${count} ${count === 1 ? "entry" : "entries"}.`,
+    ));
+  }
+
+  function removeOneParticipantEntry(nameToRemove: string) {
+    if (spinning || eliminationNotice || topFive || wheelWinnerNotice) return;
+
+    const normalized = nameToRemove.trim().toLocaleLowerCase();
+
+    setParticipants((current) => {
+      const indexToRemove = current.findIndex(
+        (name) => name.trim().toLocaleLowerCase() === normalized,
+      );
+
+      if (indexToRemove < 0) return current;
+
+      return current.filter((_, index) => index !== indexToRemove);
+    });
+
+    setWinner(null);
+    setPendingWinner(null);
+    setPendingWinnerIndex(null);
+  }
+
+  function removeAllParticipantEntries(nameToRemove: string) {
+    if (spinning || eliminationNotice || topFive || wheelWinnerNotice) return;
+
+    const normalized = nameToRemove.trim().toLocaleLowerCase();
+
+    setParticipants((current) =>
+      current.filter(
+        (name) => name.trim().toLocaleLowerCase() !== normalized,
+      ),
+    );
+
+    setWinner(null);
+    setPendingWinner(null);
+    setPendingWinnerIndex(null);
+  }
+
   function clearParticipants() {
     if (spinning) return;
     setParticipantInput("");
+    setQuickParticipantName("");
+    setQuickParticipantCount(1);
     setParticipants([]);
     setParticipantMessage("");
     setWinner(null);
@@ -1518,6 +1593,23 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     [participantInput],
   );
 
+  const groupedParticipants = useMemo(() => {
+    const grouped = new Map<string, { name: string; count: number }>();
+
+    participants.forEach((name) => {
+      const normalized = name.trim().toLocaleLowerCase();
+      const current = grouped.get(normalized);
+
+      if (current) {
+        current.count += 1;
+      } else {
+        grouped.set(normalized, { name, count: 1 });
+      }
+    });
+
+    return Array.from(grouped.values());
+  }, [participants]);
+
   const fastWheelSpin = participants.length >= 10;
 
   const configGradient = useMemo(() => wheelGradient(participants.length), [participants.length]);
@@ -2039,6 +2131,71 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <strong>{draftCount}</strong>
               </div>
 
+              <div className="participants-quick-add">
+                <div className="participants-quick-name">
+                  <span>{pick("NOME", "NAME")}</span>
+                  <input
+                    type="text"
+                    value={quickParticipantName}
+                    onChange={(event) => {
+                      setQuickParticipantName(event.target.value);
+                      setParticipantMessage("");
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") addQuickParticipant();
+                    }}
+                    placeholder={pick("Duarte", "Duarte")}
+                    disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                  />
+                </div>
+
+                <div className="participants-quick-multiplier">
+                  <span>{pick("ENTRADAS", "ENTRIES")}</span>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setQuickParticipantCount((count) => Math.max(1, count - 1))}
+                      disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice) || quickParticipantCount <= 1}
+                      aria-label={pick("Retirar uma entrada", "Remove one entry")}
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      min={1}
+                      max={100}
+                      value={quickParticipantCount}
+                      onChange={(event) => {
+                        const value = Number(event.target.value);
+                        setQuickParticipantCount(
+                          Number.isFinite(value)
+                            ? Math.max(1, Math.min(100, Math.floor(value)))
+                            : 1,
+                        );
+                      }}
+                      disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setQuickParticipantCount((count) => Math.min(100, count + 1))}
+                      disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice) || quickParticipantCount >= 100}
+                      aria-label={pick("Adicionar uma entrada", "Add one entry")}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="participants-quick-submit"
+                  onClick={addQuickParticipant}
+                  disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                >
+                  {pick("ADICIONAR", "ADD")}
+                </button>
+              </div>
+
               <textarea
                 className="participants-input"
                 value={participantInput}
@@ -2071,17 +2228,34 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div className="participants-list">
                   {participants.length === 0 ? (
                     <p>{pick("Ainda não carregaste participantes.", "No participants loaded yet.")}</p>
-                  ) : participants.map((participant, index) => (
-                    <div className="participant-row" key={`${participant}-${index}`}>
+                  ) : groupedParticipants.map((participant, index) => (
+                    <div className="participant-row participant-row-grouped" key={participant.name.trim().toLocaleLowerCase()}>
                       <span>{String(index + 1).padStart(2, "0")}</span>
-                      <strong>{participant}</strong>
+                      <strong title={participant.name}>{participant.name}</strong>
+                      <b>×{participant.count}</b>
+                      <button
+                        type="button"
+                        className="participant-remove-one"
+                        onClick={() => removeOneParticipantEntry(participant.name)}
+                        disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                        aria-label={pick(
+                          `Retirar uma entrada de ${participant.name}`,
+                          `Remove one entry from ${participant.name}`,
+                        )}
+                        title={pick("Retirar 1 entrada", "Remove 1 entry")}
+                      >
+                        −1
+                      </button>
                       <button
                         type="button"
                         className="participant-remove"
-                        onClick={() => removeParticipant(index)}
+                        onClick={() => removeAllParticipantEntries(participant.name)}
                         disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
-                        aria-label={pick(`Remover ${participant}`, `Remove ${participant}`)}
-                        title={pick("Remover esta entrada", "Remove this entry")}
+                        aria-label={pick(
+                          `Remover todas as entradas de ${participant.name}`,
+                          `Remove all entries from ${participant.name}`,
+                        )}
+                        title={pick("Remover todas as entradas", "Remove all entries")}
                       >
                         <Trash2 />
                       </button>
