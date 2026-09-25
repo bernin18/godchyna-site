@@ -443,6 +443,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   });
   const audioContextRef = useRef<AudioContext | null>(null);
   const winnerApplauseIntervalRef = useRef<number | null>(null);
+  const wheelRotorRef = useRef<HTMLDivElement | null>(null);
+  const wheelSpinOscillatorRef = useRef<OscillatorNode | null>(null);
+  const wheelSpinGainRef = useRef<GainNode | null>(null);
+  const wheelSpinAnimationRef = useRef<number | null>(null);
+  const wheelLastSectorRef = useRef<number | null>(null);
+  const wheelLastDividerSoundRef = useRef(0);
+  const arcadeMusicIntervalRef = useRef<number | null>(null);
+  const arcadeMusicStepRef = useRef(0);
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
@@ -809,6 +817,29 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       }
     };
   }, [plinkoWinnerNotice, wheelWinnerNotice, soundEnabled]);
+
+  useEffect(() => {
+    if (configuring && showPlinko && topFive && soundEnabled) {
+      startArcadeMusic();
+    } else {
+      stopArcadeMusic();
+    }
+
+    return () => {
+      stopArcadeMusic();
+    };
+  }, [configuring, showPlinko, topFive, soundEnabled]);
+
+  useEffect(() => {
+    if (!soundEnabled) {
+      stopWheelSpinAudio();
+      stopArcadeMusic();
+    }
+
+    return () => {
+      stopWheelSpinAudio();
+    };
+  }, [soundEnabled]);
 
   useEffect(() => {
     if (!session?.user.id) return;
@@ -1189,6 +1220,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function closeWinnerCelebration(source: "wheel" | "plinko") {
     winnerCelebrationVisibleRef.current = false;
 
+    if (source === "plinko") {
+      stopArcadeMusic();
+    }
+
     if (source === "wheel") {
       setWheelWinnerNotice(null);
     } else {
@@ -1403,11 +1438,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const baseFrequency = 1850 + (Math.random() - 0.5) * 360;
 
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.020, now + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.002);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
 
     overtoneGain.gain.setValueAtTime(0.0001, now);
-    overtoneGain.gain.exponentialRampToValueAtTime(0.006, now + 0.002);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.016, now + 0.002);
     overtoneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
 
     ping.type = "sine";
@@ -1426,6 +1461,186 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     overtone.start(now);
     ping.stop(now + 0.08);
     overtone.stop(now + 0.05);
+  }
+
+  function playWheelDividerTick(colorIndex: number) {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const gain = context.createGain();
+    const click = context.createOscillator();
+    const pitches = [560, 690, 820, 640];
+    const frequency = pitches[colorIndex % pitches.length];
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.042, now + 0.0015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
+
+    click.type = colorIndex % 2 === 0 ? "square" : "triangle";
+    click.frequency.setValueAtTime(frequency, now);
+    click.frequency.exponentialRampToValueAtTime(frequency * 0.72, now + 0.05);
+
+    click.connect(gain);
+    gain.connect(context.destination);
+
+    click.start(now);
+    click.stop(now + 0.06);
+  }
+
+  function stopWheelSpinAudio() {
+    if (wheelSpinAnimationRef.current !== null) {
+      window.cancelAnimationFrame(wheelSpinAnimationRef.current);
+      wheelSpinAnimationRef.current = null;
+    }
+
+    const context = audioContextRef.current;
+    const oscillator = wheelSpinOscillatorRef.current;
+    const gain = wheelSpinGainRef.current;
+
+    if (context && oscillator && gain) {
+      const now = context.currentTime;
+      try {
+        gain.gain.cancelScheduledValues(now);
+        gain.gain.setValueAtTime(Math.max(0.0001, gain.gain.value), now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+        oscillator.stop(now + 0.11);
+      } catch {
+        // The oscillator may already have stopped.
+      }
+    }
+
+    wheelSpinOscillatorRef.current = null;
+    wheelSpinGainRef.current = null;
+    wheelLastSectorRef.current = null;
+  }
+
+  function startWheelSpinAudio(entryCount: number) {
+    stopWheelSpinAudio();
+
+    const context = getAudioContext();
+    const rotor = wheelRotorRef.current;
+    if (!context || !rotor || entryCount <= 0) return;
+
+    const now = context.currentTime;
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const filter = context.createBiquadFilter();
+
+    oscillator.type = "sawtooth";
+    oscillator.frequency.setValueAtTime(76, now);
+    oscillator.frequency.exponentialRampToValueAtTime(118, now + 0.20);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(560, now);
+    filter.Q.setValueAtTime(0.8, now);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.018, now + 0.08);
+
+    oscillator.connect(filter);
+    filter.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(now);
+
+    wheelSpinOscillatorRef.current = oscillator;
+    wheelSpinGainRef.current = gain;
+    wheelLastSectorRef.current = null;
+    wheelLastDividerSoundRef.current = performance.now();
+
+    const sectorSize = 360 / entryCount;
+
+    const sampleWheel = () => {
+      const element = wheelRotorRef.current;
+      if (!element || !wheelSpinOscillatorRef.current) return;
+
+      const transform = window.getComputedStyle(element).transform;
+      if (transform && transform !== "none") {
+        try {
+          const matrix = new DOMMatrixReadOnly(transform);
+          let angle = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
+          angle = ((angle % 360) + 360) % 360;
+
+          const pointerAngle = (360 - angle) % 360;
+          const sector = Math.floor(pointerAngle / sectorSize) % entryCount;
+          const lastSector = wheelLastSectorRef.current;
+          const timestamp = performance.now();
+
+          if (
+            lastSector !== null &&
+            sector !== lastSector &&
+            timestamp - wheelLastDividerSoundRef.current > 42
+          ) {
+            playWheelDividerTick(sector % WHEEL_COLORS.length);
+            wheelLastDividerSoundRef.current = timestamp;
+          }
+
+          wheelLastSectorRef.current = sector;
+        } catch {
+          // Ignore transient transform parsing errors while the browser updates CSS.
+        }
+      }
+
+      wheelSpinAnimationRef.current = window.requestAnimationFrame(sampleWheel);
+    };
+
+    wheelSpinAnimationRef.current = window.requestAnimationFrame(sampleWheel);
+  }
+
+  function playArcadeMusicStep() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const melody = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880, 698.46];
+    const bass = [130.81, 146.83, 164.81, 146.83];
+    const step = arcadeMusicStepRef.current;
+    const now = context.currentTime;
+
+    const lead = context.createOscillator();
+    const leadGain = context.createGain();
+    lead.type = "square";
+    lead.frequency.setValueAtTime(melody[step % melody.length], now);
+    leadGain.gain.setValueAtTime(0.0001, now);
+    leadGain.gain.exponentialRampToValueAtTime(0.018, now + 0.008);
+    leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
+    lead.connect(leadGain);
+    leadGain.connect(context.destination);
+    lead.start(now);
+    lead.stop(now + 0.18);
+
+    if (step % 2 === 0) {
+      const bassOsc = context.createOscillator();
+      const bassGain = context.createGain();
+      bassOsc.type = "triangle";
+      bassOsc.frequency.setValueAtTime(bass[Math.floor(step / 2) % bass.length], now);
+      bassGain.gain.setValueAtTime(0.0001, now);
+      bassGain.gain.exponentialRampToValueAtTime(0.012, now + 0.012);
+      bassGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      bassOsc.connect(bassGain);
+      bassGain.connect(context.destination);
+      bassOsc.start(now);
+      bassOsc.stop(now + 0.25);
+    }
+
+    arcadeMusicStepRef.current = (step + 1) % 32;
+  }
+
+  function startArcadeMusic() {
+    if (arcadeMusicIntervalRef.current !== null || !soundEnabled) return;
+
+    arcadeMusicStepRef.current = 0;
+    playArcadeMusicStep();
+    arcadeMusicIntervalRef.current = window.setInterval(() => {
+      playArcadeMusicStep();
+    }, 245);
+  }
+
+  function stopArcadeMusic() {
+    if (arcadeMusicIntervalRef.current !== null) {
+      window.clearInterval(arcadeMusicIntervalRef.current);
+      arcadeMusicIntervalRef.current = null;
+    }
+    arcadeMusicStepRef.current = 0;
   }
 
   function playLandingBoom() {
@@ -1969,6 +2184,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinner(selectedName);
     setPendingWinnerIndex(winnerIndex);
     setSpinning(true);
+    startWheelSpinAudio(participants.length);
 
     setRotation((currentRotation) => {
       const currentAngle = ((currentRotation % 360) + 360) % 360;
@@ -2215,6 +2431,39 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
                 </div>
               </section>
+
+              <aside className="plinko-giveaway-prize" aria-label={pick("Prémio do giveaway", "Giveaway prize")}>
+                <div className="plinko-giveaway-prize-head">
+                  <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
+                  <small>{pick("PRÉMIO", "PRIZE")}</small>
+                </div>
+
+                <div className="plinko-giveaway-prize-media">
+                  {giveawayPrizeImageUrl ? (
+                    <img
+                      src={giveawayPrizeImageUrl}
+                      alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                    />
+                  ) : (
+                    <span>{pick("SEM IMAGEM", "NO IMAGE")}</span>
+                  )}
+                </div>
+
+                <strong title={giveawayPrizeName}>
+                  {giveawayPrizeName || pick("Prémio não configurado", "Prize not configured")}
+                </strong>
+
+                {giveawayPrizeValue && (
+                  <b>{Number(giveawayPrizeValue.replace(",", ".")).toFixed(2)} €</b>
+                )}
+
+                <p>
+                  {pick(
+                    "Este é o prémio configurado na roda para este giveaway.",
+                    "This is the prize configured on the wheel for this giveaway.",
+                  )}
+                </p>
+              </aside>
             </div>
 
           </section>
@@ -2601,6 +2850,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 aria-label={pick("Roda do sorteio", "Giveaway wheel")}
               >
                 <div
+                  ref={wheelRotorRef}
                   className={`giveaway-wheel-rotor${spinning ? " is-spinning" : ""}${spinning && fastWheelSpin ? " is-fast" : ""}`}
                   style={{
                     background: configGradient,
@@ -2613,6 +2863,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       pendingWinner === null ||
                       pendingWinnerIndex === null
                     ) return;
+
+                    stopWheelSpinAudio();
 
                     const eliminatedName = pendingWinner;
                     const eliminatedIndex = pendingWinnerIndex;
@@ -3051,8 +3303,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       {giveawayHistory.map((item) => (
                         <article className="giveaway-history-card" key={`${groupIndex}-${item.id}`}>
                           <div className="giveaway-history-info">
-                            <em>{pick("OFERECIDO POR", "OFFERED BY")} · {item.offeredBy}</em>
-                            <strong>{pick("VENCEDOR", "WINNER")}: {item.winnerName}</strong>
+                            <em>
+                              {pick("OFERECIDO POR", "OFFERED BY")} · <b>{item.offeredBy}</b>
+                            </em>
+                            <strong>
+                              <span>{pick("VENCEDOR", "WINNER")}: </span>
+                              <b>{item.winnerName}</b>
+                            </strong>
                             <span>
                               {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName || pick("Prémio não indicado", "Prize not specified")}
                             </span>
