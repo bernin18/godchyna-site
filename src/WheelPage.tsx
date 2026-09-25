@@ -422,6 +422,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [giveawayPrizeSaving, setGiveawayPrizeSaving] = useState(false);
   const [giveawayPrizeMessage, setGiveawayPrizeMessage] = useState("");
   const [giveawayPrizeEditing, setGiveawayPrizeEditing] = useState(true);
+  const giveawayFinalizedRef = useRef(false);
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
@@ -659,6 +660,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         playerName: survivors[0],
         result: winnerResult,
       });
+      void finalizeCurrentGiveaway(survivors[0]);
       return;
     }
 
@@ -699,6 +701,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         playerName: plinkoEliminationNotice.survivors[0],
         result: plinkoEliminationNotice.winnerResult,
       });
+      void finalizeCurrentGiveaway(plinkoEliminationNotice.survivors[0]);
       setPlinkoEliminationNotice(null);
       return;
     }
@@ -920,6 +923,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
+    giveawayFinalizedRef.current = false;
     setGiveawayPrizeMessage("");
     setGiveawayPrizeEditing(false);
   }
@@ -1000,6 +1004,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       .from("giveaway-prizes")
       .getPublicUrl(nextPath);
 
+    giveawayFinalizedRef.current = false;
     setGiveawayPrizeImagePath(nextPath);
     setGiveawayPrizeImageUrl(publicData.publicUrl);
     setGiveawayPrizeSaving(false);
@@ -1034,6 +1039,45 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setGiveawayPrizeImageUrl("");
     setGiveawayPrizeEditing(true);
     setGiveawayPrizeMessage(pick("Prémio removido.", "Prize removed."));
+  }
+
+  async function finalizeCurrentGiveaway(winnerName: string) {
+    if (!session?.user.id || giveawayFinalizedRef.current) return;
+
+    giveawayFinalizedRef.current = true;
+
+    const { data, error } = await supabase.rpc("finalize_giveaway", {
+      p_winner_name: winnerName,
+    });
+
+    if (error) {
+      giveawayFinalizedRef.current = false;
+      setGiveawayPrizeMessage(
+        pick(
+          "O vencedor foi definido, mas não foi possível guardar o histórico do giveaway.",
+          "The winner was selected, but the giveaway history could not be saved.",
+        ),
+      );
+      return;
+    }
+
+    const archivedImagePath =
+      Array.isArray(data) && data.length > 0
+        ? data[0]?.archived_image_path ?? null
+        : null;
+
+    if (archivedImagePath) {
+      await supabase.storage
+        .from("giveaway-prizes")
+        .remove([archivedImagePath]);
+    }
+
+    setGiveawayPrizeName("");
+    setGiveawayPrizeValue("");
+    setGiveawayPrizeImagePath(null);
+    setGiveawayPrizeImageUrl("");
+    setGiveawayPrizeEditing(true);
+    setGiveawayPrizeMessage("");
   }
 
   function loadParticipants() {
@@ -2432,19 +2476,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     const eliminatedIndex = pendingWinnerIndex;
                     const normalizedName = eliminatedName.trim().toLocaleLowerCase();
 
+                    const nextParticipants = participants.filter(
+                      (_, index) => index !== eliminatedIndex,
+                    );
+                    const remainingEntries = nextParticipants.filter(
+                      (name) => name.trim().toLocaleLowerCase() === normalizedName,
+                    ).length;
+
                     setSpinning(false);
                     setWinner(eliminatedName);
-                    setParticipants((current) => {
-                      const nextParticipants = current.filter((_, index) => index !== eliminatedIndex);
-                      const remainingEntries = nextParticipants.filter(
-                        (name) => name.trim().toLocaleLowerCase() === normalizedName,
-                      ).length;
+                    setParticipants(nextParticipants);
 
-                      if (nextParticipants.length === 1) {
-                        setWheelWinnerNotice(nextParticipants[0]);
-                        return nextParticipants;
-                      }
-
+                    if (nextParticipants.length === 1) {
+                      setWheelWinnerNotice(nextParticipants[0]);
+                      void finalizeCurrentGiveaway(nextParticipants[0]);
+                    } else {
                       setEliminationNotice({
                         name: eliminatedName,
                         remainingEntries,
@@ -2453,9 +2499,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       if (nextParticipants.length === 5) {
                         setPendingTopFive(nextParticipants.slice(0, 5));
                       }
+                    }
 
-                      return nextParticipants;
-                    });
                     setPendingWinner(null);
                     setPendingWinnerIndex(null);
                   }}
