@@ -15,8 +15,9 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .giveaway-history-window::before,.giveaway-history-window::after{content:"";position:absolute;z-index:3;left:0;right:0;height:42px;pointer-events:none}
 .giveaway-history-window::before{top:0;background:linear-gradient(180deg,#071014,transparent)}
 .giveaway-history-window::after{bottom:0;background:linear-gradient(0deg,#060c0f,transparent)}
-.giveaway-history-track{display:flex;flex-direction:column;gap:10px;animation:giveaway-history-roll 22s linear infinite;will-change:transform}
-.giveaway-history:hover .giveaway-history-track{animation-play-state:paused}
+.giveaway-history-track{display:flex;flex-direction:column;gap:10px}
+.giveaway-history-track.is-rolling{animation:giveaway-history-roll 22s linear infinite;will-change:transform}
+.giveaway-history:hover .giveaway-history-track.is-rolling{animation-play-state:paused}
 .giveaway-history-group{display:flex;flex-direction:column;gap:10px}
 .giveaway-history-card{min-height:76px;padding:10px 10px;border:1px solid #1c2d31;border-radius:8px;background:linear-gradient(145deg,#091317,#070d10);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:9px;box-shadow:inset 0 0 18px rgba(0,0,0,.18)}
 .giveaway-history-number{width:27px;height:27px;border:1px solid rgba(185,133,31,.28);border-radius:6px;display:grid;place-items:center;color:#b9851f;background:rgba(185,133,31,.035);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900}
