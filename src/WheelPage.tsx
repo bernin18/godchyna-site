@@ -430,6 +430,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
   const [eliminationNotice, setEliminationNotice] = useState<{ name: string; remainingEntries: number } | null>(null);
+  const [pendingWheelWinner, setPendingWheelWinner] = useState<string | null>(null);
+  const [wheelWinnerNotice, setWheelWinnerNotice] = useState<string | null>(null);
   const [pendingTopFive, setPendingTopFive] = useState<string[] | null>(null);
   const [topFive, setTopFive] = useState<string[] | null>(null);
   const [showTopFiveModal, setShowTopFiveModal] = useState(false);
@@ -680,7 +682,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       winnerApplauseIntervalRef.current = null;
     }
 
-    if (!plinkoWinnerNotice || !soundEnabled) return;
+    if ((!plinkoWinnerNotice && !wheelWinnerNotice) || !soundEnabled) return;
 
     playApplauseBurst();
     winnerApplauseIntervalRef.current = window.setInterval(() => {
@@ -693,7 +695,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         winnerApplauseIntervalRef.current = null;
       }
     };
-  }, [plinkoWinnerNotice, soundEnabled]);
+  }, [plinkoWinnerNotice, wheelWinnerNotice, soundEnabled]);
 
   useEffect(() => {
     if (!session?.user.id) return;
@@ -1422,7 +1424,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function spinWheel() {
-    if (spinning || eliminationNotice || topFive || participants.length === 0) return;
+    if (spinning || eliminationNotice || topFive || wheelWinnerNotice || participants.length <= 1) return;
 
     if (participants.length === 5) {
       setTopFive(participants.slice(0, 5));
@@ -1524,7 +1526,65 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </main>
 
         <main className="plinko-page">
-          {showPlinkoTransition && (
+          {wheelWinnerNotice && (
+          <div
+            className="plinko-winner-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="wheel-winner-title"
+          >
+            <div className="plinko-confetti" aria-hidden="true">
+              {Array.from({ length: 42 }, (_, index) => (
+                <span
+                  key={index}
+                  className={`confetti-${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                  style={{
+                    "--confetti-left": `${(index * 37) % 100}%`,
+                    "--confetti-delay": `${-((index * 0.19) % 4.2)}s`,
+                    "--confetti-duration": `${3.2 + (index % 7) * 0.23}s`,
+                    "--confetti-drift": `${-42 + (index % 9) * 11}px`,
+                    "--confetti-rotate": `${180 + (index % 8) * 90}deg`,
+                  } as CSSProperties}
+                />
+              ))}
+            </div>
+
+            <div className="plinko-winner-modal">
+              <span className="plinko-winner-kicker">
+                {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
+              </span>
+
+              <h2 id="wheel-winner-title">
+                <strong>{wheelWinnerNotice}</strong>{" "}
+                {pick("foi o vencedor da RODA DO", "is the winner of the")}{" "}
+                <span className="plinko-winner-brand">CHYNAO</span>
+                {pick("!", " WHEEL!")}
+              </h2>
+
+              <p className="plinko-winner-congrats">
+                {pick("PARABÉNS!", "CONGRATULATIONS!")}
+              </p>
+
+              <p className="plinko-winner-trade">
+                {pick(
+                  "Manda já o teu trade link no chat para poderes receber o teu giveaway!",
+                  "Send your trade link in chat now so you can receive your giveaway!",
+                )}
+              </p>
+
+              <button
+                type="button"
+                className="plinko-winner-close"
+                onClick={() => setWheelWinnerNotice(null)}
+                autoFocus
+              >
+                {pick("FECHAR", "CLOSE")}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showPlinkoTransition && (
             <div className="plinko-transition-overlay plinko-transition-overlay-out" aria-hidden="true">
               <div className="plinko-transition-cloud" />
             </div>
@@ -1928,6 +1988,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                       if (nextParticipants.length === 5) {
                         setPendingTopFive(nextParticipants.slice(0, 5));
+                      } else if (nextParticipants.length === 1) {
+                        setPendingWheelWinner(nextParticipants[0]);
                       }
 
                       return nextParticipants;
@@ -1951,7 +2013,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <div>
                   <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
                 </div>
-                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}>
+                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}>
                   <ArrowLeft /> {pick("VOLTAR", "BACK")}
                 </button>
               </div>
@@ -1973,14 +2035,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   "One name per line...\nChyna\nChyna\nChyna\nChyna",
                 )}
                 spellCheck={false}
-                disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}
+                disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
               />
 
               <div className="participants-actions">
-                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}>
+                <button type="button" className="participants-load" onClick={loadParticipants} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}>
                   {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
                 </button>
-                <button type="button" className="participants-clear" onClick={clearParticipants} disabled={spinning || Boolean(eliminationNotice)} aria-label={pick("Limpar participantes", "Clear participants")}>
+                <button type="button" className="participants-clear" onClick={clearParticipants} disabled={spinning || Boolean(eliminationNotice) || Boolean(wheelWinnerNotice)} aria-label={pick("Limpar participantes", "Clear participants")}>
                   <Trash2 />
                 </button>
               </div>
@@ -2001,7 +2063,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         type="button"
                         className="participant-remove"
                         onClick={() => removeParticipant(index)}
-                        disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive)}
+                        disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
                         aria-label={pick(`Remover ${participant}`, `Remove ${participant}`)}
                         title={pick("Remover esta entrada", "Remove this entry")}
                       >
@@ -2074,6 +2136,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 className="wheel-elimination-continue"
                 onClick={() => {
                   setEliminationNotice(null);
+
+                  if (pendingWheelWinner) {
+                    setWheelWinnerNotice(pendingWheelWinner);
+                    setPendingWheelWinner(null);
+                    return;
+                  }
+
                   if (pendingTopFive) {
                     setTopFive(pendingTopFive);
                     setPendingTopFive(null);
