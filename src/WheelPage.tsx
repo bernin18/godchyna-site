@@ -432,7 +432,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
   const [eliminationNotice, setEliminationNotice] = useState<{ name: string; remainingEntries: number } | null>(null);
-  const [pendingWheelWinner, setPendingWheelWinner] = useState<string | null>(null);
   const [wheelWinnerNotice, setWheelWinnerNotice] = useState<string | null>(null);
   const [pendingTopFive, setPendingTopFive] = useState<string[] | null>(null);
   const [topFive, setTopFive] = useState<string[] | null>(null);
@@ -589,6 +588,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPlinkoTiebreakIndexes(null);
     setPlinkoTiebreakResults({});
     setPlinkoTiebreakDropSlots({});
+
+    if (survivors.length === 1 && winnerResult) {
+      setPlinkoWinnerNotice({
+        playerName: survivors[0],
+        result: winnerResult,
+      });
+      return;
+    }
+
     setPlinkoEliminationNotice({
       playerName: plinkoPlayers[eliminatedIndex],
       result: eliminatedResult,
@@ -2034,6 +2042,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         (name) => name.trim().toLocaleLowerCase() === normalizedName,
                       ).length;
 
+                      if (nextParticipants.length === 1) {
+                        setWheelWinnerNotice(nextParticipants[0]);
+                        return nextParticipants;
+                      }
+
                       setEliminationNotice({
                         name: eliminatedName,
                         remainingEntries,
@@ -2041,8 +2054,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                       if (nextParticipants.length === 5) {
                         setPendingTopFive(nextParticipants.slice(0, 5));
-                      } else if (nextParticipants.length === 1) {
-                        setPendingWheelWinner(nextParticipants[0]);
                       }
 
                       return nextParticipants;
@@ -2199,12 +2210,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 className="wheel-elimination-continue"
                 onClick={() => {
                   setEliminationNotice(null);
-
-                  if (pendingWheelWinner) {
-                    setWheelWinnerNotice(pendingWheelWinner);
-                    setPendingWheelWinner(null);
-                    return;
-                  }
 
                   if (pendingTopFive) {
                     setTopFive(pendingTopFive);
