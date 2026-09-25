@@ -2144,7 +2144,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     onKeyDown={(event) => {
                       if (event.key === "Enter") addQuickParticipant();
                     }}
-                    placeholder={pick("Duarte", "Duarte")}
+                    placeholder={pick("Chyna", "Chyna")}
                     disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
                   />
                 </div>
