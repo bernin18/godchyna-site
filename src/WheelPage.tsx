@@ -404,6 +404,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     offeredBy: string;
     winnerName: string;
     skinName: string;
+    skinValue: number | null;
     completedAt: string;
   }>>([]);
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -447,8 +448,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const wheelSpinAnimationRef = useRef<number | null>(null);
   const wheelLastSectorRef = useRef<number | null>(null);
   const wheelLastDividerSoundRef = useRef(0);
-  const arcadeMusicIntervalRef = useRef<number | null>(null);
-  const arcadeMusicStepRef = useRef(0);
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
@@ -568,7 +567,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   async function loadGiveawayHistory() {
     const { data, error } = await supabase
       .from("giveaway_history")
-      .select("id, offered_by, winner_name, skin_name, completed_at")
+      .select("id, offered_by, winner_name, skin_name, skin_value, completed_at")
       .order("completed_at", { ascending: false })
       .limit(6);
 
@@ -580,6 +579,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         offeredBy: item.offered_by || "Chyna",
         winnerName: item.winner_name,
         skinName: item.skin_name || "",
+        skinValue:
+          item.skin_value === null || item.skin_value === undefined
+            ? null
+            : Number(item.skin_value),
         completedAt: item.completed_at,
       })),
     );
@@ -817,21 +820,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }, [plinkoWinnerNotice, wheelWinnerNotice, soundEnabled]);
 
   useEffect(() => {
-    if (configuring && showPlinko && topFive && soundEnabled) {
-      startArcadeMusic();
-    } else {
-      stopArcadeMusic();
-    }
-
-    return () => {
-      stopArcadeMusic();
-    };
-  }, [configuring, showPlinko, topFive, soundEnabled]);
-
-  useEffect(() => {
     if (!soundEnabled) {
       stopWheelSpinAudio();
-      stopArcadeMusic();
     }
 
     return () => {
@@ -1218,10 +1208,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function closeWinnerCelebration(source: "wheel" | "plinko") {
     winnerCelebrationVisibleRef.current = false;
 
-    if (source === "plinko") {
-      stopArcadeMusic();
-    }
-
     if (source === "wheel") {
       setWheelWinnerNotice(null);
     } else {
@@ -1607,62 +1593,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     first.stop(now + 0.20);
     second.start(now + 0.09);
     second.stop(now + 0.32);
-  }
-
-  function playArcadeMusicStep() {
-    const context = getAudioContext();
-    if (!context) return;
-
-    const melody = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880, 698.46];
-    const bass = [130.81, 146.83, 164.81, 146.83];
-    const step = arcadeMusicStepRef.current;
-    const now = context.currentTime;
-
-    const lead = context.createOscillator();
-    const leadGain = context.createGain();
-    lead.type = "square";
-    lead.frequency.setValueAtTime(melody[step % melody.length], now);
-    leadGain.gain.setValueAtTime(0.0001, now);
-    leadGain.gain.exponentialRampToValueAtTime(0.0085, now + 0.008);
-    leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
-    lead.connect(leadGain);
-    leadGain.connect(context.destination);
-    lead.start(now);
-    lead.stop(now + 0.18);
-
-    if (step % 2 === 0) {
-      const bassOsc = context.createOscillator();
-      const bassGain = context.createGain();
-      bassOsc.type = "triangle";
-      bassOsc.frequency.setValueAtTime(bass[Math.floor(step / 2) % bass.length], now);
-      bassGain.gain.setValueAtTime(0.0001, now);
-      bassGain.gain.exponentialRampToValueAtTime(0.0055, now + 0.012);
-      bassGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
-      bassOsc.connect(bassGain);
-      bassGain.connect(context.destination);
-      bassOsc.start(now);
-      bassOsc.stop(now + 0.25);
-    }
-
-    arcadeMusicStepRef.current = (step + 1) % 32;
-  }
-
-  function startArcadeMusic() {
-    if (arcadeMusicIntervalRef.current !== null || !soundEnabled) return;
-
-    arcadeMusicStepRef.current = 0;
-    playArcadeMusicStep();
-    arcadeMusicIntervalRef.current = window.setInterval(() => {
-      playArcadeMusicStep();
-    }, 245);
-  }
-
-  function stopArcadeMusic() {
-    if (arcadeMusicIntervalRef.current !== null) {
-      window.clearInterval(arcadeMusicIntervalRef.current);
-      arcadeMusicIntervalRef.current = null;
-    }
-    arcadeMusicStepRef.current = 0;
   }
 
   function playLandingBoom() {
@@ -3338,11 +3268,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                               <span>{pick("VENCEDOR", "WINNER")}: </span>
                               <b>{item.winnerName}</b>
                             </strong>
-                            <span>
+                            <span className="giveaway-history-skin">
                               {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName || pick("Prémio não indicado", "Prize not specified")}
                             </span>
                           </div>
-                          <small>{formatHistoryDate(item.completedAt)}</small>
+                          <div className="giveaway-history-meta">
+                            <small>{formatHistoryDate(item.completedAt)}</small>
+                            {item.skinValue !== null && (
+                              <b>{item.skinValue.toFixed(2)} €</b>
+                            )}
+                          </div>
                         </article>
                       ))}
                     </div>
