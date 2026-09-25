@@ -591,8 +591,8 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .plinko-shell{
   width:calc(100% - 300px);
   max-width:1500px;
-  margin-left:0;
-  margin-right:auto;
+  margin-left:auto;
+  margin-right:0;
  }
  .plinko-layout{
   grid-template-columns:300px minmax(0,790px) 225px;
