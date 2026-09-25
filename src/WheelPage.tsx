@@ -1623,7 +1623,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     lead.type = "square";
     lead.frequency.setValueAtTime(melody[step % melody.length], now);
     leadGain.gain.setValueAtTime(0.0001, now);
-    leadGain.gain.exponentialRampToValueAtTime(0.018, now + 0.008);
+    leadGain.gain.exponentialRampToValueAtTime(0.012, now + 0.008);
     leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
     lead.connect(leadGain);
     leadGain.connect(context.destination);
@@ -1636,7 +1636,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       bassOsc.type = "triangle";
       bassOsc.frequency.setValueAtTime(bass[Math.floor(step / 2) % bass.length], now);
       bassGain.gain.setValueAtTime(0.0001, now);
-      bassGain.gain.exponentialRampToValueAtTime(0.012, now + 0.012);
+      bassGain.gain.exponentialRampToValueAtTime(0.008, now + 0.012);
       bassGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
       bassOsc.connect(bassGain);
       bassGain.connect(context.destination);
@@ -1678,14 +1678,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const noiseFilter = context.createBiquadFilter();
 
     master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(0.145, now + 0.004);
+    master.gain.exponentialRampToValueAtTime(0.205, now + 0.004);
     master.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
 
     body.type = "sine";
     body.frequency.setValueAtTime(125, now);
     body.frequency.exponentialRampToValueAtTime(36, now + 0.42);
 
-    punchGain.gain.setValueAtTime(0.065, now);
+    punchGain.gain.setValueAtTime(0.095, now);
     punchGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.115);
     punch.type = "triangle";
     punch.frequency.setValueAtTime(260, now);
@@ -1711,7 +1711,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     noiseFilter.frequency.exponentialRampToValueAtTime(150, now + 0.20);
     noiseFilter.Q.setValueAtTime(0.7, now);
 
-    noiseGain.gain.setValueAtTime(0.050, now);
+    noiseGain.gain.setValueAtTime(0.075, now);
     noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.21);
 
     body.connect(master);
