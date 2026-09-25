@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { ComponentType, CSSProperties } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { ArrowLeft, ArrowRight, LogIn, LogOut, Ticket, Trash2, UserRound, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, LogIn, LogOut, Ticket, Trash2, UserRound, Users, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import "./wheel.css";
@@ -415,6 +415,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [participantMessage, setParticipantMessage] = useState("");
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    if (typeof window === "undefined") return true;
+
+    try {
+      return window.localStorage.getItem("godchyna-sound") !== "off";
+    } catch {
+      return true;
+    }
+  });
+  const audioContextRef = useRef<AudioContext | null>(null);
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
@@ -830,6 +840,108 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinnerIndex(null);
   }
 
+  function getAudioContext() {
+    if (!soundEnabled || typeof window === "undefined") return null;
+
+    let context = audioContextRef.current;
+
+    if (!context) {
+      context = new AudioContext();
+      audioContextRef.current = context;
+    }
+
+    if (context.state === "suspended") {
+      void context.resume();
+    }
+
+    return context;
+  }
+
+  function playWheelPlim() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const master = context.createGain();
+    const bell = context.createOscillator();
+    const shimmer = context.createOscillator();
+    const shimmerGain = context.createGain();
+
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.075, now + 0.008);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+
+    shimmerGain.gain.setValueAtTime(0.0001, now);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.025, now + 0.006);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+    bell.type = "sine";
+    bell.frequency.setValueAtTime(880, now);
+    bell.frequency.exponentialRampToValueAtTime(1320, now + 0.055);
+
+    shimmer.type = "sine";
+    shimmer.frequency.setValueAtTime(1760, now);
+
+    bell.connect(master);
+    shimmer.connect(shimmerGain);
+    shimmerGain.connect(master);
+    master.connect(context.destination);
+
+    bell.start(now);
+    shimmer.start(now);
+    bell.stop(now + 0.44);
+    shimmer.stop(now + 0.30);
+  }
+
+  function playLandingBoom() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const master = context.createGain();
+    const body = context.createOscillator();
+    const click = context.createOscillator();
+    const clickGain = context.createGain();
+
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.085, now + 0.006);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+
+    body.type = "sine";
+    body.frequency.setValueAtTime(105, now);
+    body.frequency.exponentialRampToValueAtTime(42, now + 0.30);
+
+    clickGain.gain.setValueAtTime(0.028, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
+    click.type = "triangle";
+    click.frequency.setValueAtTime(210, now);
+    click.frequency.exponentialRampToValueAtTime(82, now + 0.07);
+
+    body.connect(master);
+    click.connect(clickGain);
+    clickGain.connect(master);
+    master.connect(context.destination);
+
+    body.start(now);
+    click.start(now);
+    body.stop(now + 0.36);
+    click.stop(now + 0.08);
+  }
+
+  function toggleSound() {
+    setSoundEnabled((current) => {
+      const next = !current;
+
+      try {
+        window.localStorage.setItem("godchyna-sound", next ? "on" : "off");
+      } catch {
+        // Sound preference can still live in state if storage is unavailable.
+      }
+
+      return next;
+    });
+  }
+
   function startPlinkoTransition() {
     setShowTopFiveModal(false);
     setShowPlinkoTransition(true);
@@ -994,6 +1106,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       setPlinkoLandedSlot(landedSlotIndex);
       setPlinkoExplosionSlot(landedSlotIndex);
+      playLandingBoom();
 
       if (resolvingTiebreak) {
         setPlinkoTiebreakDropSlots((current) => ({
@@ -1152,6 +1265,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
+    playWheelPlim();
+
     const winnerIndex = randomParticipantIndex(participants.length);
     const selectedName = participants[winnerIndex];
     const step = 360 / participants.length;
@@ -1210,6 +1325,20 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
   });
 
+  const soundToggle = (
+    <button
+      type="button"
+      className={`giveaway-sound-toggle${soundEnabled ? "" : " is-muted"}`}
+      onClick={toggleSound}
+      aria-pressed={soundEnabled}
+      aria-label={soundEnabled ? pick("Desligar som", "Mute sound") : pick("Ligar som", "Enable sound")}
+      title={soundEnabled ? pick("Desligar som", "Mute sound") : pick("Ligar som", "Enable sound")}
+    >
+      {soundEnabled ? <Volume2 /> : <VolumeX />}
+      <span>{soundEnabled ? pick("SOM", "SOUND") : pick("MUDO", "MUTED")}</span>
+    </button>
+  );
+
   if (configuring && session && showPlinko && topFive) {
     const pegRows = Array.from({ length: 11 }, (_, rowIndex) =>
       Array.from({ length: rowIndex + 3 }, (_, pegIndex) => pegIndex),
@@ -1219,6 +1348,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return (
       <>
         <Header />
+        {soundToggle}
         <main className="wheel-mobile-block">
           <span>{pick("APENAS PC", "DESKTOP ONLY")}</span>
           <h1>PLINKO</h1>
@@ -1582,6 +1712,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return (
       <>
         <Header />
+        {soundToggle}
         <main className="wheel-mobile-block">
           <span>{pick("APENAS PC", "DESKTOP ONLY")}</span>
           <h1>{pick("RODA DO CHYNAO", "CHYNA WHEEL")}</h1>
