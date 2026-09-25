@@ -1508,7 +1508,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const sampleWheel = () => {
       const element = wheelRotorRef.current;
-      if (!element || !spinning) return;
+      if (!element || wheelSpinAnimationRef.current === null) return;
 
       const transform = window.getComputedStyle(element).transform;
       if (transform && transform !== "none") {
