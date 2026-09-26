@@ -3249,7 +3249,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <h2>{pick("VENCEDORES DOS GIVEAWAYS", "GIVEAWAY WINNERS")}</h2>
             </div>
 
-            <div className="giveaway-history-window">
+            <div className={`giveaway-history-window${giveawayHistory.length > 5 ? " is-rolling" : ""}`}>
               {giveawayHistory.length > 0 ? (
                 <div className={`giveaway-history-track${giveawayHistory.length > 5 ? " is-rolling" : ""}`}>
                   {(giveawayHistory.length > 5 ? [0, 1] : [0]).map((groupIndex) => (
@@ -3260,22 +3260,24 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     >
                       {giveawayHistory.map((item) => (
                         <article className="giveaway-history-card" key={`${groupIndex}-${item.id}`}>
-                          <div className="giveaway-history-info">
+                          <div className="giveaway-history-top">
                             <em>
                               {pick("OFERECIDO POR", "OFFERED BY")} · <b>{item.offeredBy}</b>
                             </em>
-                            <strong>
-                              <span>{pick("VENCEDOR", "WINNER")}: </span>
-                              <b>{item.winnerName}</b>
-                            </strong>
+                            <small>{formatHistoryDate(item.completedAt)}</small>
+                          </div>
+
+                          <strong className="giveaway-history-winner">
+                            <span>{pick("VENCEDOR", "WINNER")}: </span>
+                            <b>{item.winnerName}</b>
+                          </strong>
+
+                          <div className="giveaway-history-prize-row">
                             <span className="giveaway-history-skin">
                               {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName || pick("Prémio não indicado", "Prize not specified")}
                             </span>
-                          </div>
-                          <div className="giveaway-history-meta">
-                            <small>{formatHistoryDate(item.completedAt)}</small>
                             {item.skinValue !== null && (
-                              <b>{item.skinValue.toFixed(2)} €</b>
+                              <b className="giveaway-history-value">{item.skinValue.toFixed(2)} €</b>
                             )}
                           </div>
                         </article>
