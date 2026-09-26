@@ -28,7 +28,7 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .giveaway-history-card small{flex:0 0 auto;padding:3px 5px;border:1px solid rgba(185,133,31,.20);border-radius:4px;color:#b9a36f;background:rgba(185,133,31,.035);font-size:7px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
 .giveaway-history-winner{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#879598;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900}
 .giveaway-history-winner>span{color:#879598;font-size:inherit;font-weight:900;letter-spacing:0}
-.giveaway-history-winner>b{color:#20f39a;font-weight:900}
+.giveaway-history-winner>b{color:#20f39a;font-weight:900;letter-spacing:.025em}
 .giveaway-history-prize-row{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px}
 .giveaway-history-skin{min-width:0;color:#657578;font-size:8px;font-weight:800;letter-spacing:.035em;white-space:normal;line-height:1.35;overflow-wrap:anywhere}
 .giveaway-history-value{padding-top:1px;color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900;white-space:nowrap}
