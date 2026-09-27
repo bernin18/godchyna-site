@@ -390,6 +390,54 @@ function randomParticipantIndex(count: number) {
   return Math.floor(Math.random() * count);
 }
 
+function spreadParticipantEntries(entries: string[]) {
+  if (entries.length <= 2) return [...entries];
+
+  const grouped = new Map<string, { name: string; count: number }>();
+
+  entries.forEach((entry) => {
+    const name = entry.trim();
+    if (!name) return;
+
+    const key = name.toLocaleLowerCase();
+    const current = grouped.get(key);
+
+    if (current) {
+      current.count += 1;
+    } else {
+      grouped.set(key, { name, count: 1 });
+    }
+  });
+
+  const groups = Array.from(grouped.values());
+  const spread: string[] = [];
+  let previousKey = "";
+
+  while (spread.length < entries.length) {
+    const available = groups
+      .filter((group) => group.count > 0)
+      .sort((a, b) => {
+        if (b.count !== a.count) return b.count - a.count;
+        return randomParticipantIndex(2) === 0 ? -1 : 1;
+      });
+
+    if (available.length === 0) break;
+
+    let selected = available[0];
+    const selectedKey = selected.name.toLocaleLowerCase();
+
+    if (selectedKey === previousKey && available.length > 1) {
+      selected = available[1];
+    }
+
+    spread.push(selected.name);
+    selected.count -= 1;
+    previousKey = selected.name.toLocaleLowerCase();
+  }
+
+  return spread;
+}
+
 export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const { pick } = useLanguage();
   const [session, setSession] = useState<Session | null>(null);
@@ -1241,7 +1289,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
-    setParticipants((current) => [...current, ...entries]);
+    setParticipants((current) =>
+      spreadParticipantEntries([...current, ...entries]),
+    );
     setParticipantInput("");
     setWinner(null);
     setPendingWinner(null);
@@ -1253,8 +1303,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setShowPlinko(false);
     setShowPlinkoTransition(false);
     setParticipantMessage(pick(
-      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. Nomes repetidos contam como entradas separadas.`,
-      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Repeated names count as separate entries.`,
+      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. As entradas foram misturadas automaticamente na roda.`,
+      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Entries were automatically spread around the wheel.`,
     ));
   }
 
@@ -1272,10 +1322,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
-    setParticipants((current) => [
-      ...current,
-      ...Array.from({ length: count }, () => name),
-    ]);
+    setParticipants((current) =>
+      spreadParticipantEntries([
+        ...current,
+        ...Array.from({ length: count }, () => name),
+      ]),
+    );
     setQuickParticipantName("");
     setQuickParticipantCount(1);
     setWinner(null);
