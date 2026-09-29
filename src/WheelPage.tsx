@@ -2218,7 +2218,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           setPendingTopFive(null);
           setShowTopFiveModal(true);
         }
-      }, 1000);
+      }, 1500);
 
       return () => window.clearTimeout(timeout);
     }
