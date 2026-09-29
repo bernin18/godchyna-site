@@ -2206,7 +2206,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   spinWheelRef.current = spinWheel;
 
   useEffect(() => {
-    if (!autoSpin || topFive || wheelWinnerNotice || showTopFiveModal || showPlinko) return;
+    if (!configuring || !autoSpin || topFive || wheelWinnerNotice || showTopFiveModal || showPlinko) return;
 
     if (eliminationNotice) {
       const timeout = window.setTimeout(() => {
@@ -2232,6 +2232,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
   }, [
     autoSpin,
+    configuring,
     eliminationNotice,
     pendingTopFive,
     pendingWinner,
@@ -3009,7 +3010,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     </span>
                   )}
                 </div>
-                <button type="button" className="participants-back" onClick={() => setConfiguring(false)} disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}>
+                <button
+                  type="button"
+                  className="participants-back"
+                  onClick={() => {
+                    setAutoSpin(false);
+                    setConfiguring(false);
+                  }}
+                  disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                >
                   <ArrowLeft /> {pick("VOLTAR", "BACK")}
                 </button>
               </div>
