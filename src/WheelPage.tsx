@@ -464,6 +464,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [quickParticipantCount, setQuickParticipantCount] = useState(1);
   const [participants, setParticipants] = useState<string[]>([]);
   const [participantMessage, setParticipantMessage] = useState("");
+  const [participantSearch, setParticipantSearch] = useState("");
+  const [autoSpin, setAutoSpin] = useState(false);
   const [giveawayPrizeName, setGiveawayPrizeName] = useState("");
   const [giveawayPrizeValue, setGiveawayPrizeValue] = useState("");
   const [giveawayPrizeImagePath, setGiveawayPrizeImagePath] = useState<string | null>(null);
@@ -493,6 +495,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const winnerApplauseIntervalRef = useRef<number | null>(null);
   const wheelRotorRef = useRef<HTMLDivElement | null>(null);
+  const spinWheelRef = useRef<() => void>(() => {});
   const wheelSpinAnimationRef = useRef<number | null>(null);
   const wheelLastSectorRef = useRef<number | null>(null);
   const wheelLastDividerSoundRef = useRef(0);
@@ -1386,6 +1389,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setParticipantInput("");
     setQuickParticipantName("");
     setQuickParticipantCount(1);
+    setParticipantSearch("");
+    setAutoSpin(false);
     setParticipants([]);
     setParticipantMessage("");
     setWinner(null);
@@ -2171,6 +2176,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (spinning || eliminationNotice || topFive || wheelWinnerNotice || participants.length <= 1) return;
 
     if (participants.length === 5) {
+      setAutoSpin(false);
       setTopFive(participants.slice(0, 5));
       setShowTopFiveModal(true);
       return;
@@ -2197,6 +2203,46 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     });
   }
 
+  spinWheelRef.current = spinWheel;
+
+  useEffect(() => {
+    if (!autoSpin || topFive || wheelWinnerNotice || showTopFiveModal || showPlinko) return;
+
+    if (eliminationNotice) {
+      const timeout = window.setTimeout(() => {
+        setEliminationNotice(null);
+
+        if (pendingTopFive) {
+          setAutoSpin(false);
+          setTopFive(pendingTopFive);
+          setPendingTopFive(null);
+          setShowTopFiveModal(true);
+        }
+      }, 1000);
+
+      return () => window.clearTimeout(timeout);
+    }
+
+    if (!spinning && pendingWinner === null && participants.length > 1) {
+      const timeout = window.setTimeout(() => {
+        spinWheelRef.current();
+      }, 180);
+
+      return () => window.clearTimeout(timeout);
+    }
+  }, [
+    autoSpin,
+    eliminationNotice,
+    pendingTopFive,
+    pendingWinner,
+    participants.length,
+    spinning,
+    topFive,
+    wheelWinnerNotice,
+    showTopFiveModal,
+    showPlinko,
+  ]);
+
   const draftCount = useMemo(
     () => participantInput.split(/\r?\n/).map((entry) => entry.trim()).filter(Boolean).length,
     [participantInput],
@@ -2218,6 +2264,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     return Array.from(grouped.values());
   }, [participants]);
+
+  const filteredGroupedParticipants = useMemo(() => {
+    const query = participantSearch.trim().toLocaleLowerCase();
+    if (!query) return groupedParticipants;
+
+    return groupedParticipants.filter((participant) =>
+      participant.name.trim().toLocaleLowerCase().includes(query),
+    );
+  }, [groupedParticipants, participantSearch]);
 
   const fastWheelSpin = participants.length >= 10;
 
@@ -2912,10 +2967,25 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <WheelDividers count={participants.length} />
                   {participants.length > 0 && renderWheelNames(participants)}
                 </div>
-                <div className="giveaway-wheel-center">
+                <button
+                  type="button"
+                  className={`giveaway-wheel-center${autoSpin ? " is-auto" : ""}`}
+                  onClick={() => setAutoSpin((current) => !current)}
+                  disabled={participants.length <= 1 || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                  aria-pressed={autoSpin}
+                  aria-label={pick(
+                    autoSpin ? "Desativar modo automático" : "Ativar modo automático",
+                    autoSpin ? "Disable automatic mode" : "Enable automatic mode",
+                  )}
+                  title={pick(
+                    autoSpin ? "Modo automático ativo — clicar para parar" : "Clicar para ativar o modo automático",
+                    autoSpin ? "Automatic mode active — click to stop" : "Click to enable automatic mode",
+                  )}
+                >
                   <span>RODA DO</span>
                   <strong>CHYNAO</strong>
-                </div>
+                  <small>{autoSpin ? "AUTO" : "MANUAL"}</small>
+                </button>
               </div>
 
               <div className="wheel-rule">
@@ -3041,12 +3111,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <div className="participants-loaded">
                 <div className="participants-loaded-head">
                   <span>{pick("NA RODA", "ON WHEEL")}</span>
+                  <input
+                    className="participants-search"
+                    type="search"
+                    value={participantSearch}
+                    onChange={(event) => setParticipantSearch(event.target.value)}
+                    placeholder={pick("Pesquisar nome...", "Search name...")}
+                    aria-label={pick("Pesquisar participante na roda", "Search participant on wheel")}
+                    spellCheck={false}
+                  />
                   <strong>{participants.length}</strong>
                 </div>
                 <div className="participants-list">
                   {participants.length === 0 ? (
                     <p>{pick("Ainda não carregaste participantes.", "No participants loaded yet.")}</p>
-                  ) : groupedParticipants.map((participant, index) => (
+                  ) : filteredGroupedParticipants.length === 0 ? (
+                    <p>
+                      {pick(
+                        `Nenhum resultado para "${participantSearch.trim()}".`,
+                        `No results for "${participantSearch.trim()}".`,
+                      )}
+                    </p>
+                  ) : filteredGroupedParticipants.map((participant, index) => (
                     <div className="participant-row participant-row-grouped" key={participant.name.trim().toLocaleLowerCase()}>
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <strong title={participant.name}>{participant.name}</strong>
@@ -3087,9 +3173,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="wheel-spin-btn"
                   onClick={spinWheel}
-                  disabled={spinning || Boolean(eliminationNotice)}
+                  disabled={autoSpin || spinning || Boolean(eliminationNotice)}
                 >
-                  SPINNNNNNNNN
+                  {autoSpin ? pick("AUTO ATIVO", "AUTO ACTIVE") : "SPINNNNNNNNN"}
                 </button>
               )}
 
