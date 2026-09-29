@@ -3225,22 +3225,24 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </>
               )}
 
-              <button
-                type="button"
-                className="wheel-elimination-continue"
-                onClick={() => {
-                  setEliminationNotice(null);
+              {!autoSpin && (
+                <button
+                  type="button"
+                  className="wheel-elimination-continue"
+                  onClick={() => {
+                    setEliminationNotice(null);
 
-                  if (pendingTopFive) {
-                    setTopFive(pendingTopFive);
-                    setPendingTopFive(null);
-                    setShowTopFiveModal(true);
-                  }
-                }}
-                autoFocus
-              >
-                {pick("CONTINUAR", "CONTINUE")}
-              </button>
+                    if (pendingTopFive) {
+                      setTopFive(pendingTopFive);
+                      setPendingTopFive(null);
+                      setShowTopFiveModal(true);
+                    }
+                  }}
+                  autoFocus
+                >
+                  {pick("CONTINUAR", "CONTINUE")}
+                </button>
+              )}
             </div>
           </div>
         )}
