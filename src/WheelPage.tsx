@@ -3398,10 +3398,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <h2>{pick("VENCEDORES DOS GIVEAWAYS", "GIVEAWAY WINNERS")}</h2>
             </div>
 
-            <div className={`giveaway-history-window${giveawayHistory.length > 5 ? " is-rolling" : ""}`}>
+            <div className={`giveaway-history-window${giveawayHistory.length >= 5 ? " is-rolling" : ""}`}>
               {giveawayHistory.length > 0 ? (
-                <div className={`giveaway-history-track${giveawayHistory.length > 5 ? " is-rolling" : ""}`}>
-                  {(giveawayHistory.length > 5 ? [0, 1] : [0]).map((groupIndex) => (
+                <div className={`giveaway-history-track${giveawayHistory.length >= 5 ? " is-rolling" : ""}`}>
+                  {(giveawayHistory.length >= 5 ? [0, 1] : [0]).map((groupIndex) => (
                     <div
                       className="giveaway-history-group"
                       key={groupIndex}
