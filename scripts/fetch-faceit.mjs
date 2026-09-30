@@ -1,7 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 
 const OUTPUT = new URL("../public/faceit.json", import.meta.url);
-const SOURCE = "https://fplleaderboards.com/players/Chyna";
+const FACEIT_SOURCE = "https://www.faceit.com/api/users/v1/nicknames/Chyna";
+const STATS_SOURCE = "https://fplleaderboards.com/players/Chyna";
 
 function cleanText(html) {
   return html
@@ -73,33 +74,89 @@ function parseRecentMatches(text) {
 
 async function main() {
   const fallback = JSON.parse(await readFile(OUTPUT, "utf8"));
-  const response = await fetch(SOURCE, {
-    headers: {
-      "user-agent": "Mozilla/5.0 (compatible; GODCHYNA-site/1.0)",
-      accept: "text/html,application/xhtml+xml",
-    },
-  });
-  if (!response.ok) throw new Error(`FACEIT stats request failed: ${response.status}`);
 
-  const html = await response.text();
-  const text = cleanText(html);
+  let officialElo = null;
+  let officialLevel = null;
+  let officialOk = false;
 
-  const elo = within(num(text.match(/\b(\d{4})\s+ELO\b/i)), 1000, 6000);
-  const scrapedLevel = within(
-    num(text.match(/(?:FACEIT\s*)?(?:SKILL\s*)?LEVEL\s*#?\s*(\d{1,2})/i)),
-    1,
-    15,
-  );
-  const rankingPt = within(num(text.match(/Ranking\s+pt\s*#?\s*([\d,]+)/i)), 1, 100000);
-  const matches = within(num(text.match(/\b(\d{3,6})\s+Total Matches\b/i)) ?? num(text.match(/Total Stats\s+(\d{3,6})\s+Matches\b/i)), 1, 100000);
-  const winRate = within(num(text.match(/Win Rate\s+(\d+(?:\.\d+)?)%/i)), 0, 100);
-  const parsedKd = num(text.match(/K\/D Ratio\s+([\d.]+)/i)) ?? num(text.match(/\bK\/D\s+([\d.]+)/i));
+  try {
+    const faceitResponse = await fetch(FACEIT_SOURCE, {
+      headers: {
+        "user-agent": "Mozilla/5.0 (compatible; GODCHYNA-site/1.0)",
+        accept: "application/json,text/plain,*/*",
+      },
+    });
+
+    if (!faceitResponse.ok) {
+      throw new Error(`FACEIT profile request failed: ${faceitResponse.status}`);
+    }
+
+    const faceitPayload = await faceitResponse.json();
+    const cs2 = faceitPayload?.payload?.games?.cs2;
+
+    officialElo = within(Number(cs2?.faceit_elo), 1000, 6000);
+    officialLevel = within(Number(cs2?.skill_level), 1, 15);
+    officialOk = officialElo !== null || officialLevel !== null;
+
+    if (!officialOk) {
+      throw new Error("FACEIT profile response did not include CS2 ELO");
+    }
+  } catch (error) {
+    console.warn("Official FACEIT refresh failed", error);
+  }
+
+  let text = "";
+  let statsOk = false;
+
+  try {
+    const statsResponse = await fetch(STATS_SOURCE, {
+      headers: {
+        "user-agent": "Mozilla/5.0 (compatible; GODCHYNA-site/1.0)",
+        accept: "text/html,application/xhtml+xml",
+      },
+    });
+
+    if (!statsResponse.ok) {
+      throw new Error(`FACEIT stats request failed: ${statsResponse.status}`);
+    }
+
+    const html = await statsResponse.text();
+    text = cleanText(html);
+    statsOk = true;
+  } catch (error) {
+    console.warn("Extended FACEIT stats refresh failed", error);
+  }
+
+  const elo = statsOk
+    ? within(num(text.match(/\b(\d{4})\s+ELO\b/i)), 1000, 6000)
+    : null;
+  const scrapedLevel = statsOk
+    ? within(
+        num(text.match(/(?:FACEIT\s*)?(?:SKILL\s*)?LEVEL\s*#?\s*(\d{1,2})/i)),
+        1,
+        15,
+      )
+    : null;
+  const rankingPt = statsOk
+    ? within(num(text.match(/Ranking\s+pt\s*#?\s*([\d,]+)/i)), 1, 100000)
+    : null;
+  const matches = statsOk
+    ? within(num(text.match(/\b(\d{3,6})\s+Total Matches\b/i)) ?? num(text.match(/Total Stats\s+(\d{3,6})\s+Matches\b/i)), 1, 100000)
+    : null;
+  const winRate = statsOk
+    ? within(num(text.match(/Win Rate\s+(\d+(?:\.\d+)?)%/i)), 0, 100)
+    : null;
+  const parsedKd = statsOk
+    ? num(text.match(/K\/D Ratio\s+([\d.]+)/i)) ?? num(text.match(/\bK\/D\s+([\d.]+)/i))
+    : null;
   const kd = within(parsedKd, 0.1, 5);
-  const headshots = within(num(text.match(/Headshot\s*%\s*(\d+(?:\.\d+)?)%/i)) ?? num(text.match(/Headshots\s*%?\s*(\d+(?:\.\d+)?)%/i)), 0, 100);
-  const adr = within(num(text.match(/\bADR\s+([\d.]+)/i)), 1, 250);
+  const headshots = statsOk
+    ? within(num(text.match(/Headshot\s*%\s*(\d+(?:\.\d+)?)%/i)) ?? num(text.match(/Headshots\s*%?\s*(\d+(?:\.\d+)?)%/i)), 0, 100)
+    : null;
+  const adr = statsOk ? within(num(text.match(/\bADR\s+([\d.]+)/i)), 1, 250) : null;
 
-  const recentMatches = parseRecentMatches(text);
-  const formMatch = text.match(/Recent Results\s+((?:[WL]\s*){3,10})/i);
+  const recentMatches = statsOk ? parseRecentMatches(text) : [];
+  const formMatch = statsOk ? text.match(/Recent Results\s+((?:[WL]\s*){3,10})/i) : null;
   const scrapedForm = formMatch ? (formMatch[1].toUpperCase().match(/[WL]/g) ?? []).slice(0, 5) : [];
   const recentResults = recentMatches.length
     ? recentMatches.map((match) => match.result).slice(0, 5)
@@ -107,13 +164,21 @@ async function main() {
       ? scrapedForm
       : fallback.recentResults;
 
-  const resolvedElo = elo ?? fallback.elo;
-  const resolvedLevel = scrapedLevel ?? levelFromElo(resolvedElo) ?? fallback.level;
+  const resolvedElo = officialElo ?? elo ?? fallback.elo;
+  const resolvedLevel =
+    officialLevel ??
+    scrapedLevel ??
+    levelFromElo(resolvedElo) ??
+    fallback.level;
+
+  if (!officialOk && !statsOk) {
+    throw new Error("All FACEIT data sources failed");
+  }
 
   const output = {
     ...fallback,
     updatedAt: new Date().toISOString(),
-    source: SOURCE,
+    source: officialOk ? FACEIT_SOURCE : STATS_SOURCE,
     level: resolvedLevel,
     elo: resolvedElo,
     rankingPt: rankingPt ?? fallback.rankingPt,
