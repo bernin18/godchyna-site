@@ -595,6 +595,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [caseReelRun, setCaseReelRun] = useState(false);
   const [caseLastOpening, setCaseLastOpening] = useState<CaseOpening | null>(null);
   const [caseWinnerNotice, setCaseWinnerNotice] = useState<string | null>(null);
+  const [caseTiebreakPlayers, setCaseTiebreakPlayers] = useState<string[]>([]);
   const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
   const [plinkoDropSlots, setPlinkoDropSlots] = useState<Record<number, number>>({});
   const [plinkoPlayers, setPlinkoPlayers] = useState<string[]>([]);
@@ -1342,13 +1343,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setGiveawayPrizeMessage("");
   }
 
-  function closeWinnerCelebration(source: "wheel" | "plinko") {
+  function closeWinnerCelebration(source: "wheel" | "plinko" | "case") {
     winnerCelebrationVisibleRef.current = false;
 
     if (source === "wheel") {
       setWheelWinnerNotice(null);
-    } else {
+    } else if (source === "plinko") {
       setPlinkoWinnerNotice(null);
+    } else {
+      setCaseWinnerNotice(null);
     }
 
     const cleanupPath = winnerGiveawayPrizeCleanupPath;
@@ -1504,6 +1507,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseReelRun(false);
     setCaseLastOpening(null);
     setCaseWinnerNotice(null);
+    setCaseTiebreakPlayers([]);
     setRotation(0);
   }
 
@@ -1929,6 +1933,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseOpenings([]);
     setCaseLastOpening(null);
     setCaseWinnerNotice(null);
+    setCaseTiebreakPlayers([]);
     setCaseReel([]);
     setCaseReelRun(false);
 
@@ -1976,7 +1981,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function openCurrentCase() {
     if (!topFive || caseRolling || caseWinnerNotice) return;
 
-    const playerName = topFive[casePlayerIndex];
+    const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
+    const playerName = activePlayers[casePlayerIndex];
     const round = CASE_ROUNDS[caseRound - 1];
     if (!playerName || !round) return;
 
@@ -2008,7 +2014,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function continueCaseMode() {
     if (!topFive || caseRolling || !caseLastOpening) return;
 
-    if (casePlayerIndex < topFive.length - 1) {
+    const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
+
+    if (casePlayerIndex < activePlayers.length - 1) {
       setCasePlayerIndex((index) => index + 1);
       setCaseLastOpening(null);
       setCaseReel([]);
@@ -2016,7 +2024,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
-    if (caseRound < CASE_ROUNDS.length) {
+    if (!caseTiebreakPlayers.length && caseRound < CASE_ROUNDS.length) {
       setCaseRound((round) => round + 1);
       setCasePlayerIndex(0);
       setCaseLastOpening(null);
@@ -2035,10 +2043,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const winners = totals.filter((entry) => entry.total === maxTotal);
 
     if (winners.length !== 1) {
+      setCaseTiebreakPlayers(winners.map((entry) => entry.name));
+      setCaseRound(5);
+      setCasePlayerIndex(0);
       setCaseLastOpening(null);
+      setCaseReel([]);
+      setCaseReelRun(false);
       return;
     }
 
+    setCaseTiebreakPlayers([]);
     setCaseWinnerNotice(winners[0].name);
     void finalizeCurrentGiveaway(winners[0].name);
   }
