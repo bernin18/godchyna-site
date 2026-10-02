@@ -946,7 +946,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       winnerApplauseIntervalRef.current = null;
     }
 
-    if ((!plinkoWinnerNotice && !wheelWinnerNotice) || !soundEnabled) return;
+    if ((!plinkoWinnerNotice && !wheelWinnerNotice && !caseWinnerNotice) || !soundEnabled) return;
 
     playApplauseBurst();
     winnerApplauseIntervalRef.current = window.setInterval(() => {
@@ -959,7 +959,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         winnerApplauseIntervalRef.current = null;
       }
     };
-  }, [plinkoWinnerNotice, wheelWinnerNotice, soundEnabled]);
+  }, [plinkoWinnerNotice, wheelWinnerNotice, caseWinnerNotice, soundEnabled]);
 
   useEffect(() => {
     if (!soundEnabled) {
