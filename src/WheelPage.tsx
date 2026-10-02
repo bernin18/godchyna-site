@@ -2708,6 +2708,50 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </div>
           )}
 
+          {caseRoundIntroVisible && !showCaseTransition && (
+            <div
+              className="case-round-intro-overlay"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="case-round-intro-title"
+            >
+              <div className={`case-round-intro-card case-tone-${round.tone}`}>
+                <div className="case-round-intro-head">
+                  <div>
+                    <span>{`ROUND ${caseRound}`}</span>
+                    <h2 id="case-round-intro-title">{round.label}</h2>
+                    <p>{pick("Estas são as skins disponíveis nesta caixa.", "These are the skins available in this case.")}</p>
+                  </div>
+                  <div className={`case-round-intro-mini-case case-tone-${round.tone}`}>
+                    <small>CHYNAO</small>
+                    <strong>CASE</strong>
+                  </div>
+                </div>
+
+                <div className="case-round-intro-grid">
+                  {[...round.skins]
+                    .sort((a, b) => a.valueEur - b.valueEur)
+                    .map((skin) => (
+                      <article key={skin.skinName}>
+                        <img src={skin.imageUrl} alt={skin.skinName} />
+                        <strong>{skin.label}</strong>
+                        <span>{skin.valueEur.toFixed(2)} €</span>
+                      </article>
+                    ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="case-round-intro-start"
+                  onClick={() => setCaseRoundIntroVisible(false)}
+                  autoFocus
+                >
+                  {pick(`COMEÇAR ROUND ${caseRound}`, `START ROUND ${caseRound}`)}
+                </button>
+              </div>
+            </div>
+          )}
+
           <section className="case-shell">
             <header className="case-head">
               <div>
@@ -2810,6 +2854,19 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
                 </div>
 
+                {caseLastOpening && (
+                  <div className="case-drop-result case-drop-result-top">
+                    <div className="case-drop-image">
+                      <img src={caseLastOpening.skin.imageUrl} alt={caseLastOpening.skin.skinName} />
+                    </div>
+                    <div>
+                      <span>{pick("DROP", "DROP")}</span>
+                      <strong>{caseLastOpening.skin.skinName}</strong>
+                      <b>+{caseLastOpening.skin.valueEur.toFixed(2)} €</b>
+                    </div>
+                  </div>
+                )}
+
                 <div className={`chynao-case-box case-tone-${round.tone}${caseRolling ? " is-opening" : ""}`}>
                   <div className="chynao-case-lid">
                     <span>CHYNAO</span>
@@ -2843,19 +2900,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     </div>
                   )}
                 </div>
-
-                {caseLastOpening && (
-                  <div className="case-drop-result">
-                    <div className="case-drop-image">
-                      <img src={caseLastOpening.skin.imageUrl} alt={caseLastOpening.skin.skinName} />
-                    </div>
-                    <div>
-                      <span>{pick("DROP", "DROP")}</span>
-                      <strong>{caseLastOpening.skin.skinName}</strong>
-                      <b>+{caseLastOpening.skin.valueEur.toFixed(2)} €</b>
-                    </div>
-                  </div>
-                )}
 
                 <button
                   type="button"
@@ -2944,20 +2988,41 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <div className="plinko-winner-modal">
               <span className="plinko-winner-kicker">
-                {pick("VENCEDOR DO CHYNAO CASE!", "CHYNAO CASE WINNER!")}
+                {pick("TEMOS VENCEDOR!", "WE HAVE A WINNER!")}
               </span>
+
+              {winnerGiveawayPrizeImageUrl && (
+                <div className="plinko-winner-prize-image">
+                  <img
+                    src={winnerGiveawayPrizeImageUrl}
+                    alt={winnerGiveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                  />
+                </div>
+              )}
+
               <h2 id="case-winner-title">
                 <strong>{caseWinnerNotice}</strong>
+                {winnerGiveawayPrizeName ? (
+                  <>
+                    {pick(", ganhaste o giveaway desta ", ", you won the giveaway for this ")}
+                    <span className="plinko-winner-brand">{winnerGiveawayPrizeName}</span>!
+                  </>
+                ) : (
+                  <>{pick(", ganhaste o giveaway!", ", you won the giveaway!")}</>
+                )}
               </h2>
+
               <p className="plinko-winner-congrats">
-                {casePlayerTotal(caseWinnerNotice).toFixed(2)} € · {pick("TOTAL ACUMULADO", "TOTAL SCORE")}
+                {pick("MUITOS PARABÉNS!", "CONGRATULATIONS!")}
               </p>
+
               <p className="plinko-winner-trade">
                 {pick(
-                  "Manda já o teu trade link no chat para receberes o giveaway!",
-                  "Send your trade link in chat now to receive the giveaway!",
+                  "Manda já o teu trade link no chat para poderes receber o teu giveaway!",
+                  "Send your trade link in chat now so you can receive your giveaway!",
                 )}
               </p>
+
               <button
                 type="button"
                 className="plinko-winner-close"
