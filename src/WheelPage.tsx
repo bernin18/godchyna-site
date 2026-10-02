@@ -1921,6 +1921,128 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }, 5000);
   }
 
+  function startCaseTransition() {
+    setShowTopFiveModal(false);
+    setShowCaseTransition(true);
+    setCaseRound(1);
+    setCasePlayerIndex(0);
+    setCaseOpenings([]);
+    setCaseLastOpening(null);
+    setCaseWinnerNotice(null);
+    setCaseReel([]);
+    setCaseReelRun(false);
+
+    window.setTimeout(() => {
+      setShowCaseMode(true);
+    }, 1500);
+
+    window.setTimeout(() => {
+      setShowCaseTransition(false);
+    }, 3000);
+  }
+
+  function startFinalModeTransition() {
+    if (wheelMode === "qualification") {
+      startCaseTransition();
+      return;
+    }
+
+    startPlinkoTransition();
+  }
+
+  function caseEntryCount(playerName: string) {
+    return qualifiedEntryCounts[playerName.trim().toLocaleLowerCase()] ?? 1;
+  }
+
+  function casePlayerTotal(playerName: string) {
+    return caseOpenings
+      .filter((opening) => opening.playerName === playerName)
+      .reduce((total, opening) => total + opening.skin.valueEur, 0);
+  }
+
+  function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult) {
+    const fillerCount = 24;
+    const reel = Array.from({ length: fillerCount }, () =>
+      round.skins[randomParticipantIndex(round.skins.length)],
+    );
+    reel.push(winningSkin);
+    reel.push(
+      round.skins[randomParticipantIndex(round.skins.length)],
+      round.skins[randomParticipantIndex(round.skins.length)],
+    );
+    return reel;
+  }
+
+  function openCurrentCase() {
+    if (!topFive || caseRolling || caseWinnerNotice) return;
+
+    const playerName = topFive[casePlayerIndex];
+    const round = CASE_ROUNDS[caseRound - 1];
+    if (!playerName || !round) return;
+
+    const entries = caseEntryCount(playerName);
+    const winningSkin = pickCaseSkin(round.skins, entries);
+    const opening: CaseOpening = {
+      round: caseRound,
+      playerName,
+      entries,
+      skin: winningSkin,
+    };
+
+    setCaseRolling(true);
+    setCaseLastOpening(null);
+    setCaseReel(buildCaseReel(round, winningSkin));
+    setCaseReelRun(false);
+
+    window.setTimeout(() => {
+      setCaseReelRun(true);
+    }, 60);
+
+    window.setTimeout(() => {
+      setCaseOpenings((current) => [...current, opening]);
+      setCaseLastOpening(opening);
+      setCaseRolling(false);
+    }, 3150);
+  }
+
+  function continueCaseMode() {
+    if (!topFive || caseRolling || !caseLastOpening) return;
+
+    if (casePlayerIndex < topFive.length - 1) {
+      setCasePlayerIndex((index) => index + 1);
+      setCaseLastOpening(null);
+      setCaseReel([]);
+      setCaseReelRun(false);
+      return;
+    }
+
+    if (caseRound < CASE_ROUNDS.length) {
+      setCaseRound((round) => round + 1);
+      setCasePlayerIndex(0);
+      setCaseLastOpening(null);
+      setCaseReel([]);
+      setCaseReelRun(false);
+      return;
+    }
+
+    const totals = topFive.map((name) => ({
+      name,
+      total: caseOpenings
+        .filter((opening) => opening.playerName === name)
+        .reduce((sum, opening) => sum + opening.skin.valueEur, 0),
+    }));
+    const maxTotal = Math.max(...totals.map((entry) => entry.total));
+    const winners = totals.filter((entry) => entry.total === maxTotal);
+
+    if (winners.length !== 1) {
+      setCaseLastOpening(null);
+      return;
+    }
+
+    setCaseWinnerNotice(winners[0].name);
+    void finalizeCurrentGiveaway(winners[0].name);
+  }
+
   function startPlinkoDrop() {
     if (!topFive || !plinkoPlayers.length || plinkoDropping || plinkoRewardNotice || plinkoEliminationNotice || plinkoTieNotice || plinkoWinnerNotice) return;
 
@@ -3153,6 +3275,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     setWinner(eliminatedName);
 
                     if (qualificationModeActive) {
+                      const entryCount = participants.filter(
+                        (name) => name.trim().toLocaleLowerCase() === normalizedName,
+                      ).length;
                       const nextParticipants = participants.filter(
                         (name) => name.trim().toLocaleLowerCase() !== normalizedName,
                       );
@@ -3165,6 +3290,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                       setParticipants(nextParticipants);
                       setQualifiedParticipants(nextQualified);
+                      if (!alreadyQualified) {
+                        setQualifiedEntryCounts((current) => ({
+                          ...current,
+                          [normalizedName]: entryCount,
+                        }));
+                      }
                       setEliminationNotice({
                         kind: "qualification",
                         name: eliminatedName,
@@ -3672,10 +3803,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 className="wheel-top-five-close"
-                onClick={startPlinkoTransition}
+                onClick={startFinalModeTransition}
                 autoFocus
               >
-                FINALISSIMAAAA
+                {wheelMode === "qualification" ? "CHYNAO CASE" : "FINALISSIMAAAA"}
               </button>
             </div>
           </div>
