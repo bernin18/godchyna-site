@@ -358,6 +358,8 @@ function nameFontSize(name: string, count: number) {
   return 10;
 }
 
+const DIRECT_TOP_FIVE_THRESHOLD = 200;
+
 function uniqueParticipantNames(entries: string[]) {
   const unique = new Map<string, string>();
 
@@ -368,6 +370,13 @@ function uniqueParticipantNames(entries: string[]) {
   });
 
   return Array.from(unique.values());
+}
+
+function shouldUseDirectTopFive(entries: string[]) {
+  return (
+    entries.length > DIRECT_TOP_FIVE_THRESHOLD &&
+    uniqueParticipantNames(entries).length >= 5
+  );
 }
 
 function randomParticipantIndex(count: number) {
@@ -502,7 +511,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
-  const [eliminationNotice, setEliminationNotice] = useState<{ name: string; remainingEntries: number } | null>(null);
+  const [eliminationNotice, setEliminationNotice] = useState<
+    | { kind: "elimination"; name: string; remainingEntries: number }
+    | { kind: "qualification"; name: string; position: number }
+    | null
+  >(null);
+  const [wheelMode, setWheelMode] = useState<"elimination" | "qualification" | null>(null);
+  const [qualifiedParticipants, setQualifiedParticipants] = useState<string[]>([]);
   const [wheelWinnerNotice, setWheelWinnerNotice] = useState<string | null>(null);
   const [pendingTopFive, setPendingTopFive] = useState<string[] | null>(null);
   const [topFive, setTopFive] = useState<string[] | null>(null);
@@ -1391,6 +1406,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setQuickParticipantCount(1);
     setParticipantSearch("");
     setAutoSpin(false);
+    setWheelMode(null);
+    setQualifiedParticipants([]);
     setParticipants([]);
     setParticipantMessage("");
     setWinner(null);
@@ -2172,10 +2189,31 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     });
   }
 
-  function spinWheel() {
-    if (spinning || eliminationNotice || topFive || wheelWinnerNotice || participants.length <= 1) return;
+  const qualificationModeActive =
+    wheelMode === "qualification" ||
+    (wheelMode === null && shouldUseDirectTopFive(participants));
 
-    if (participants.length === 5) {
+  function spinWheel() {
+    const activeMode =
+      wheelMode ??
+      (shouldUseDirectTopFive(participants) ? "qualification" : "elimination");
+    const qualifyingDirectly = activeMode === "qualification";
+
+    if (
+      spinning ||
+      eliminationNotice ||
+      topFive ||
+      wheelWinnerNotice ||
+      participants.length < 1 ||
+      (!qualifyingDirectly && participants.length <= 1)
+    ) return;
+
+    if (wheelMode === null) {
+      setWheelMode(activeMode);
+      if (qualifyingDirectly) setQualifiedParticipants([]);
+    }
+
+    if (!qualifyingDirectly && participants.length === 5) {
       setAutoSpin(false);
       setTopFive(participants.slice(0, 5));
       setShowTopFiveModal(true);
@@ -2223,7 +2261,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return () => window.clearTimeout(timeout);
     }
 
-    if (!spinning && pendingWinner === null && participants.length > 1) {
+    const canSpinAgain =
+      qualificationModeActive ? participants.length > 0 : participants.length > 1;
+
+    if (!spinning && pendingWinner === null && canSpinAgain) {
       const timeout = window.setTimeout(() => {
         spinWheelRef.current();
       }, 180);
@@ -2237,6 +2278,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     pendingTopFive,
     pendingWinner,
     participants.length,
+    qualificationModeActive,
     spinning,
     topFive,
     wheelWinnerNotice,
@@ -2930,34 +2972,61 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     const eliminatedIndex = pendingWinnerIndex;
                     const normalizedName = eliminatedName.trim().toLocaleLowerCase();
 
-                    const nextParticipants = participants.filter(
-                      (_, index) => index !== eliminatedIndex,
-                    );
-                    const remainingEntries = nextParticipants.filter(
-                      (name) => name.trim().toLocaleLowerCase() === normalizedName,
-                    ).length;
-
                     setSpinning(false);
                     setWinner(eliminatedName);
-                    setParticipants(nextParticipants);
 
-                    if (nextParticipants.length === 1) {
-                      setWheelWinnerNotice(nextParticipants[0]);
-                      void finalizeCurrentGiveaway(nextParticipants[0]);
-                    } else {
+                    if (qualificationModeActive) {
+                      const nextParticipants = participants.filter(
+                        (name) => name.trim().toLocaleLowerCase() !== normalizedName,
+                      );
+                      const alreadyQualified = qualifiedParticipants.some(
+                        (name) => name.trim().toLocaleLowerCase() === normalizedName,
+                      );
+                      const nextQualified = alreadyQualified
+                        ? qualifiedParticipants
+                        : [...qualifiedParticipants, eliminatedName];
+
+                      setParticipants(nextParticipants);
+                      setQualifiedParticipants(nextQualified);
                       setEliminationNotice({
+                        kind: "qualification",
                         name: eliminatedName,
-                        remainingEntries,
+                        position: nextQualified.length,
                       });
+                      playStillAlivePlim();
 
-                      if (remainingEntries > 0) {
-                        playStillAlivePlim();
-                      } else {
-                        playEliminatedSound();
+                      if (nextQualified.length >= 5) {
+                        setPendingTopFive(nextQualified.slice(0, 5));
                       }
+                    } else {
+                      const nextParticipants = participants.filter(
+                        (_, index) => index !== eliminatedIndex,
+                      );
+                      const remainingEntries = nextParticipants.filter(
+                        (name) => name.trim().toLocaleLowerCase() === normalizedName,
+                      ).length;
 
-                      if (nextParticipants.length === 5) {
-                        setPendingTopFive(nextParticipants.slice(0, 5));
+                      setParticipants(nextParticipants);
+
+                      if (nextParticipants.length === 1) {
+                        setWheelWinnerNotice(nextParticipants[0]);
+                        void finalizeCurrentGiveaway(nextParticipants[0]);
+                      } else {
+                        setEliminationNotice({
+                          kind: "elimination",
+                          name: eliminatedName,
+                          remainingEntries,
+                        });
+
+                        if (remainingEntries > 0) {
+                          playStillAlivePlim();
+                        } else {
+                          playEliminatedSound();
+                        }
+
+                        if (nextParticipants.length === 5) {
+                          setPendingTopFive(nextParticipants.slice(0, 5));
+                        }
                       }
                     }
 
@@ -2972,7 +3041,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className={`giveaway-wheel-center${autoSpin ? " is-auto" : ""}`}
                   onClick={() => setAutoSpin((current) => !current)}
-                  disabled={participants.length <= 1 || Boolean(topFive) || Boolean(wheelWinnerNotice)}
+                  disabled={
+                    participants.length < 1 ||
+                    (!qualificationModeActive && participants.length <= 1) ||
+                    Boolean(topFive) ||
+                    Boolean(wheelWinnerNotice)
+                  }
                   aria-pressed={autoSpin}
                   aria-label={pick(
                     autoSpin ? "Desativar modo automático" : "Ativar modo automático",
@@ -2990,12 +3064,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </div>
 
               <div className="wheel-rule">
-                <span>{pick("REGRA", "RULE")}</span>
+                <span>
+                  {qualificationModeActive
+                    ? pick("MODO APURAMENTO", "QUALIFYING MODE")
+                    : pick("REGRA", "RULE")}
+                </span>
                 <p>
-                  {pick(
-                    "Em cada rodada, a pessoa escolhida pela roda é eliminada. Quando restarem apenas 5 entradas, o TOP 5 avança para o Plinko, onde será decidido o vencedor final do sorteio.",
-                    "Each round, the person selected by the wheel is eliminated. When only 5 entries remain, the TOP 5 advances to Plinko, where the final giveaway winner will be decided.",
-                  )}
+                  {qualificationModeActive
+                    ? pick(
+                        "Mais de 200 entradas: cada pessoa escolhida fica diretamente apurada para o Plinko. Todas as entradas desse nome saem da roda e o processo repete-se até termos 5 apurados.",
+                        "More than 200 entries: each selected person qualifies directly for Plinko. All entries for that name leave the wheel and the process repeats until 5 players qualify.",
+                      )
+                    : pick(
+                        "Em cada rodada, a pessoa escolhida pela roda é eliminada. Quando restarem apenas 5 entradas, o TOP 5 avança para o Plinko, onde será decidido o vencedor final do sorteio.",
+                        "Each round, the person selected by the wheel is eliminated. When only 5 entries remain, the TOP 5 advances to Plinko, where the final giveaway winner will be decided.",
+                      )}
                 </p>
               </div>
             </div>
@@ -3206,7 +3289,29 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-labelledby="wheel-elimination-title"
           >
             <div className="wheel-elimination-modal">
-              {eliminationNotice.remainingEntries > 0 ? (
+              {eliminationNotice.kind === "qualification" ? (
+                <>
+                  <span className="wheel-elimination-kicker wheel-still-in-kicker">
+                    {pick(
+                      `APURADO #${eliminationNotice.position}`,
+                      `QUALIFIED #${eliminationNotice.position}`,
+                    )}
+                  </span>
+                  <h2 id="wheel-elimination-title" className="wheel-still-in-title">
+                    <strong>{eliminationNotice.name}</strong>{" "}
+                    {pick(
+                      "estás apurado para o Plinko!",
+                      "you qualified for Plinko!",
+                    )}
+                  </h2>
+                  <p>
+                    {pick(
+                      `${eliminationNotice.position}/5 lugares do TOP 5 preenchidos.`,
+                      `${eliminationNotice.position}/5 TOP 5 spots filled.`,
+                    )}
+                  </p>
+                </>
+              ) : eliminationNotice.remainingEntries > 0 ? (
                 <>
                   <span className="wheel-elimination-kicker wheel-still-in-kicker">
                     {pick("AINDA ESTÁS EM JOGO", "STILL IN THE GAME")}
