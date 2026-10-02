@@ -293,7 +293,7 @@ const ROUND_4_SKINS: PlinkoResult[] = [
 type CaseRound = {
   number: number;
   label: string;
-  tone: "blue" | "green" | "purple" | "red" | "gold";
+  tone: "green" | "purple" | "red" | "gold";
   skins: PlinkoResult[];
 };
 
@@ -305,13 +305,10 @@ type CaseOpening = {
 };
 
 const CASE_ROUNDS: CaseRound[] = [
-  { number: 1, label: "BLUE CASE", tone: "blue", skins: ROUND_1_SKINS },
-  { number: 2, label: "GREEN CASE", tone: "green", skins: ROUND_2_SKINS },
-  { number: 3, label: "PURPLE CASE", tone: "purple", skins: ROUND_3_SKINS },
-  { number: 4, label: "RED CASE", tone: "red", skins: ROUND_4_SKINS },
-  // The existing Plinko has four skin pools. Round 5 temporarily reuses
-  // the premium Round 4 pool until a dedicated Gold Case set is added.
-  { number: 5, label: "GOLD CASE", tone: "gold", skins: ROUND_4_SKINS },
+  { number: 1, label: "GREEN CASE", tone: "green", skins: ROUND_1_SKINS },
+  { number: 2, label: "PURPLE CASE", tone: "purple", skins: ROUND_2_SKINS },
+  { number: 3, label: "RED CASE", tone: "red", skins: ROUND_3_SKINS },
+  { number: 4, label: "GOLD CASE", tone: "gold", skins: ROUND_4_SKINS },
 ];
 
 const CASE_BASE_WEIGHTS = [25, 22, 18, 14, 9, 6, 3.5, 1.8, 0.7];
@@ -596,6 +593,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [caseLastOpening, setCaseLastOpening] = useState<CaseOpening | null>(null);
   const [caseWinnerNotice, setCaseWinnerNotice] = useState<string | null>(null);
   const [caseTiebreakPlayers, setCaseTiebreakPlayers] = useState<string[]>([]);
+  const [caseRoundIntroVisible, setCaseRoundIntroVisible] = useState(false);
   const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
   const [plinkoDropSlots, setPlinkoDropSlots] = useState<Record<number, number>>({});
   const [plinkoPlayers, setPlinkoPlayers] = useState<string[]>([]);
@@ -1508,6 +1506,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseLastOpening(null);
     setCaseWinnerNotice(null);
     setCaseTiebreakPlayers([]);
+    setCaseRoundIntroVisible(false);
     setRotation(0);
   }
 
@@ -1934,6 +1933,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseLastOpening(null);
     setCaseWinnerNotice(null);
     setCaseTiebreakPlayers([]);
+    setCaseRoundIntroVisible(true);
     setCaseReel([]);
     setCaseReelRun(false);
 
@@ -1979,7 +1979,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function openCurrentCase() {
-    if (!topFive || caseRolling || caseWinnerNotice) return;
+    if (!topFive || caseRolling || caseWinnerNotice || caseRoundIntroVisible) return;
 
     const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
     const playerName = activePlayers[casePlayerIndex];
@@ -2030,6 +2030,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCaseLastOpening(null);
       setCaseReel([]);
       setCaseReelRun(false);
+      setCaseRoundIntroVisible(true);
       return;
     }
 
@@ -2044,11 +2045,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     if (winners.length !== 1) {
       setCaseTiebreakPlayers(winners.map((entry) => entry.name));
-      setCaseRound(5);
+      setCaseRound(CASE_ROUNDS.length);
       setCasePlayerIndex(0);
       setCaseLastOpening(null);
       setCaseReel([]);
       setCaseReelRun(false);
+      setCaseRoundIntroVisible(true);
       return;
     }
 
