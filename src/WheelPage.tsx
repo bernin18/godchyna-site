@@ -518,6 +518,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   >(null);
   const [wheelMode, setWheelMode] = useState<"elimination" | "qualification" | null>(null);
   const [qualifiedParticipants, setQualifiedParticipants] = useState<string[]>([]);
+  const [showQualificationIntro, setShowQualificationIntro] = useState(false);
+  const [qualificationIntroSeen, setQualificationIntroSeen] = useState(false);
+  const [qualificationStartIntent, setQualificationStartIntent] = useState<"manual" | "auto" | null>(null);
   const [wheelWinnerNotice, setWheelWinnerNotice] = useState<string | null>(null);
   const [pendingTopFive, setPendingTopFive] = useState<string[] | null>(null);
   const [topFive, setTopFive] = useState<string[] | null>(null);
@@ -1408,6 +1411,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setAutoSpin(false);
     setWheelMode(null);
     setQualifiedParticipants([]);
+    setShowQualificationIntro(false);
+    setQualificationIntroSeen(false);
+    setQualificationStartIntent(null);
     setParticipants([]);
     setParticipantMessage("");
     setWinner(null);
@@ -2193,6 +2199,61 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     wheelMode === "qualification" ||
     (wheelMode === null && shouldUseDirectTopFive(participants));
 
+  useEffect(() => {
+    if (wheelMode !== null || shouldUseDirectTopFive(participants)) return;
+
+    setShowQualificationIntro(false);
+    setQualificationIntroSeen(false);
+    setQualificationStartIntent(null);
+  }, [participants, wheelMode]);
+
+  function requestManualSpin() {
+    if (qualificationModeActive && !qualificationIntroSeen) {
+      setQualificationStartIntent("manual");
+      setShowQualificationIntro(true);
+      return;
+    }
+
+    spinWheel();
+  }
+
+  function requestAutoSpinToggle() {
+    if (autoSpin) {
+      setAutoSpin(false);
+      return;
+    }
+
+    if (qualificationModeActive && !qualificationIntroSeen) {
+      setQualificationStartIntent("auto");
+      setShowQualificationIntro(true);
+      return;
+    }
+
+    setAutoSpin(true);
+  }
+
+  function startQualificationMode() {
+    const intent = qualificationStartIntent ?? "manual";
+
+    setQualificationIntroSeen(true);
+    setShowQualificationIntro(false);
+    setQualificationStartIntent(null);
+
+    if (wheelMode === null) {
+      setWheelMode("qualification");
+      setQualifiedParticipants([]);
+    }
+
+    if (intent === "auto") {
+      setAutoSpin(true);
+      return;
+    }
+
+    window.setTimeout(() => {
+      spinWheelRef.current();
+    }, 80);
+  }
+
   function spinWheel() {
     const activeMode =
       wheelMode ??
@@ -2244,7 +2305,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   spinWheelRef.current = spinWheel;
 
   useEffect(() => {
-    if (!configuring || !autoSpin || topFive || wheelWinnerNotice || showTopFiveModal || showPlinko) return;
+    if (
+      !configuring ||
+      !autoSpin ||
+      showQualificationIntro ||
+      topFive ||
+      wheelWinnerNotice ||
+      showTopFiveModal ||
+      showPlinko
+    ) return;
 
     if (eliminationNotice) {
       const timeout = window.setTimeout(() => {
@@ -2279,6 +2348,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     pendingWinner,
     participants.length,
     qualificationModeActive,
+    showQualificationIntro,
     spinning,
     topFive,
     wheelWinnerNotice,
@@ -2947,6 +3017,34 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
                 )}
               </div>
+              {qualificationModeActive && (
+                <div className="qualification-panel" aria-label={pick("Apurados", "Qualified players")}>
+                  <div className="qualification-panel-head">
+                    <div>
+                      <span>{pick("MODO APURAMENTO", "QUALIFYING MODE")}</span>
+                      <strong>{pick("APURADOS", "QUALIFIED")}</strong>
+                    </div>
+                    <b>{qualifiedParticipants.length}/5</b>
+                  </div>
+
+                  <div className="qualification-panel-list">
+                    {Array.from({ length: 5 }, (_, index) => {
+                      const name = qualifiedParticipants[index];
+
+                      return (
+                        <div
+                          className={`qualification-panel-row${name ? " is-filled" : ""}`}
+                          key={index}
+                        >
+                          <span>{String(index + 1).padStart(2, "0")}</span>
+                          <strong>{name || "—"}</strong>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div
                 className="giveaway-wheel"
                 aria-label={pick("Roda do sorteio", "Giveaway wheel")}
@@ -3040,7 +3138,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <button
                   type="button"
                   className={`giveaway-wheel-center${autoSpin ? " is-auto" : ""}`}
-                  onClick={() => setAutoSpin((current) => !current)}
+                  onClick={requestAutoSpinToggle}
                   disabled={
                     participants.length < 1 ||
                     (!qualificationModeActive && participants.length <= 1) ||
@@ -3264,7 +3362,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <button
                   type="button"
                   className="wheel-spin-btn"
-                  onClick={spinWheel}
+                  onClick={requestManualSpin}
                   disabled={autoSpin || spinning || Boolean(eliminationNotice)}
                 >
                   {autoSpin ? pick("AUTO ATIVO", "AUTO ACTIVE") : "SPINNNNNNNNN"}
@@ -3280,6 +3378,37 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </aside>
           </section>
         </main>
+
+        {showQualificationIntro && qualificationModeActive && (
+          <div
+            className="qualification-intro-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="qualification-intro-title"
+          >
+            <div className="qualification-intro-cloud" />
+            <div className="qualification-intro-content">
+              <span>{pick("NOVO SISTEMA", "NEW SYSTEM")}</span>
+              <strong id="qualification-intro-title">
+                {pick("APURAMENTO DO TOP 5", "TOP 5 QUALIFYING")}
+              </strong>
+              <p>
+                {pick(
+                  "Foram detetadas mais de 200 entradas. A roda vai agora escolher diretamente os 5 apurados para o Plinko.",
+                  "More than 200 entries were detected. The wheel will now select the 5 players who qualify directly for Plinko.",
+                )}
+              </p>
+              <button
+                type="button"
+                className="qualification-intro-start"
+                onClick={startQualificationMode}
+                autoFocus
+              >
+                {pick("VAMOS!", "LET'S GO!")}
+              </button>
+            </div>
+          </div>
+        )}
 
         {eliminationNotice && (
           <div
