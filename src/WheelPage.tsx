@@ -599,6 +599,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [caseWinnerNotice, setCaseWinnerNotice] = useState<string | null>(null);
   const [caseTiebreakPlayers, setCaseTiebreakPlayers] = useState<string[]>([]);
   const [caseRoundIntroVisible, setCaseRoundIntroVisible] = useState(false);
+  const [caseAutoOpenPending, setCaseAutoOpenPending] = useState(false);
   const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
   const [plinkoDropSlots, setPlinkoDropSlots] = useState<Record<number, number>>({});
   const [plinkoPlayers, setPlinkoPlayers] = useState<string[]>([]);
@@ -1515,6 +1516,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseWinnerNotice(null);
     setCaseTiebreakPlayers([]);
     setCaseRoundIntroVisible(false);
+    setCaseAutoOpenPending(false);
     setRotation(0);
   }
 
@@ -2125,9 +2127,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (casePlayerIndex < activePlayers.length - 1) {
       setCasePlayerIndex((index) => index + 1);
       setCaseLastOpening(null);
-      setCaseReel([]);
       setCaseReelRun(false);
       setCaseStopOffset(0);
+      setCaseAutoOpenPending(true);
       return;
     }
 
@@ -2167,6 +2169,35 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseWinnerNotice(winners[0].name);
     void finalizeCurrentGiveaway(winners[0].name);
   }
+
+  useEffect(() => {
+    if (
+      !caseAutoOpenPending ||
+      caseRolling ||
+      caseRoundIntroVisible ||
+      !topFive ||
+      caseWinnerNotice
+    ) {
+      return;
+    }
+
+    setCaseAutoOpenPending(false);
+
+    const frame = window.requestAnimationFrame(() => {
+      openCurrentCase();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [
+    caseAutoOpenPending,
+    caseRolling,
+    caseRoundIntroVisible,
+    casePlayerIndex,
+    caseRound,
+    caseTiebreakPlayers,
+    topFive,
+    caseWinnerNotice,
+  ]);
 
   function startPlinkoDrop() {
     if (!topFive || !plinkoPlayers.length || plinkoDropping || plinkoRewardNotice || plinkoEliminationNotice || plinkoTieNotice || plinkoWinnerNotice) return;
