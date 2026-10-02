@@ -290,6 +290,63 @@ const ROUND_4_SKINS: PlinkoResult[] = [
   },
 ];
 
+type CaseRound = {
+  number: number;
+  label: string;
+  tone: "blue" | "green" | "purple" | "red" | "gold";
+  skins: PlinkoResult[];
+};
+
+type CaseOpening = {
+  round: number;
+  playerName: string;
+  entries: number;
+  skin: PlinkoResult;
+};
+
+const CASE_ROUNDS: CaseRound[] = [
+  { number: 1, label: "BLUE CASE", tone: "blue", skins: ROUND_1_SKINS },
+  { number: 2, label: "GREEN CASE", tone: "green", skins: ROUND_2_SKINS },
+  { number: 3, label: "PURPLE CASE", tone: "purple", skins: ROUND_3_SKINS },
+  { number: 4, label: "RED CASE", tone: "red", skins: ROUND_4_SKINS },
+  // The existing Plinko has four skin pools. Round 5 temporarily reuses
+  // the premium Round 4 pool until a dedicated Gold Case set is added.
+  { number: 5, label: "GOLD CASE", tone: "gold", skins: ROUND_4_SKINS },
+];
+
+const CASE_BASE_WEIGHTS = [25, 22, 18, 14, 9, 6, 3.5, 1.8, 0.7];
+const CASE_MAX_WEIGHTS = [21, 19, 16, 13, 10, 8, 5, 3, 5];
+
+function caseBoostProgress(entries: number) {
+  const cappedEntries = Math.max(1, Math.min(150, entries));
+  return Math.sqrt((cappedEntries - 1) / 149);
+}
+
+function caseWeightsForEntries(entries: number) {
+  const boost = caseBoostProgress(entries);
+  return CASE_BASE_WEIGHTS.map(
+    (base, index) => base + (CASE_MAX_WEIGHTS[index] - base) * boost,
+  );
+}
+
+function caseTopSkinChance(entries: number) {
+  return caseWeightsForEntries(entries)[CASE_BASE_WEIGHTS.length - 1];
+}
+
+function pickCaseSkin(skins: PlinkoResult[], entries: number) {
+  const sorted = [...skins].sort((a, b) => a.valueEur - b.valueEur);
+  const weights = caseWeightsForEntries(entries);
+  const roll = randomParticipantIndex(1_000_000) / 10_000;
+  let cursor = 0;
+
+  for (let index = 0; index < sorted.length; index += 1) {
+    cursor += weights[index] ?? 0;
+    if (roll < cursor) return sorted[index];
+  }
+
+  return sorted[sorted.length - 1];
+}
+
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
@@ -518,6 +575,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   >(null);
   const [wheelMode, setWheelMode] = useState<"elimination" | "qualification" | null>(null);
   const [qualifiedParticipants, setQualifiedParticipants] = useState<string[]>([]);
+  const [qualifiedEntryCounts, setQualifiedEntryCounts] = useState<Record<string, number>>({});
   const [showQualificationIntro, setShowQualificationIntro] = useState(false);
   const [qualificationIntroSeen, setQualificationIntroSeen] = useState(false);
   const [qualificationStartIntent, setQualificationStartIntent] = useState<"manual" | "auto" | null>(null);
@@ -527,6 +585,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [showTopFiveModal, setShowTopFiveModal] = useState(false);
   const [showPlinko, setShowPlinko] = useState(false);
   const [showPlinkoTransition, setShowPlinkoTransition] = useState(false);
+  const [showCaseMode, setShowCaseMode] = useState(false);
+  const [showCaseTransition, setShowCaseTransition] = useState(false);
+  const [caseRound, setCaseRound] = useState(1);
+  const [casePlayerIndex, setCasePlayerIndex] = useState(0);
+  const [caseOpenings, setCaseOpenings] = useState<CaseOpening[]>([]);
+  const [caseRolling, setCaseRolling] = useState(false);
+  const [caseReel, setCaseReel] = useState<PlinkoResult[]>([]);
+  const [caseReelRun, setCaseReelRun] = useState(false);
+  const [caseLastOpening, setCaseLastOpening] = useState<CaseOpening | null>(null);
+  const [caseWinnerNotice, setCaseWinnerNotice] = useState<string | null>(null);
   const [plinkoResults, setPlinkoResults] = useState<Record<number, PlinkoResult>>({});
   const [plinkoDropSlots, setPlinkoDropSlots] = useState<Record<number, number>>({});
   const [plinkoPlayers, setPlinkoPlayers] = useState<string[]>([]);
@@ -1411,6 +1479,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setAutoSpin(false);
     setWheelMode(null);
     setQualifiedParticipants([]);
+    setQualifiedEntryCounts({});
     setShowQualificationIntro(false);
     setQualificationIntroSeen(false);
     setQualificationStartIntent(null);
@@ -1425,6 +1494,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setShowTopFiveModal(false);
     setShowPlinko(false);
     setShowPlinkoTransition(false);
+    setShowCaseMode(false);
+    setShowCaseTransition(false);
+    setCaseRound(1);
+    setCasePlayerIndex(0);
+    setCaseOpenings([]);
+    setCaseRolling(false);
+    setCaseReel([]);
+    setCaseReelRun(false);
+    setCaseLastOpening(null);
+    setCaseWinnerNotice(null);
     setRotation(0);
   }
 
