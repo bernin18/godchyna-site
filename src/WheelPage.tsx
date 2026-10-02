@@ -2008,7 +2008,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCaseOpenings((current) => [...current, opening]);
       setCaseLastOpening(opening);
       setCaseRolling(false);
-    }, 3150);
+    }, 5050);
   }
 
   function continueCaseMode() {
@@ -2666,11 +2666,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         total: casePlayerTotal(name),
       }))
       .sort((a, b) => b.total - a.total || a.originalIndex - b.originalIndex);
-    const currentRoundResults = topFive.map((name) =>
-      [...caseOpenings]
-        .reverse()
-        .find((opening) => opening.playerName === name && opening.round === caseRound),
-    );
     const isLastActivePlayer = casePlayerIndex >= activePlayers.length - 1;
     const isFinalRound = caseRound >= CASE_ROUNDS.length;
     const actionLabel = caseLastOpening
@@ -2882,7 +2877,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <div className={`case-reel-track${caseReelRun ? " is-running" : ""}`}>
                       {caseReel.map((skin, index) => (
                         <article
-                          className={`case-reel-item${index === 24 ? " is-target" : ""}`}
+                          className={`case-reel-item${!caseRolling && caseLastOpening && index === 24 ? " is-target" : ""}`}
                           key={`${skin.skinName}-${index}`}
                         >
                           <img src={skin.imageUrl} alt="" />
@@ -2911,53 +2906,29 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </button>
               </section>
 
-              <aside className="case-round-panel">
-                <div className="case-panel-title">
-                  <span>{`ROUND ${caseRound}`}</span>
-                  <strong>{pick("RESULTADOS", "RESULTS")}</strong>
+              <aside className="case-giveaway-side" aria-label={pick("Skin do giveaway", "Giveaway skin")}>
+                <div className="case-giveaway-side-head">
+                  <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
                 </div>
 
-                <div className="case-round-results">
-                  {topFive.map((name, index) => {
-                    const result = currentRoundResults[index];
-
-                    return (
-                      <div className="case-round-result-row" key={name}>
-                        <span>{String(index + 1).padStart(2, "0")}</span>
-                        <strong title={name}>{name}</strong>
-                        {result ? (
-                          <b>+{result.skin.valueEur.toFixed(2)} €</b>
-                        ) : (
-                          <i>—</i>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className={`case-round-preview case-tone-${round.tone}`}>
-                  <span>{round.label}</span>
-                  <strong>{round.skins.length} SKINS</strong>
-                  <div className="case-round-skins">
-                    {[...round.skins]
-                      .sort((a, b) => b.valueEur - a.valueEur)
-                      .slice(0, 3)
-                      .map((skin) => (
-                        <div key={skin.skinName}>
-                          <img src={skin.imageUrl} alt="" />
-                          <small>{skin.valueEur.toFixed(0)} €</small>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-
-                <div className="case-giveaway-prize">
-                  <span>{pick("PRÉMIO FINAL", "FINAL PRIZE")}</span>
-                  <strong>{giveawayPrizeName || pick("Giveaway", "Giveaway")}</strong>
-                  {giveawayPrizeValue && (
-                    <b>{Number(giveawayPrizeValue.replace(",", ".")).toFixed(2)} €</b>
+                <div className="case-giveaway-side-media">
+                  {giveawayPrizeImageUrl ? (
+                    <img
+                      src={giveawayPrizeImageUrl}
+                      alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                    />
+                  ) : (
+                    <span>{pick("SEM IMAGEM", "NO IMAGE")}</span>
                   )}
                 </div>
+
+                <strong title={giveawayPrizeName}>
+                  {giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                </strong>
+
+                {giveawayPrizeValue && (
+                  <b>{Number(giveawayPrizeValue.replace(",", ".")).toFixed(2)} €</b>
+                )}
               </aside>
             </div>
           </section>
