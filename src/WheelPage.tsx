@@ -562,6 +562,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const wheelSpinAnimationRef = useRef<number | null>(null);
   const wheelLastSectorRef = useRef<number | null>(null);
   const wheelLastDividerSoundRef = useRef(0);
+  const caseReelWindowRef = useRef<HTMLDivElement | null>(null);
+  const caseReelAnimationRef = useRef<number | null>(null);
+  const caseLastTickIndexRef = useRef<number | null>(null);
+  const caseLastTickSoundRef = useRef(0);
   const [pendingWinner, setPendingWinner] = useState<string | null>(null);
   const [pendingWinnerIndex, setPendingWinnerIndex] = useState<number | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
@@ -959,10 +963,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   useEffect(() => {
     if (!soundEnabled) {
       stopWheelSpinAudio();
+      stopCaseReelAudio();
     }
 
     return () => {
       stopWheelSpinAudio();
+      stopCaseReelAudio();
     };
   }, [soundEnabled]);
 
@@ -1636,6 +1642,93 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     click.stop(now + 0.06);
   }
 
+  function playCaseReelTick() {
+    const context = getAudioContext();
+    if (!context) return;
+
+    const now = context.currentTime;
+    const gain = context.createGain();
+    const click = context.createOscillator();
+    const overtone = context.createOscillator();
+    const overtoneGain = context.createGain();
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.048, now + 0.0015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+    overtoneGain.gain.setValueAtTime(0.0001, now);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.014, now + 0.001);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.032);
+
+    click.type = "square";
+    click.frequency.setValueAtTime(1180, now);
+    click.frequency.exponentialRampToValueAtTime(920, now + 0.04);
+
+    overtone.type = "sine";
+    overtone.frequency.setValueAtTime(2360, now);
+
+    click.connect(gain);
+    overtone.connect(overtoneGain);
+    overtoneGain.connect(gain);
+    gain.connect(context.destination);
+
+    click.start(now);
+    overtone.start(now);
+    click.stop(now + 0.05);
+    overtone.stop(now + 0.035);
+  }
+
+  function stopCaseReelAudio() {
+    if (caseReelAnimationRef.current !== null) {
+      window.cancelAnimationFrame(caseReelAnimationRef.current);
+      caseReelAnimationRef.current = null;
+    }
+
+    caseLastTickIndexRef.current = null;
+  }
+
+  function startCaseReelAudio() {
+    stopCaseReelAudio();
+
+    const windowElement = caseReelWindowRef.current;
+    if (!windowElement || !soundEnabled) return;
+
+    caseLastTickIndexRef.current = null;
+    caseLastTickSoundRef.current = 0;
+
+    const sampleReel = () => {
+      const reelWindow = caseReelWindowRef.current;
+      if (!reelWindow) {
+        stopCaseReelAudio();
+        return;
+      }
+
+      const windowRect = reelWindow.getBoundingClientRect();
+      const cursorX = windowRect.left + windowRect.width / 2;
+      const items = Array.from(
+        reelWindow.querySelectorAll<HTMLElement>(".case-reel-item"),
+      );
+      const activeIndex = items.findIndex((item) => {
+        const rect = item.getBoundingClientRect();
+        return cursorX >= rect.left && cursorX <= rect.right;
+      });
+
+      if (
+        activeIndex >= 0 &&
+        activeIndex !== caseLastTickIndexRef.current &&
+        performance.now() - caseLastTickSoundRef.current > 24
+      ) {
+        caseLastTickIndexRef.current = activeIndex;
+        caseLastTickSoundRef.current = performance.now();
+        playCaseReelTick();
+      }
+
+      caseReelAnimationRef.current = window.requestAnimationFrame(sampleReel);
+    };
+
+    caseReelAnimationRef.current = window.requestAnimationFrame(sampleReel);
+  }
+
   function stopWheelSpinAudio() {
     if (wheelSpinAnimationRef.current !== null) {
       window.cancelAnimationFrame(wheelSpinAnimationRef.current);
@@ -1981,8 +2074,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return reel;
   }
 
-  function openCurrentCase() {
-    if (!topFive || caseRolling || caseWinnerNotice || caseRoundIntroVisible) return;
+  function openCurrentCase(ignoreRoundIntro = false) {
+    if (
+      !topFive ||
+      caseRolling ||
+      caseWinnerNotice ||
+      (!ignoreRoundIntro && caseRoundIntroVisible)
+    ) return;
 
     const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
     const playerName = activePlayers[casePlayerIndex];
@@ -2006,9 +2104,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     window.setTimeout(() => {
       setCaseReelRun(true);
+      window.requestAnimationFrame(() => {
+        startCaseReelAudio();
+      });
     }, 60);
 
     window.setTimeout(() => {
+      stopCaseReelAudio();
       setCaseOpenings((current) => [...current, opening]);
       setCaseLastOpening(opening);
       setCaseRolling(false);
@@ -2856,14 +2958,20 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <button
                       type="button"
                       className="case-open-btn case-start-round-btn"
-                      onClick={() => setCaseRoundIntroVisible(false)}
+                      onClick={() => {
+                        setCaseRoundIntroVisible(false);
+                        openCurrentCase(true);
+                      }}
                     >
                       {pick(`COMEÇAR ROUND ${caseRound}`, `START ROUND ${caseRound}`)}
                     </button>
                   </div>
                 ) : (
                   <>
-                    <div className={`case-reel-window${caseReel.length ? " has-reel" : ""}`}>
+                    <div
+                      ref={caseReelWindowRef}
+                      className={`case-reel-window${caseReel.length ? " has-reel" : ""}`}
+                    >
                       <div className="case-reel-pointer" />
                       {caseReel.length ? (
                         <div
