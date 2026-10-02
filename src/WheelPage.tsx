@@ -3002,7 +3002,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <button
                       type="button"
                       className="case-open-btn"
-                      onClick={caseLastOpening ? continueCaseMode : openCurrentCase}
+                      onClick={caseLastOpening ? continueCaseMode : () => openCurrentCase()}
                       disabled={caseRolling || Boolean(caseWinnerNotice)}
                     >
                       {caseRolling ? pick("A ABRIR...", "OPENING...") : actionLabel}
