@@ -381,7 +381,8 @@ radial-gradient(circle at 50% 33%,var(--case-accent-soft),transparent 22rem),
 linear-gradient(145deg,#071015,#05090c)}
 .case-arena::before{content:"";position:absolute;inset:auto 8% -180px;height:320px;border-radius:50%;background:var(--case-accent-soft);filter:blur(64px);pointer-events:none}
 .case-panel-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-bottom:11px;border-bottom:1px solid #17282d}
-.case-panel-title span{color:var(--case-accent);font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.15em}
+.case-panel-title span{color:var(--case-accent);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;letter-spacing:.15em}
+.case-leaderboard .case-panel-title span{font-size:9px;letter-spacing:.18em;text-shadow:0 0 12px color-mix(in srgb,var(--case-accent) 34%,transparent)}
 .case-panel-title strong{color:#e6ecea;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.08em}
 .case-leaderboard-list{margin-top:10px}
 .case-leaderboard-row{min-height:72px;padding:9px 8px;display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:8px;border-bottom:1px solid #132328;border-radius:7px;transition:.2s}
@@ -390,10 +391,10 @@ linear-gradient(145deg,#071015,#05090c)}
 .case-leaderboard-row.is-current .case-rank{color:var(--case-accent)}
 .case-player-main{min-width:0;display:flex;flex-direction:column;gap:3px}
 .case-player-main strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#edf2ef;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900}
-.case-player-main small{color:#69777a;font-size:8px}
+.case-player-main small{color:#879598;font-size:10px;font-weight:700}
 .case-player-score{text-align:right;display:flex;flex-direction:column;gap:3px}
-.case-player-score b{color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:11px}
-.case-player-score small{color:#20f39a;font-size:7px;font-weight:900}
+.case-player-score b{color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:14px;font-weight:900}
+.case-player-score small{color:#20f39a;font-size:9px;font-weight:900}
 .case-odds-note{margin-top:auto;padding:15px 16px;border:1px solid rgba(185,133,31,.20);border-radius:10px;background:rgba(185,133,31,.045)}
 .case-odds-note span{color:#b9851f;font-size:8px;font-weight:900;letter-spacing:.13em}
 .case-odds-note p{margin:8px 0 0;color:#7f8e91;font-size:10px;line-height:1.7}
