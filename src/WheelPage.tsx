@@ -590,6 +590,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [caseRolling, setCaseRolling] = useState(false);
   const [caseReel, setCaseReel] = useState<PlinkoResult[]>([]);
   const [caseReelRun, setCaseReelRun] = useState(false);
+  const [caseStopOffset, setCaseStopOffset] = useState(0);
   const [caseLastOpening, setCaseLastOpening] = useState<CaseOpening | null>(null);
   const [caseWinnerNotice, setCaseWinnerNotice] = useState<string | null>(null);
   const [caseTiebreakPlayers, setCaseTiebreakPlayers] = useState<string[]>([]);
@@ -1503,6 +1504,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseRolling(false);
     setCaseReel([]);
     setCaseReelRun(false);
+    setCaseStopOffset(0);
     setCaseLastOpening(null);
     setCaseWinnerNotice(null);
     setCaseTiebreakPlayers([]);
@@ -1936,6 +1938,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseRoundIntroVisible(true);
     setCaseReel([]);
     setCaseReelRun(false);
+    setCaseStopOffset(0);
 
     window.setTimeout(() => {
       setShowCaseMode(true);
@@ -1997,6 +2000,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     setCaseRolling(true);
     setCaseLastOpening(null);
+    setCaseStopOffset(randomParticipantIndex(105) - 52);
     setCaseReel(buildCaseReel(round, winningSkin));
     setCaseReelRun(false);
 
@@ -2021,6 +2025,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCaseLastOpening(null);
       setCaseReel([]);
       setCaseReelRun(false);
+      setCaseStopOffset(0);
       return;
     }
 
@@ -2030,6 +2035,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCaseLastOpening(null);
       setCaseReel([]);
       setCaseReelRun(false);
+      setCaseStopOffset(0);
       setCaseRoundIntroVisible(true);
       return;
     }
@@ -2050,6 +2056,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCaseLastOpening(null);
       setCaseReel([]);
       setCaseReelRun(false);
+      setCaseStopOffset(0);
       setCaseRoundIntroVisible(true);
       return;
     }
@@ -2703,50 +2710,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </div>
           )}
 
-          {caseRoundIntroVisible && !showCaseTransition && (
-            <div
-              className="case-round-intro-overlay"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="case-round-intro-title"
-            >
-              <div className={`case-round-intro-card case-tone-${round.tone}`}>
-                <div className="case-round-intro-head">
-                  <div>
-                    <span>{`ROUND ${caseRound}`}</span>
-                    <h2 id="case-round-intro-title">{round.label}</h2>
-                    <p>{pick("Estas são as skins disponíveis nesta caixa.", "These are the skins available in this case.")}</p>
-                  </div>
-                  <div className={`case-round-intro-mini-case case-tone-${round.tone}`}>
-                    <small>CHYNAO</small>
-                    <strong>CASE</strong>
-                  </div>
-                </div>
-
-                <div className="case-round-intro-grid">
-                  {[...round.skins]
-                    .sort((a, b) => a.valueEur - b.valueEur)
-                    .map((skin) => (
-                      <article key={skin.skinName}>
-                        <img src={skin.imageUrl} alt={skin.skinName} />
-                        <strong>{skin.label}</strong>
-                        <span>{skin.valueEur.toFixed(2)} €</span>
-                      </article>
-                    ))}
-                </div>
-
-                <button
-                  type="button"
-                  className="case-round-intro-start"
-                  onClick={() => setCaseRoundIntroVisible(false)}
-                  autoFocus
-                >
-                  {pick(`COMEÇAR ROUND ${caseRound}`, `START ROUND ${caseRound}`)}
-                </button>
-              </div>
-            </div>
-          )}
-
           <section className="case-shell">
             <header className="case-head">
               <div>
@@ -2871,39 +2834,73 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <small>{round.label}</small>
                 </div>
 
-                <div className={`case-reel-window${caseReel.length ? " has-reel" : ""}`}>
-                  <div className="case-reel-pointer" />
-                  {caseReel.length ? (
-                    <div className={`case-reel-track${caseReelRun ? " is-running" : ""}`}>
-                      {caseReel.map((skin, index) => (
-                        <article
-                          className={`case-reel-item${!caseRolling && caseLastOpening && index === 24 ? " is-target" : ""}`}
-                          key={`${skin.skinName}-${index}`}
-                        >
-                          <img src={skin.imageUrl} alt="" />
-                          <strong>{skin.label}</strong>
-                          <span>{skin.valueEur.toFixed(2)} €</span>
-                        </article>
-                      ))}
+                {caseRoundIntroVisible ? (
+                  <div className={`case-contents-strip case-tone-${round.tone}`}>
+                    <div className="case-contents-head">
+                      <span>{pick("CONTEÚDO DA CAIXA", "CASE CONTENTS")}</span>
+                      <strong>{round.label}</strong>
                     </div>
-                  ) : (
-                    <div className="case-reel-placeholder">
-                      {pick(
-                        "A case está pronta. Abre para descobrir a skin.",
-                        "The case is ready. Open it to reveal the skin.",
+
+                    <div className="case-contents-grid">
+                      {[...round.skins]
+                        .sort((a, b) => a.valueEur - b.valueEur)
+                        .map((skin) => (
+                          <article key={skin.skinName}>
+                            <img src={skin.imageUrl} alt={skin.skinName} />
+                            <strong>{skin.label}</strong>
+                            <span>{skin.valueEur.toFixed(2)} €</span>
+                          </article>
+                        ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="case-open-btn case-start-round-btn"
+                      onClick={() => setCaseRoundIntroVisible(false)}
+                    >
+                      {pick(`COMEÇAR ROUND ${caseRound}`, `START ROUND ${caseRound}`)}
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className={`case-reel-window${caseReel.length ? " has-reel" : ""}`}>
+                      <div className="case-reel-pointer" />
+                      {caseReel.length ? (
+                        <div
+                          className={`case-reel-track${caseReelRun ? " is-running" : ""}`}
+                          style={{ "--case-stop-offset": `${caseStopOffset}px` } as CSSProperties}
+                        >
+                          {caseReel.map((skin, index) => (
+                            <article
+                              className={`case-reel-item${!caseRolling && caseLastOpening && index === 24 ? " is-target" : ""}`}
+                              key={`${skin.skinName}-${index}`}
+                            >
+                              <img src={skin.imageUrl} alt="" />
+                              <strong>{skin.label}</strong>
+                              <span>{skin.valueEur.toFixed(2)} €</span>
+                            </article>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="case-reel-placeholder">
+                          {pick(
+                            "A case está pronta. Abre para descobrir a skin.",
+                            "The case is ready. Open it to reveal the skin.",
+                          )}
+                        </div>
                       )}
                     </div>
-                  )}
-                </div>
 
-                <button
-                  type="button"
-                  className="case-open-btn"
-                  onClick={caseLastOpening ? continueCaseMode : openCurrentCase}
-                  disabled={caseRolling || Boolean(caseWinnerNotice)}
-                >
-                  {caseRolling ? pick("A ABRIR...", "OPENING...") : actionLabel}
-                </button>
+                    <button
+                      type="button"
+                      className="case-open-btn"
+                      onClick={caseLastOpening ? continueCaseMode : openCurrentCase}
+                      disabled={caseRolling || Boolean(caseWinnerNotice)}
+                    >
+                      {caseRolling ? pick("A ABRIR...", "OPENING...") : actionLabel}
+                    </button>
+                  </>
+                )}
               </section>
 
               <aside className="case-giveaway-side" aria-label={pick("Skin do giveaway", "Giveaway skin")}>
