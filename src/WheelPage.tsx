@@ -3391,6 +3391,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <strong id="qualification-intro-title">
                 {pick("APURAMENTO DO TOP 5", "TOP 5 QUALIFYING")}
               </strong>
+              <p>
+                {pick(
+                  "A roda vai agora escolher diretamente os 5 apurados para o Plinko.",
+                  "The wheel will now select the 5 players who qualify directly for Plinko.",
+                )}
+              </p>
               <button
                 type="button"
                 className="qualification-intro-start"
