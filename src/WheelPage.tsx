@@ -3388,16 +3388,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           >
             <div className="qualification-intro-cloud" />
             <div className="qualification-intro-content">
-              <span>{pick("NOVO SISTEMA", "NEW SYSTEM")}</span>
               <strong id="qualification-intro-title">
                 {pick("APURAMENTO DO TOP 5", "TOP 5 QUALIFYING")}
               </strong>
-              <p>
-                {pick(
-                  "Foram detetadas mais de 200 entradas. A roda vai agora escolher diretamente os 5 apurados para o Plinko.",
-                  "More than 200 entries were detected. The wheel will now select the 5 players who qualify directly for Plinko.",
-                )}
-              </p>
               <button
                 type="button"
                 className="qualification-intro-start"
