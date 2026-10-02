@@ -2651,6 +2651,326 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     </button>
   );
 
+  if (configuring && session && showCaseMode && topFive) {
+    const round = CASE_ROUNDS[caseRound - 1] ?? CASE_ROUNDS[0];
+    const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
+    const currentPlayer = activePlayers[casePlayerIndex] ?? activePlayers[0];
+    const currentEntries = currentPlayer ? caseEntryCount(currentPlayer) : 1;
+    const leaderboard = topFive
+      .map((name, originalIndex) => ({
+        name,
+        originalIndex,
+        entries: caseEntryCount(name),
+        total: casePlayerTotal(name),
+      }))
+      .sort((a, b) => b.total - a.total || a.originalIndex - b.originalIndex);
+    const currentRoundResults = topFive.map((name) =>
+      [...caseOpenings]
+        .reverse()
+        .find((opening) => opening.playerName === name && opening.round === caseRound),
+    );
+    const isLastActivePlayer = casePlayerIndex >= activePlayers.length - 1;
+    const isFinalRound = caseRound >= CASE_ROUNDS.length;
+    const actionLabel = caseLastOpening
+      ? !isLastActivePlayer
+        ? pick("PRÓXIMO JOGADOR", "NEXT PLAYER")
+        : !isFinalRound || caseTiebreakPlayers.length
+          ? caseTiebreakPlayers.length
+            ? pick("RESOLVER DESEMPATE", "RESOLVE TIE")
+            : pick("PRÓXIMA ROUND", "NEXT ROUND")
+          : pick("VER VENCEDOR", "REVEAL WINNER")
+      : pick("ABRIR CHYNAO CASE", "OPEN CHYNAO CASE");
+
+    return (
+      <>
+        <Header />
+        {soundToggle}
+
+        <main className="wheel-mobile-block">
+          <span>{pick("APENAS PC", "DESKTOP ONLY")}</span>
+          <h1>CHYNAO CASE</h1>
+          <p>{pick(
+            "Esta ferramenta foi feita para usar no PC durante os giveaways.",
+            "This tool was built for desktop giveaway use.",
+          )}</p>
+        </main>
+
+        <main className={`case-page case-tone-${round.tone}`}>
+          {showCaseTransition && (
+            <div className="case-transition-overlay case-transition-overlay-out" aria-hidden="true">
+              <div className="case-transition-cloud" />
+              <div className="case-transition-content">
+                <span>TOP 5 LOCKED</span>
+                <strong>CHYNAO CASE MODE</strong>
+              </div>
+            </div>
+          )}
+
+          <section className="case-shell">
+            <header className="case-head">
+              <div>
+                <span className="case-kicker">CHYNAO CASE MODE</span>
+                <h1>CHYNAO <em>CASE</em></h1>
+                <p>
+                  {caseTiebreakPlayers.length
+                    ? pick("DESEMPATE · GOLD CASE", "TIEBREAK · GOLD CASE")
+                    : `ROUND ${caseRound} · ${round.label}`}
+                </p>
+              </div>
+
+              <div className="case-head-actions">
+                <button
+                  type="button"
+                  className="case-back-btn"
+                  onClick={() => {
+                    if (caseRolling) return;
+                    setShowCaseMode(false);
+                    setShowTopFiveModal(true);
+                  }}
+                  disabled={caseRolling}
+                >
+                  <ArrowLeft /> {pick("VOLTAR AO TOP 5", "BACK TO TOP 5")}
+                </button>
+                <div className={`case-round-badge case-tone-${round.tone}`}>
+                  <span>ROUND</span>
+                  <strong>{String(caseRound).padStart(2, "0")}</strong>
+                </div>
+              </div>
+            </header>
+
+            <div className="case-layout">
+              <aside className="case-leaderboard">
+                <div className="case-panel-title">
+                  <span>{pick("AO VIVO", "LIVE")}</span>
+                  <strong>{pick("CLASSIFICAÇÃO", "LEADERBOARD")}</strong>
+                </div>
+
+                <div className="case-leaderboard-list">
+                  {leaderboard.map((player, index) => {
+                    const latest = [...caseOpenings]
+                      .reverse()
+                      .find((opening) => opening.playerName === player.name);
+
+                    return (
+                      <div
+                        className={`case-leaderboard-row${player.name === currentPlayer ? " is-current" : ""}`}
+                        key={player.name}
+                      >
+                        <span className="case-rank">{String(index + 1).padStart(2, "0")}</span>
+                        <div className="case-player-main">
+                          <strong title={player.name}>{player.name}</strong>
+                          <small>{player.entries} {pick("entradas", "entries")}</small>
+                        </div>
+                        <div className="case-player-score">
+                          <b>{player.total.toFixed(2)} €</b>
+                          {latest && <small>+{latest.skin.valueEur.toFixed(2)} €</small>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="case-odds-note">
+                  <span>{pick("BOOST DE ENTRADAS", "ENTRY BOOST")}</span>
+                  <p>
+                    {pick(
+                      "Mais entradas melhoram progressivamente as odds das skins mais valiosas. A melhor skin vai de 0,70% até um máximo de 5,00%.",
+                      "More entries progressively improve the odds of higher-value skins. The top skin ranges from 0.70% up to a 5.00% cap.",
+                    )}
+                  </p>
+                </div>
+              </aside>
+
+              <section className="case-arena">
+                {caseTiebreakPlayers.length > 0 && (
+                  <div className="case-tiebreak-banner">
+                    {pick(
+                      `EMPATE ENTRE ${caseTiebreakPlayers.length} JOGADORES · GOLD CASE EXTRA`,
+                      `TIE BETWEEN ${caseTiebreakPlayers.length} PLAYERS · EXTRA GOLD CASE`,
+                    )}
+                  </div>
+                )}
+
+                <div className="case-current-player">
+                  <div>
+                    <span>{pick("A ABRIR AGORA", "OPENING NOW")}</span>
+                    <strong>{currentPlayer}</strong>
+                  </div>
+                  <div className="case-current-stats">
+                    <span>
+                      {pick("ENTRADAS", "ENTRIES")}
+                      <b>{currentEntries}</b>
+                    </span>
+                    <span>
+                      {pick("MELHOR DROP", "TOP DROP")}
+                      <b>{caseTopSkinChance(currentEntries).toFixed(2)}%</b>
+                    </span>
+                  </div>
+                </div>
+
+                <div className={`chynao-case-box case-tone-${round.tone}${caseRolling ? " is-opening" : ""}`}>
+                  <div className="chynao-case-lid">
+                    <span>CHYNAO</span>
+                    <strong>CASE</strong>
+                  </div>
+                  <div className="chynao-case-lock">C</div>
+                  <small>{round.label}</small>
+                </div>
+
+                <div className={`case-reel-window${caseReel.length ? " has-reel" : ""}`}>
+                  <div className="case-reel-pointer" />
+                  {caseReel.length ? (
+                    <div className={`case-reel-track${caseReelRun ? " is-running" : ""}`}>
+                      {caseReel.map((skin, index) => (
+                        <article
+                          className={`case-reel-item${index === 24 ? " is-target" : ""}`}
+                          key={`${skin.skinName}-${index}`}
+                        >
+                          <img src={skin.imageUrl} alt="" />
+                          <strong>{skin.label}</strong>
+                          <span>{skin.valueEur.toFixed(2)} €</span>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="case-reel-placeholder">
+                      {pick(
+                        "A case está pronta. Abre para descobrir a skin.",
+                        "The case is ready. Open it to reveal the skin.",
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {caseLastOpening && (
+                  <div className="case-drop-result">
+                    <div className="case-drop-image">
+                      <img src={caseLastOpening.skin.imageUrl} alt={caseLastOpening.skin.skinName} />
+                    </div>
+                    <div>
+                      <span>{pick("DROP", "DROP")}</span>
+                      <strong>{caseLastOpening.skin.skinName}</strong>
+                      <b>+{caseLastOpening.skin.valueEur.toFixed(2)} €</b>
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  className="case-open-btn"
+                  onClick={caseLastOpening ? continueCaseMode : openCurrentCase}
+                  disabled={caseRolling || Boolean(caseWinnerNotice)}
+                >
+                  {caseRolling ? pick("A ABRIR...", "OPENING...") : actionLabel}
+                </button>
+              </section>
+
+              <aside className="case-round-panel">
+                <div className="case-panel-title">
+                  <span>{`ROUND ${caseRound}`}</span>
+                  <strong>{pick("RESULTADOS", "RESULTS")}</strong>
+                </div>
+
+                <div className="case-round-results">
+                  {topFive.map((name, index) => {
+                    const result = currentRoundResults[index];
+
+                    return (
+                      <div className="case-round-result-row" key={name}>
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <strong title={name}>{name}</strong>
+                        {result ? (
+                          <b>+{result.skin.valueEur.toFixed(2)} €</b>
+                        ) : (
+                          <i>—</i>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className={`case-round-preview case-tone-${round.tone}`}>
+                  <span>{round.label}</span>
+                  <strong>{round.skins.length} SKINS</strong>
+                  <div className="case-round-skins">
+                    {[...round.skins]
+                      .sort((a, b) => b.valueEur - a.valueEur)
+                      .slice(0, 3)
+                      .map((skin) => (
+                        <div key={skin.skinName}>
+                          <img src={skin.imageUrl} alt="" />
+                          <small>{skin.valueEur.toFixed(0)} €</small>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="case-giveaway-prize">
+                  <span>{pick("PRÉMIO FINAL", "FINAL PRIZE")}</span>
+                  <strong>{giveawayPrizeName || pick("Giveaway", "Giveaway")}</strong>
+                  {giveawayPrizeValue && (
+                    <b>{Number(giveawayPrizeValue.replace(",", ".")).toFixed(2)} €</b>
+                  )}
+                </div>
+              </aside>
+            </div>
+          </section>
+        </main>
+
+        {caseWinnerNotice && (
+          <div
+            className="plinko-winner-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="case-winner-title"
+          >
+            <div className="plinko-confetti" aria-hidden="true">
+              {Array.from({ length: 42 }, (_, index) => (
+                <span
+                  key={index}
+                  className={`confetti-${index % 3 === 0 ? "gold" : index % 3 === 1 ? "green" : "white"}`}
+                  style={{
+                    "--confetti-left": `${(index * 37) % 100}%`,
+                    "--confetti-delay": `-${(index * 0.19) % 4.2}s`,
+                    "--confetti-duration": `${3.2 + (index % 7) * 0.23}s`,
+                    "--confetti-drift": `${-42 + (index % 9) * 11}px`,
+                    "--confetti-rotate": `${180 + (index % 8) * 90}deg`,
+                  } as CSSProperties}
+                />
+              ))}
+            </div>
+
+            <div className="plinko-winner-modal">
+              <span className="plinko-winner-kicker">
+                {pick("VENCEDOR DO CHYNAO CASE!", "CHYNAO CASE WINNER!")}
+              </span>
+              <h2 id="case-winner-title">
+                <strong>{caseWinnerNotice}</strong>
+              </h2>
+              <p className="plinko-winner-congrats">
+                {casePlayerTotal(caseWinnerNotice).toFixed(2)} € · {pick("TOTAL ACUMULADO", "TOTAL SCORE")}
+              </p>
+              <p className="plinko-winner-trade">
+                {pick(
+                  "Manda já o teu trade link no chat para receberes o giveaway!",
+                  "Send your trade link in chat now to receive the giveaway!",
+                )}
+              </p>
+              <button
+                type="button"
+                className="plinko-winner-close"
+                onClick={() => closeWinnerCelebration("case")}
+                autoFocus
+              >
+                {pick("FECHAR", "CLOSE")}
+              </button>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+
   if (configuring && session && showPlinko && topFive) {
     const pegRows = Array.from({ length: 11 }, (_, rowIndex) =>
       Array.from({ length: rowIndex + 3 }, (_, pegIndex) => pegIndex),
