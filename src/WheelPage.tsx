@@ -4115,6 +4115,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           </div>
         )}
 
+        {showCaseTransition && (
+          <div className="case-transition-overlay" aria-hidden="true">
+            <div className="case-transition-cloud" />
+            <div className="case-transition-content">
+              <span>TOP 5 LOCKED</span>
+              <strong>CHYNAO CASE MODE</strong>
+            </div>
+          </div>
+        )}
+
         {topFive && showTopFiveModal && (
           <div
             className="wheel-elimination-overlay"
