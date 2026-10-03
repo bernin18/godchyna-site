@@ -408,11 +408,11 @@ linear-gradient(145deg,#071015,#05090c)}
 .case-current-stats span{min-width:90px;height:42px;padding:7px 10px;border:1px solid #1d3035;border-radius:7px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;background:#071014}
 .case-current-stats b{margin-top:2px;color:var(--case-accent);font-family:"Chakra Petch",sans-serif;font-size:12px}
 .case-tiebreak-banner{position:relative;z-index:2;width:min(760px,100%);margin-bottom:10px;padding:8px 12px;border:1px solid rgba(217,166,55,.32);border-radius:7px;background:rgba(217,166,55,.07);color:#d9a637;text-align:center;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;letter-spacing:.12em}
-.chynao-case-image-wrap{--case-accent:#22c55e;position:relative;z-index:2;width:min(390px,58vw);height:250px;margin:8px 0 10px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 24px 32px rgba(0,0,0,.34)) drop-shadow(0 0 24px color-mix(in srgb,var(--case-accent) 18%,transparent));transition:.3s}
+.chynao-case-image-wrap{--case-accent:#22c55e;position:relative;z-index:2;flex:0 0 250px;width:390px;max-width:min(390px,58vw);height:250px;max-height:250px;margin:8px 0 10px;display:flex;align-items:center;justify-content:center;overflow:hidden;contain:layout paint size;filter:drop-shadow(0 24px 32px rgba(0,0,0,.34)) drop-shadow(0 0 24px color-mix(in srgb,var(--case-accent) 18%,transparent));transition:.3s}
 .chynao-case-image-wrap.case-tone-purple{--case-accent:#a855f7}
 .chynao-case-image-wrap.case-tone-red{--case-accent:#ef4444}
 .chynao-case-image-wrap.case-tone-gold{--case-accent:#d9a637}
-.chynao-case-image{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 8px 12px rgba(0,0,0,.26))}
+.chynao-case-image{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center!important;filter:drop-shadow(0 8px 12px rgba(0,0,0,.26))}
 .chynao-case-image-wrap.is-opening{animation:case-image-shake .46s ease-in-out 2}
 @keyframes case-image-shake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-5px) rotate(-.35deg)}75%{transform:translateX(5px) rotate(.35deg)}}
 
