@@ -753,7 +753,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         completedAt: item.completed_at,
       }));
 
-    setGiveawayHistory(historyItems.slice(0, 6));
+    setGiveawayHistory(historyItems);
     setGiveawayHistoryTotal(
       historyItems.reduce(
         (total, item) => total + (item.skinValue ?? 0),
