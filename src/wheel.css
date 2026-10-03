@@ -32,10 +32,10 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .giveaway-history-skin{min-width:0;color:#657578;font-size:8px;font-weight:800;letter-spacing:.035em;white-space:normal;line-height:1.35;overflow-wrap:anywhere}
 .giveaway-history-value{padding-top:1px;color:#d9a637;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:900;white-space:nowrap}
 .giveaway-history-empty{height:100%;min-height:190px;display:flex;align-items:center;justify-content:center;padding:20px;color:#59696c;text-align:center;font-size:8px;font-weight:800;letter-spacing:.08em}
-.giveaway-history-live{height:38px;margin-top:9px;border-top:1px solid #16262a;display:flex;align-items:flex-end;justify-content:center;gap:7px;color:#738285;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;letter-spacing:.09em}
+.giveaway-history-live{height:40px;margin-top:9px;border-top:1px solid #16262a;display:flex;align-items:flex-end;justify-content:center;gap:8px;color:#819093;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.085em}
 .giveaway-history-live i{width:6px;height:6px;margin-bottom:2px;border-radius:50%;background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.5);animation:giveaway-history-live 1.5s ease-in-out infinite}
 .giveaway-history-live span{display:flex;align-items:center;gap:6px;white-space:nowrap}
-.giveaway-history-live b{color:#d9a637;font-size:9px;font-weight:900;letter-spacing:.04em}
+.giveaway-history-live b{color:#d9a637;font-size:13px;font-weight:900;letter-spacing:.025em;text-shadow:0 0 10px rgba(217,166,55,.18)}
 @keyframes giveaway-history-roll{from{transform:translateY(0)}to{transform:translateY(calc(-50% - 5px))}}
 @keyframes giveaway-history-live{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
 
