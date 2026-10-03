@@ -295,6 +295,7 @@ type CaseRound = {
   label: string;
   tone: "green" | "purple" | "red" | "gold";
   skins: PlinkoResult[];
+  caseImage: string;
 };
 
 type CaseOpening = {
@@ -305,10 +306,34 @@ type CaseOpening = {
 };
 
 const CASE_ROUNDS: CaseRound[] = [
-  { number: 1, label: "GREEN CASE", tone: "green", skins: ROUND_1_SKINS },
-  { number: 2, label: "PURPLE CASE", tone: "purple", skins: ROUND_2_SKINS },
-  { number: 3, label: "RED CASE", tone: "red", skins: ROUND_3_SKINS },
-  { number: 4, label: "GOLD CASE", tone: "gold", skins: ROUND_4_SKINS },
+  {
+    number: 1,
+    label: "GREEN CASE",
+    tone: "green",
+    skins: ROUND_1_SKINS,
+    caseImage: "/Case verde.png",
+  },
+  {
+    number: 2,
+    label: "PURPLE CASE",
+    tone: "purple",
+    skins: ROUND_2_SKINS,
+    caseImage: "/case Roxa.png",
+  },
+  {
+    number: 3,
+    label: "RED CASE",
+    tone: "red",
+    skins: ROUND_3_SKINS,
+    caseImage: "/Case vermelha.png",
+  },
+  {
+    number: 4,
+    label: "GOLD CASE",
+    tone: "gold",
+    skins: ROUND_4_SKINS,
+    caseImage: "/gold case.png",
+  },
 ];
 
 const CASE_BASE_WEIGHTS = [25, 22, 18, 14, 9, 6, 3.5, 1.8, 0.7];
@@ -2990,13 +3015,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   </div>
                 )}
 
-                <div className={`chynao-case-box case-tone-${round.tone}${caseRolling ? " is-opening" : ""}`}>
-                  <div className="chynao-case-lid">
-                    <span>CHYNAO</span>
-                    <strong>CASE</strong>
-                  </div>
-                  <div className="chynao-case-lock">C</div>
-                  <small>{round.label}</small>
+                <div
+                  className={`chynao-case-image-wrap case-tone-${round.tone}${caseRolling ? " is-opening" : ""}`}
+                >
+                  <img
+                    className="chynao-case-image"
+                    src={round.caseImage}
+                    alt={round.label}
+                  />
                 </div>
 
                 {caseRoundIntroVisible ? (
