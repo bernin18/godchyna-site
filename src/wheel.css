@@ -522,7 +522,21 @@ linear-gradient(145deg,#081115,#050a0d);box-shadow:0 30px 100px rgba(0,0,0,.65),
 .case-round-intro-start:hover{filter:brightness(1.08);box-shadow:0 0 26px color-mix(in srgb,var(--case-accent) 20%,transparent);transform:translateY(-1px)}
 
 
-.case-giveaway-side{min-height:650px;padding:17px;border:1px solid #1c2e33;border-radius:13px;background:linear-gradient(145deg,#081115,#050a0d);box-shadow:0 22px 70px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center}
+.case-giveaway-side{position:relative;min-height:650px;padding:17px;border:1px solid transparent;border-radius:13px;background:linear-gradient(145deg,#081115,#050a0d);box-shadow:0 22px 70px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;overflow:hidden;isolation:isolate}
+.case-giveaway-side::before{content:"";position:absolute;z-index:1;inset:0;border-radius:13px;padding:2px;pointer-events:none;background:conic-gradient(
+ from var(--plinko-snake-angle),
+ transparent 0deg 198deg,
+ rgba(243,244,242,.12) 208deg,
+ rgba(255,255,255,.58) 220deg,
+ #ffffff 236deg,
+ #20f39a 265deg,
+ #31ffb0 286deg,
+ #d19a2a 316deg,
+ #e0ad3f 336deg,
+ rgba(185,133,31,.42) 349deg,
+ transparent 358deg 360deg
+);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 5px rgba(255,255,255,.42)) drop-shadow(0 0 10px rgba(32,243,154,.38)) drop-shadow(0 0 15px rgba(185,133,31,.30));animation:plinko-snake-run 3.1s linear infinite}
+.case-giveaway-side>*{position:relative;z-index:2}
 .case-giveaway-side-head{width:100%;padding-bottom:11px;border-bottom:1px solid #17282d}
 .case-giveaway-side-head span{color:#b9851f;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;letter-spacing:.14em}
 .case-giveaway-side-media{width:100%;min-height:245px;margin-top:18px;padding:16px;border:1px solid rgba(185,133,31,.26);border-radius:11px;background:
