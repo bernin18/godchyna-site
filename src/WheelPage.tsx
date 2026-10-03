@@ -4437,7 +4437,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="giveaway-history-live">
               <i />
               <span>
-                {pick("TOTAL DADO EM GIVEAWAYS", "TOTAL GIVEN IN GIVEAWAYS")}
+                {pick("TOTAL DADO EM GIVEAWAYS DIÁRIOS", "TOTAL GIVEN IN DAILY GIVEAWAYS")}
                 <b>{giveawayHistoryTotal.toFixed(2)} €</b>
               </span>
             </div>
