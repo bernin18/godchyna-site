@@ -518,6 +518,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     skinValue: number | null;
     completedAt: string;
   }>>([]);
+  const [giveawayHistoryTotal, setGiveawayHistoryTotal] = useState(0);
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -710,13 +711,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const { data, error } = await supabase
       .from("giveaway_history")
       .select("id, offered_by, winner_name, skin_name, skin_value, completed_at")
-      .order("completed_at", { ascending: false })
-      .limit(6);
+      .order("completed_at", { ascending: false });
 
     if (error) return;
 
-    setGiveawayHistory(
-      (data ?? []).map((item) => ({
+    const historyItems = (data ?? []).map((item) => ({
         id: item.id,
         offeredBy: item.offered_by || "Chyna",
         winnerName: item.winner_name,
@@ -726,7 +725,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             ? null
             : Number(item.skin_value),
         completedAt: item.completed_at,
-      })),
+      }));
+
+    setGiveawayHistory(historyItems.slice(0, 6));
+    setGiveawayHistoryTotal(
+      historyItems.reduce(
+        (total, item) => total + (item.skinValue ?? 0),
+        0,
+      ),
     );
   }
 
@@ -4404,7 +4410,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <div className="giveaway-history-live">
               <i />
-              <span>{pick("ÚLTIMOS VENCEDORES", "LATEST WINNERS")}</span>
+              <span>
+                {pick("TOTAL DADO EM GIVEAWAYS", "TOTAL GIVEN IN GIVEAWAYS")}
+                <b>{giveawayHistoryTotal.toFixed(2)} €</b>
+              </span>
             </div>
           </aside>
 
