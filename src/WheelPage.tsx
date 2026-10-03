@@ -591,6 +591,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [showCaseTransition, setShowCaseTransition] = useState(false);
   const [caseRound, setCaseRound] = useState(1);
   const [casePlayerIndex, setCasePlayerIndex] = useState(0);
+  const [caseRoundOrder, setCaseRoundOrder] = useState<string[]>([]);
   const [caseOpenings, setCaseOpenings] = useState<CaseOpening[]>([]);
   const [caseRolling, setCaseRolling] = useState(false);
   const [caseReel, setCaseReel] = useState<PlinkoResult[]>([]);
@@ -1513,6 +1514,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setShowCaseTransition(false);
     setCaseRound(1);
     setCasePlayerIndex(0);
+    setCaseRoundOrder([]);
     setCaseOpenings([]);
     setCaseRolling(false);
     setCaseReel([]);
@@ -2032,6 +2034,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setShowCaseTransition(true);
     setCaseRound(1);
     setCasePlayerIndex(0);
+    setCaseRoundOrder(topFive ? [...topFive] : []);
     setCaseOpenings([]);
     setCaseLastOpening(null);
     setCaseWinnerNotice(null);
@@ -2090,7 +2093,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       (!ignoreRoundIntro && caseRoundIntroVisible)
     ) return;
 
-    const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
+    const leaderboardOrder = caseRoundOrder.length ? caseRoundOrder : topFive;
+    const activePlayers = caseTiebreakPlayers.length
+      ? caseTiebreakPlayers
+      : caseRound === CASE_ROUNDS.length
+        ? [...leaderboardOrder].reverse()
+        : leaderboardOrder;
     const playerName = activePlayers[casePlayerIndex];
     const round = CASE_ROUNDS[caseRound - 1];
     if (!playerName || !round) return;
@@ -2128,7 +2136,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function continueCaseMode() {
     if (!topFive || caseRolling || !caseLastOpening) return;
 
-    const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
+    const leaderboardOrder = caseRoundOrder.length ? caseRoundOrder : topFive;
+    const activePlayers = caseTiebreakPlayers.length
+      ? caseTiebreakPlayers
+      : caseRound === CASE_ROUNDS.length
+        ? [...leaderboardOrder].reverse()
+        : leaderboardOrder;
 
     if (casePlayerIndex < activePlayers.length - 1) {
       setCasePlayerIndex((index) => index + 1);
@@ -2140,8 +2153,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
 
     if (!caseTiebreakPlayers.length && caseRound < CASE_ROUNDS.length) {
+      const rankedPlayers = [...topFive].sort((a, b) => {
+        const totalDifference = casePlayerTotal(b) - casePlayerTotal(a);
+        if (totalDifference !== 0) return totalDifference;
+        return topFive.indexOf(a) - topFive.indexOf(b);
+      });
+
       setCaseRound((round) => round + 1);
       setCasePlayerIndex(0);
+      setCaseRoundOrder(rankedPlayers);
       setCaseLastOpening(null);
       setCaseReel([]);
       setCaseReelRun(false);
@@ -2801,17 +2821,19 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   if (configuring && session && showCaseMode && topFive) {
     const round = CASE_ROUNDS[caseRound - 1] ?? CASE_ROUNDS[0];
-    const activePlayers = caseTiebreakPlayers.length ? caseTiebreakPlayers : topFive;
+    const leaderboardOrder = caseRoundOrder.length ? caseRoundOrder : topFive;
+    const activePlayers = caseTiebreakPlayers.length
+      ? caseTiebreakPlayers
+      : caseRound === CASE_ROUNDS.length
+        ? [...leaderboardOrder].reverse()
+        : leaderboardOrder;
     const currentPlayer = activePlayers[casePlayerIndex] ?? activePlayers[0];
     const currentEntries = currentPlayer ? caseEntryCount(currentPlayer) : 1;
-    const leaderboard = topFive
-      .map((name, originalIndex) => ({
-        name,
-        originalIndex,
-        entries: caseEntryCount(name),
-        total: casePlayerTotal(name),
-      }))
-      .sort((a, b) => b.total - a.total || a.originalIndex - b.originalIndex);
+    const leaderboard = leaderboardOrder.map((name) => ({
+      name,
+      entries: caseEntryCount(name),
+      total: casePlayerTotal(name),
+    }));
     const isLastActivePlayer = casePlayerIndex >= activePlayers.length - 1;
     const isFinalRound = caseRound >= CASE_ROUNDS.length;
     const actionLabel = caseLastOpening
@@ -2892,7 +2914,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   {leaderboard.map((player, index) => {
                     const latest = [...caseOpenings]
                       .reverse()
-                      .find((opening) => opening.playerName === player.name);
+                      .find(
+                        (opening) =>
+                          opening.playerName === player.name &&
+                          opening.round === caseRound,
+                      );
 
                     return (
                       <div
@@ -2906,7 +2932,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         </div>
                         <div className="case-player-score">
                           <b>{player.total.toFixed(2)} €</b>
-                          {latest && <small>+{latest.skin.valueEur.toFixed(2)} €</small>}
+                          <small>+{(latest?.skin.valueEur ?? 0).toFixed(2)} €</small>
                         </div>
                       </div>
                     );
