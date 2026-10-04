@@ -438,7 +438,7 @@ function nameFontSize(name: string, count: number) {
 }
 
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
-const LARGE_WHEEL_VISUAL_SEGMENTS = 64;
+const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_LIST_LIMIT = 160;
 const LARGE_WHEEL_GRADIENT =
   "repeating-conic-gradient(#b9851f 0deg 5.625deg,#111a20 5.625deg 11.25deg,#754b1a 11.25deg 16.875deg,#263238 16.875deg 22.5deg)";
