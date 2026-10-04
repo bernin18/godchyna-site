@@ -438,6 +438,10 @@ function nameFontSize(name: string, count: number) {
 }
 
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
+const LARGE_WHEEL_VISUAL_SEGMENTS = 64;
+const LARGE_WHEEL_LIST_LIMIT = 160;
+const LARGE_WHEEL_GRADIENT =
+  "repeating-conic-gradient(#b9851f 0deg 5.625deg,#111a20 5.625deg 11.25deg,#754b1a 11.25deg 16.875deg,#263238 16.875deg 22.5deg)";
 
 function uniqueParticipantNames(entries: string[]) {
   const unique = new Map<string, string>();
@@ -478,8 +482,26 @@ function randomParticipantIndex(count: number) {
   return Math.floor(Math.random() * count);
 }
 
+function shuffleParticipantEntries(entries: string[]) {
+  const shuffled = [...entries];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = randomParticipantIndex(index + 1);
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  return shuffled;
+}
+
 function spreadParticipantEntries(entries: string[]) {
   if (entries.length <= 2) return [...entries];
+
+  // Large giveaways use direct TOP 5 qualification. At this size, repeatedly
+  // sorting duplicate groups is expensive and brings no fairness benefit:
+  // every entry still has the same chance regardless of its array position.
+  if (entries.length > DIRECT_TOP_FIVE_THRESHOLD) {
+    return shuffleParticipantEntries(entries);
+  }
 
   const grouped = new Map<string, { name: string; count: number }>();
 
@@ -2701,7 +2723,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinner(selectedName);
     setPendingWinnerIndex(winnerIndex);
     setSpinning(true);
-    startWheelSpinAudio(participants.length);
+    startWheelSpinAudio(
+      participants.length > DIRECT_TOP_FIVE_THRESHOLD
+        ? LARGE_WHEEL_VISUAL_SEGMENTS
+        : participants.length,
+    );
 
     setRotation((currentRotation) => {
       const currentAngle = ((currentRotation % 360) + 360) % 360;
@@ -2795,9 +2821,24 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
   }, [groupedParticipants, participantSearch]);
 
+  const largeWheelVisual = participants.length > DIRECT_TOP_FIVE_THRESHOLD;
+  const displayedGroupedParticipants = useMemo(
+    () => filteredGroupedParticipants.slice(0, LARGE_WHEEL_LIST_LIMIT),
+    [filteredGroupedParticipants],
+  );
+  const hiddenGroupedParticipantCount = Math.max(
+    0,
+    filteredGroupedParticipants.length - displayedGroupedParticipants.length,
+  );
+  const visualWheelSegmentCount = largeWheelVisual
+    ? LARGE_WHEEL_VISUAL_SEGMENTS
+    : participants.length;
   const fastWheelSpin = participants.length >= 10;
 
-  const configGradient = useMemo(() => wheelGradient(participants.length), [participants.length]);
+  const configGradient = useMemo(
+    () => (largeWheelVisual ? LARGE_WHEEL_GRADIENT : wheelGradient(participants.length)),
+    [largeWheelVisual, participants.length],
+  );
 
   const renderWheelNames = (names: string[], preview = false) => names.map((name, index) => {
     const angle = index * (360 / names.length) + (360 / names.length) / 2;
@@ -3908,8 +3949,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     setPendingWinnerIndex(null);
                   }}
                 >
-                  <WheelDividers count={participants.length} />
-                  {participants.length > 0 && renderWheelNames(participants)}
+                  <WheelDividers count={visualWheelSegmentCount} />
+                  {!largeWheelVisual &&
+                    participants.length > 0 &&
+                    renderWheelNames(participants)}
                 </div>
                 <button
                   type="button"
@@ -4098,7 +4141,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         `No results for "${participantSearch.trim()}".`,
                       )}
                     </p>
-                  ) : filteredGroupedParticipants.map((participant, index) => (
+                  ) : displayedGroupedParticipants.map((participant, index) => (
                     <div className="participant-row participant-row-grouped" key={participant.name.trim().toLocaleLowerCase()}>
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <strong title={participant.name}>{participant.name}</strong>
@@ -4131,6 +4174,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       </button>
                     </div>
                   ))}
+                  {hiddenGroupedParticipantCount > 0 && (
+                    <p className="participants-render-limit">
+                      {pick(
+                        `+ ${hiddenGroupedParticipantCount} nomes não mostrados · usa a pesquisa para encontrar qualquer participante`,
+                        `+ ${hiddenGroupedParticipantCount} names hidden · use search to find any participant`,
+                      )}
+                    </p>
+                  )}
                 </div>
               </div>
 
