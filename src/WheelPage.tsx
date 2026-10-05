@@ -5357,8 +5357,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <b>{monthlyHistoryDemo.winnerName}</b>
               </strong>
               <span className="monthly-history-skin">{monthlyHistoryDemo.skinName}</span>
-              <b className="monthly-history-value">$ {monthlyHistoryDemo.skinValue.toFixed(2)}</b>
             </div>
+            <b className="monthly-history-value monthly-history-value-under-art">
+              $ {monthlyHistoryDemo.skinValue.toFixed(2)}
+            </b>
           </article>
         )}
 
@@ -5403,8 +5405,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                                 <b>{monthlyHistoryDemo.winnerName}</b>
                               </strong>
                               <span className="monthly-history-skin">{monthlyHistoryDemo.skinName}</span>
-                              <b className="monthly-history-value">$ {monthlyHistoryDemo.skinValue.toFixed(2)}</b>
                             </div>
+                            <b className="monthly-history-value monthly-history-value-under-art">
+                              $ {monthlyHistoryDemo.skinValue.toFixed(2)}
+                            </b>
                           </article>
                         ) : (
                           <div
