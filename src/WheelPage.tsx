@@ -3212,7 +3212,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
     const monthlyPrizeImageUrl = giveawayPrizeImageUrl || wheelAsset("ursus-marble-fade.png");
     const monthlyPrizeName = giveawayPrizeName.trim() || "Ursus Marble Fade";
-    const monthlyPrizeValue = giveawayPrizeNumericValue();
+    const monthlyPrizeValue = giveawayPrizeNumericValue() ?? 150;
     const monthlyLocked = monthlyLaunching || monthlySpinning || Boolean(monthlyWinner);
     const monthlyWinnerSegment = monthlyWinner
       ? monthlyWheelSegments.find(
