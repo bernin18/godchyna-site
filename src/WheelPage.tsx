@@ -589,6 +589,33 @@ function formatFactoryNewSkinName(name: string) {
   return /(?:^|\s)FN$/i.test(trimmed) ? trimmed : `${trimmed} FN`;
 }
 
+function historySkinImage(name: string) {
+  const normalized = name
+    .replace(/StatTrak™?/gi, "")
+    .replace(/Souvenir/gi, "")
+    .replace(/\b(FN|MW|FT|WW|BS)\b/gi, "")
+    .replace(/\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLocaleLowerCase();
+
+  const images: Record<string, string> = {
+    "desert eagle | firebreathing": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk6_evb6hoH_aaHGKS0-t3pOlgQS6MmRQguynLn9ircSiTPFUgCJAkQbELsxXtktDkMurk4lTZ39hEyn_-3HsbvXxj4fFCD_RcNNN-xQ",
+    "awp | ice coaled": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_DVL0PutbZtuL_GfC2OvzedxuPUnS3u3wR8lsTzTn4qqcXuXOlQmCpUiQOdYtUG_ltXgP-u04wWL3Y9NnjK-0H2dw8uldQ",
+    "ak-47 | nouveau rouge": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wipC6s2vY_A6H_6cG3GVwPtJvOhuRz39zBsm5j-HyNqpd32fPVd1AsB3RbEP4xntwdPuM-jl4QaK2NpCzX_23DQJsHjpyGbntg",
+    "ak-47 | ice coaled": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSI_-UGm-Zz-llj-1gSCGn2x4l5z_RyNj6JXnEbgFzXMYjEOUIsBe5m9exP-zg4leMj4pGxXn7jCJXrnE84asPq_0",
+    "awp | black nile": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf-jFk7uW-V7d5Mv-dC1icyOl-pK89Gyvhlhsit2-BwoyrICmWPQcmDpEkQOdeskOxwNKzN7vm4VeP2oMR02yg2Z2CmmVC",
+    "m4a4 | tooth fairy": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwiFO0P_6afBSMeWWC2mWwOdkqd5lRi67gVN35WyDwtv8IC-RblVxCpchQLIOuhK8xNG2YbnktAXZjthFxCiohntP8G81tOVu8Qhw",
+    "usp-s | jawbreaker": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLkjYbf7itX6vytbbZSNeODHViUzulxqd5lRi67gVMl62nUyd2scnOVPAcgA5J2TOFY5xLrlN22YbzgsQaI2IlHyiWojnwa8G81tErOD-_J",
+    "tec-9 | brother": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLlm5W5wiVI0Oara_1SJ-WWHG6cze9JvOhuRz39xBsj4GmEyt-vIHjEbgJ2CsR2RONfu0K_lYXvZrjg4ADYg4wXzin42DQJsHgTPX1sbQ",
+    "glock-18 | shinobu": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL2kpnj9h1c4_2tY5t-KPmdAWWF_uJ_t-l9AX6ylh5w4mTcwtahdS2VOgRzWJsjEOQL5EWxwNblZeK2tVPXitlDmyvgznQeC7fvQL8",
+    "awp | green energy": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jde0Pi7ZbRSLPmdC1icyOl-pK8wTCzlxkl_tm7Vz9j6cnLEOA91C5siTOBYsRWwxtC2MOzj5g2I3Y4W02yg2VFgswq6",
+    "desert eagle | mecha industries": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk6OGRbKFsJ_yWMWqVwuZ3j-1gSCGn20h042vSyY2tdyjCZwIlXJBxQeNe4EWxxoHkMOq0sQGIid5Fnyr42HtXrnE8p4gbgvE",
+  };
+
+  return images[normalized] ?? null;
+}
+
 type MonthlyHistoryDemo = {
   winnerName: string;
   skinName: string;
@@ -5382,30 +5409,43 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         )
                       )}
 
-                      {giveawayHistory.map((item) => (
-                        <article className="giveaway-history-card" key={`${groupIndex}-${item.id}`}>
-                          <div className="giveaway-history-top">
-                            <em>
-                              {pick("OFERECIDO POR", "OFFERED BY")} · <b>{item.offeredBy}</b>
-                            </em>
-                            <small>{formatHistoryDate(item.completedAt)}</small>
-                          </div>
+                      {giveawayHistory.map((item) => {
+                        const skinImage = historySkinImage(item.skinName);
 
-                          <strong className="giveaway-history-winner">
-                            <span>{pick("VENCEDOR", "WINNER")}: </span>
-                            <b>{item.winnerName}</b>
-                          </strong>
-
-                          <div className="giveaway-history-prize-row">
-                            <span className="giveaway-history-skin">
-                              {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
-                            </span>
-                            {item.skinValue !== null && (
-                              <b className="giveaway-history-value">{item.skinValue.toFixed(2)} €</b>
+                        return (
+                          <article
+                            className={`giveaway-history-card${skinImage ? " has-skin-image" : ""}`}
+                            key={`${groupIndex}-${item.id}`}
+                          >
+                            {skinImage && (
+                              <div className="giveaway-history-skin-art" aria-hidden="true">
+                                <img src={skinImage} alt="" loading="lazy" />
+                              </div>
                             )}
-                          </div>
-                        </article>
-                      ))}
+
+                            <div className="giveaway-history-top">
+                              <em>
+                                {pick("OFERECIDO POR", "OFFERED BY")} · <b>{item.offeredBy}</b>
+                              </em>
+                              <small>{formatHistoryDate(item.completedAt)}</small>
+                            </div>
+
+                            <strong className="giveaway-history-winner">
+                              <span>{pick("VENCEDOR", "WINNER")}: </span>
+                              <b>{item.winnerName}</b>
+                            </strong>
+
+                            <div className="giveaway-history-prize-row">
+                              <span className="giveaway-history-skin">
+                                {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
+                              </span>
+                              {item.skinValue !== null && (
+                                <b className="giveaway-history-value">{item.skinValue.toFixed(2)} €</b>
+                              )}
+                            </div>
+                          </article>
+                        );
+                      })}
                     </div>
                   ))}
                 </div>
