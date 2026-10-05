@@ -634,6 +634,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const giveawayFinalizedRef = useRef(false);
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const monthlyPrizeImageRef = useRef<HTMLImageElement | null>(null);
+  const monthlyAudioRef = useRef<HTMLAudioElement | null>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [previewRotation, setPreviewRotation] = useState(0);
@@ -1189,6 +1190,31 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     ));
   }
 
+  function stopMonthlyGiveawayAudio() {
+    const track = monthlyAudioRef.current;
+    if (!track) return;
+    track.pause();
+    track.currentTime = 0;
+    monthlyAudioRef.current = null;
+  }
+
+  function startMonthlyGiveawayAudio() {
+    if (!soundEnabled || typeof Audio === "undefined") return;
+
+    stopMonthlyGiveawayAudio();
+
+    const track = new Audio(wheelAsset("audio/monthly-giveaway.mp3"));
+    track.preload = "auto";
+    track.volume = 0.82;
+    monthlyAudioRef.current = track;
+
+    void track.play().catch(() => {
+      if (monthlyAudioRef.current === track) {
+        monthlyAudioRef.current = null;
+      }
+    });
+  }
+
   function openMonthlyGiveaway() {
     if (!account || loadingAccount || account.role !== "admin") return;
 
@@ -1208,6 +1234,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   function closeMonthlyGiveaway() {
     if (monthlySpinning) return;
+    stopMonthlyGiveawayAudio();
     setMonthlyGiveawayMode(false);
     setMonthlyWinner(null);
     setMonthlyKnifeRotation(45);
@@ -3101,6 +3128,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlyKnifeDocked(false);
     setMonthlyKnifeRotation(45);
     setMonthlyWheelRotation(0);
+    startMonthlyGiveawayAudio();
     playWheelPlim();
 
     if (sourceRect) {
@@ -3143,7 +3171,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         });
       });
 
-      const centerSpinDuration = 14000;
+      const centerSpinDuration = 21000;
       window.setTimeout(() => {
         setMonthlySpinning(false);
         setMonthlyWinner(selectedName);
@@ -3504,6 +3532,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <button
                 type="button"
                 onClick={() => {
+                  stopMonthlyGiveawayAudio();
                   setMonthlyWinner(null);
                   setMonthlyKnifeRotation(45);
                   setMonthlyWheelRotation(0);
