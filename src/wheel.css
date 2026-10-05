@@ -4932,7 +4932,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .giveaway-history-card.has-skin-image{
   position:relative!important;
   min-height:96px!important;
-  padding:13px 12px 13px 92px!important;
+  padding:13px 12px 13px 96px!important;
   overflow:hidden!important;
   isolation:auto!important;
   background:linear-gradient(145deg,#091317,#070d10)!important;
@@ -4950,10 +4950,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .giveaway-history-skin-art{
   position:absolute!important;
   z-index:1!important;
-  left:10px!important;
-  right:auto!important;
-  top:9px!important;
-  bottom:9px!important;
+  inset:9px auto 9px 10px!important;
   width:68px!important;
   height:auto!important;
   display:flex!important;
@@ -4961,7 +4958,6 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   justify-content:center!important;
   opacity:1!important;
   pointer-events:none!important;
-  inset:auto!important;
 }
 
 .giveaway-history-skin-art::before{
