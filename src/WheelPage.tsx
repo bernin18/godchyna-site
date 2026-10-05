@@ -443,6 +443,39 @@ const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_VISIBLE_NAMES = 100;
 const MONTHLY_WHEEL_VISIBLE_NAMES = 100;
 const LARGE_WHEEL_LIST_LIMIT = 160;
+const MAX_PARTICIPANT_MULTIPLIER = 500;
+
+function parseParticipantInput(input: string) {
+  const entries: string[] = [];
+  let cappedLines = 0;
+
+  input
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .forEach((line) => {
+      const multiplierMatch = line.match(/^(.*?)\s+(?:(\d+)\s*x|x\s*(\d+))$/i);
+
+      if (!multiplierMatch) {
+        entries.push(line);
+        return;
+      }
+
+      const name = multiplierMatch[1].trim();
+      if (!name) return;
+
+      const requestedCount = Number(multiplierMatch[2] ?? multiplierMatch[3] ?? 1);
+      const safeCount = Number.isFinite(requestedCount)
+        ? Math.max(1, Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(requestedCount)))
+        : 1;
+
+      if (requestedCount > MAX_PARTICIPANT_MULTIPLIER) cappedLines += 1;
+
+      entries.push(...Array.from({ length: safeCount }, () => name));
+    });
+
+  return { entries, cappedLines };
+}
 const LARGE_WHEEL_GRADIENT =
   "repeating-conic-gradient(#b9851f 0deg 5.625deg,#111a20 5.625deg 11.25deg,#754b1a 11.25deg 16.875deg,#263238 16.875deg 22.5deg)";
 
@@ -1461,10 +1494,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function loadParticipants() {
-    const entries = participantInput
-      .split(/\r?\n/)
-      .map((entry) => entry.trim())
-      .filter(Boolean);
+    const { entries, cappedLines } = parseParticipantInput(participantInput);
 
     if (entries.length < 1) {
       setParticipantMessage(pick(
@@ -1488,8 +1518,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setShowPlinko(false);
     setShowPlinkoTransition(false);
     setParticipantMessage(pick(
-      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}. As entradas foram misturadas automaticamente na roda.`,
-      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}. Entries were automatically spread around the wheel.`,
+      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}.${cappedLines > 0 ? ` ${cappedLines} multiplicador${cappedLines === 1 ? "" : "es"} limitado${cappedLines === 1 ? "" : "s"} ao máximo de ${MAX_PARTICIPANT_MULTIPLIER}x.` : ""} As entradas foram misturadas automaticamente na roda.`,
+      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}.${cappedLines > 0 ? ` ${cappedLines} multiplier${cappedLines === 1 ? "" : "s"} capped at ${MAX_PARTICIPANT_MULTIPLIER}x.` : ""} Entries were automatically spread around the wheel.`,
     ));
   }
 
@@ -1497,7 +1527,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (spinning || eliminationNotice || topFive || wheelWinnerNotice) return;
 
     const name = quickParticipantName.trim();
-    const count = Math.max(1, Math.min(100, Math.floor(quickParticipantCount || 1)));
+    const count = Math.max(
+      1,
+      Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(quickParticipantCount || 1)),
+    );
 
     if (!name) {
       setParticipantMessage(pick(
@@ -2824,7 +2857,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   ]);
 
   const draftCount = useMemo(
-    () => participantInput.split(/\r?\n/).map((entry) => entry.trim()).filter(Boolean).length,
+    () => parseParticipantInput(participantInput).entries.length,
     [participantInput],
   );
 
@@ -3139,8 +3172,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               setParticipantMessage("");
             }}
             placeholder={pick(
-              "Cola aqui as entradas · um nome por linha...",
-              "Paste entries here · one name per line...",
+              "Cola as entradas · ex.: Chyna 100x · máximo 500x por nome",
+              "Paste entries · e.g. Chyna 100x · maximum 500x per name",
             )}
             spellCheck={false}
             disabled={monthlySpinning || Boolean(monthlyWinner)}
@@ -4390,7 +4423,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         const value = Number(event.target.value);
                         setQuickParticipantCount(
                           Number.isFinite(value)
-                            ? Math.max(1, Math.min(100, Math.floor(value)))
+                            ? Math.max(1, Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(value)))
                             : 1,
                         );
                       }}
@@ -4398,8 +4431,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     />
                     <button
                       type="button"
-                      onClick={() => setQuickParticipantCount((count) => Math.min(100, count + 1))}
-                      disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice) || quickParticipantCount >= 100}
+                      onClick={() => setQuickParticipantCount((count) => Math.min(MAX_PARTICIPANT_MULTIPLIER, count + 1))}
+                      disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice) || quickParticipantCount >= MAX_PARTICIPANT_MULTIPLIER}
                       aria-label={pick("Adicionar uma entrada", "Add one entry")}
                     >
                       +
@@ -4425,8 +4458,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   setParticipantMessage("");
                 }}
                 placeholder={pick(
-                  "Um nome por linha...\nChyna\nChyna\nChyna\nChyna",
-                  "One name per line...\nChyna\nChyna\nChyna\nChyna",
+                  "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 500x por nome",
+                  "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 500x per name",
                 )}
                 spellCheck={false}
                 disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
