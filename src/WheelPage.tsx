@@ -3220,17 +3220,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 "--monthly-wheel-angle": `${monthlyWheelRotation}deg`,
               } as CSSProperties}
             >
-              {monthlyWheelSegments.map((segment, index) =>
-                index === 0 ? null : (
-                  <span
-                    key={`monthly-divider-${segment.name.trim().toLocaleLowerCase()}-${index}`}
-                    className="monthly-wheel-divider"
-                    style={{
-                      "--divider-angle": `${segment.startAngle}deg`,
-                    } as CSSProperties}
-                  />
-                ),
-              )}
+              {monthlyWheelSegments.map((segment, index) => (
+                <span
+                  key={`monthly-divider-${segment.name.trim().toLocaleLowerCase()}-${index}`}
+                  className="monthly-wheel-divider"
+                  style={{
+                    "--divider-angle": `${segment.startAngle}deg`,
+                  } as CSSProperties}
+                />
+              ))}
               {renderMonthlyWheelNames()}
             </div>
 
