@@ -369,6 +369,7 @@ function pickCaseSkin(skins: PlinkoResult[], entries: number) {
   return sorted[sorted.length - 1];
 }
 
+const wheelAsset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 const previewNames = ["NUNO","RUI","MIGUEL","ANA","DIOGO","TIAGO","SOFIA","PEDRO","LUIS","MARTA","ALEX","JOAO"];
 const WHEEL_COLORS = ["#b9851f", "#111a20", "#754b1a", "#263238"];
 const WHEEL_DIVIDER_COLOR = "#4f3a1b";
@@ -3116,7 +3117,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           </div>
 
           <div className="monthly-prize">
-            <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
+            <img src={wheelAsset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
           </div>
 
           <div className="monthly-stats">
@@ -3187,7 +3188,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <div className="monthly-winner-overlay">
             <div className="monthly-winner-card">
               <span>{pick("VENCEDOR DO GIVEAWAY MENSAL", "MONTHLY GIVEAWAY WINNER")}</span>
-              <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
+              <img src={wheelAsset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
               <strong>{monthlyWinner}</strong>
               <p>URSUS KNIFE | MARBLE FADE</p>
               <small>{pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}</small>
