@@ -3219,12 +3219,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
         <div className="monthly-event-branding" aria-hidden="true">
-          <div className="monthly-chyna-brand">
-            <i>♛</i>
-            <strong>CHYNA</strong>
-          </div>
-          <span>×</span>
-          <img src={wheelAsset("topskin-logo.png")} alt="" />
+          <img
+            className="monthly-event-branding-image"
+            src={wheelAsset("Logótipo CHYNA × TOPSKIN em Transparência.png")}
+            alt=""
+          />
         </div>
 
         {monthlyKnifeFlightStyle && (
