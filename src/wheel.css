@@ -3893,3 +3893,22 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   transform:translateY(-10px)!important;
   text-shadow:0 0 12px rgba(32,243,154,.22)!important
 }
+
+/* Bottom winner fireworks: true outward direction */
+.monthly-winner-firework-bottom-left,
+.monthly-winner-firework-bottom-right{
+  top:auto!important;
+  bottom:-58px!important;
+}
+
+.monthly-winner-firework-bottom-left{
+  left:-44px!important;
+  right:auto!important;
+  transform:scaleY(-1) rotate(-12deg)!important;
+}
+
+.monthly-winner-firework-bottom-right{
+  right:-44px!important;
+  left:auto!important;
+  transform:scaleY(-1) rotate(12deg)!important;
+}
