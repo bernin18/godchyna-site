@@ -2942,3 +2942,33 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  color:#ff7a87!important;
  border-color:rgba(255,122,135,.34)!important
 }
+
+
+/* Monthly prize card hierarchy */
+.monthly-prize-card>strong{
+ font-size:16px!important;
+ line-height:1.2;
+ letter-spacing:.01em
+}
+.monthly-prize-card>.monthly-prize-value{
+ display:block;
+ margin-top:10px!important;
+ color:#d9a637!important;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:30px!important;
+ font-weight:900!important;
+ line-height:1;
+ text-shadow:0 0 14px rgba(217,166,55,.14)
+}
+.monthly-prize-sponsor{
+ display:none!important
+}
+
+@media(min-width:1001px) and (max-width:1550px){
+ .monthly-prize-card>strong{font-size:14px!important}
+ .monthly-prize-card>.monthly-prize-value{font-size:26px!important}
+}
+@media(min-width:1001px) and (max-height:780px){
+ .monthly-prize-card>strong{font-size:13px!important}
+ .monthly-prize-card>.monthly-prize-value{font-size:23px!important}
+}
