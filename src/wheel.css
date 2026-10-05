@@ -2229,3 +2229,45 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .monthly-chyna-brand strong{font-size:27px}
  .monthly-chyna-brand i{left:22px;top:-11px;font-size:15px}
 }
+
+
+/* Monthly draw cleanup + winner chance */
+.monthly-wheel-center.is-draw-active{
+ border:0!important;
+ background:transparent!important;
+ box-shadow:none!important
+}
+.monthly-wheel-center.is-draw-active::before,
+.monthly-wheel-center.is-draw-active::after{
+ display:none!important
+}
+
+.monthly-wheel-name>small{
+ color:#050505!important;
+ -webkit-text-stroke:0!important;
+ text-shadow:none!important;
+ font-weight:900
+}
+.monthly-wheel-name.is-selected>small{
+ color:#050505!important
+}
+
+.monthly-winner-summary{
+ max-width:520px;
+ margin:12px auto 0!important;
+ color:#d8dfdc!important;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:14px!important;
+ font-weight:800;
+ line-height:1.55!important
+}
+.monthly-winner-card h3{
+ margin:14px 0 0;
+ color:#20f39a;
+ font-family:"Exo 2",sans-serif;
+ font-size:24px;
+ font-style:italic;
+ font-weight:900;
+ letter-spacing:.03em;
+ text-shadow:0 0 20px rgba(32,243,154,.24)
+}
