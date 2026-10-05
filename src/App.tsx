@@ -487,7 +487,7 @@ function GiveawayAnnouncementPopup(){
         </button>
 
         <div className="giveaway-announcement-sponsor">
-          <span>{pick("GIVEAWAY OFERECIDO PELA","GIVEAWAY PRESENTED BY")}</span>
+          <span>{pick("GIVEAWAY PATROCINADO PELA","GIVEAWAY SPONSORED BY")}</span>
           <strong>TOPSKIN</strong>
         </div>
 
