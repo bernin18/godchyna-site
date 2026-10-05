@@ -3251,3 +3251,43 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   bottom:22px!important
  }
 }
+
+/* Final rounded background mask for monthly cards */
+/* Keep the animated waves outside, but force the actual card surfaces to rounded masks. */
+.monthly-participants-panel{
+ border-radius:18px!important;
+ background:transparent!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ box-shadow:none!important
+}
+.monthly-participants-panel::after{
+ content:""!important;
+ display:block!important;
+ position:absolute!important;
+ z-index:0!important;
+ inset:0!important;
+ pointer-events:none!important;
+ border-radius:18px!important;
+ clip-path:inset(0 round 18px)!important;
+ background:
+  radial-gradient(circle at 15% 0%,rgba(185,133,31,.055),transparent 28%),
+  linear-gradient(145deg,rgba(10,18,21,.68),rgba(3,7,9,.74))!important;
+ box-shadow:
+  0 24px 70px rgba(0,0,0,.48),
+  inset 0 0 34px rgba(185,133,31,.025)!important;
+ backdrop-filter:blur(8px);
+ -webkit-backdrop-filter:blur(8px)
+}
+.monthly-participants-panel>*:not(.monthly-wave-frame){
+ position:relative;
+ z-index:2
+}
+
+.monthly-prize-card{
+ border-radius:18px!important
+}
+.monthly-prize-card::after{
+ border-radius:18px!important;
+ clip-path:inset(0 round 18px)!important
+}
