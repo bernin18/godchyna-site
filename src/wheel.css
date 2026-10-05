@@ -3122,3 +3122,64 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .monthly-giveaway-page.is-focus .monthly-prize-card{
  transform:translateX(42px) scale(.96)!important
 }
+
+/* Monthly draw alignment + subtle winner audio hotfix */
+.monthly-giveaway-page.is-focus .monthly-wheel-stage{
+ position:fixed!important;
+ inset:0!important;
+ width:100vw!important;
+ height:100vh!important;
+ margin:0!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ background:#000!important
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-shell{
+ position:relative!important;
+ left:auto!important;
+ right:auto!important;
+ top:auto!important;
+ bottom:auto!important;
+ margin:auto!important
+}
+
+/* The knife only starts rotating after it reaches the wheel. */
+.monthly-flying-knife img{
+ animation:none!important;
+ transform:rotate(45deg)!important
+}
+
+/* Small, discreet music toggle on the winner card. */
+.monthly-winner-volume{
+ top:12px!important;
+ right:12px!important;
+ width:24px!important;
+ height:24px!important;
+ min-width:0!important;
+ min-height:0!important;
+ margin:0!important;
+ padding:0!important;
+ border:1px solid rgba(217,166,55,.18)!important;
+ border-radius:50%!important;
+ background:rgba(4,10,12,.34)!important;
+ color:rgba(217,166,55,.72)!important;
+ box-shadow:none!important;
+ opacity:.72;
+ line-height:1!important
+}
+.monthly-winner-volume svg{
+ width:12px!important;
+ height:12px!important
+}
+.monthly-winner-volume:hover{
+ opacity:1;
+ color:#f5f7f6!important;
+ border-color:rgba(32,243,154,.34)!important;
+ background:rgba(7,16,18,.58)!important;
+ box-shadow:none!important
+}
+.monthly-winner-volume.is-muted{
+ color:rgba(255,122,135,.72)!important;
+ border-color:rgba(255,122,135,.22)!important
+}
