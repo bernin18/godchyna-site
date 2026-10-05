@@ -3571,3 +3571,20 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
     margin-top:195px!important;
   }
 }
+
+/* Monthly stream layout v5: lower prize card a little more */
+.monthly-prize-card{
+  margin-top:330px!important;
+}
+
+@media (min-width:1001px) and (max-width:1550px){
+  .monthly-prize-card{
+    margin-top:280px!important;
+  }
+}
+
+@media (min-width:1001px) and (max-height:780px){
+  .monthly-prize-card{
+    margin-top:235px!important;
+  }
+}
