@@ -3846,3 +3846,39 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
     max-height:205px!important
   }
 }
+
+/* Winner fireworks v2: four corners + faster timing */
+/* Slightly faster celebration timing. */
+.monthly-winner-firework::before{
+  animation-duration:1.4s!important
+}
+.monthly-winner-firework::after{
+  animation-duration:1.4s!important
+}
+.monthly-winner-firework-right::before,
+.monthly-winner-firework-right::after{
+  animation-delay:.20s!important
+}
+
+/* Add matching fireworks to the two lower corners. */
+.monthly-winner-firework-bottom-left,
+.monthly-winner-firework-bottom-right{
+  top:auto!important;
+  bottom:-58px!important
+}
+.monthly-winner-firework-bottom-left{
+  left:-44px!important;
+  transform:rotate(168deg)!important
+}
+.monthly-winner-firework-bottom-right{
+  right:-44px!important;
+  transform:rotate(192deg)!important
+}
+.monthly-winner-firework-bottom-left::before,
+.monthly-winner-firework-bottom-left::after{
+  animation-delay:.10s!important
+}
+.monthly-winner-firework-bottom-right::before,
+.monthly-winner-firework-bottom-right::after{
+  animation-delay:.30s!important
+}
