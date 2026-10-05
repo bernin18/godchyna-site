@@ -2294,3 +2294,17 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  box-shadow:0 0 1px rgba(0,0,0,.65);
  pointer-events:none
 }
+
+
+.monthly-winner-summary em{
+ color:#d9a637;
+ font-style:normal;
+ font-weight:900;
+ text-shadow:0 0 10px rgba(217,166,55,.12)
+}
+.monthly-wheel-center>span{
+ letter-spacing:.11em
+}
+.monthly-wheel-center>strong{
+ font-size:24px
+}
