@@ -5400,3 +5400,35 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .monthly-history-arrival .monthly-history-value-under-art{
   left:57%!important;
 }
+
+/* Monthly card glow + skin spacing polish */
+.giveaway-history-card-monthly{
+  border-color:rgba(255,205,53,.98)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,231,134,.16),
+    0 0 11px rgba(246,189,38,.36),
+    0 0 24px rgba(246,189,38,.24),
+    inset 0 0 24px rgba(217,166,55,.07)!important;
+}
+
+.giveaway-history-card-monthly .monthly-history-skin{
+  display:block!important;
+  margin-top:8px!important;
+  font-size:11px!important;
+  line-height:1.24!important;
+}
+
+.monthly-history-arrival{
+  border-color:rgba(255,205,53,.98)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,231,134,.16),
+    0 0 16px rgba(246,189,38,.38),
+    0 0 32px rgba(246,189,38,.24),
+    0 22px 70px rgba(0,0,0,.62),
+    inset 0 0 30px rgba(217,166,55,.08)!important;
+}
+
+.monthly-history-arrival .monthly-history-skin{
+  display:block!important;
+  margin-top:10px!important;
+}
