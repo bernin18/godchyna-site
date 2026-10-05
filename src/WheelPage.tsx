@@ -3213,7 +3213,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <button
               type="button"
-              className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}`}
+              className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}${monthlySpinning ? " is-spinning" : ""}`}
               onClick={spinMonthlyGiveaway}
               disabled={monthlyLocked || participants.length < 1}
               aria-label={pick("Sortear vencedor", "Draw winner")}
