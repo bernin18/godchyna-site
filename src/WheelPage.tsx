@@ -3548,11 +3548,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
           <strong>{monthlyPrizeName}</strong>
           {monthlyPrizeValue !== null && (
-            <b>$ {monthlyPrizeValue.toFixed(2)}</b>
+            <b className="monthly-prize-value">$ {monthlyPrizeValue.toFixed(2)}</b>
           )}
-          <small className="monthly-prize-sponsor">
-            {pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}
-          </small>
         </aside>
 
         {monthlyWinner && (
