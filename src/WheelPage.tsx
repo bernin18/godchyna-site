@@ -439,6 +439,7 @@ function nameFontSize(name: string, count: number) {
 
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
 const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
+const LARGE_WHEEL_VISIBLE_NAMES = 48;
 const LARGE_WHEEL_LIST_LIMIT = 160;
 const LARGE_WHEEL_GRADIENT =
   "repeating-conic-gradient(#b9851f 0deg 5.625deg,#111a20 5.625deg 11.25deg,#754b1a 11.25deg 16.875deg,#263238 16.875deg 22.5deg)";
@@ -2833,12 +2834,66 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const visualWheelSegmentCount = largeWheelVisual
     ? LARGE_WHEEL_VISUAL_SEGMENTS
     : participants.length;
+
+  const largeWheelNameEntries = useMemo(() => {
+    if (!largeWheelVisual || participants.length === 0) return [];
+
+    const targetCount = Math.min(
+      LARGE_WHEEL_VISIBLE_NAMES,
+      participants.length,
+    );
+    const indexes = new Set<number>();
+
+    for (let sample = 0; sample < targetCount; sample += 1) {
+      indexes.add(
+        Math.floor((sample * participants.length) / targetCount),
+      );
+    }
+
+    if (
+      pendingWinnerIndex !== null &&
+      pendingWinnerIndex >= 0 &&
+      pendingWinnerIndex < participants.length
+    ) {
+      indexes.add(pendingWinnerIndex);
+    }
+
+    return Array.from(indexes)
+      .sort((a, b) => a - b)
+      .map((index) => ({
+        index,
+        name: participants[index],
+      }));
+  }, [largeWheelVisual, participants, pendingWinnerIndex]);
+
   const fastWheelSpin = participants.length >= 10;
 
   const configGradient = useMemo(
     () => (largeWheelVisual ? LARGE_WHEEL_GRADIENT : wheelGradient(participants.length)),
     [largeWheelVisual, participants.length],
   );
+
+  const renderLargeWheelNames = () => {
+    const step = 360 / participants.length;
+
+    return largeWheelNameEntries.map(({ name, index }) => {
+      const angle = index * step + step / 2;
+      const style = {
+        "--wheel-name-angle": `${angle}deg`,
+        "--wheel-name-size": name.length > 18 ? "6px" : name.length > 13 ? "7px" : "8px",
+      } as CSSProperties;
+
+      return (
+        <span
+          key={`large-${index}-${name}`}
+          className={`giveaway-wheel-name giveaway-wheel-name-large${pendingWinnerIndex === index ? " is-pending-winner" : ""}`}
+          style={style}
+        >
+          {name}
+        </span>
+      );
+    });
+  };
 
   const renderWheelNames = (names: string[], preview = false) => names.map((name, index) => {
     const angle = index * (360 / names.length) + (360 / names.length) / 2;
@@ -3950,9 +4005,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   }}
                 >
                   <WheelDividers count={visualWheelSegmentCount} />
-                  {!largeWheelVisual &&
-                    participants.length > 0 &&
-                    renderWheelNames(participants)}
+                  {largeWheelVisual
+                    ? renderLargeWheelNames()
+                    : participants.length > 0 && renderWheelNames(participants)}
                 </div>
                 <button
                   type="button"
