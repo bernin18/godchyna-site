@@ -3171,6 +3171,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const monthlyPrizeName = giveawayPrizeName.trim() || "Ursus Marble Fade";
     const monthlyPrizeValue = giveawayPrizeNumericValue();
     const monthlyLocked = monthlyLaunching || monthlySpinning || Boolean(monthlyWinner);
+    const monthlyWinnerSegment = monthlyWinner
+      ? monthlyWheelSegments.find(
+          (segment) =>
+            segment.name.trim().toLocaleLowerCase() ===
+            monthlyWinner.trim().toLocaleLowerCase(),
+        )
+      : null;
+    const monthlyWinnerChance = monthlyWinnerSegment?.percentage ?? null;
 
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
@@ -3213,7 +3221,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <button
               type="button"
-              className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}${monthlySpinning ? " is-spinning" : ""}`}
+              className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}${monthlySpinning ? " is-spinning" : ""}${monthlyLocked ? " is-draw-active" : ""}`}
               onClick={spinMonthlyGiveaway}
               disabled={monthlyLocked || participants.length < 1}
               aria-label={pick("Sortear vencedor", "Draw winner")}
@@ -3226,12 +3234,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     "--monthly-knife-angle": `${monthlyKnifeRotation}deg`,
                   } as CSSProperties}
                 />
-              ) : (
+              ) : !monthlyLocked ? (
                 <>
                   <span>{pick("SORTEAR", "DRAW")}</span>
                   <strong>CHYNA</strong>
                 </>
-              )}
+              ) : null}
             </button>
           </div>
         </section>
@@ -3462,13 +3470,19 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <span>{pick("VENCEDOR DO GIVEAWAY MENSAL", "MONTHLY GIVEAWAY WINNER")}</span>
               <img src={monthlyPrizeImageUrl} alt={monthlyPrizeName} />
               <strong>{monthlyWinner}</strong>
-              <p>{monthlyPrizeName}</p>
+              <p className="monthly-winner-summary">
+                {pick(
+                  `${monthlyWinner} ganhou o giveaway da ${monthlyPrizeName}${monthlyPrizeValue !== null ? ` no valor de ${monthlyPrizeValue.toFixed(2)} €` : ""}${monthlyWinnerChance !== null ? ` com ${monthlyWinnerChance.toFixed(2)}% de chance` : ""}.`,
+                  `${monthlyWinner} won the ${monthlyPrizeName} giveaway${monthlyPrizeValue !== null ? ` worth ${monthlyPrizeValue.toFixed(2)} €` : ""}${monthlyWinnerChance !== null ? ` with a ${monthlyWinnerChance.toFixed(2)}% chance` : ""}.`,
+                )}
+              </p>
+              <h3>{pick("PARABÉNS!!!!!!!", "CONGRATULATIONS!!!!!!!")}</h3>
               <small>{pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}</small>
               <button
                 type="button"
                 onClick={() => {
                   setMonthlyWinner(null);
-                                setMonthlyKnifeRotation(45);
+                  setMonthlyKnifeRotation(45);
                   setMonthlyLaunching(false);
                   setMonthlyKnifeDocked(false);
                   setMonthlyKnifeFlightStyle(null);
