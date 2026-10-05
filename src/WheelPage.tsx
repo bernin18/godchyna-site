@@ -635,6 +635,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const monthlyPrizeImageRef = useRef<HTMLImageElement | null>(null);
   const monthlyAudioRef = useRef<HTMLAudioElement | null>(null);
+  const [monthlyAudioMuted, setMonthlyAudioMuted] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [previewRotation, setPreviewRotation] = useState(0);
@@ -1192,10 +1193,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   function stopMonthlyGiveawayAudio() {
     const track = monthlyAudioRef.current;
+    if (track) {
+      track.pause();
+      track.currentTime = 0;
+      monthlyAudioRef.current = null;
+    }
+    setMonthlyAudioMuted(false);
+  }
+
+  function toggleMonthlyGiveawayAudioMute() {
+    const track = monthlyAudioRef.current;
     if (!track) return;
-    track.pause();
-    track.currentTime = 0;
-    monthlyAudioRef.current = null;
+
+    const nextMuted = !track.muted;
+    track.muted = nextMuted;
+    setMonthlyAudioMuted(nextMuted);
   }
 
   function startMonthlyGiveawayAudio() {
@@ -1206,6 +1218,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const track = new Audio(wheelAsset("audio/monthly-giveaway.mp3"));
     track.preload = "auto";
     track.volume = 0.38;
+    track.muted = false;
+    setMonthlyAudioMuted(false);
     monthlyAudioRef.current = track;
 
     void track.play().catch(() => {
@@ -3544,6 +3558,24 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         {monthlyWinner && (
           <div className="monthly-winner-overlay">
             <div className="monthly-winner-card">
+              <button
+                type="button"
+                className={`monthly-winner-volume${monthlyAudioMuted ? " is-muted" : ""}`}
+                onClick={toggleMonthlyGiveawayAudioMute}
+                aria-label={
+                  monthlyAudioMuted
+                    ? pick("Ligar música", "Unmute music")
+                    : pick("Desligar música", "Mute music")
+                }
+                title={
+                  monthlyAudioMuted
+                    ? pick("Ligar música", "Unmute music")
+                    : pick("Desligar música", "Mute music")
+                }
+              >
+                {monthlyAudioMuted ? <VolumeX /> : <Volume2 />}
+              </button>
+
               <span>{pick("TEMOS VENCEDOR", "WE HAVE A WINNER")}</span>
               <img src={monthlyPrizeImageUrl} alt={monthlyPrizeName} />
               <strong>{monthlyWinner}</strong>
