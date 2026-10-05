@@ -4349,3 +4349,296 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .giveaway-history-card.has-skin-image .giveaway-history-prize-row{
   padding-right:2px
 }
+
+/* History visual pass: artwork behind text + premium monthly layout */
+
+/* Use more of the empty left side on large stream layouts. */
+@media(min-width:1500px){
+  .wheel-showcase{
+    grid-template-columns:420px minmax(520px,1fr) minmax(330px,.68fr)!important;
+    max-width:1710px!important;
+  }
+}
+@media(min-width:1321px) and (max-width:1499px){
+  .wheel-showcase{
+    grid-template-columns:370px minmax(520px,1fr) minmax(330px,.68fr)!important;
+  }
+}
+
+/* NORMAL GIVEAWAYS: keep the existing card, but put the skin behind the info. */
+.giveaway-history-card.has-skin-image{
+  background:
+    linear-gradient(145deg,rgba(9,19,23,.98),rgba(7,13,16,.98))!important
+}
+
+.giveaway-history-card.has-skin-image::after{
+  z-index:1!important;
+  background:
+    linear-gradient(90deg,
+      rgba(6,12,15,.97) 0%,
+      rgba(6,12,15,.89) 38%,
+      rgba(6,12,15,.58) 68%,
+      rgba(6,12,15,.34) 100%)!important
+}
+
+.giveaway-history-skin-art{
+  inset:-15px -28px -15px 20%!important;
+  width:auto!important;
+  height:auto!important;
+  opacity:.48!important;
+  justify-content:center!important
+}
+
+.giveaway-history-skin-art::before{
+  display:none!important
+}
+
+.giveaway-history-skin-art img{
+  width:118%!important;
+  height:118%!important;
+  object-fit:contain!important;
+  object-position:72% 50%!important;
+  transform:scale(1.12)!important;
+  filter:
+    saturate(.92)
+    contrast(1.04)
+    drop-shadow(0 10px 14px rgba(0,0,0,.62))!important
+}
+
+.giveaway-history-card.has-skin-image > :not(.giveaway-history-skin-art){
+  position:relative!important;
+  z-index:2!important
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-top,
+.giveaway-history-card.has-skin-image .giveaway-history-winner,
+.giveaway-history-card.has-skin-image .giveaway-history-prize-row{
+  width:100%!important
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-top em,
+.giveaway-history-card.has-skin-image .giveaway-history-winner,
+.giveaway-history-card.has-skin-image .giveaway-history-skin{
+  text-shadow:0 1px 3px rgba(0,0,0,.92)
+}
+
+/* MONTHLY GIVEAWAY: intentionally bigger and visually separate from daily cards. */
+.giveaway-history-monthly-slot{
+  flex-basis:184px!important;
+  min-height:184px!important;
+  border-radius:13px!important
+}
+
+.giveaway-history-card-monthly{
+  min-height:184px!important;
+  padding:16px 17px 15px!important;
+  border:2px solid rgba(246,189,38,.94)!important;
+  border-radius:13px!important;
+  background:
+    radial-gradient(circle at 76% 35%,rgba(255,205,69,.16),transparent 34%),
+    radial-gradient(circle at 88% 86%,rgba(125,79,8,.20),transparent 35%),
+    linear-gradient(112deg,#081114 0%,#081114 47%,#171207 100%)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,232,153,.09),
+    0 0 21px rgba(246,189,38,.23),
+    inset 0 0 32px rgba(217,166,55,.08)!important
+}
+
+/* Dark readable layer on the left, open artwork on the right. */
+.giveaway-history-card-monthly::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:2!important;
+  inset:0!important;
+  pointer-events:none!important;
+  border-radius:inherit!important;
+  background:
+    linear-gradient(90deg,
+      rgba(6,11,13,.93) 0%,
+      rgba(6,11,13,.86) 39%,
+      rgba(6,11,13,.48) 62%,
+      rgba(6,11,13,.08) 100%)!important
+}
+
+.giveaway-history-card-monthly::before{
+  z-index:6!important;
+  background:
+    linear-gradient(90deg,transparent 0 45%,rgba(255,219,112,.09) 62%,transparent 82%),
+    linear-gradient(180deg,rgba(255,246,210,.07),transparent 20%,transparent 80%,rgba(255,181,24,.06))!important
+}
+
+.monthly-history-smoke{
+  z-index:0!important;
+  right:-8%!important;
+  top:-25%!important;
+  width:68%!important;
+  height:155%!important;
+  opacity:.88!important;
+  filter:blur(10px)!important;
+  background:
+    radial-gradient(ellipse at 74% 30%,rgba(255,205,72,.34) 0 13%,transparent 38%),
+    radial-gradient(ellipse at 48% 48%,rgba(121,80,17,.38) 0 19%,transparent 48%),
+    radial-gradient(ellipse at 72% 74%,rgba(229,154,21,.30) 0 15%,transparent 43%),
+    radial-gradient(ellipse at 30% 72%,rgba(81,56,18,.30) 0 16%,transparent 44%)!important
+}
+
+.monthly-history-art{
+  z-index:1!important;
+  top:5px!important;
+  right:-10px!important;
+  bottom:3px!important;
+  width:58%!important
+}
+
+.monthly-history-art::before{
+  width:92%!important;
+  height:80%!important;
+  background:rgba(255,191,31,.13)!important;
+  filter:blur(28px)!important
+}
+
+.monthly-history-art img{
+  width:110%!important;
+  height:108%!important;
+  object-fit:contain!important;
+  object-position:center right!important;
+  transform:scale(1.05)!important;
+  filter:
+    drop-shadow(0 12px 14px rgba(0,0,0,.68))
+    drop-shadow(0 0 12px rgba(255,197,47,.20))!important
+}
+
+.monthly-history-content{
+  z-index:4!important;
+  width:66%!important;
+  min-height:150px!important;
+  justify-content:flex-start!important;
+  gap:5px!important
+}
+
+.monthly-history-top{
+  align-items:flex-start!important;
+  margin-bottom:3px!important
+}
+
+.monthly-history-heading{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.monthly-history-brand{
+  flex:0 0 auto;
+  color:#f4bf2f;
+  font-family:"Exo 2",sans-serif;
+  font-size:18px;
+  line-height:1;
+  font-style:italic;
+  font-weight:1000;
+  letter-spacing:-.05em;
+  text-shadow:
+    0 0 10px rgba(244,191,47,.22),
+    0 2px 0 rgba(0,0,0,.7)
+}
+
+.monthly-history-heading>b{
+  padding:4px 7px;
+  border:1px solid rgba(255,210,68,.45);
+  border-radius:5px;
+  background:#eab526;
+  color:#151006;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:.06em;
+  white-space:nowrap
+}
+
+.monthly-history-top>small{
+  flex:0 0 auto;
+  position:relative;
+  z-index:5;
+  padding:4px 6px!important;
+  color:#f1e5bc!important;
+  background:rgba(11,12,9,.78)!important;
+  border-color:rgba(217,166,55,.52)!important
+}
+
+.monthly-history-content>em{
+  margin-top:6px!important;
+  color:#7d8b8e!important
+}
+
+.monthly-history-content>strong{
+  margin-top:1px!important;
+  font-size:12px!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.9)
+}
+
+.monthly-history-content>strong>b{
+  font-size:16px!important
+}
+
+.monthly-history-skin{
+  max-width:88%!important;
+  font-size:9px!important;
+  line-height:1.22!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.9)
+}
+
+.monthly-history-value{
+  margin-top:auto!important;
+  font-size:24px!important;
+  letter-spacing:-.025em!important
+}
+
+/* The center reveal keeps the same premium design, just enlarged. */
+.monthly-history-arrival{
+  width:min(660px,66vw)!important;
+  height:238px!important;
+  min-height:238px!important;
+  padding:24px 25px!important
+}
+
+.monthly-history-arrival .monthly-history-content{
+  min-height:188px!important;
+  width:62%!important
+}
+
+.monthly-history-arrival .monthly-history-brand{
+  font-size:30px!important
+}
+
+.monthly-history-arrival .monthly-history-heading>b{
+  padding:6px 9px!important;
+  font-size:10px!important
+}
+
+.monthly-history-arrival .monthly-history-content>em{
+  font-size:9px!important
+}
+
+.monthly-history-arrival .monthly-history-content>strong{
+  font-size:15px!important
+}
+
+.monthly-history-arrival .monthly-history-content>strong>b{
+  font-size:22px!important
+}
+
+.monthly-history-arrival .monthly-history-skin{
+  max-width:92%!important;
+  font-size:12px!important
+}
+
+.monthly-history-arrival .monthly-history-value{
+  font-size:34px!important
+}
+
+.monthly-history-arrival .monthly-history-art{
+  width:54%!important;
+  right:-4px!important;
+  top:8px!important;
+  bottom:6px!important
+}
