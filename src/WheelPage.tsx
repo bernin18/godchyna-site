@@ -3564,6 +3564,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="monthly-winner-card">
               <span className="monthly-winner-firework monthly-winner-firework-left" aria-hidden="true" />
               <span className="monthly-winner-firework monthly-winner-firework-right" aria-hidden="true" />
+              <span className="monthly-winner-firework monthly-winner-firework-bottom-left" aria-hidden="true" />
+              <span className="monthly-winner-firework monthly-winner-firework-bottom-right" aria-hidden="true" />
               <button
                 type="button"
                 className={`monthly-winner-volume${monthlyAudioMuted ? " is-muted" : ""}`}
