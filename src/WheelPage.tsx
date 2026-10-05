@@ -3241,8 +3241,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 />
               ) : !monthlyLocked ? (
                 <>
-                  <span>{pick("SORTEAR", "DRAW")}</span>
-                  <strong>CHYNA</strong>
+                  <span>{pick("GIVEAWAY DO", "CHYNA'S")}</span>
+                  <strong>CHYNAO</strong>
                 </>
               ) : null}
             </button>
@@ -3472,17 +3472,27 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         {monthlyWinner && (
           <div className="monthly-winner-overlay">
             <div className="monthly-winner-card">
-              <span>{pick("VENCEDOR DO GIVEAWAY MENSAL", "MONTHLY GIVEAWAY WINNER")}</span>
+              <span>{pick("TEMOS VENCEDOR", "WE HAVE A WINNER")}</span>
               <img src={monthlyPrizeImageUrl} alt={monthlyPrizeName} />
               <strong>{monthlyWinner}</strong>
               <p className="monthly-winner-summary">
-                {pick(
-                  `${monthlyWinner} ganhou o giveaway da ${monthlyPrizeName}${monthlyPrizeValue !== null ? ` no valor de ${monthlyPrizeValue.toFixed(2)} €` : ""}${monthlyWinnerChance !== null ? ` com ${monthlyWinnerChance.toFixed(2)}% de chance` : ""}.`,
-                  `${monthlyWinner} won the ${monthlyPrizeName} giveaway${monthlyPrizeValue !== null ? ` worth ${monthlyPrizeValue.toFixed(2)} €` : ""}${monthlyWinnerChance !== null ? ` with a ${monthlyWinnerChance.toFixed(2)}% chance` : ""}.`,
+                {pick("Ganhou o giveaway da ", "Won the giveaway for the ")}
+                <em>{monthlyPrizeName}</em>
+                {monthlyPrizeValue !== null && (
+                  <>
+                    {pick(" no valor de ", " worth ")}
+                    <em>{monthlyPrizeValue.toFixed(2)} €</em>
+                  </>
+                )}
+                {monthlyWinnerChance !== null && (
+                  <>
+                    {pick(" com ", " with a ")}
+                    <em>{monthlyWinnerChance.toFixed(2)}%</em>
+                    {pick(" de chance.", " chance.")}
+                  </>
                 )}
               </p>
               <h3>{pick("PARABÉNS!!!!!!!", "CONGRATULATIONS!!!!!!!")}</h3>
-              <small>{pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}</small>
               <button
                 type="button"
                 onClick={() => {
