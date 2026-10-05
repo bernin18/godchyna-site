@@ -598,6 +598,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
   const [monthlyWinnerIndex, setMonthlyWinnerIndex] = useState<number | null>(null);
+  const [monthlyLaunching, setMonthlyLaunching] = useState(false);
+  const [monthlyKnifeDocked, setMonthlyKnifeDocked] = useState(false);
+  const [monthlyKnifeFlightStyle, setMonthlyKnifeFlightStyle] = useState<CSSProperties | null>(null);
   const [giveawayHistory, setGiveawayHistory] = useState<Array<{
     id: number;
     offeredBy: string;
@@ -631,6 +634,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const winnerCelebrationVisibleRef = useRef(false);
   const giveawayFinalizedRef = useRef(false);
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
+  const monthlyPrizeImageRef = useRef<HTMLImageElement | null>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [previewRotation, setPreviewRotation] = useState(0);
@@ -1195,6 +1199,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlySpinning(false);
     setMonthlyWinner(null);
     setMonthlyWinnerIndex(null);
+    setMonthlyLaunching(false);
+    setMonthlyKnifeDocked(false);
+    setMonthlyKnifeFlightStyle(null);
     setParticipantMessage("");
     clearParticipants();
     setMonthlyGiveawayMode(true);
@@ -1206,6 +1213,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlyWinner(null);
     setMonthlyWinnerIndex(null);
     setMonthlyRotation(0);
+    setMonthlyLaunching(false);
+    setMonthlyKnifeDocked(false);
+    setMonthlyKnifeFlightStyle(null);
   }
 
   function openTestConfigurator() {
@@ -3040,7 +3050,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return (
         <span
           key={`monthly-${index}-${name}`}
-          className={`monthly-wheel-name${monthlyWinnerIndex === index ? " is-selected" : ""}`}
+          className={`monthly-wheel-name${monthlyWinner && monthlyWinnerIndex === index ? " is-selected" : ""}`}
           style={style}
         >
           {name}
@@ -3050,33 +3060,74 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   };
 
   function spinMonthlyGiveaway() {
-    if (monthlySpinning || monthlyWinner || participants.length < 1) return;
+    if (
+      monthlyLaunching ||
+      monthlySpinning ||
+      monthlyWinner ||
+      participants.length < 1
+    ) return;
 
     const winnerIndex = randomParticipantIndex(participants.length);
     const selectedName = participants[winnerIndex];
     const step = 360 / participants.length;
     const selectedCenter = winnerIndex * step + step / 2;
     const targetAngle = (360 - (selectedCenter % 360)) % 360;
+    const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
     setMonthlyWinnerIndex(winnerIndex);
-    setMonthlySpinning(true);
+    setMonthlyLaunching(true);
     playWheelPlim();
 
-    window.requestAnimationFrame(() => {
+    if (sourceRect) {
+      const targetWidth = Math.min(250, Math.max(200, window.innerWidth * 0.13));
+      const targetHeight = targetWidth * 0.62;
+      const targetLeft = window.innerWidth / 2 - targetWidth / 2;
+      const targetTop = window.innerHeight / 2 - targetHeight / 2;
+
+      setMonthlyKnifeFlightStyle({
+        left: sourceRect.left,
+        top: sourceRect.top,
+        width: sourceRect.width,
+        height: sourceRect.height,
+        transform: "rotate(0deg) scale(1)",
+      });
+
       window.requestAnimationFrame(() => {
-        setMonthlyRotation((currentRotation) => {
-          const currentAngle = ((currentRotation % 360) + 360) % 360;
-          const alignment = (targetAngle - currentAngle + 360) % 360;
-          return currentRotation + 10 * 360 + alignment;
+        window.requestAnimationFrame(() => {
+          setMonthlyKnifeFlightStyle({
+            left: targetLeft,
+            top: targetTop,
+            width: targetWidth,
+            height: targetHeight,
+            transform: "rotate(45deg) scale(1.06)",
+          });
         });
       });
-    });
+    }
 
     window.setTimeout(() => {
-      setMonthlySpinning(false);
-      setMonthlyWinner(selectedName);
-      playApplauseBurst();
-    }, 8350);
+      setMonthlyKnifeDocked(true);
+      setMonthlyKnifeFlightStyle(null);
+      setMonthlyLaunching(false);
+      setMonthlySpinning(true);
+      startWheelSpinAudio(monthlyWheelSegmentCount);
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setMonthlyRotation((currentRotation) => {
+            const currentAngle = ((currentRotation % 360) + 360) % 360;
+            const alignment = (targetAngle - currentAngle + 360) % 360;
+            return currentRotation + 10 * 360 + alignment;
+          });
+        });
+      });
+
+      window.setTimeout(() => {
+        setMonthlySpinning(false);
+        setMonthlyWinner(selectedName);
+        playApplauseBurst();
+      }, 8350);
+    }, sourceRect ? 1050 : 350);
   }
 
   const soundToggle = (
@@ -3095,17 +3146,22 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   if (monthlyGiveawayMode && session && account?.role === "admin") {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
+    const monthlyPrizeImageUrl = giveawayPrizeImageUrl || wheelAsset("ursus-marble-fade.png");
+    const monthlyPrizeName = giveawayPrizeName.trim() || "Ursus Marble Fade";
+    const monthlyPrizeValue = giveawayPrizeNumericValue();
+    const monthlyLocked = monthlyLaunching || monthlySpinning || Boolean(monthlyWinner);
 
     return (
-      <main className={`monthly-giveaway-page${monthlySpinning || monthlyWinner ? " is-focus" : ""}`}>
-        <button
-          type="button"
-          className="monthly-exit-btn"
-          onClick={closeMonthlyGiveaway}
-          disabled={monthlySpinning}
-        >
-          <ArrowLeft /> {pick("VOLTAR", "BACK")}
-        </button>
+      <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
+        {monthlyKnifeFlightStyle && (
+          <img
+            className="monthly-flying-knife"
+            src={monthlyPrizeImageUrl}
+            alt=""
+            aria-hidden="true"
+            style={monthlyKnifeFlightStyle}
+          />
+        )}
 
         <div className="monthly-brand">
           <span>CHYNA · SPECIAL EVENT</span>
@@ -3132,70 +3188,206 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <button
               type="button"
-              className="monthly-wheel-center"
+              className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}`}
               onClick={spinMonthlyGiveaway}
-              disabled={monthlySpinning || Boolean(monthlyWinner) || participants.length < 1}
+              disabled={monthlyLocked || participants.length < 1}
+              aria-label={pick("Sortear vencedor", "Draw winner")}
             >
-              <span>{monthlySpinning ? pick("A SORTEAR", "DRAWING") : pick("SORTEAR", "DRAW")}</span>
-              <strong>CHYNA</strong>
+              {monthlyKnifeDocked ? (
+                <img src={monthlyPrizeImageUrl} alt={monthlyPrizeName} />
+              ) : (
+                <>
+                  <span>{pick("SORTEAR", "DRAW")}</span>
+                  <strong>CHYNA</strong>
+                </>
+              )}
             </button>
           </div>
         </section>
 
-        <aside className="monthly-control-panel">
-          <div className="monthly-control-head">
-            <span>{pick("GIVEAWAY ESPECIAL", "SPECIAL GIVEAWAY")}</span>
-            <strong>URSUS KNIFE | MARBLE FADE</strong>
-            <em>{pick("HISTÓRICO DESATIVADO", "HISTORY DISABLED")}</em>
-          </div>
-
-          <div className="monthly-prize">
-            <img src={wheelAsset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
-          </div>
-
-          <div className="monthly-stats">
+        <aside className="participants-panel monthly-participants-panel">
+          <div className="participants-panel-head">
             <div>
+              <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
+              <span className="participants-test-mode">
+                {pick("GIVEAWAY MENSAL · HISTÓRICO DESATIVADO", "MONTHLY GIVEAWAY · HISTORY DISABLED")}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="participants-back"
+              onClick={closeMonthlyGiveaway}
+              disabled={monthlyLaunching || monthlySpinning}
+            >
+              <ArrowLeft /> {pick("VOLTAR", "BACK")}
+            </button>
+          </div>
+
+          <div className="participants-count-row">
+            <span>{pick("ENTRADAS NA LISTA", "ENTRIES IN LIST")}</span>
+            <strong>{draftCount}</strong>
+          </div>
+
+          <div className="participants-quick-add">
+            <div className="participants-quick-name">
+              <span>{pick("NOME", "NAME")}</span>
+              <input
+                type="text"
+                value={quickParticipantName}
+                onChange={(event) => {
+                  setQuickParticipantName(event.target.value);
+                  setParticipantMessage("");
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") addQuickParticipant();
+                }}
+                placeholder="Chyna"
+                disabled={monthlyLocked}
+              />
+            </div>
+
+            <div className="participants-quick-multiplier">
               <span>{pick("ENTRADAS", "ENTRIES")}</span>
-              <strong>{participants.length}</strong>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setQuickParticipantCount((count) => Math.max(1, count - 1))}
+                  disabled={monthlyLocked || quickParticipantCount <= 1}
+                >
+                  −
+                </button>
+                <input
+                  type="number"
+                  min={1}
+                  max={MAX_PARTICIPANT_MULTIPLIER}
+                  value={quickParticipantCount}
+                  onChange={(event) => {
+                    const value = Number(event.target.value);
+                    setQuickParticipantCount(
+                      Number.isFinite(value)
+                        ? Math.max(1, Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(value)))
+                        : 1,
+                    );
+                  }}
+                  disabled={monthlyLocked}
+                />
+                <button
+                  type="button"
+                  onClick={() => setQuickParticipantCount((count) => Math.min(MAX_PARTICIPANT_MULTIPLIER, count + 1))}
+                  disabled={monthlyLocked || quickParticipantCount >= MAX_PARTICIPANT_MULTIPLIER}
+                >
+                  +
+                </button>
+              </div>
             </div>
-            <div>
-              <span>{pick("NOMES ÚNICOS", "UNIQUE NAMES")}</span>
-              <strong>{uniqueMonthlyParticipants}</strong>
-            </div>
+
+            <button
+              type="button"
+              className="participants-quick-submit"
+              onClick={addQuickParticipant}
+              disabled={monthlyLocked}
+            >
+              {pick("ADICIONAR", "ADD")}
+            </button>
           </div>
 
           <textarea
-            className="monthly-participants-input"
+            className="participants-input"
             value={participantInput}
             onChange={(event) => {
               setParticipantInput(event.target.value);
               setParticipantMessage("");
             }}
             placeholder={pick(
-              "Cola as entradas · ex.: Chyna 100x · máximo 500x por nome",
-              "Paste entries · e.g. Chyna 100x · maximum 500x per name",
+              "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 500x por nome",
+              "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 500x per name",
             )}
             spellCheck={false}
-            disabled={monthlySpinning || Boolean(monthlyWinner)}
+            disabled={monthlyLocked}
           />
 
-          <div className="monthly-panel-actions">
+          <div className="participants-actions">
             <button
               type="button"
-              className="monthly-load-btn"
+              className="participants-load"
               onClick={loadParticipants}
-              disabled={monthlySpinning || Boolean(monthlyWinner) || draftCount < 1}
+              disabled={monthlyLocked || draftCount < 1}
             >
-              {pick("ADICIONAR À RODA", "ADD TO WHEEL")}
+              {pick("ADICIONA NA RODA", "ADD TO WHEEL")}
             </button>
             <button
               type="button"
-              className="monthly-clear-btn"
+              className="participants-clear"
               onClick={clearParticipants}
-              disabled={monthlySpinning || Boolean(monthlyWinner) || participants.length < 1}
+              disabled={monthlyLocked || participants.length < 1}
             >
               <Trash2 />
             </button>
+          </div>
+
+          <div className="participants-loaded">
+            <div className="participants-loaded-head">
+              <span>{pick("NA RODA", "ON WHEEL")}</span>
+              <input
+                className="participants-search"
+                type="search"
+                value={participantSearch}
+                onChange={(event) => setParticipantSearch(event.target.value)}
+                placeholder={pick("Pesquisar nome...", "Search name...")}
+                spellCheck={false}
+                disabled={monthlyLocked}
+              />
+              <strong>{participants.length}</strong>
+            </div>
+
+            <div className="participants-list">
+              {participants.length === 0 ? (
+                <p>{pick("Ainda não carregaste participantes.", "No participants loaded yet.")}</p>
+              ) : filteredGroupedParticipants.length === 0 ? (
+                <p>
+                  {pick(
+                    `Nenhum resultado para "${participantSearch.trim()}".`,
+                    `No results for "${participantSearch.trim()}".`,
+                  )}
+                </p>
+              ) : displayedGroupedParticipants.map((participant, index) => (
+                <div
+                  className="participant-row participant-row-grouped"
+                  key={participant.name.trim().toLocaleLowerCase()}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong title={participant.name}>{participant.name}</strong>
+                  <b>×{participant.count}</b>
+                  <button
+                    type="button"
+                    className="participant-remove-one"
+                    onClick={() => removeOneParticipantEntry(participant.name)}
+                    disabled={monthlyLocked}
+                    title={pick("Retirar 1 entrada", "Remove 1 entry")}
+                  >
+                    −1
+                  </button>
+                  <button
+                    type="button"
+                    className="participant-remove"
+                    onClick={() => removeAllParticipantEntries(participant.name)}
+                    disabled={monthlyLocked}
+                    title={pick("Remover todas as entradas", "Remove all entries")}
+                  >
+                    <Trash2 />
+                  </button>
+                </div>
+              ))}
+
+              {hiddenGroupedParticipantCount > 0 && (
+                <p className="participants-render-limit">
+                  {pick(
+                    `+ ${hiddenGroupedParticipantCount} nomes não mostrados · usa a pesquisa para encontrar qualquer participante`,
+                    `+ ${hiddenGroupedParticipantCount} names hidden · use search to find any participant`,
+                  )}
+                </p>
+              )}
+            </div>
           </div>
 
           {participantMessage && <p className="monthly-participant-message">{participantMessage}</p>}
@@ -3204,26 +3396,42 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             type="button"
             className="monthly-start-btn"
             onClick={spinMonthlyGiveaway}
-            disabled={monthlySpinning || Boolean(monthlyWinner) || participants.length < 1}
+            disabled={monthlyLocked || participants.length < 1}
           >
             {pick("SORTEAR VENCEDOR", "DRAW WINNER")} <ArrowRight />
           </button>
+        </aside>
 
-          <p className="monthly-fairness-note">
-            {pick(
-              "Cada entrada corresponde a uma hipótese real no sorteio. O nome selecionado pela roda ganha diretamente o giveaway.",
-              "Each entry is one real chance in the draw. The name selected by the wheel wins the giveaway directly.",
-            )}
-          </p>
+        <aside className="monthly-prize-card">
+          <div className="monthly-prize-card-head">
+            <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
+            <small>TOPSKIN</small>
+          </div>
+
+          <div className="monthly-prize-card-media">
+            <img
+              ref={monthlyPrizeImageRef}
+              src={monthlyPrizeImageUrl}
+              alt={monthlyPrizeName}
+            />
+          </div>
+
+          <strong>{monthlyPrizeName}</strong>
+          {monthlyPrizeValue !== null && (
+            <b>{monthlyPrizeValue.toFixed(2)} €</b>
+          )}
+          <small className="monthly-prize-sponsor">
+            {pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}
+          </small>
         </aside>
 
         {monthlyWinner && (
           <div className="monthly-winner-overlay">
             <div className="monthly-winner-card">
               <span>{pick("VENCEDOR DO GIVEAWAY MENSAL", "MONTHLY GIVEAWAY WINNER")}</span>
-              <img src={wheelAsset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
+              <img src={monthlyPrizeImageUrl} alt={monthlyPrizeName} />
               <strong>{monthlyWinner}</strong>
-              <p>URSUS KNIFE | MARBLE FADE</p>
+              <p>{monthlyPrizeName}</p>
               <small>{pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}</small>
               <button
                 type="button"
@@ -3231,6 +3439,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   setMonthlyWinner(null);
                   setMonthlyWinnerIndex(null);
                   setMonthlyRotation(0);
+                  setMonthlyLaunching(false);
+                  setMonthlyKnifeDocked(false);
+                  setMonthlyKnifeFlightStyle(null);
                 }}
               >
                 {pick("VOLTAR À CONFIGURAÇÃO", "BACK TO SETUP")}
@@ -4417,7 +4628,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <input
                       type="number"
                       min={1}
-                      max={100}
+                      max={MAX_PARTICIPANT_MULTIPLIER}
                       value={quickParticipantCount}
                       onChange={(event) => {
                         const value = Number(event.target.value);
