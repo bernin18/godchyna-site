@@ -5383,3 +5383,20 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   bottom:25px!important;
   white-space:nowrap!important;
 }
+
+/* Monthly card micro-spacing: lower text + value closer to knife */
+.giveaway-history-card-monthly .monthly-history-content{
+  padding-top:30px!important;
+}
+
+.giveaway-history-card-monthly .monthly-history-value-under-art{
+  left:56%!important;
+}
+
+.monthly-history-arrival .monthly-history-content{
+  padding-top:40px!important;
+}
+
+.monthly-history-arrival .monthly-history-value-under-art{
+  left:57%!important;
+}
