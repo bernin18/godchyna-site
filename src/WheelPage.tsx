@@ -1205,7 +1205,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const track = new Audio(wheelAsset("audio/monthly-giveaway.mp3"));
     track.preload = "auto";
-    track.volume = 0.82;
+    track.volume = 0.38;
     monthlyAudioRef.current = track;
 
     void track.play().catch(() => {
