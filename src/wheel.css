@@ -3991,3 +3991,290 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
     drop-shadow(0 0 28px rgba(217,166,55,.18))
     drop-shadow(0 12px 18px rgba(0,0,0,.48))!important
 }
+
+/* Monthly history prototype: premium card + 2s arrival flight */
+
+/* Give the history a little more room on large stream layouts. */
+@media(min-width:1321px){
+  .wheel-showcase{
+    grid-template-columns:360px minmax(520px,1fr) minmax(330px,.68fr)!important;
+    max-width:1660px!important;
+  }
+}
+
+/* Stop the vertical history roll while the monthly card is arriving. */
+.giveaway-history-track.is-arrival-paused{
+  animation-play-state:paused!important
+}
+
+/* Reserve the exact landing space before the card flies in. */
+.giveaway-history-monthly-slot{
+  flex:0 0 148px;
+  width:100%;
+  min-height:148px;
+  border:1px dashed rgba(217,166,55,.12);
+  border-radius:11px;
+  background:rgba(217,166,55,.012)
+}
+
+/* Premium monthly history card. */
+.giveaway-history-card-monthly{
+  position:relative!important;
+  min-height:148px!important;
+  padding:15px 16px!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  border:1px solid rgba(255,197,39,.88)!important;
+  border-radius:11px!important;
+  background:
+    radial-gradient(circle at 82% 45%,rgba(255,186,32,.12),transparent 34%),
+    linear-gradient(115deg,rgba(9,18,20,.98) 0 53%,rgba(27,20,7,.96) 100%)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,224,121,.08),
+    0 0 18px rgba(255,184,24,.16),
+    inset 0 0 26px rgba(255,179,0,.055)!important
+}
+
+.giveaway-history-card-monthly::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:5!important;
+  inset:0!important;
+  pointer-events:none!important;
+  border-radius:inherit!important;
+  background:
+    linear-gradient(90deg,transparent 0 40%,rgba(255,209,74,.11) 58%,transparent 78%),
+    linear-gradient(180deg,rgba(255,245,202,.08),transparent 22%,transparent 78%,rgba(255,188,23,.05))!important;
+  mix-blend-mode:screen
+}
+
+/* CSS-only cloudy smoke behind the monthly prize. */
+@keyframes monthlyHistorySmoke{
+  0%,100%{transform:translate3d(0,0,0) scale(1);opacity:.62}
+  50%{transform:translate3d(-8px,3px,0) scale(1.07);opacity:.82}
+}
+.monthly-history-smoke{
+  position:absolute;
+  z-index:0;
+  right:-24px;
+  top:-24px;
+  width:58%;
+  height:125%;
+  pointer-events:none;
+  filter:blur(9px);
+  opacity:.76;
+  background:
+    radial-gradient(ellipse at 76% 30%,rgba(255,197,53,.28) 0 12%,transparent 36%),
+    radial-gradient(ellipse at 48% 44%,rgba(123,83,18,.34) 0 18%,transparent 44%),
+    radial-gradient(ellipse at 72% 72%,rgba(230,159,28,.25) 0 13%,transparent 40%),
+    radial-gradient(ellipse at 35% 72%,rgba(84,59,20,.28) 0 14%,transparent 42%);
+  animation:monthlyHistorySmoke 4.8s ease-in-out infinite
+}
+.monthly-history-smoke::after{
+  content:"";
+  position:absolute;
+  inset:10% -6% -8% 8%;
+  background:
+    radial-gradient(circle at 45% 35%,rgba(255,214,95,.15),transparent 25%),
+    radial-gradient(circle at 72% 60%,rgba(255,173,31,.18),transparent 31%),
+    radial-gradient(circle at 30% 76%,rgba(76,57,26,.25),transparent 33%);
+  filter:blur(13px)
+}
+
+.monthly-history-art{
+  position:absolute;
+  z-index:1;
+  top:10px;
+  right:4px;
+  bottom:8px;
+  width:47%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none
+}
+.monthly-history-art::before{
+  content:"";
+  position:absolute;
+  width:82%;
+  height:72%;
+  border-radius:50%;
+  background:rgba(255,190,35,.12);
+  filter:blur(24px)
+}
+.monthly-history-art img{
+  position:relative;
+  z-index:1;
+  width:96%;
+  height:100%;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 10px 12px rgba(0,0,0,.68))
+    drop-shadow(0 0 10px rgba(255,193,42,.18))
+}
+
+.monthly-history-content{
+  position:relative;
+  z-index:3;
+  width:61%;
+  min-height:116px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:5px
+}
+.monthly-history-top{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:2px
+}
+.monthly-history-top>b{
+  padding:4px 7px;
+  border:1px solid rgba(255,203,54,.42);
+  border-radius:5px;
+  background:linear-gradient(90deg,rgba(217,166,55,.19),rgba(255,205,51,.10));
+  color:#f6bf28;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.09em;
+  white-space:nowrap
+}
+.monthly-history-top small{
+  margin:0!important;
+  color:#e8d8a4!important;
+  background:rgba(15,14,8,.66)!important;
+  border-color:rgba(217,166,55,.42)!important
+}
+.monthly-history-content>em{
+  color:#758689;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:7px;
+  font-style:normal;
+  font-weight:900;
+  letter-spacing:.08em
+}
+.monthly-history-content>em b{
+  color:#d9a637
+}
+.monthly-history-content>strong{
+  color:#8f9b9d;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:12px;
+  font-weight:900;
+  line-height:1.1
+}
+.monthly-history-content>strong>b{
+  color:#20f39a;
+  font-size:15px
+}
+.monthly-history-skin{
+  max-width:100%;
+  color:#e7ecea;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:9px;
+  font-weight:800;
+  line-height:1.25
+}
+.monthly-history-value{
+  color:#f6bd26;
+  font-family:"Exo 2",sans-serif;
+  font-size:20px;
+  font-style:italic;
+  font-weight:900;
+  line-height:1;
+  text-shadow:0 0 12px rgba(246,189,38,.18)
+}
+
+/* Center showcase: hold for 2 seconds, then fly into the reserved history slot. */
+.monthly-history-arrival{
+  position:fixed!important;
+  z-index:900!important;
+  left:50%;
+  top:50%;
+  width:min(610px,62vw)!important;
+  height:220px!important;
+  min-height:220px!important;
+  transform:translate(-50%,-50%) scale(1.03);
+  padding:22px 24px!important;
+  border-width:2px!important;
+  border-radius:15px!important;
+  box-shadow:
+    0 0 0 1px rgba(255,229,137,.12),
+    0 0 34px rgba(255,184,24,.34),
+    0 25px 90px rgba(0,0,0,.68),
+    inset 0 0 42px rgba(255,179,0,.075)!important;
+  transition:
+    left .9s cubic-bezier(.18,.78,.18,1),
+    top .9s cubic-bezier(.18,.78,.18,1),
+    width .9s cubic-bezier(.18,.78,.18,1),
+    height .9s cubic-bezier(.18,.78,.18,1),
+    border-radius .9s ease,
+    box-shadow .9s ease!important;
+  will-change:left,top,width,height
+}
+.monthly-history-arrival .monthly-history-content{
+  width:58%;
+  min-height:174px
+}
+.monthly-history-arrival .monthly-history-top>b{
+  font-size:11px;
+  padding:6px 9px
+}
+.monthly-history-arrival .monthly-history-content>em{
+  font-size:9px
+}
+.monthly-history-arrival .monthly-history-content>strong{
+  font-size:15px
+}
+.monthly-history-arrival .monthly-history-content>strong>b{
+  font-size:21px
+}
+.monthly-history-arrival .monthly-history-skin{
+  font-size:12px
+}
+.monthly-history-arrival .monthly-history-value{
+  font-size:30px
+}
+.monthly-history-arrival .monthly-history-art{
+  width:46%;
+  top:15px;
+  bottom:12px
+}
+.monthly-history-arrival.is-flying{
+  box-shadow:
+    0 0 18px rgba(255,184,24,.20),
+    0 14px 46px rgba(0,0,0,.44)!important
+}
+
+/* Winner modal actions for the prototype. */
+.monthly-winner-actions{
+  margin-top:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px
+}
+.monthly-winner-actions button{
+  min-width:190px!important;
+  margin-top:0!important
+}
+.monthly-winner-history-btn{
+  border-color:#d9a637!important;
+  background:linear-gradient(90deg,#b9851f,#f1b92d)!important;
+  color:#120e03!important
+}
+.monthly-winner-history-btn svg{
+  width:14px;
+  height:14px;
+  vertical-align:middle
+}
+.monthly-winner-back-btn{
+  border-color:#2c3e43!important;
+  background:#081116!important;
+  color:#9eabad!important
+}
