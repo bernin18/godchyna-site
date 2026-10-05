@@ -3208,6 +3208,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         )
       : null;
     const monthlyWinnerChance = monthlyWinnerSegment?.percentage ?? null;
+    const monthlyLeader = monthlyWheelSegments.reduce<
+      (typeof monthlyWheelSegments)[number] | null
+    >(
+      (leader, segment) =>
+        !leader || segment.count > leader.count ? segment : leader,
+      null,
+    );
 
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
@@ -3286,12 +3293,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </section>
 
         <aside className="participants-panel monthly-participants-panel">
-          <div className="participants-panel-head">
+          <div className="monthly-panel-watermark" aria-hidden="true">
+            {Array.from({ length: 14 }, (_, index) => (
+              <span key={index}>GIVEAWAY</span>
+            ))}
+          </div>
+
+          <div className="participants-panel-head monthly-panel-head">
             <div>
+              <span className="monthly-panel-kicker">SPECIAL EVENT</span>
               <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
-              <span className="participants-test-mode">
-                {pick("GIVEAWAY MENSAL · HISTÓRICO DESATIVADO", "MONTHLY GIVEAWAY · HISTORY DISABLED")}
-              </span>
             </div>
             <button
               type="button"
@@ -3303,9 +3314,23 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </button>
           </div>
 
-          <div className="participants-count-row">
-            <span>{pick("ENTRADAS NA LISTA", "ENTRIES IN LIST")}</span>
-            <strong>{draftCount}</strong>
+          <div className="monthly-participant-stats">
+            <div>
+              <span>{pick("ENTRADAS", "ENTRIES")}</span>
+              <strong>{participants.length}</strong>
+            </div>
+            <div>
+              <span>{pick("ÚNICOS", "UNIQUE")}</span>
+              <strong>{uniqueMonthlyParticipants}</strong>
+            </div>
+            <div className="is-leader">
+              <span>{pick("LÍDER", "LEADER")}</span>
+              <strong title={monthlyLeader?.name ?? "—"}>
+                {monthlyLeader
+                  ? `${monthlyLeader.name} · ${monthlyLeader.percentage.toFixed(1)}%`
+                  : "—"}
+              </strong>
+            </div>
           </div>
 
           <div className="participants-quick-add">
@@ -3438,6 +3463,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <strong title={participant.name}>{participant.name}</strong>
                   <b>×{participant.count}</b>
+                  <em className="monthly-participant-chance">
+                    {participants.length > 0
+                      ? `${((participant.count / participants.length) * 100).toFixed(1)}%`
+                      : "0.0%"}
+                  </em>
                   <button
                     type="button"
                     className="participant-remove-one"
