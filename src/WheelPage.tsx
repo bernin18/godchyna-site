@@ -3533,6 +3533,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </aside>
 
         <aside className="monthly-prize-card">
+          <div className="monthly-wave-frame monthly-prize-wave-frame" aria-hidden="true">
+            <span className="wave-top" />
+            <span className="wave-right" />
+            <span className="wave-bottom" />
+            <span className="wave-left" />
+          </div>
+
           <div className="monthly-prize-card-head">
             <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
             <small>TOPSKIN</small>
