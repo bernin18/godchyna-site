@@ -441,7 +441,6 @@ function nameFontSize(name: string, count: number) {
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
 const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_VISIBLE_NAMES = 100;
-const MONTHLY_WHEEL_VISIBLE_NAMES = 100;
 const LARGE_WHEEL_LIST_LIMIT = 160;
 const MAX_PARTICIPANT_MULTIPLIER = 500;
 
@@ -2941,39 +2940,55 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       }));
   }, [largeWheelVisual, participants, pendingWinnerIndex]);
 
-  const monthlyWheelNameEntries = useMemo(() => {
+  const monthlyWheelSegments = useMemo(() => {
     if (participants.length === 0) return [];
 
-    const targetCount = Math.min(MONTHLY_WHEEL_VISIBLE_NAMES, participants.length);
-    const indexes = new Set<number>();
+    let cursor = 0;
 
-    for (let sample = 0; sample < targetCount; sample += 1) {
-      indexes.add(Math.floor((sample * participants.length) / targetCount));
+    return groupedParticipants.map((participant, index) => {
+      const startEntry = cursor;
+      const endEntry = cursor + participant.count;
+      cursor = endEntry;
+
+      const startAngle = (startEntry / participants.length) * 360;
+      const endAngle = (endEntry / participants.length) * 360;
+      const centerAngle = (startAngle + endAngle) / 2;
+      const percentage = (participant.count / participants.length) * 100;
+      const hue = (38 + index * 137.508) % 360;
+      const lightness = index % 3 === 0 ? 42 : index % 3 === 1 ? 34 : 38;
+
+      return {
+        ...participant,
+        index,
+        startAngle,
+        endAngle,
+        centerAngle,
+        percentage,
+        color: `hsl(${hue.toFixed(1)} 62% ${lightness}%)`,
+      };
+    });
+  }, [groupedParticipants, participants.length]);
+
+  const monthlyWheelGradient = useMemo(() => {
+    if (monthlyWheelSegments.length === 0) {
+      return "conic-gradient(#111a20 0deg 360deg)";
     }
 
-    if (
-      monthlyWinnerIndex !== null &&
-      monthlyWinnerIndex >= 0 &&
-      monthlyWinnerIndex < participants.length
-    ) {
-      indexes.add(monthlyWinnerIndex);
-    }
+    const stops = monthlyWheelSegments.flatMap((segment) => {
+      const span = Math.max(0, segment.endAngle - segment.startAngle);
+      const divider = Math.min(0.35, span * 0.06);
+      const colorEnd = Math.max(segment.startAngle, segment.endAngle - divider);
 
-    return Array.from(indexes)
-      .sort((a, b) => a - b)
-      .map((index) => ({ index, name: participants[index] }));
-  }, [participants, monthlyWinnerIndex]);
+      return [
+        `${segment.color} ${segment.startAngle.toFixed(4)}deg ${colorEnd.toFixed(4)}deg`,
+        `#05090b ${colorEnd.toFixed(4)}deg ${segment.endAngle.toFixed(4)}deg`,
+      ];
+    });
 
-  const monthlyWheelSegmentCount = participants.length > DIRECT_TOP_FIVE_THRESHOLD
-    ? LARGE_WHEEL_VISUAL_SEGMENTS
-    : Math.max(participants.length, 1);
+    return `conic-gradient(${stops.join(",")})`;
+  }, [monthlyWheelSegments]);
 
-  const monthlyWheelGradient = useMemo(
-    () => participants.length > DIRECT_TOP_FIVE_THRESHOLD
-      ? LARGE_WHEEL_GRADIENT
-      : wheelGradient(participants.length),
-    [participants.length],
-  );
+  const monthlyWheelSegmentCount = Math.max(monthlyWheelSegments.length, 1);
 
   const fastWheelSpin = participants.length >= 10;
 
@@ -3036,24 +3051,34 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   });
 
   const renderMonthlyWheelNames = () => {
-    if (participants.length === 0) return null;
+    if (monthlyWheelSegments.length === 0) return null;
 
-    const step = 360 / participants.length;
+    return monthlyWheelSegments.map((segment) => {
+      const span = segment.endAngle - segment.startAngle;
+      const fontSize =
+        span >= 45 ? 13 :
+        span >= 20 ? 11 :
+        span >= 8 ? 9 :
+        span >= 3 ? 7 :
+        6;
+      const winnerSegment =
+        Boolean(monthlyWinner) &&
+        segment.name.trim().toLocaleLowerCase() === monthlyWinner!.trim().toLocaleLowerCase();
 
-    return monthlyWheelNameEntries.map(({ name, index }) => {
-      const angle = index * step + step / 2;
       const style = {
-        "--wheel-name-angle": `${angle}deg`,
-        "--wheel-name-size": name.length > 18 ? "8px" : name.length > 13 ? "9px" : "10px",
+        "--wheel-name-angle": `${segment.centerAngle}deg`,
+        "--wheel-name-size": `${fontSize}px`,
       } as CSSProperties;
 
       return (
         <span
-          key={`monthly-${index}-${name}`}
-          className={`monthly-wheel-name${monthlyWinner && monthlyWinnerIndex === index ? " is-selected" : ""}`}
+          key={`monthly-${segment.name.trim().toLocaleLowerCase()}`}
+          className={`monthly-wheel-name${winnerSegment ? " is-selected" : ""}`}
           style={style}
+          title={`${segment.name} · ${segment.count} entradas · ${segment.percentage.toFixed(2)}%`}
         >
-          {name}
+          <b>{segment.name}</b>
+          {span >= 7 && <small>{segment.percentage.toFixed(span >= 20 ? 1 : 0)}%</small>}
         </span>
       );
     });
@@ -3069,8 +3094,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const winnerIndex = randomParticipantIndex(participants.length);
     const selectedName = participants[winnerIndex];
-    const step = 360 / participants.length;
-    const selectedCenter = winnerIndex * step + step / 2;
+    const selectedKey = selectedName.trim().toLocaleLowerCase();
+    const selectedSegment = monthlyWheelSegments.find(
+      (segment) => segment.name.trim().toLocaleLowerCase() === selectedKey,
+    );
+    const selectedCenter = selectedSegment?.centerAngle ?? 0;
     const targetAngle = (360 - (selectedCenter % 360)) % 360;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
@@ -3182,7 +3210,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 transform: `rotate(${monthlyRotation}deg)`,
               }}
             >
-              <WheelDividers count={monthlyWheelSegmentCount} />
               {renderMonthlyWheelNames()}
             </div>
 
