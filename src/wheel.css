@@ -4786,3 +4786,144 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   min-width:40%!important;
   font-size:32px!important
 }
+
+/* Final history card alignment: right smoke + full-card artwork */
+
+/* MONTHLY: dark card, smoke only on the right behind the knife. */
+.giveaway-history-card-monthly{
+  background:
+    linear-gradient(112deg,#071014 0%,#071014 56%,#0b0e0d 100%)!important;
+}
+
+.giveaway-history-card-monthly::after{
+  background:
+    linear-gradient(90deg,
+      rgba(5,10,13,.97) 0%,
+      rgba(5,10,13,.94) 40%,
+      rgba(5,10,13,.72) 57%,
+      rgba(5,10,13,.18) 78%,
+      rgba(5,10,13,.04) 100%)!important;
+}
+
+.monthly-history-smoke{
+  left:64%!important;
+  right:auto!important;
+  top:-18%!important;
+  width:40%!important;
+  height:140%!important;
+  opacity:.90!important;
+  filter:blur(12px)!important;
+  background:
+    radial-gradient(ellipse at 72% 26%,rgba(255,205,72,.46) 0 14%,transparent 40%),
+    radial-gradient(ellipse at 46% 48%,rgba(145,95,20,.44) 0 20%,transparent 48%),
+    radial-gradient(ellipse at 76% 76%,rgba(239,165,28,.38) 0 16%,transparent 44%),
+    radial-gradient(ellipse at 35% 70%,rgba(84,57,18,.30) 0 18%,transparent 46%)!important;
+}
+
+.monthly-history-art{
+  right:2px!important;
+  left:auto!important;
+  width:49%!important;
+  top:8px!important;
+  bottom:38px!important;
+}
+
+.monthly-history-art img{
+  width:108%!important;
+  height:108%!important;
+  object-position:center right!important;
+  transform:scale(1.04)!important;
+}
+
+.monthly-history-content{
+  width:57%!important;
+}
+
+.monthly-history-value-under-art{
+  right:18px!important;
+  left:auto!important;
+  bottom:12px!important;
+  min-width:40%!important;
+  width:40%!important;
+  text-align:center!important;
+  font-size:24px!important;
+}
+
+/* Large center arrival uses the same composition. */
+.monthly-history-arrival .monthly-history-smoke{
+  left:66%!important;
+  right:auto!important;
+  top:-16%!important;
+  width:38%!important;
+  height:142%!important;
+}
+
+.monthly-history-arrival .monthly-history-art{
+  right:8px!important;
+  left:auto!important;
+  width:47%!important;
+  top:11px!important;
+  bottom:48px!important;
+}
+
+.monthly-history-arrival .monthly-history-content{
+  width:56%!important;
+}
+
+.monthly-history-arrival .monthly-history-value-under-art{
+  right:28px!important;
+  left:auto!important;
+  width:36%!important;
+  min-width:36%!important;
+  bottom:18px!important;
+  font-size:32px!important;
+}
+
+/* NORMAL GIVEAWAYS: artwork is a true card background, not a small right-side picture. */
+.giveaway-history-card.has-skin-image{
+  background:#071014!important;
+}
+
+.giveaway-history-skin-art{
+  position:absolute!important;
+  z-index:0!important;
+  inset:-24px -28px -24px -34px!important;
+  width:auto!important;
+  height:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  opacity:.42!important;
+  pointer-events:none!important;
+}
+
+.giveaway-history-skin-art img{
+  width:112%!important;
+  height:112%!important;
+  object-fit:contain!important;
+  object-position:58% 50%!important;
+  transform:scale(1.18)!important;
+  filter:
+    saturate(.96)
+    contrast(1.05)
+    drop-shadow(0 10px 14px rgba(0,0,0,.58))!important;
+}
+
+.giveaway-history-card.has-skin-image::after{
+  background:
+    linear-gradient(90deg,
+      rgba(5,11,14,.94) 0%,
+      rgba(5,11,14,.84) 30%,
+      rgba(5,11,14,.62) 54%,
+      rgba(5,11,14,.40) 74%,
+      rgba(5,11,14,.30) 100%)!important;
+}
+
+/* Keep all existing info readable over the background image. */
+.giveaway-history-card.has-skin-image .giveaway-history-top,
+.giveaway-history-card.has-skin-image .giveaway-history-winner,
+.giveaway-history-card.has-skin-image .giveaway-history-prize-row{
+  width:100%!important;
+  position:relative!important;
+  z-index:2!important;
+}
