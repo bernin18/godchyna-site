@@ -593,7 +593,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [configuring, setConfiguring] = useState(false);
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
-  const [monthlyRotation, setMonthlyRotation] = useState(0);
+  const [monthlyKnifeRotation, setMonthlyKnifeRotation] = useState(45);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
   const [monthlyLaunching, setMonthlyLaunching] = useState(false);
@@ -1193,7 +1193,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     setIsTestGiveaway(false);
     setConfiguring(false);
-    setMonthlyRotation(0);
+    setMonthlyKnifeRotation(45);
     setMonthlySpinning(false);
     setMonthlyWinner(null);
     setMonthlyLaunching(false);
@@ -1208,7 +1208,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (monthlySpinning) return;
     setMonthlyGiveawayMode(false);
     setMonthlyWinner(null);
-    setMonthlyRotation(0);
+    setMonthlyKnifeRotation(45);
     setMonthlyLaunching(false);
     setMonthlyKnifeDocked(false);
     setMonthlyKnifeFlightStyle(null);
@@ -2985,7 +2985,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return `conic-gradient(${stops.join(",")})`;
   }, [monthlyWheelSegments]);
 
-  const monthlyWheelSegmentCount = Math.max(monthlyWheelSegments.length, 1);
 
   const fastWheelSpin = participants.length >= 10;
 
@@ -3096,14 +3095,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       (segment) => segment.name.trim().toLocaleLowerCase() === selectedKey,
     );
     const selectedCenter = selectedSegment?.centerAngle ?? 0;
-    const targetAngle = (360 - (selectedCenter % 360)) % 360;
+    const finalKnifeAngle = 45 + selectedCenter;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
     setMonthlyLaunching(true);
+    setMonthlyKnifeDocked(false);
+    setMonthlyKnifeRotation(45);
     playWheelPlim();
 
     if (sourceRect) {
-      const targetWidth = Math.min(250, Math.max(200, window.innerWidth * 0.13));
+      const targetWidth = Math.min(250, Math.max(205, window.innerWidth * 0.13));
       const targetHeight = targetWidth * 0.62;
       const targetLeft = window.innerWidth / 2 - targetWidth / 2;
       const targetTop = window.innerHeight / 2 - targetHeight / 2;
@@ -3113,7 +3114,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         top: sourceRect.top,
         width: sourceRect.width,
         height: sourceRect.height,
-        transform: "rotate(0deg) scale(1)",
       });
 
       window.requestAnimationFrame(() => {
@@ -3123,35 +3123,32 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             top: targetTop,
             width: targetWidth,
             height: targetHeight,
-            transform: "rotate(45deg) scale(1.06)",
           });
         });
       });
     }
+
+    const flightDuration = sourceRect ? 1000 : 250;
 
     window.setTimeout(() => {
       setMonthlyKnifeDocked(true);
       setMonthlyKnifeFlightStyle(null);
       setMonthlyLaunching(false);
       setMonthlySpinning(true);
-      startWheelSpinAudio(monthlyWheelSegmentCount);
 
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
-          setMonthlyRotation((currentRotation) => {
-            const currentAngle = ((currentRotation % 360) + 360) % 360;
-            const alignment = (targetAngle - currentAngle + 360) % 360;
-            return currentRotation + 10 * 360 + alignment;
-          });
+          setMonthlyKnifeRotation(finalKnifeAngle + 18 * 360);
         });
       });
 
+      const centerSpinDuration = 15000 - flightDuration;
       window.setTimeout(() => {
         setMonthlySpinning(false);
         setMonthlyWinner(selectedName);
         playApplauseBurst();
-      }, 8350);
-    }, sourceRect ? 1050 : 350);
+      }, centerSpinDuration);
+    }, flightDuration);
   }
 
   const soundToggle = (
@@ -3177,14 +3174,23 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
+        <div className="monthly-event-branding" aria-hidden="true">
+          <div className="monthly-chyna-brand">
+            <i>♛</i>
+            <strong>CHYNA</strong>
+          </div>
+          <span>×</span>
+          <img src={wheelAsset("topskin-logo.png")} alt="" />
+        </div>
+
         {monthlyKnifeFlightStyle && (
-          <img
+          <div
             className="monthly-flying-knife"
-            src={monthlyPrizeImageUrl}
-            alt=""
             aria-hidden="true"
             style={monthlyKnifeFlightStyle}
-          />
+          >
+            <img src={monthlyPrizeImageUrl} alt="" />
+          </div>
         )}
 
         <div className="monthly-brand">
@@ -3195,16 +3201,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
         <section className="monthly-wheel-stage">
           <div className="monthly-wheel-glow" />
-          <div className="monthly-wheel-pointer" />
 
           <div className="monthly-wheel-shell">
             <div
               ref={wheelRotorRef}
-              className={`monthly-wheel-rotor${monthlySpinning ? " is-spinning" : ""}`}
-              style={{
-                background: monthlyWheelGradient,
-                transform: `rotate(${monthlyRotation}deg)`,
-              }}
+              className="monthly-wheel-rotor"
+              style={{ background: monthlyWheelGradient }}
             >
               {renderMonthlyWheelNames()}
             </div>
@@ -3217,7 +3219,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               aria-label={pick("Sortear vencedor", "Draw winner")}
             >
               {monthlyKnifeDocked ? (
-                <img src={monthlyPrizeImageUrl} alt={monthlyPrizeName} />
+                <img
+                  src={monthlyPrizeImageUrl}
+                  alt={monthlyPrizeName}
+                  style={{
+                    "--monthly-knife-angle": `${monthlyKnifeRotation}deg`,
+                  } as CSSProperties}
+                />
               ) : (
                 <>
                   <span>{pick("SORTEAR", "DRAW")}</span>
@@ -3460,7 +3468,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 type="button"
                 onClick={() => {
                   setMonthlyWinner(null);
-                                setMonthlyRotation(0);
+                                setMonthlyKnifeRotation(45);
                   setMonthlyLaunching(false);
                   setMonthlyKnifeDocked(false);
                   setMonthlyKnifeFlightStyle(null);
