@@ -3882,3 +3882,14 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .monthly-winner-firework-bottom-right::after{
   animation-delay:.30s!important
 }
+
+/* Winner kicker position and size */
+.monthly-winner-card > span:not(.monthly-winner-firework){
+  display:block!important;
+  color:#20f39a!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  letter-spacing:.17em!important;
+  transform:translateY(-10px)!important;
+  text-shadow:0 0 12px rgba(32,243,154,.22)!important
+}
