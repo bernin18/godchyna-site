@@ -5386,7 +5386,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             </div>
                             <div className="monthly-history-content">
                               <div className="monthly-history-top">
-                                <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
+                                <div className="monthly-history-heading">
+                                  <span className="monthly-history-brand">CHYNA</span>
+                                  <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
+                                </div>
                                 <small>{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
                               </div>
                               <em>
