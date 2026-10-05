@@ -4927,3 +4927,98 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   position:relative!important;
   z-index:2!important;
 }
+
+/* NORMAL HISTORY FINAL: compact skin thumbnail on the left */
+.giveaway-history-card.has-skin-image{
+  position:relative!important;
+  min-height:96px!important;
+  padding:13px 12px 13px 92px!important;
+  overflow:hidden!important;
+  isolation:auto!important;
+  background:linear-gradient(145deg,#091317,#070d10)!important;
+  border:1px solid #284047!important;
+  border-radius:9px!important;
+  box-shadow:inset 0 0 18px rgba(0,0,0,.18)!important;
+}
+
+/* No image-as-background overlay on normal giveaways. */
+.giveaway-history-card.has-skin-image::after{
+  display:none!important;
+  content:none!important;
+}
+
+.giveaway-history-skin-art{
+  position:absolute!important;
+  z-index:1!important;
+  left:10px!important;
+  right:auto!important;
+  top:9px!important;
+  bottom:9px!important;
+  width:68px!important;
+  height:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  inset:auto!important;
+}
+
+.giveaway-history-skin-art::before{
+  display:none!important;
+  content:none!important;
+}
+
+.giveaway-history-skin-art img{
+  position:relative!important;
+  z-index:1!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  opacity:1!important;
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.48))!important;
+}
+
+.giveaway-history-card.has-skin-image > :not(.giveaway-history-skin-art){
+  position:relative!important;
+  z-index:2!important;
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-top,
+.giveaway-history-card.has-skin-image .giveaway-history-winner,
+.giveaway-history-card.has-skin-image .giveaway-history-prize-row{
+  width:100%!important;
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-top em,
+.giveaway-history-card.has-skin-image .giveaway-history-winner,
+.giveaway-history-card.has-skin-image .giveaway-history-skin{
+  text-shadow:none!important;
+}
+
+/* Match the compact reference proportions. */
+.giveaway-history-card.has-skin-image .giveaway-history-top em{
+  font-size:7px!important;
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-top em b{
+  font-size:9px!important;
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-winner{
+  font-size:11px!important;
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-skin{
+  font-size:8px!important;
+}
+
+.giveaway-history-card.has-skin-image .giveaway-history-value{
+  font-size:10px!important;
+}
+
+.giveaway-history-card.has-skin-image small{
+  font-size:9px!important;
+}
