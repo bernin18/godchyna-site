@@ -5023,62 +5023,81 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   font-size:9px!important;
 }
 
-/* MONTHLY CARD FINAL COMPOSITION: smoke left, date over knife, price beside knife */
-
-.giveaway-history-card-monthly{
-  min-height:170px!important;
-  padding:16px 16px 14px!important;
-  border:2px solid rgba(246,189,38,.94)!important;
-  border-radius:13px!important;
-  background:
-    linear-gradient(112deg,#071014 0%,#071014 58%,#0b0e0d 100%)!important;
-  overflow:hidden!important;
-  position:relative!important;
+/* MONTHLY HISTORY FINAL: compact premium card */
+.giveaway-history-monthly-slot{
+  flex:0 0 132px!important;
+  min-height:132px!important;
+  border-radius:11px!important;
 }
 
+.giveaway-history-card-monthly{
+  position:relative!important;
+  min-height:132px!important;
+  padding:12px 13px!important;
+  overflow:hidden!important;
+  border:2px solid rgba(246,189,38,.92)!important;
+  border-radius:11px!important;
+  background:linear-gradient(112deg,#071014 0%,#071014 64%,#0b0e0d 100%)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,232,153,.07),
+    0 0 16px rgba(246,189,38,.15),
+    inset 0 0 22px rgba(217,166,55,.04)!important;
+}
+
+/* Keep the right side readable while leaving room for the knife. */
 .giveaway-history-card-monthly::after{
   content:""!important;
   position:absolute!important;
-  inset:0!important;
   z-index:2!important;
+  inset:0!important;
   pointer-events:none!important;
+  border-radius:inherit!important;
   background:
     linear-gradient(90deg,
-      rgba(5,10,13,.95) 0%,
-      rgba(5,10,13,.86) 32%,
-      rgba(5,10,13,.55) 50%,
-      rgba(5,10,13,.18) 72%,
-      rgba(5,10,13,.04) 100%)!important;
+      rgba(5,10,13,.73) 0%,
+      rgba(5,10,13,.64) 37%,
+      rgba(5,10,13,.36) 58%,
+      rgba(5,10,13,.08) 82%,
+      transparent 100%)!important;
 }
 
-/* smoke/cloud strictly on the LEFT side */
+/* Soft smoke on the LEFT only. */
 .monthly-history-smoke{
   position:absolute!important;
-  z-index:0!important;
-  left:-10%!important;
+  z-index:3!important;
+  left:-7%!important;
   right:auto!important;
-  top:-16%!important;
-  width:42%!important;
-  height:140%!important;
-  opacity:.88!important;
-  filter:blur(12px)!important;
+  top:-24%!important;
+  width:43%!important;
+  height:148%!important;
+  opacity:.48!important;
+  filter:blur(11px)!important;
   pointer-events:none!important;
   background:
-    radial-gradient(ellipse at 30% 28%,rgba(255,205,72,.35) 0 14%,transparent 40%),
-    radial-gradient(ellipse at 54% 46%,rgba(145,95,20,.31) 0 21%,transparent 48%),
-    radial-gradient(ellipse at 24% 76%,rgba(239,165,28,.28) 0 16%,transparent 44%),
-    radial-gradient(ellipse at 60% 70%,rgba(84,57,18,.24) 0 18%,transparent 46%)!important;
+    radial-gradient(ellipse at 30% 30%,rgba(214,157,45,.22) 0 14%,transparent 42%),
+    radial-gradient(ellipse at 54% 48%,rgba(94,75,45,.28) 0 21%,transparent 49%),
+    radial-gradient(ellipse at 20% 75%,rgba(180,124,31,.18) 0 15%,transparent 44%),
+    radial-gradient(ellipse at 64% 70%,rgba(70,63,49,.23) 0 18%,transparent 46%)!important;
 }
 
-/* knife smaller and better balanced on the right */
+.monthly-history-smoke::after{
+  inset:18% 8% 12% 2%!important;
+  opacity:.28!important;
+  filter:blur(14px)!important;
+  background:
+    radial-gradient(circle at 36% 35%,rgba(232,191,96,.16),transparent 27%),
+    radial-gradient(circle at 60% 64%,rgba(123,91,38,.18),transparent 34%)!important;
+}
+
+/* Knife on the right, leaving a little free space for the value beside it. */
 .monthly-history-art{
   position:absolute!important;
   z-index:1!important;
   left:auto!important;
-  right:7px!important;
+  right:48px!important;
   top:20px!important;
-  bottom:24px!important;
-  width:45%!important;
+  bottom:13px!important;
+  width:41%!important;
   display:flex!important;
   align-items:center!important;
   justify-content:flex-end!important;
@@ -5090,137 +5109,169 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   height:100%!important;
   object-fit:contain!important;
   object-position:center right!important;
-  transform:scale(.94)!important;
+  transform:scale(.93)!important;
   filter:
-    drop-shadow(0 10px 12px rgba(0,0,0,.66))
-    drop-shadow(0 0 10px rgba(255,197,47,.16))!important;
+    drop-shadow(0 8px 10px rgba(0,0,0,.62))
+    drop-shadow(0 0 8px rgba(255,197,47,.13))!important;
 }
 
+/* Left-side info: slightly larger than normal cards, but compact. */
 .monthly-history-content{
   position:relative!important;
-  z-index:4!important;
-  width:50%!important;
-  min-height:136px!important;
+  z-index:5!important;
+  width:56%!important;
+  min-height:104px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:4px!important;
+}
+
+.monthly-history-top{
+  margin:0 0 2px!important;
+  display:block!important;
+}
+
+.monthly-history-heading{
+  display:flex!important;
+  align-items:center!important;
   gap:7px!important;
 }
 
-/* date on TOP RIGHT, above the knife */
-.monthly-history-top>small{
-  position:absolute!important;
-  top:10px!important;
-  right:12px!important;
-  z-index:7!important;
-  font-size:10px!important;
-  padding:5px 7px!important;
-  color:#f1e5bc!important;
-  background:rgba(11,12,9,.84)!important;
-  border:1px solid rgba(217,166,55,.52)!important;
-  border-radius:5px!important;
+.monthly-history-brand{
+  font-size:15px!important;
+  line-height:1!important;
 }
 
-/* price beside the knife on the lower-right, not underneath */
+.monthly-history-heading>b{
+  padding:4px 6px!important;
+  font-size:7px!important;
+  letter-spacing:.05em!important;
+}
+
+.monthly-history-content>em{
+  margin-top:3px!important;
+  font-size:8px!important;
+  line-height:1.1!important;
+}
+
+.monthly-history-content>strong{
+  margin:0!important;
+  font-size:12px!important;
+  line-height:1.1!important;
+}
+
+.monthly-history-content>strong>b{
+  font-size:16px!important;
+}
+
+.monthly-history-skin{
+  max-width:94%!important;
+  font-size:9px!important;
+  line-height:1.2!important;
+}
+
+/* Date is now a direct child of the card: truly top-right above the knife. */
+.monthly-history-date{
+  position:absolute!important;
+  z-index:8!important;
+  top:9px!important;
+  right:10px!important;
+  margin:0!important;
+  padding:4px 6px!important;
+  border:1px solid rgba(217,166,55,.46)!important;
+  border-radius:5px!important;
+  background:rgba(10,12,10,.84)!important;
+  color:#e7d6a4!important;
+  font-family:"Chakra Petch",sans-serif!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.03em!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+
+/* Value sits beside the knife at the lower-right, not directly underneath it. */
 .monthly-history-value-under-art{
   position:absolute!important;
-  z-index:7!important;
-  right:14px!important;
-  bottom:18px!important;
+  z-index:8!important;
+  right:9px!important;
+  bottom:17px!important;
   width:auto!important;
   min-width:0!important;
   margin:0!important;
-  text-align:right!important;
-  font-size:24px!important;
-  line-height:1!important;
   color:#f6bd26!important;
+  font-size:19px!important;
+  line-height:1!important;
+  text-align:right!important;
   text-shadow:
-    0 0 10px rgba(246,189,38,.24),
+    0 0 8px rgba(246,189,38,.20),
     0 2px 4px rgba(0,0,0,.72)!important;
 }
 
-/* keep left-side text readable and proportional */
-.monthly-history-brand{
-  font-size:17px!important;
-}
-.monthly-history-heading>b{
-  font-size:8px!important;
-  padding:5px 8px!important;
-}
-.monthly-history-content>em{
-  margin-top:8px!important;
-  font-size:9px!important;
-}
-.monthly-history-content>strong{
-  font-size:14px!important;
-  line-height:1.15!important;
-}
-.monthly-history-content>strong>b{
-  font-size:20px!important;
-}
-.monthly-history-skin{
-  max-width:95%!important;
-  font-size:11px!important;
-  line-height:1.28!important;
-}
-
-/* same composition for the big center reveal */
+/* Center reveal: same proportions, simply enlarged. */
 .monthly-history-arrival{
-  width:min(640px,64vw)!important;
-  height:220px!important;
-  min-height:220px!important;
-  padding:20px 22px!important;
+  width:min(590px,62vw)!important;
+  height:198px!important;
+  min-height:198px!important;
+  padding:18px 20px!important;
 }
 
 .monthly-history-arrival .monthly-history-smoke{
-  left:-7%!important;
-  right:auto!important;
-  top:-14%!important;
-  width:38%!important;
-  height:142%!important;
+  left:-5%!important;
+  top:-22%!important;
+  width:40%!important;
+  height:148%!important;
+  opacity:.50!important;
 }
 
 .monthly-history-arrival .monthly-history-art{
-  left:auto!important;
-  right:10px!important;
-  top:22px!important;
-  bottom:30px!important;
-  width:43%!important;
+  right:68px!important;
+  top:27px!important;
+  bottom:20px!important;
+  width:40%!important;
 }
 
 .monthly-history-arrival .monthly-history-content{
-  width:50%!important;
-  min-height:176px!important;
-  gap:8px!important;
-}
-
-.monthly-history-arrival .monthly-history-top>small{
-  top:13px!important;
-  right:15px!important;
-  font-size:11px!important;
-}
-
-.monthly-history-arrival .monthly-history-value-under-art{
-  right:19px!important;
-  bottom:24px!important;
-  width:auto!important;
-  min-width:0!important;
-  font-size:31px!important;
+  width:55%!important;
+  min-height:160px!important;
+  gap:6px!important;
 }
 
 .monthly-history-arrival .monthly-history-brand{
-  font-size:27px!important;
-}
-.monthly-history-arrival .monthly-history-heading>b{
-  font-size:10px!important;
-  padding:6px 10px!important;
-}
-.monthly-history-arrival .monthly-history-content>em{
-  font-size:10px!important;
-}
-.monthly-history-arrival .monthly-history-content>strong{
-  font-size:16px!important;
-}
-.monthly-history-arrival .monthly-history-content>strong>b{
   font-size:24px!important;
 }
+
+.monthly-history-arrival .monthly-history-heading>b{
+  padding:5px 8px!important;
+  font-size:9px!important;
+}
+
+.monthly-history-arrival .monthly-history-content>em{
+  font-size:9px!important;
+}
+
+.monthly-history-arrival .monthly-history-content>strong{
+  font-size:15px!important;
+}
+
+.monthly-history-arrival .monthly-history-content>strong>b{
+  font-size:21px!important;
+}
+
 .monthly-history-arrival .monthly-history-skin{
-  font-size:13px!important;
+  font-size:12px!important;
+}
+
+.monthly-history-arrival .monthly-history-date{
+  top:13px!important;
+  right:15px!important;
+  padding:5px 7px!important;
+  font-size:10px!important;
+}
+
+.monthly-history-arrival .monthly-history-value-under-art{
+  right:14px!important;
+  bottom:25px!important;
+  font-size:28px!important;
 }
