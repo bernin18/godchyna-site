@@ -583,6 +583,12 @@ function spreadParticipantEntries(entries: string[]) {
   return spread;
 }
 
+function formatFactoryNewSkinName(name: string) {
+  const trimmed = name.trim();
+  if (!trimmed) return trimmed;
+  return /(?:^|\s)FN$/i.test(trimmed) ? trimmed : `${trimmed} FN`;
+}
+
 export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const { pick } = useLanguage();
   const [session, setSession] = useState<Session | null>(null);
@@ -3211,7 +3217,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   if (monthlyGiveawayMode && session && account?.role === "admin") {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
     const monthlyPrizeImageUrl = giveawayPrizeImageUrl || wheelAsset("ursus-marble-fade.png");
-    const monthlyPrizeName = giveawayPrizeName.trim() || "Ursus Marble Fade";
+    const monthlyPrizeName = formatFactoryNewSkinName(giveawayPrizeName.trim() || "Ursus Marble Fade");
     const monthlyPrizeValue = giveawayPrizeNumericValue() ?? 150;
     const monthlyLocked = monthlyLaunching || monthlySpinning || Boolean(monthlyWinner);
     const monthlyWinnerSegment = monthlyWinner
@@ -3556,6 +3562,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         {monthlyWinner && (
           <div className="monthly-winner-overlay">
             <div className="monthly-winner-card">
+              <span className="monthly-winner-firework monthly-winner-firework-left" aria-hidden="true" />
+              <span className="monthly-winner-firework monthly-winner-firework-right" aria-hidden="true" />
               <button
                 type="button"
                 className={`monthly-winner-volume${monthlyAudioMuted ? " is-muted" : ""}`}
@@ -3881,7 +3889,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   {giveawayPrizeImageUrl ? (
                     <img
                       src={giveawayPrizeImageUrl}
-                      alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                      alt={giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Skin do giveaway", "Giveaway skin")}
                     />
                   ) : (
                     <span>{pick("SEM IMAGEM", "NO IMAGE")}</span>
@@ -3889,7 +3897,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
 
                 <strong title={giveawayPrizeName}>
-                  {giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                  {giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Skin do giveaway", "Giveaway skin")}
                 </strong>
 
                 {giveawayPrizeValue && (
@@ -3942,7 +3950,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 {winnerGiveawayPrizeName ? (
                   <>
                     {pick(", ganhaste o giveaway desta ", ", you won the giveaway for this ")}
-                    <span className="plinko-winner-brand">{winnerGiveawayPrizeName}</span>!
+                    <span className="plinko-winner-brand">{formatFactoryNewSkinName(winnerGiveawayPrizeName)}</span>!
                   </>
                 ) : (
                   <>{pick(", ganhaste o giveaway!", ", you won the giveaway!")}</>
@@ -4153,7 +4161,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   {giveawayPrizeImageUrl ? (
                     <img
                       src={giveawayPrizeImageUrl}
-                      alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                      alt={giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Skin do giveaway", "Giveaway skin")}
                     />
                   ) : (
                     <span>{pick("SEM IMAGEM", "NO IMAGE")}</span>
@@ -4161,7 +4169,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </div>
 
                 <strong title={giveawayPrizeName}>
-                  {giveawayPrizeName || pick("Prémio não configurado", "Prize not configured")}
+                  {giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Prémio não configurado", "Prize not configured")}
                 </strong>
 
                 {giveawayPrizeValue && (
@@ -4358,7 +4366,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 {winnerGiveawayPrizeName ? (
                   <>
                     {pick(", ganhaste o giveaway desta ", ", you won the giveaway for this ")}
-                    <span className="plinko-winner-brand">{winnerGiveawayPrizeName}</span>!
+                    <span className="plinko-winner-brand">{formatFactoryNewSkinName(winnerGiveawayPrizeName)}</span>!
                   </>
                 ) : (
                   <>{pick(", ganhaste o giveaway!", ", you won the giveaway!")}</>
@@ -4443,7 +4451,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       {giveawayPrizeImageUrl ? (
                         <img
                           src={giveawayPrizeImageUrl}
-                          alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                          alt={giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Skin do giveaway", "Giveaway skin")}
                         />
                       ) : (
                         <>
@@ -4539,7 +4547,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       {giveawayPrizeImageUrl ? (
                         <img
                           src={giveawayPrizeImageUrl}
-                          alt={giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                          alt={giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Skin do giveaway", "Giveaway skin")}
                         />
                       ) : (
                         <span>{pick("SEM IMAGEM", "NO IMAGE")}</span>
@@ -4547,7 +4555,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     </div>
 
                     <strong title={giveawayPrizeName}>
-                      {giveawayPrizeName || pick("Skin do giveaway", "Giveaway skin")}
+                      {giveawayPrizeName ? formatFactoryNewSkinName(giveawayPrizeName) : pick("Skin do giveaway", "Giveaway skin")}
                     </strong>
 
                     {giveawayPrizeValue && (
@@ -5089,7 +5097,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 {winnerGiveawayPrizeName ? (
                   <>
                     {pick(", ganhaste o giveaway desta ", ", you won the giveaway for this ")}
-                    <span className="plinko-winner-brand">{winnerGiveawayPrizeName}</span>!
+                    <span className="plinko-winner-brand">{formatFactoryNewSkinName(winnerGiveawayPrizeName)}</span>!
                   </>
                 ) : (
                   <>{pick(", ganhaste o giveaway!", ", you won the giveaway!")}</>
@@ -5224,7 +5232,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                           <div className="giveaway-history-prize-row">
                             <span className="giveaway-history-skin">
-                              {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName || pick("Prémio não indicado", "Prize not specified")}
+                              {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
                             </span>
                             {item.skinValue !== null && (
                               <b className="giveaway-history-value">{item.skinValue.toFixed(2)} €</b>
