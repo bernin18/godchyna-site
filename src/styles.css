@@ -456,3 +456,209 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .desktop-break{display:none}
 }
 
+
+
+.giveaway-announcement-overlay{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(2,6,8,.86);
+  backdrop-filter:blur(10px);
+  animation:giveawayAnnouncementFade .24s ease-out both
+}
+.giveaway-announcement-card{
+  position:relative;
+  width:min(620px,100%);
+  padding:26px 30px 30px;
+  overflow:hidden;
+  border:1px solid rgba(32,243,154,.34);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(32,243,154,.09),transparent 34%),
+    radial-gradient(circle at 50% 78%,rgba(217,166,55,.07),transparent 38%),
+    linear-gradient(145deg,#091316,#05090c);
+  text-align:center;
+  box-shadow:
+    0 34px 110px rgba(0,0,0,.72),
+    0 0 24px rgba(32,243,154,.16),
+    0 0 52px rgba(217,166,55,.08);
+  animation:giveawayAnnouncementPop .34s cubic-bezier(.2,.8,.2,1) both
+}
+.giveaway-announcement-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  padding:2px;
+  background:conic-gradient(
+    from 0deg,
+    transparent 0 210deg,
+    rgba(255,255,255,.52) 224deg,
+    #20f39a 250deg,
+    #d9a637 310deg,
+    transparent 350deg 360deg
+  );
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:giveawayAnnouncementRing 4.2s linear infinite
+}
+.giveaway-announcement-close{
+  position:absolute;
+  z-index:3;
+  right:14px;
+  top:14px;
+  width:34px;
+  height:34px;
+  border:1px solid #2a3a3f;
+  border-radius:50%;
+  background:#081116;
+  color:#9ba7aa;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  transition:.18s
+}
+.giveaway-announcement-close:hover{
+  color:#fff;
+  border-color:rgba(32,243,154,.52);
+  transform:scale(1.04)
+}
+.giveaway-announcement-close svg{width:16px;height:16px}
+.giveaway-announcement-sponsor{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  margin-bottom:8px;
+  font-family:"Chakra Petch",sans-serif
+}
+.giveaway-announcement-sponsor span{
+  color:#879497;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.12em
+}
+.giveaway-announcement-sponsor strong{
+  color:#20f39a;
+  font-size:15px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-shadow:0 0 14px rgba(32,243,154,.28)
+}
+.giveaway-announcement-knife{
+  height:210px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:4px auto 2px
+}
+.giveaway-announcement-knife img{
+  display:block;
+  max-width:92%;
+  max-height:195px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 18px 20px rgba(0,0,0,.62)) drop-shadow(0 0 18px rgba(217,166,55,.10))
+}
+.giveaway-announcement-date{
+  display:inline-block;
+  margin-top:2px;
+  padding:7px 11px;
+  border:1px solid rgba(217,166,55,.28);
+  border-radius:999px;
+  background:rgba(217,166,55,.06);
+  color:#d9a637;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.11em
+}
+.giveaway-announcement-card h2{
+  margin:14px 0 8px;
+  color:#eef3f1;
+  font-family:"Exo 2",sans-serif;
+  font-size:34px;
+  font-style:italic;
+  font-weight:900;
+  line-height:1.05
+}
+.giveaway-announcement-card h2 em{
+  color:#d9a637;
+  font-style:normal
+}
+.giveaway-announcement-card p{
+  margin:0 auto;
+  max-width:480px;
+  color:#a7b2b0;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.55
+}
+.giveaway-announcement-callout{
+  display:block;
+  margin-top:9px;
+  color:#20f39a;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-shadow:0 0 14px rgba(32,243,154,.22)
+}
+.giveaway-announcement-cta{
+  position:relative;
+  width:min(360px,100%);
+  min-height:48px;
+  margin:20px auto 0;
+  border:1px solid #20f39a;
+  border-radius:9px;
+  background:#20f39a;
+  color:#04100b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-decoration:none;
+  box-shadow:0 0 20px rgba(32,243,154,.16);
+  transition:.18s
+}
+.giveaway-announcement-cta:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+  box-shadow:0 0 28px rgba(32,243,154,.26)
+}
+.giveaway-announcement-cta .brand-glyph{
+  width:17px;
+  height:17px;
+  filter:brightness(0)
+}
+@keyframes giveawayAnnouncementFade{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes giveawayAnnouncementPop{
+  from{opacity:0;transform:scale(.94) translateY(10px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+@keyframes giveawayAnnouncementRing{
+  to{transform:rotate(360deg)}
+}
+@media(max-width:640px){
+  .giveaway-announcement-overlay{padding:14px}
+  .giveaway-announcement-card{padding:22px 18px 24px}
+  .giveaway-announcement-knife{height:165px}
+  .giveaway-announcement-knife img{max-height:150px}
+  .giveaway-announcement-card h2{font-size:27px}
+  .giveaway-announcement-card p{font-size:12px}
+  .giveaway-announcement-sponsor{flex-direction:column;gap:3px}
+}
