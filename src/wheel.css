@@ -3092,3 +3092,18 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .monthly-prize-card>.monthly-prize-value{font-size:25px!important}
  .monthly-prize-card>strong{font-size:14px!important}
 }
+
+
+/* Pull monthly prize card closer to participants panel */
+.monthly-prize-card{
+ transform:translateX(14px)
+}
+@media(min-width:1001px) and (max-width:1550px){
+ .monthly-prize-card{transform:translateX(10px)}
+}
+@media(min-width:1001px) and (max-height:780px){
+ .monthly-prize-card{transform:translateX(8px)}
+}
+.monthly-giveaway-page.is-focus .monthly-prize-card{
+ transform:translateX(42px) scale(.96)!important
+}
