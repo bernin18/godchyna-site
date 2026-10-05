@@ -3001,3 +3001,18 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  0%{background-position:0 0,120px 100%,0 0,100% 120px}
  100%{background-position:120px 0,0 100%,0 120px,100% 0}
 }
+
+
+/* Fix monthly prize waves: reuse the same real wave frame as participants */
+.monthly-prize-card::before{
+ content:none!important;
+ display:none!important
+}
+.monthly-prize-card>*:not(.monthly-prize-wave-frame){
+ position:relative;
+ z-index:2
+}
+.monthly-prize-wave-frame{
+ inset:-10px!important;
+ z-index:6!important
+}
