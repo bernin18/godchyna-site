@@ -459,9 +459,24 @@ function AboutPage(){
   );
 }
 
+const GIVEAWAY_ANNOUNCEMENT_SESSION_KEY = "godchyna-topskin-ursus-2026-10-06-seen";
+
 function GiveawayAnnouncementPopup(){
   const { pick } = useLanguage();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => {
+    if(typeof window === "undefined") return false;
+
+    try{
+      if(window.sessionStorage.getItem(GIVEAWAY_ANNOUNCEMENT_SESSION_KEY) === "1") {
+        return false;
+      }
+
+      window.sessionStorage.setItem(GIVEAWAY_ANNOUNCEMENT_SESSION_KEY, "1");
+      return true;
+    }catch{
+      return true;
+    }
+  });
 
   if(!open) return null;
 
