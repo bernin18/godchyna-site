@@ -3291,3 +3291,21 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  border-radius:18px!important;
  clip-path:inset(0 round 18px)!important
 }
+
+/* Extra separation between monthly prize and participants waves */
+.monthly-prize-card{
+ transform:translateX(-8px)!important
+}
+@media(min-width:1001px) and (max-width:1550px){
+ .monthly-prize-card{
+  transform:translateX(-10px)!important
+ }
+}
+@media(min-width:1001px) and (max-height:780px){
+ .monthly-prize-card{
+  transform:translateX(-12px)!important
+ }
+}
+.monthly-giveaway-page.is-focus .monthly-prize-card{
+ transform:translateX(42px) scale(.96)!important
+}
