@@ -2040,3 +2040,192 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   grid-template-columns:minmax(470px,1fr) 200px 340px
  }
 }
+
+
+/* Monthly giveaway v3: bigger prize card, event branding, spinning knife selector */
+.monthly-giveaway-page{
+ grid-template-columns:minmax(520px,1fr) 330px 390px;
+ column-gap:22px
+}
+
+.monthly-prize-card{
+ align-self:start;
+ margin-top:0;
+ padding:16px 16px 18px;
+ min-height:395px
+}
+.monthly-prize-card-media{
+ height:245px
+}
+.monthly-prize-card-media img{
+ max-height:225px;
+ max-width:96%
+}
+.monthly-prize-card>strong{
+ margin-top:14px;
+ font-size:13px
+}
+.monthly-prize-card>b{
+ margin-top:7px;
+ font-size:22px
+}
+.monthly-prize-sponsor{
+ margin-top:10px;
+ font-size:7px
+}
+
+.monthly-event-branding{
+ position:fixed;
+ z-index:30;
+ left:28px;
+ top:24px;
+ display:flex;
+ align-items:center;
+ gap:16px;
+ opacity:0;
+ transform:translateY(-10px);
+ pointer-events:none;
+ transition:opacity .35s ease .18s,transform .35s ease .18s
+}
+.monthly-giveaway-page.is-focus .monthly-event-branding{
+ opacity:1;
+ transform:translateY(0)
+}
+.monthly-chyna-brand{
+ position:relative;
+ display:flex;
+ align-items:center
+}
+.monthly-chyna-brand i{
+ position:absolute;
+ left:28px;
+ top:-13px;
+ color:#f5c51f;
+ font-family:"Exo 2",sans-serif;
+ font-size:18px;
+ font-style:normal;
+ font-weight:900;
+ transform:rotate(-8deg);
+ text-shadow:0 0 12px rgba(245,197,31,.35)
+}
+.monthly-chyna-brand strong{
+ color:#ffd21e;
+ font-family:"Exo 2",sans-serif;
+ font-size:34px;
+ font-style:italic;
+ font-weight:900;
+ letter-spacing:-.06em;
+ transform:skew(-8deg);
+ text-shadow:
+  1px 1px 0 #7a5600,
+  2px 2px 0 #211800,
+  0 0 14px rgba(255,210,30,.24)
+}
+.monthly-event-branding>span{
+ color:#f2f4f3;
+ font-family:"Exo 2",sans-serif;
+ font-size:24px;
+ font-weight:300
+}
+.monthly-event-branding>img{
+ display:block;
+ width:155px;
+ max-height:46px;
+ object-fit:contain;
+ filter:drop-shadow(0 0 8px rgba(255,120,30,.08))
+}
+
+/* The wheel is static. The knife itself is the selector. */
+.monthly-wheel-rotor,
+.monthly-wheel-rotor.is-spinning{
+ transition:none!important;
+ transform:none!important
+}
+
+.monthly-flying-knife{
+ position:fixed;
+ z-index:500;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ pointer-events:none;
+ transition:
+  left 1s cubic-bezier(.18,.84,.18,1),
+  top 1s cubic-bezier(.18,.84,.18,1),
+  width 1s cubic-bezier(.18,.84,.18,1),
+  height 1s cubic-bezier(.18,.84,.18,1)
+}
+.monthly-flying-knife img{
+ display:block;
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ transform-origin:50% 50%;
+ filter:drop-shadow(0 18px 22px rgba(0,0,0,.82)) drop-shadow(0 0 12px rgba(32,243,154,.18));
+ animation:monthly-knife-flight-spin .42s linear infinite
+}
+@keyframes monthly-knife-flight-spin{
+ from{transform:rotate(45deg)}
+ to{transform:rotate(405deg)}
+}
+
+.monthly-wheel-center.has-knife{
+ width:270px;
+ height:190px
+}
+.monthly-wheel-center.has-knife img{
+ display:block;
+ width:250px;
+ max-width:none;
+ height:155px;
+ object-fit:contain;
+ transform:rotate(var(--monthly-knife-angle,45deg));
+ transform-origin:50% 50%;
+ transition:transform 14s cubic-bezier(.06,.72,.025,1);
+ filter:drop-shadow(0 16px 20px rgba(0,0,0,.82)) drop-shadow(0 0 12px rgba(32,243,154,.18))
+}
+.monthly-wheel-center.has-knife.is-spinning img{
+ filter:drop-shadow(0 16px 20px rgba(0,0,0,.82)) drop-shadow(0 0 18px rgba(32,243,154,.28))
+}
+
+/* Disable the previous pulse animation: rotation now carries the motion. */
+.monthly-wheel-rotor.is-spinning + .monthly-wheel-center.has-knife img,
+.monthly-wheel-center.has-knife.is-spinning img{
+ animation:none!important
+}
+
+@media(min-width:1001px) and (max-width:1550px){
+ .monthly-giveaway-page{
+  grid-template-columns:minmax(470px,1fr) 275px 350px;
+  column-gap:14px
+ }
+ .monthly-prize-card{
+  min-height:340px;
+  padding:13px
+ }
+ .monthly-prize-card-media{height:195px}
+ .monthly-prize-card-media img{max-height:178px}
+ .monthly-prize-card>strong{font-size:11px}
+ .monthly-prize-card>b{font-size:19px}
+ .monthly-event-branding>img{width:138px}
+ .monthly-chyna-brand strong{font-size:30px}
+}
+
+@media(min-width:1001px) and (max-height:780px){
+ .monthly-giveaway-page{
+  grid-template-columns:minmax(450px,1fr) 250px 340px;
+  column-gap:12px
+ }
+ .monthly-prize-card{
+  min-height:300px;
+  padding:12px
+ }
+ .monthly-prize-card-media{height:165px}
+ .monthly-prize-card-media img{max-height:150px}
+ .monthly-prize-card>strong{margin-top:10px;font-size:10px}
+ .monthly-prize-card>b{font-size:17px}
+ .monthly-event-branding{left:20px;top:16px;gap:12px}
+ .monthly-event-branding>img{width:125px}
+ .monthly-chyna-brand strong{font-size:27px}
+ .monthly-chyna-brand i{left:22px;top:-11px;font-size:15px}
+}
