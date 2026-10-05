@@ -890,3 +890,388 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   justify-content:start;
  }
 }
+
+
+/* Monthly / special giveaway */
+.wheel-monthly-btn{
+ width:100%;
+ min-height:46px;
+ margin-top:9px;
+ border:1px solid rgba(32,243,154,.38);
+ border-radius:8px;
+ background:linear-gradient(90deg,rgba(32,243,154,.10),rgba(185,133,31,.08));
+ color:#20f39a;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:.12em;
+ cursor:pointer;
+ transition:.18s ease
+}
+.wheel-monthly-btn svg{width:16px}
+.wheel-monthly-btn:hover:not(:disabled){
+ border-color:rgba(32,243,154,.72);
+ background:linear-gradient(90deg,rgba(32,243,154,.16),rgba(185,133,31,.12));
+ box-shadow:0 0 22px rgba(32,243,154,.08);
+ transform:translateY(-1px)
+}
+.wheel-monthly-btn:disabled{cursor:not-allowed;opacity:.5}
+
+.monthly-giveaway-page{
+ position:fixed;
+ inset:0;
+ z-index:300;
+ overflow:hidden;
+ background:#000;
+ color:#f5f7f6;
+ font-family:"Chakra Petch",sans-serif
+}
+.monthly-exit-btn{
+ position:absolute;
+ z-index:30;
+ left:24px;
+ top:22px;
+ min-height:38px;
+ padding:0 13px;
+ border:1px solid #27363a;
+ border-radius:7px;
+ background:rgba(5,10,12,.88);
+ color:#9aa6a8;
+ display:flex;
+ align-items:center;
+ gap:6px;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:9px;
+ font-weight:900;
+ letter-spacing:.08em;
+ cursor:pointer;
+ transition:.25s ease
+}
+.monthly-exit-btn svg{width:14px}
+.monthly-exit-btn:hover:not(:disabled){color:#fff;border-color:rgba(217,166,55,.48)}
+.monthly-exit-btn:disabled{opacity:.25;cursor:default}
+
+.monthly-brand{
+ position:absolute;
+ z-index:20;
+ left:25px;
+ top:78px;
+ display:flex;
+ flex-direction:column;
+ transition:opacity .42s ease,transform .42s ease
+}
+.monthly-brand span{color:#6e7e81;font-size:8px;font-weight:900;letter-spacing:.2em}
+.monthly-brand strong{margin-top:5px;color:#f5f7f6;font-family:"Exo 2",sans-serif;font-size:26px;font-style:italic;font-weight:900;letter-spacing:.02em}
+.monthly-brand small{margin-top:4px;color:#20f39a;font-size:8px;font-weight:900;letter-spacing:.13em}
+
+.monthly-wheel-stage{
+ position:absolute;
+ inset:0 385px 0 0;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:
+  radial-gradient(circle at 50% 50%,rgba(185,133,31,.08),transparent 31%),
+  #000;
+ transition:right .65s cubic-bezier(.2,.8,.2,1)
+}
+.monthly-wheel-glow{
+ position:absolute;
+ width:72vmin;
+ height:72vmin;
+ border-radius:50%;
+ background:rgba(185,133,31,.075);
+ filter:blur(72px);
+ transition:width .65s ease,height .65s ease,opacity .65s ease
+}
+.monthly-wheel-shell{
+ --monthly-label-radius:29vmin;
+ position:relative;
+ z-index:5;
+ width:66vmin;
+ height:66vmin;
+ min-width:510px;
+ min-height:510px;
+ max-width:730px;
+ max-height:730px;
+ border:10px solid #0b1114;
+ border-radius:50%;
+ background:#05090b;
+ box-shadow:
+  0 0 0 2px rgba(217,166,55,.38),
+  0 0 70px rgba(185,133,31,.16),
+  inset 0 0 42px rgba(0,0,0,.48);
+ transition:width .75s cubic-bezier(.2,.8,.2,1),height .75s cubic-bezier(.2,.8,.2,1),max-width .75s ease,max-height .75s ease
+}
+.monthly-wheel-rotor{
+ position:absolute;
+ inset:0;
+ overflow:hidden;
+ border-radius:50%;
+ will-change:transform
+}
+.monthly-wheel-rotor.is-spinning{
+ transition:transform 8s cubic-bezier(.06,.72,.06,1)
+}
+.monthly-wheel-pointer{
+ position:absolute;
+ z-index:16;
+ left:50%;
+ top:calc(50% - min(35vmin,375px));
+ width:0;
+ height:0;
+ transform:translateX(-50%);
+ border-left:20px solid transparent;
+ border-right:20px solid transparent;
+ border-top:38px solid #20f39a;
+ filter:drop-shadow(0 0 13px rgba(32,243,154,.48));
+ transition:top .75s cubic-bezier(.2,.8,.2,1)
+}
+.monthly-wheel-name{
+ position:absolute;
+ z-index:4;
+ left:50%;
+ top:50%;
+ width:150px;
+ margin-left:-75px;
+ margin-top:-5px;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ color:#fffdf7;
+ text-align:center;
+ white-space:nowrap;
+ font-size:var(--wheel-name-size);
+ font-weight:900;
+ letter-spacing:.01em;
+ -webkit-text-stroke:1px #020202;
+ paint-order:stroke fill;
+ text-shadow:0 1px 0 #000,0 0 6px rgba(0,0,0,.96);
+ transform:rotate(var(--wheel-name-angle)) translateY(calc(-1 * var(--monthly-label-radius))) rotate(-90deg)
+}
+.monthly-wheel-name.is-selected{
+ color:#20f39a;
+ text-shadow:0 0 8px rgba(32,243,154,.68),0 1px 0 #000
+}
+.monthly-wheel-center{
+ position:absolute;
+ z-index:12;
+ left:50%;
+ top:50%;
+ width:142px;
+ height:142px;
+ transform:translate(-50%,-50%);
+ border:2px solid #d9a637;
+ border-radius:50%;
+ background:radial-gradient(circle,#151d20,#050809 72%);
+ color:#fff;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+ box-shadow:0 0 32px rgba(217,166,55,.18);
+ transition:.2s ease
+}
+.monthly-wheel-center:hover:not(:disabled){
+ border-color:#20f39a;
+ box-shadow:0 0 35px rgba(32,243,154,.18);
+ transform:translate(-50%,-50%) scale(1.03)
+}
+.monthly-wheel-center:disabled{cursor:default}
+.monthly-wheel-center span{color:#9eabad;font-size:9px;font-weight:900;letter-spacing:.14em}
+.monthly-wheel-center strong{margin-top:5px;color:#d9a637;font-family:"Exo 2",sans-serif;font-size:27px;font-style:italic;font-weight:900}
+
+.monthly-control-panel{
+ position:absolute;
+ z-index:22;
+ right:24px;
+ top:22px;
+ bottom:22px;
+ width:340px;
+ padding:20px;
+ overflow:auto;
+ border:1px solid #203036;
+ border-radius:13px;
+ background:linear-gradient(145deg,rgba(8,17,20,.97),rgba(3,7,9,.98));
+ box-shadow:0 26px 70px rgba(0,0,0,.55);
+ transition:opacity .42s ease,transform .55s cubic-bezier(.2,.8,.2,1)
+}
+.monthly-control-head{display:flex;flex-direction:column}
+.monthly-control-head span{color:#20f39a;font-size:8px;font-weight:900;letter-spacing:.17em}
+.monthly-control-head strong{margin-top:7px;color:#fff;font-family:"Exo 2",sans-serif;font-size:18px;font-style:italic;font-weight:900}
+.monthly-control-head em{
+ align-self:flex-start;
+ margin-top:9px;
+ padding:5px 7px;
+ border:1px solid rgba(217,166,55,.24);
+ border-radius:4px;
+ background:rgba(217,166,55,.04);
+ color:#b99a50;
+ font-size:7px;
+ font-style:normal;
+ font-weight:900;
+ letter-spacing:.12em
+}
+.monthly-prize{
+ height:120px;
+ margin:12px 0 10px;
+ display:flex;
+ align-items:center;
+ justify-content:center
+}
+.monthly-prize img{
+ display:block;
+ max-width:94%;
+ max-height:112px;
+ object-fit:contain;
+ filter:drop-shadow(0 12px 17px rgba(0,0,0,.62)) drop-shadow(0 0 10px rgba(217,166,55,.12))
+}
+.monthly-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 11px}
+.monthly-stats div{
+ padding:10px;
+ border:1px solid #1d3035;
+ border-radius:7px;
+ background:#060d10
+}
+.monthly-stats span{display:block;color:#627377;font-size:7px;font-weight:900;letter-spacing:.11em}
+.monthly-stats strong{display:block;margin-top:3px;color:#f4f6f5;font-size:19px;font-weight:900}
+.monthly-participants-input{
+ width:100%;
+ height:135px;
+ resize:none;
+ padding:11px 12px;
+ border:1px solid #23353a;
+ border-radius:8px;
+ background:#04090b;
+ color:#e8eeec;
+ outline:none;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:10px;
+ line-height:1.5
+}
+.monthly-participants-input:focus{border-color:rgba(32,243,154,.42);box-shadow:0 0 0 3px rgba(32,243,154,.035)}
+.monthly-panel-actions{display:grid;grid-template-columns:1fr 42px;gap:7px;margin-top:8px}
+.monthly-load-btn,.monthly-clear-btn{
+ min-height:40px;
+ border:1px solid #283a3f;
+ border-radius:7px;
+ background:#081114;
+ color:#9eabad;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:8px;
+ font-weight:900;
+ letter-spacing:.1em;
+ cursor:pointer
+}
+.monthly-load-btn:hover:not(:disabled){color:#20f39a;border-color:rgba(32,243,154,.38)}
+.monthly-clear-btn{display:grid;place-items:center}
+.monthly-clear-btn svg{width:14px}
+.monthly-load-btn:disabled,.monthly-clear-btn:disabled{opacity:.35;cursor:default}
+.monthly-participant-message{margin:8px 0 0;color:#738487;font-size:8px;line-height:1.4}
+.monthly-start-btn{
+ width:100%;
+ min-height:50px;
+ margin-top:12px;
+ border:1px solid #ffd65b;
+ border-radius:8px;
+ background:linear-gradient(90deg,#dca51f,#f4bf2f);
+ color:#100d03;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:.1em;
+ cursor:pointer;
+ transition:.18s
+}
+.monthly-start-btn svg{width:17px}
+.monthly-start-btn:hover:not(:disabled){filter:brightness(1.06);box-shadow:0 0 24px rgba(244,191,47,.14)}
+.monthly-start-btn:disabled{opacity:.4;cursor:default}
+.monthly-fairness-note{
+ margin:11px 0 0;
+ color:#56676a;
+ font-size:7.5px;
+ line-height:1.55;
+ text-align:center
+}
+
+.monthly-giveaway-page.is-focus .monthly-control-panel{
+ opacity:0;
+ transform:translateX(110%);
+ pointer-events:none
+}
+.monthly-giveaway-page.is-focus .monthly-brand,
+.monthly-giveaway-page.is-focus .monthly-exit-btn{
+ opacity:0;
+ transform:translateY(-8px);
+ pointer-events:none
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-stage{right:0}
+.monthly-giveaway-page.is-focus .monthly-wheel-glow{width:90vmin;height:90vmin;opacity:1}
+.monthly-giveaway-page.is-focus .monthly-wheel-shell{
+ --monthly-label-radius:38vmin;
+ width:86vmin;
+ height:86vmin;
+ max-width:900px;
+ max-height:900px
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-pointer{
+ top:calc(50% - min(45vmin,460px))
+}
+
+.monthly-winner-overlay{
+ position:absolute;
+ z-index:80;
+ inset:0;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:24px;
+ background:rgba(0,0,0,.66);
+ backdrop-filter:blur(8px);
+ animation:monthly-winner-fade .35s ease both
+}
+.monthly-winner-card{
+ width:min(560px,92vw);
+ padding:28px 32px 30px;
+ border:1px solid rgba(32,243,154,.42);
+ border-radius:16px;
+ background:
+  radial-gradient(circle at 50% 42%,rgba(32,243,154,.08),transparent 34%),
+  linear-gradient(145deg,#081114,#030708);
+ text-align:center;
+ box-shadow:0 30px 100px rgba(0,0,0,.78),0 0 38px rgba(32,243,154,.10)
+}
+.monthly-winner-card>span{color:#20f39a;font-size:10px;font-weight:900;letter-spacing:.16em}
+.monthly-winner-card img{display:block;width:min(390px,88%);height:175px;margin:10px auto 4px;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(0,0,0,.6))}
+.monthly-winner-card>strong{display:block;color:#fff;font-family:"Exo 2",sans-serif;font-size:42px;font-style:italic;font-weight:900;text-shadow:0 0 18px rgba(32,243,154,.17)}
+.monthly-winner-card p{margin:5px 0;color:#d9a637;font-size:14px;font-weight:900}
+.monthly-winner-card small{display:block;color:#718184;font-size:8px;font-weight:900;letter-spacing:.12em}
+.monthly-winner-card button{
+ min-width:220px;
+ min-height:44px;
+ margin-top:20px;
+ border:1px solid #20f39a;
+ border-radius:7px;
+ background:#20f39a;
+ color:#03100a;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:9px;
+ font-weight:900;
+ letter-spacing:.09em;
+ cursor:pointer
+}
+@keyframes monthly-winner-fade{from{opacity:0}to{opacity:1}}
+
+@media(max-width:1100px){
+ .monthly-control-panel{width:300px}
+ .monthly-wheel-stage{right:340px}
+ .monthly-wheel-shell{min-width:430px;min-height:430px}
+}
