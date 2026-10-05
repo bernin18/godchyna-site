@@ -589,6 +589,15 @@ function formatFactoryNewSkinName(name: string) {
   return /(?:^|\s)FN$/i.test(trimmed) ? trimmed : `${trimmed} FN`;
 }
 
+type MonthlyHistoryDemo = {
+  winnerName: string;
+  skinName: string;
+  skinValue: number;
+  imageUrl: string;
+  completedAt: string;
+  phase: "showcase" | "landed";
+};
+
 export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const { pick } = useLanguage();
   const [session, setSession] = useState<Session | null>(null);
@@ -606,6 +615,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [monthlyLaunching, setMonthlyLaunching] = useState(false);
   const [monthlyKnifeDocked, setMonthlyKnifeDocked] = useState(false);
   const [monthlyKnifeFlightStyle, setMonthlyKnifeFlightStyle] = useState<CSSProperties | null>(null);
+  const [monthlyHistoryDemo, setMonthlyHistoryDemo] = useState<MonthlyHistoryDemo | null>(null);
+  const [monthlyHistoryFlightStyle, setMonthlyHistoryFlightStyle] = useState<CSSProperties | null>(null);
+  const monthlyHistoryFlightRef = useRef<HTMLElement | null>(null);
+  const monthlyHistorySlotRef = useRef<HTMLDivElement | null>(null);
   const [giveawayHistory, setGiveawayHistory] = useState<Array<{
     id: number;
     offeredBy: string;
@@ -752,6 +765,60 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     return () => data.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!monthlyHistoryDemo || monthlyHistoryDemo.phase !== "showcase") return;
+
+    let finishTimer: number | null = null;
+
+    const holdTimer = window.setTimeout(() => {
+      const flyingCard = monthlyHistoryFlightRef.current;
+      const targetSlot = monthlyHistorySlotRef.current;
+
+      if (!flyingCard || !targetSlot) {
+        setMonthlyHistoryDemo((current) =>
+          current ? { ...current, phase: "landed" } : current,
+        );
+        setMonthlyHistoryFlightStyle(null);
+        return;
+      }
+
+      const from = flyingCard.getBoundingClientRect();
+      const to = targetSlot.getBoundingClientRect();
+
+      setMonthlyHistoryFlightStyle({
+        left: from.left,
+        top: from.top,
+        width: from.width,
+        height: from.height,
+        transform: "none",
+      });
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setMonthlyHistoryFlightStyle({
+            left: to.left,
+            top: to.top,
+            width: to.width,
+            height: to.height,
+            transform: "none",
+          });
+
+          finishTimer = window.setTimeout(() => {
+            setMonthlyHistoryDemo((current) =>
+              current ? { ...current, phase: "landed" } : current,
+            );
+            setMonthlyHistoryFlightStyle(null);
+          }, 950);
+        });
+      });
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(holdTimer);
+      if (finishTimer !== null) window.clearTimeout(finishTimer);
+    };
+  }, [monthlyHistoryDemo?.phase]);
 
   useEffect(() => {
     if (!session?.user.id) {
@@ -3236,6 +3303,30 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       null,
     );
 
+    function revealMonthlyWinnerInHistory() {
+      if (!monthlyWinner) return;
+
+      stopMonthlyGiveawayAudio();
+      setMonthlyHistoryFlightStyle(null);
+      setMonthlyHistoryDemo({
+        winnerName: monthlyWinner,
+        skinName: monthlyPrizeName,
+        skinValue: monthlyPrizeValue,
+        imageUrl: monthlyPrizeImageUrl,
+        completedAt: new Date().toISOString(),
+        phase: "showcase",
+      });
+
+      setMonthlyGiveawayMode(false);
+      setMonthlyWinner(null);
+      setMonthlyKnifeRotation(45);
+      setMonthlyWheelRotation(0);
+      setMonthlyLaunching(false);
+      setMonthlySpinning(false);
+      setMonthlyKnifeDocked(false);
+      setMonthlyKnifeFlightStyle(null);
+    }
+
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
         <div className="monthly-page-watermark" aria-hidden="true">
@@ -3605,20 +3696,30 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 )}
               </p>
               <h3>{pick("PARABÉNS!!!!!!!", "CONGRATULATIONS!!!!!!!")}</h3>
-              <button
-                type="button"
-                onClick={() => {
-                  stopMonthlyGiveawayAudio();
-                  setMonthlyWinner(null);
-                  setMonthlyKnifeRotation(45);
-                  setMonthlyWheelRotation(0);
-                  setMonthlyLaunching(false);
-                  setMonthlyKnifeDocked(false);
-                  setMonthlyKnifeFlightStyle(null);
-                }}
-              >
-                {pick("VOLTAR À CONFIGURAÇÃO", "BACK TO SETUP")}
-              </button>
+              <div className="monthly-winner-actions">
+                <button
+                  type="button"
+                  className="monthly-winner-history-btn"
+                  onClick={revealMonthlyWinnerInHistory}
+                >
+                  {pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} <ArrowRight />
+                </button>
+                <button
+                  type="button"
+                  className="monthly-winner-back-btn"
+                  onClick={() => {
+                    stopMonthlyGiveawayAudio();
+                    setMonthlyWinner(null);
+                    setMonthlyKnifeRotation(45);
+                    setMonthlyWheelRotation(0);
+                    setMonthlyLaunching(false);
+                    setMonthlyKnifeDocked(false);
+                    setMonthlyKnifeFlightStyle(null);
+                  }}
+                >
+                  {pick("VOLTAR À CONFIGURAÇÃO", "BACK TO SETUP")}
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -5203,6 +5304,34 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           )}</p>
         </section>
 
+        {monthlyHistoryDemo && monthlyHistoryDemo.phase !== "landed" && (
+          <article
+            ref={monthlyHistoryFlightRef}
+            className={`giveaway-history-card giveaway-history-card-monthly monthly-history-arrival${monthlyHistoryFlightStyle ? " is-flying" : ""}`}
+            style={monthlyHistoryFlightStyle ?? undefined}
+          >
+            <div className="monthly-history-smoke" aria-hidden="true" />
+            <div className="monthly-history-art" aria-hidden="true">
+              <img src={monthlyHistoryDemo.imageUrl} alt="" />
+            </div>
+            <div className="monthly-history-content">
+              <div className="monthly-history-top">
+                <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
+                <small>{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
+              </div>
+              <em>
+                {pick("OFERECIDO POR", "OFFERED BY")} · <b>Chyna</b>
+              </em>
+              <strong>
+                <span>{pick("VENCEDOR", "WINNER")}: </span>
+                <b>{monthlyHistoryDemo.winnerName}</b>
+              </strong>
+              <span className="monthly-history-skin">{monthlyHistoryDemo.skinName}</span>
+              <b className="monthly-history-value">$ {monthlyHistoryDemo.skinValue.toFixed(2)}</b>
+            </div>
+          </article>
+        )}
+
         <section className="wheel-showcase">
           <aside className="giveaway-history" aria-label={pick("Vencedores dos giveaways", "Giveaway winners")}>
             <div className="giveaway-history-head">
@@ -5211,13 +5340,48 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <div className={`giveaway-history-window${giveawayHistory.length >= 5 ? " is-rolling" : ""}`}>
               {giveawayHistory.length > 0 ? (
-                <div className={`giveaway-history-track${giveawayHistory.length >= 5 ? " is-rolling" : ""}`}>
+                <div className={`giveaway-history-track${giveawayHistory.length >= 5 ? " is-rolling" : ""}${monthlyHistoryDemo && monthlyHistoryDemo.phase !== "landed" ? " is-arrival-paused" : ""}`}>
                   {(giveawayHistory.length >= 5 ? [0, 1] : [0]).map((groupIndex) => (
                     <div
                       className="giveaway-history-group"
                       key={groupIndex}
                       aria-hidden={groupIndex === 1}
                     >
+                      {monthlyHistoryDemo && (
+                        monthlyHistoryDemo.phase === "landed" ? (
+                          <article
+                            className="giveaway-history-card giveaway-history-card-monthly"
+                            key={`${groupIndex}-monthly-demo`}
+                          >
+                            <div className="monthly-history-smoke" aria-hidden="true" />
+                            <div className="monthly-history-art" aria-hidden="true">
+                              <img src={monthlyHistoryDemo.imageUrl} alt="" />
+                            </div>
+                            <div className="monthly-history-content">
+                              <div className="monthly-history-top">
+                                <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
+                                <small>{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
+                              </div>
+                              <em>
+                                {pick("OFERECIDO POR", "OFFERED BY")} · <b>Chyna</b>
+                              </em>
+                              <strong>
+                                <span>{pick("VENCEDOR", "WINNER")}: </span>
+                                <b>{monthlyHistoryDemo.winnerName}</b>
+                              </strong>
+                              <span className="monthly-history-skin">{monthlyHistoryDemo.skinName}</span>
+                              <b className="monthly-history-value">$ {monthlyHistoryDemo.skinValue.toFixed(2)}</b>
+                            </div>
+                          </article>
+                        ) : (
+                          <div
+                            ref={groupIndex === 0 ? monthlyHistorySlotRef : undefined}
+                            className="giveaway-history-monthly-slot"
+                            aria-hidden="true"
+                          />
+                        )
+                      )}
+
                       {giveawayHistory.map((item) => (
                         <article className="giveaway-history-card" key={`${groupIndex}-${item.id}`}>
                           <div className="giveaway-history-top">
