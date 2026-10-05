@@ -3530,3 +3530,27 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
     bottom: 22px !important;
   }
 }
+
+/* Monthly stream layout v3: center wheel + lower prize card */
+/* Bring the wheel back toward the visual centre. */
+.monthly-wheel-stage{
+  justify-content:center!important;
+  padding-right:0!important;
+}
+
+/* Lower the skin card to leave more webcam space above it. */
+.monthly-prize-card{
+  margin-top:220px!important;
+}
+
+@media (min-width:1001px) and (max-width:1550px){
+  .monthly-prize-card{
+    margin-top:180px!important;
+  }
+}
+
+@media (min-width:1001px) and (max-height:780px){
+  .monthly-prize-card{
+    margin-top:150px!important;
+  }
+}
