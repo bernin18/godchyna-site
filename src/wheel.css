@@ -2603,3 +2603,67 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 @media(min-width:1001px) and (max-height:780px){
  .monthly-event-branding-image{width:220px!important}
 }
+
+
+/* Monthly event polish: larger brand + animated wavy frame */
+.monthly-event-branding{
+ left:30px!important;
+ top:22px!important
+}
+.monthly-event-branding-image{
+ width:380px!important;
+ max-width:42vw!important;
+ max-height:124px!important;
+ filter:drop-shadow(0 0 18px rgba(255,210,30,.20))!important
+}
+
+.monthly-participants-panel{
+ border:none!important;
+ overflow:visible!important
+}
+.monthly-participants-panel::before{
+ content:"";
+ position:absolute;
+ z-index:3;
+ inset:-4px;
+ pointer-events:none;
+ border-radius:16px;
+ background:
+  linear-gradient(90deg,rgba(217,166,55,.95),rgba(32,243,154,.75),rgba(217,166,55,.95));
+ padding:2px;
+ -webkit-mask:
+  linear-gradient(#000 0 0) content-box,
+  linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;
+ mask-composite:exclude;
+ clip-path:polygon(
+  0 8px,2% 2px,4% 7px,6% 1px,8% 6px,10% 0,12% 6px,14% 1px,16% 7px,18% 2px,20% 8px,
+  80% 8px,82% 2px,84% 7px,86% 1px,88% 6px,90% 0,92% 6px,94% 1px,96% 7px,98% 2px,100% 8px,
+  calc(100% - 8px) 100%,98% calc(100% - 2px),96% calc(100% - 7px),94% calc(100% - 1px),92% calc(100% - 6px),
+  90% 100%,88% calc(100% - 6px),86% calc(100% - 1px),84% calc(100% - 7px),82% calc(100% - 2px),80% calc(100% - 8px),
+  20% calc(100% - 8px),18% calc(100% - 2px),16% calc(100% - 7px),14% calc(100% - 1px),12% calc(100% - 6px),
+  10% 100%,8% calc(100% - 6px),6% calc(100% - 1px),4% calc(100% - 7px),2% calc(100% - 2px),0 calc(100% - 8px)
+ );
+ opacity:.95;
+ filter:drop-shadow(0 0 6px rgba(217,166,55,.30)) drop-shadow(0 0 10px rgba(32,243,154,.18));
+ animation:monthlyWavyFrame 1.7s ease-in-out infinite alternate
+}
+@keyframes monthlyWavyFrame{
+ 0%{
+  transform:translateY(0) scale(1);
+  filter:drop-shadow(0 0 5px rgba(217,166,55,.24)) drop-shadow(0 0 8px rgba(32,243,154,.12));
+  opacity:.78
+ }
+ 100%{
+  transform:translateY(-1px) scale(1.003);
+  filter:drop-shadow(0 0 10px rgba(217,166,55,.42)) drop-shadow(0 0 14px rgba(32,243,154,.24));
+  opacity:1
+ }
+}
+
+@media(min-width:1001px) and (max-width:1550px){
+ .monthly-event-branding-image{width:330px!important}
+}
+@media(min-width:1001px) and (max-height:780px){
+ .monthly-event-branding-image{width:290px!important}
+}
