@@ -2856,3 +2856,89 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  }
  .monthly-page-watermark span{font-size:46px!important}
 }
+
+
+/* Monthly transparency pass: keep GIVEAWAY watermark visible through the UI */
+.monthly-participants-panel{
+ background:
+  linear-gradient(145deg,rgba(10,18,21,.62),rgba(3,7,9,.68))!important;
+ backdrop-filter:blur(8px);
+ -webkit-backdrop-filter:blur(8px)
+}
+.monthly-participants-panel::after{
+ background:
+  radial-gradient(circle at 15% 0%,rgba(185,133,31,.055),transparent 28%),
+  linear-gradient(180deg,rgba(255,255,255,.012),transparent 22%)!important
+}
+.monthly-participants-panel .participants-quick-add{
+ background:rgba(4,11,13,.42)!important
+}
+.monthly-participants-panel .participants-input{
+ background:rgba(3,8,10,.50)!important
+}
+.monthly-participants-panel .participants-loaded{
+ background:rgba(3,8,10,.44)!important
+}
+.monthly-participants-panel .participants-search{
+ background:rgba(6,13,16,.48)!important
+}
+.monthly-participants-panel .participant-row-grouped{
+ background:rgba(7,14,17,.34)!important
+}
+.monthly-participants-panel .participant-row-grouped:hover{
+ background:rgba(185,133,31,.055)!important
+}
+.monthly-participant-stats>div{
+ background:rgba(4,10,12,.44)!important
+}
+.monthly-participant-stats .is-leader{
+ background:linear-gradient(135deg,rgba(185,133,31,.065),rgba(4,10,12,.44))!important
+}
+
+.monthly-prize-card{
+ background:linear-gradient(145deg,rgba(8,17,22,.58),rgba(4,9,11,.64))!important;
+ backdrop-filter:blur(7px);
+ -webkit-backdrop-filter:blur(7px)
+}
+.monthly-prize-card-media{
+ background:
+  radial-gradient(circle,rgba(185,133,31,.055),transparent 66%),
+  rgba(3,7,8,.44)!important
+}
+
+/* Winner music control */
+.monthly-winner-card{
+ position:relative
+}
+.monthly-winner-volume{
+ position:absolute;
+ top:14px;
+ right:14px;
+ z-index:4;
+ width:36px;
+ height:36px;
+ margin:0!important;
+ padding:0!important;
+ border:1px solid rgba(217,166,55,.28)!important;
+ border-radius:50%!important;
+ background:rgba(4,10,12,.78)!important;
+ color:#d9a637!important;
+ display:grid!important;
+ place-items:center!important;
+ box-shadow:0 0 14px rgba(217,166,55,.08);
+ transition:.18s ease
+}
+.monthly-winner-volume svg{
+ width:17px;
+ height:17px
+}
+.monthly-winner-volume:hover{
+ color:#fff!important;
+ border-color:rgba(32,243,154,.55)!important;
+ background:rgba(7,16,18,.92)!important;
+ box-shadow:0 0 16px rgba(32,243,154,.12)
+}
+.monthly-winner-volume.is-muted{
+ color:#ff7a87!important;
+ border-color:rgba(255,122,135,.34)!important
+}
