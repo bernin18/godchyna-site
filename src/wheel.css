@@ -1275,3 +1275,480 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .monthly-wheel-stage{right:340px}
  .monthly-wheel-shell{min-width:430px;min-height:430px}
 }
+
+
+/* Monthly / special giveaway mode */
+.wheel-monthly-btn{
+ width:100%;
+ min-height:46px;
+ margin-top:9px;
+ border:1px solid rgba(32,243,154,.34);
+ border-radius:8px;
+ background:linear-gradient(90deg,rgba(32,243,154,.10),rgba(185,133,31,.08));
+ color:#dfffee;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:.12em;
+ cursor:pointer;
+ transition:.18s ease
+}
+.wheel-monthly-btn svg{width:15px;height:15px}
+.wheel-monthly-btn:hover:not(:disabled){
+ border-color:#20f39a;
+ color:#20f39a;
+ background:rgba(32,243,154,.075);
+ box-shadow:0 0 18px rgba(32,243,154,.10);
+ transform:translateY(-1px)
+}
+.wheel-monthly-btn:disabled{cursor:not-allowed;opacity:.5}
+
+.monthly-giveaway-page{
+ position:fixed;
+ inset:0;
+ z-index:300;
+ min-width:1000px;
+ min-height:100vh;
+ overflow:hidden;
+ display:grid;
+ grid-template-columns:minmax(0,1fr) 390px;
+ grid-template-rows:92px minmax(0,1fr);
+ gap:14px 24px;
+ padding:22px 28px 26px;
+ background:#000;
+ color:#fff;
+ font-family:"Chakra Petch",sans-serif
+}
+.monthly-exit-btn{
+ position:absolute;
+ z-index:20;
+ top:22px;
+ right:28px;
+ min-height:38px;
+ padding:0 13px;
+ border:1px solid #253238;
+ border-radius:7px;
+ background:#05090b;
+ color:#869497;
+ display:flex;
+ align-items:center;
+ gap:7px;
+ font-size:9px;
+ font-weight:900;
+ letter-spacing:.08em;
+ cursor:pointer;
+ transition:.18s ease
+}
+.monthly-exit-btn svg{width:14px;height:14px}
+.monthly-exit-btn:hover:not(:disabled){color:#fff;border-color:#536167}
+.monthly-exit-btn:disabled{opacity:.25;cursor:default}
+
+.monthly-brand{
+ grid-column:1;
+ grid-row:1;
+ align-self:end;
+ justify-self:center;
+ text-align:center;
+ transition:opacity .35s ease,transform .35s ease
+}
+.monthly-brand span{
+ display:block;
+ color:#606d70;
+ font-size:8px;
+ font-weight:900;
+ letter-spacing:.20em
+}
+.monthly-brand strong{
+ display:block;
+ margin-top:4px;
+ color:#f4f6f5;
+ font-family:"Exo 2",sans-serif;
+ font-size:27px;
+ font-style:italic;
+ font-weight:900;
+ line-height:1
+}
+.monthly-brand small{
+ display:block;
+ margin-top:5px;
+ color:#20f39a;
+ font-size:8px;
+ font-weight:900;
+ letter-spacing:.13em
+}
+
+.monthly-wheel-stage{
+ position:relative;
+ grid-column:1;
+ grid-row:2;
+ min-width:0;
+ min-height:0;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ transition:all .55s cubic-bezier(.2,.8,.2,1)
+}
+.monthly-wheel-glow{
+ position:absolute;
+ width:min(74vh,74vw,820px);
+ height:min(74vh,74vw,820px);
+ border-radius:50%;
+ background:rgba(185,133,31,.08);
+ filter:blur(78px);
+ opacity:.7;
+ transition:.55s ease
+}
+.monthly-wheel-shell{
+ --monthly-wheel-size:min(68vh,68vw,735px);
+ --monthly-label-radius:min(28.5vh,28.5vw,308px);
+ position:relative;
+ z-index:2;
+ width:var(--monthly-wheel-size);
+ height:var(--monthly-wheel-size);
+ flex:0 0 var(--monthly-wheel-size);
+ border-radius:50%;
+ border:10px solid #0d1518;
+ background:#05090b;
+ box-shadow:
+   0 0 0 2px rgba(185,133,31,.40),
+   0 0 65px rgba(185,133,31,.18),
+   inset 0 0 50px rgba(0,0,0,.62);
+ transition:width .6s cubic-bezier(.2,.8,.2,1),height .6s cubic-bezier(.2,.8,.2,1),flex-basis .6s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease
+}
+.monthly-wheel-rotor{
+ position:absolute;
+ inset:0;
+ overflow:hidden;
+ border-radius:50%;
+ will-change:transform
+}
+.monthly-wheel-rotor.is-spinning{
+ transition:transform 8.2s cubic-bezier(.06,.70,.05,1)
+}
+.monthly-wheel-name{
+ position:absolute;
+ z-index:3;
+ left:50%;
+ top:50%;
+ width:150px;
+ margin-left:-75px;
+ margin-top:-7px;
+ color:#fffdf8;
+ text-align:center;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:var(--wheel-name-size);
+ font-weight:900;
+ letter-spacing:.015em;
+ -webkit-text-stroke:1.15px #030303;
+ paint-order:stroke fill;
+ text-shadow:0 1px 0 #000,0 0 6px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.70);
+ transform:rotate(var(--wheel-name-angle)) translateY(calc(-1 * var(--monthly-label-radius))) rotate(-90deg)
+}
+.monthly-wheel-name.is-selected{
+ color:#fff;
+ text-shadow:0 0 5px #000,0 0 12px rgba(32,243,154,.75),0 0 20px rgba(32,243,154,.42)
+}
+.monthly-wheel-pointer{
+ position:absolute;
+ z-index:8;
+ top:calc(50% - min(34vh,34vw,372px));
+ left:50%;
+ width:0;
+ height:0;
+ transform:translateX(-50%);
+ border-left:20px solid transparent;
+ border-right:20px solid transparent;
+ border-top:38px solid #20f39a;
+ filter:drop-shadow(0 0 14px rgba(32,243,154,.48));
+ transition:top .6s cubic-bezier(.2,.8,.2,1)
+}
+.monthly-wheel-center{
+ position:absolute;
+ z-index:7;
+ left:50%;
+ top:50%;
+ width:150px;
+ height:150px;
+ transform:translate(-50%,-50%);
+ border:2px solid #d8a329;
+ border-radius:50%;
+ background:radial-gradient(circle,#172229,#05090b 72%);
+ color:#fff;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+ box-shadow:0 0 28px rgba(185,133,31,.23);
+ transition:.18s ease
+}
+.monthly-wheel-center:hover:not(:disabled){border-color:#20f39a;box-shadow:0 0 32px rgba(32,243,154,.17)}
+.monthly-wheel-center:disabled{cursor:default}
+.monthly-wheel-center span{font-size:10px;font-weight:900;letter-spacing:.13em}
+.monthly-wheel-center strong{
+ margin-top:5px;
+ color:#d9a637;
+ font-family:"Exo 2",sans-serif;
+ font-size:28px;
+ font-style:italic;
+ font-weight:900;
+ line-height:1
+}
+
+.monthly-control-panel{
+ grid-column:2;
+ grid-row:1 / 3;
+ align-self:center;
+ width:100%;
+ max-height:calc(100vh - 52px);
+ padding:20px;
+ overflow:auto;
+ border:1px solid #1c2a2e;
+ border-radius:13px;
+ background:linear-gradient(145deg,#071014,#030607);
+ box-shadow:0 24px 70px rgba(0,0,0,.45);
+ transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1)
+}
+.monthly-control-head span{
+ display:block;
+ color:#68777a;
+ font-size:8px;
+ font-weight:900;
+ letter-spacing:.15em
+}
+.monthly-control-head strong{
+ display:block;
+ margin-top:5px;
+ color:#f0f4f2;
+ font-size:15px;
+ font-weight:900
+}
+.monthly-control-head em{
+ display:inline-block;
+ margin-top:7px;
+ padding:4px 7px;
+ border:1px solid rgba(244,191,47,.22);
+ border-radius:4px;
+ color:#caa23f;
+ background:rgba(244,191,47,.04);
+ font-size:7px;
+ font-style:normal;
+ font-weight:900;
+ letter-spacing:.10em
+}
+.monthly-prize{
+ height:116px;
+ margin:11px 0 10px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border:1px solid #142126;
+ border-radius:8px;
+ background:radial-gradient(circle,rgba(185,133,31,.07),transparent 65%)
+}
+.monthly-prize img{max-width:92%;max-height:105px;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(0,0,0,.65))}
+.monthly-stats{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-bottom:11px
+}
+.monthly-stats>div{
+ padding:10px 11px;
+ border:1px solid #17262a;
+ border-radius:7px;
+ background:#050b0e
+}
+.monthly-stats span{display:block;color:#667578;font-size:7px;font-weight:900;letter-spacing:.12em}
+.monthly-stats strong{display:block;margin-top:4px;color:#20f39a;font-size:20px;font-weight:900}
+.monthly-participants-input{
+ display:block;
+ width:100%;
+ height:120px;
+ resize:none;
+ padding:11px;
+ border:1px solid #24353a;
+ border-radius:7px;
+ outline:none;
+ background:#04090b;
+ color:#e9efed;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:10px;
+ line-height:1.45
+}
+.monthly-participants-input:focus{border-color:rgba(32,243,154,.45);box-shadow:0 0 0 3px rgba(32,243,154,.035)}
+.monthly-panel-actions{display:grid;grid-template-columns:1fr 43px;gap:8px;margin-top:8px}
+.monthly-load-btn,.monthly-clear-btn,.monthly-start-btn{
+ border-radius:7px;
+ font-family:"Chakra Petch",sans-serif;
+ font-weight:900;
+ cursor:pointer
+}
+.monthly-load-btn{
+ min-height:38px;
+ border:1px solid #2b3d42;
+ background:#081116;
+ color:#9eacaf;
+ font-size:8px;
+ letter-spacing:.10em
+}
+.monthly-clear-btn{
+ border:1px solid #2b3d42;
+ background:#081116;
+ color:#829093;
+ display:grid;
+ place-items:center
+}
+.monthly-clear-btn svg{width:14px;height:14px}
+.monthly-load-btn:hover:not(:disabled),.monthly-clear-btn:hover:not(:disabled){color:#fff;border-color:#52656b}
+.monthly-participant-message{
+ margin:8px 0 0;
+ color:#78878a;
+ font-size:8px;
+ line-height:1.45
+}
+.monthly-start-btn{
+ width:100%;
+ min-height:50px;
+ margin-top:12px;
+ border:1px solid #55ffb5;
+ background:linear-gradient(90deg,#14c97b,#20f39a);
+ color:#021008;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ font-size:10px;
+ letter-spacing:.12em;
+ box-shadow:0 0 20px rgba(32,243,154,.10)
+}
+.monthly-start-btn svg{width:16px;height:16px}
+.monthly-start-btn:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 0 26px rgba(32,243,154,.18)}
+.monthly-start-btn:disabled,.monthly-load-btn:disabled,.monthly-clear-btn:disabled{opacity:.35;cursor:default}
+.monthly-fairness-note{
+ margin:10px 2px 0;
+ color:#5f6e71;
+ font-size:7px;
+ line-height:1.5;
+ text-align:center
+}
+
+/* Cinematic draw: while the wheel spins, everything except the wheel fades away. */
+.monthly-giveaway-page.is-focus .monthly-brand,
+.monthly-giveaway-page.is-focus .monthly-control-panel,
+.monthly-giveaway-page.is-focus .monthly-exit-btn{
+ opacity:0;
+ pointer-events:none
+}
+.monthly-giveaway-page.is-focus .monthly-control-panel{transform:translateX(35px)}
+.monthly-giveaway-page.is-focus .monthly-brand{transform:translateY(-15px)}
+.monthly-giveaway-page.is-focus .monthly-wheel-stage{
+ position:fixed;
+ inset:0;
+ z-index:5;
+ background:#000
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-shell{
+ --monthly-wheel-size:min(88vh,88vw,940px);
+ --monthly-label-radius:min(37vh,37vw,394px);
+ width:var(--monthly-wheel-size);
+ height:var(--monthly-wheel-size);
+ flex-basis:var(--monthly-wheel-size);
+ border-width:12px;
+ box-shadow:
+   0 0 0 2px rgba(185,133,31,.48),
+   0 0 90px rgba(185,133,31,.22),
+   inset 0 0 65px rgba(0,0,0,.62)
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-pointer{
+ position:fixed;
+ top:calc(50% - min(44vh,44vw,470px));
+ z-index:12
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-glow{
+ width:min(94vh,94vw,1010px);
+ height:min(94vh,94vw,1010px);
+ opacity:.85
+}
+.monthly-giveaway-page.is-focus .monthly-wheel-name{font-size:calc(var(--wheel-name-size) + 1px)}
+
+.monthly-winner-overlay{
+ position:fixed;
+ inset:0;
+ z-index:50;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:24px;
+ background:rgba(0,0,0,.82);
+ backdrop-filter:blur(7px)
+}
+.monthly-winner-card{
+ width:min(620px,100%);
+ padding:28px 34px 30px;
+ border:1px solid rgba(32,243,154,.42);
+ border-radius:16px;
+ background:
+  radial-gradient(circle at 50% 40%,rgba(32,243,154,.10),transparent 38%),
+  linear-gradient(145deg,#081013,#030607);
+ text-align:center;
+ box-shadow:0 35px 100px rgba(0,0,0,.80),0 0 38px rgba(32,243,154,.11)
+}
+.monthly-winner-card>span{
+ color:#20f39a;
+ font-size:9px;
+ font-weight:900;
+ letter-spacing:.15em
+}
+.monthly-winner-card img{
+ display:block;
+ width:min(420px,90%);
+ height:180px;
+ object-fit:contain;
+ margin:8px auto 2px;
+ filter:drop-shadow(0 18px 24px rgba(0,0,0,.65))
+}
+.monthly-winner-card>strong{
+ display:block;
+ margin-top:6px;
+ color:#fff;
+ font-family:"Exo 2",sans-serif;
+ font-size:46px;
+ font-style:italic;
+ font-weight:900;
+ text-shadow:0 0 24px rgba(32,243,154,.23)
+}
+.monthly-winner-card p{margin:7px 0 0;color:#d9a637;font-size:14px;font-weight:900}
+.monthly-winner-card small{display:block;margin-top:8px;color:#748386;font-size:8px;font-weight:900;letter-spacing:.11em}
+.monthly-winner-card button{
+ min-height:42px;
+ margin-top:20px;
+ padding:0 18px;
+ border:1px solid #2c3e43;
+ border-radius:7px;
+ background:#081116;
+ color:#a5b2b4;
+ font-family:"Chakra Petch",sans-serif;
+ font-size:8px;
+ font-weight:900;
+ letter-spacing:.10em;
+ cursor:pointer
+}
+.monthly-winner-card button:hover{color:#fff;border-color:#20f39a}
+
+@media(max-height:780px) and (min-width:1001px){
+ .monthly-giveaway-page{grid-template-columns:minmax(0,1fr) 350px;grid-template-rows:70px minmax(0,1fr);padding:14px 20px 18px}
+ .monthly-wheel-shell{--monthly-wheel-size:min(64vh,64vw,620px);--monthly-label-radius:min(26.5vh,26.5vw,260px)}
+ .monthly-control-panel{padding:15px;max-height:calc(100vh - 30px)}
+ .monthly-prize{height:82px}
+ .monthly-prize img{max-height:75px}
+ .monthly-participants-input{height:82px}
+ .monthly-brand strong{font-size:22px}
+}
