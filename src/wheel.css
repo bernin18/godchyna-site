@@ -4642,3 +4642,147 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   top:8px!important;
   bottom:6px!important
 }
+
+/* Monthly history readability + value under artwork */
+.monthly-history-smoke{
+  right:-18%!important;
+  top:-18%!important;
+  width:54%!important;
+  height:138%!important;
+  opacity:.92!important;
+  filter:blur(11px)!important;
+  background:
+    radial-gradient(ellipse at 74% 34%,rgba(255,208,79,.42) 0 14%,transparent 38%),
+    radial-gradient(ellipse at 54% 48%,rgba(128,86,22,.40) 0 21%,transparent 48%),
+    radial-gradient(ellipse at 78% 76%,rgba(234,160,28,.34) 0 16%,transparent 44%),
+    radial-gradient(ellipse at 38% 72%,rgba(78,54,18,.28) 0 17%,transparent 45%)!important
+}
+
+.monthly-history-art{
+  right:-4px!important;
+  width:56%!important;
+  top:7px!important;
+  bottom:28px!important
+}
+
+.monthly-history-art img{
+  width:112%!important;
+  height:112%!important;
+  transform:scale(1.07)!important
+}
+
+.monthly-history-content{
+  width:62%!important;
+  min-height:146px!important;
+  gap:7px!important
+}
+
+.monthly-history-heading{
+  gap:9px!important
+}
+
+.monthly-history-brand{
+  font-size:20px!important
+}
+
+.monthly-history-heading>b{
+  font-size:8px!important;
+  padding:5px 8px!important
+}
+
+.monthly-history-top>small{
+  font-size:10px!important;
+  padding:5px 7px!important
+}
+
+.monthly-history-content>em{
+  margin-top:7px!important;
+  font-size:9px!important;
+  letter-spacing:.07em!important
+}
+
+.monthly-history-content>strong{
+  font-size:14px!important;
+  line-height:1.15!important
+}
+
+.monthly-history-content>strong>b{
+  font-size:18px!important
+}
+
+.monthly-history-skin{
+  max-width:94%!important;
+  font-size:11px!important;
+  line-height:1.28!important
+}
+
+.monthly-history-value-under-art{
+  position:absolute!important;
+  z-index:5!important;
+  right:18px!important;
+  bottom:12px!important;
+  margin:0!important;
+  min-width:43%!important;
+  text-align:center!important;
+  font-size:23px!important;
+  line-height:1!important;
+  color:#f6bd26!important;
+  text-shadow:
+    0 0 10px rgba(246,189,38,.24),
+    0 2px 4px rgba(0,0,0,.72)!important
+}
+
+.monthly-history-arrival .monthly-history-smoke{
+  right:-12%!important;
+  width:52%!important;
+  height:145%!important
+}
+
+.monthly-history-arrival .monthly-history-art{
+  right:4px!important;
+  width:52%!important;
+  top:12px!important;
+  bottom:42px!important
+}
+
+.monthly-history-arrival .monthly-history-content{
+  width:61%!important;
+  min-height:184px!important;
+  gap:8px!important
+}
+
+.monthly-history-arrival .monthly-history-brand{
+  font-size:31px!important
+}
+
+.monthly-history-arrival .monthly-history-heading>b{
+  font-size:11px!important;
+  padding:6px 10px!important
+}
+
+.monthly-history-arrival .monthly-history-top>small{
+  font-size:11px!important
+}
+
+.monthly-history-arrival .monthly-history-content>em{
+  font-size:10px!important
+}
+
+.monthly-history-arrival .monthly-history-content>strong{
+  font-size:16px!important
+}
+
+.monthly-history-arrival .monthly-history-content>strong>b{
+  font-size:23px!important
+}
+
+.monthly-history-arrival .monthly-history-skin{
+  font-size:13px!important
+}
+
+.monthly-history-arrival .monthly-history-value-under-art{
+  right:26px!important;
+  bottom:18px!important;
+  min-width:40%!important;
+  font-size:32px!important
+}
