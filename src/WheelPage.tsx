@@ -3218,6 +3218,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
+        <div className="monthly-page-watermark" aria-hidden="true">
+          {Array.from({ length: 42 }, (_, index) => (
+            <span key={index}>GIVEAWAY</span>
+          ))}
+        </div>
+
         <div className="monthly-event-branding" aria-hidden="true">
           <img
             className="monthly-event-branding-image"
@@ -3292,10 +3298,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </section>
 
         <aside className="participants-panel monthly-participants-panel">
-          <div className="monthly-panel-watermark" aria-hidden="true">
-            {Array.from({ length: 14 }, (_, index) => (
-              <span key={index}>GIVEAWAY</span>
-            ))}
+          <div className="monthly-wave-frame" aria-hidden="true">
+            <span className="wave-top" />
+            <span className="wave-right" />
+            <span className="wave-bottom" />
+            <span className="wave-left" />
           </div>
 
           <div className="participants-panel-head monthly-panel-head">
