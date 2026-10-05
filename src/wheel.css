@@ -2318,3 +2318,10 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .monthly-wheel-rotor.is-spinning{
  transition:transform 12s cubic-bezier(.08,.72,.035,1)!important
 }
+
+
+/* Final monthly wheel rotation override: beats legacy static selector specificity */
+.monthly-wheel-rotor.is-spinning{
+ transform:rotate(var(--monthly-wheel-angle,0deg))!important;
+ transition:transform 12s cubic-bezier(.08,.72,.035,1)!important
+}
