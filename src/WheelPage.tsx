@@ -5341,13 +5341,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="monthly-history-art" aria-hidden="true">
               <img src={monthlyHistoryDemo.imageUrl} alt="" />
             </div>
+            <small className="monthly-history-date">{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
             <div className="monthly-history-content">
               <div className="monthly-history-top">
                 <div className="monthly-history-heading">
                   <span className="monthly-history-brand">CHYNA</span>
                   <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
                 </div>
-                <small>{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
               </div>
               <em>
                 {pick("OFERECIDO POR", "OFFERED BY")} · <b>Chyna</b>
@@ -5389,13 +5389,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             <div className="monthly-history-art" aria-hidden="true">
                               <img src={monthlyHistoryDemo.imageUrl} alt="" />
                             </div>
+                            <small className="monthly-history-date">{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
                             <div className="monthly-history-content">
                               <div className="monthly-history-top">
                                 <div className="monthly-history-heading">
                                   <span className="monthly-history-brand">CHYNA</span>
                                   <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
                                 </div>
-                                <small>{formatHistoryDate(monthlyHistoryDemo.completedAt)}</small>
                               </div>
                               <em>
                                 {pick("OFERECIDO POR", "OFFERED BY")} · <b>Chyna</b>
