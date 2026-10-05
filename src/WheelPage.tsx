@@ -594,6 +594,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
   const [monthlyKnifeRotation, setMonthlyKnifeRotation] = useState(45);
+  const [monthlyWheelRotation, setMonthlyWheelRotation] = useState(0);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
   const [monthlyLaunching, setMonthlyLaunching] = useState(false);
@@ -1194,6 +1195,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setIsTestGiveaway(false);
     setConfiguring(false);
     setMonthlyKnifeRotation(45);
+    setMonthlyWheelRotation(0);
     setMonthlySpinning(false);
     setMonthlyWinner(null);
     setMonthlyLaunching(false);
@@ -1209,6 +1211,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlyGiveawayMode(false);
     setMonthlyWinner(null);
     setMonthlyKnifeRotation(45);
+    setMonthlyWheelRotation(0);
     setMonthlyLaunching(false);
     setMonthlyKnifeDocked(false);
     setMonthlyKnifeFlightStyle(null);
@@ -3089,12 +3092,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       (segment) => segment.name.trim().toLocaleLowerCase() === selectedKey,
     );
     const selectedCenter = selectedSegment?.centerAngle ?? 0;
-    const finalKnifeAngle = 45 + selectedCenter;
+    const wheelFinalOffset = randomParticipantIndex(3600) / 10;
+    const finalWheelRotation = 4 * 360 + wheelFinalOffset;
+    const finalKnifeAngle = 45 + selectedCenter + wheelFinalOffset;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
     setMonthlyLaunching(true);
     setMonthlyKnifeDocked(false);
     setMonthlyKnifeRotation(45);
+    setMonthlyWheelRotation(0);
     playWheelPlim();
 
     if (sourceRect) {
@@ -3132,11 +3138,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
+          setMonthlyWheelRotation(finalWheelRotation);
           setMonthlyKnifeRotation(finalKnifeAngle + 18 * 360);
         });
       });
 
-      const centerSpinDuration = 15000 - flightDuration;
+      const centerSpinDuration = 14000;
       window.setTimeout(() => {
         setMonthlySpinning(false);
         setMonthlyWinner(selectedName);
@@ -3207,8 +3214,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <div className="monthly-wheel-shell">
             <div
               ref={wheelRotorRef}
-              className="monthly-wheel-rotor"
-              style={{ background: monthlyWheelGradient }}
+              className={`monthly-wheel-rotor${monthlySpinning ? " is-spinning" : ""}`}
+              style={{
+                background: monthlyWheelGradient,
+                "--monthly-wheel-angle": `${monthlyWheelRotation}deg`,
+              } as CSSProperties}
             >
               {monthlyWheelSegments.map((segment, index) =>
                 index === 0 ? null : (
@@ -3462,7 +3472,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
           <strong>{monthlyPrizeName}</strong>
           {monthlyPrizeValue !== null && (
-            <b>{monthlyPrizeValue.toFixed(2)} €</b>
+            <b>$ {monthlyPrizeValue.toFixed(2)}</b>
           )}
           <small className="monthly-prize-sponsor">
             {pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}
@@ -3481,7 +3491,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 {monthlyPrizeValue !== null && (
                   <>
                     {pick(" no valor de ", " worth ")}
-                    <em>{monthlyPrizeValue.toFixed(2)} €</em>
+                    <em>$ {monthlyPrizeValue.toFixed(2)}</em>
                   </>
                 )}
                 {monthlyWinnerChance !== null && (
@@ -3498,6 +3508,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 onClick={() => {
                   setMonthlyWinner(null);
                   setMonthlyKnifeRotation(45);
+                  setMonthlyWheelRotation(0);
                   setMonthlyLaunching(false);
                   setMonthlyKnifeDocked(false);
                   setMonthlyKnifeFlightStyle(null);
