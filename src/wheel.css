@@ -2325,3 +2325,12 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  transform:rotate(var(--monthly-wheel-angle,0deg))!important;
  transition:transform 12s cubic-bezier(.08,.72,.035,1)!important
 }
+
+
+/* Monthly v5: final event timing */
+.monthly-wheel-rotor.is-spinning{
+ transition:transform 18s cubic-bezier(.08,.72,.035,1)!important
+}
+.monthly-wheel-center.has-knife img{
+ transition:transform 21s cubic-bezier(.055,.74,.02,1)!important
+}
