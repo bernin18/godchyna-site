@@ -3539,11 +3539,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <span className="wave-left" />
           </div>
 
-          <div className="monthly-prize-card-head">
-            <span>{pick("SKIN DO GIVEAWAY", "GIVEAWAY SKIN")}</span>
-            <small>TOPSKIN</small>
-          </div>
-
           <div className="monthly-prize-card-media">
             <img
               ref={monthlyPrizeImageRef}
