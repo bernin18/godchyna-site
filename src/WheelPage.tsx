@@ -3219,7 +3219,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return (
       <main className={`monthly-giveaway-page${monthlyLocked ? " is-focus" : ""}`}>
         <div className="monthly-page-watermark" aria-hidden="true">
-          {Array.from({ length: 42 }, (_, index) => (
+          {Array.from({ length: 96 }, (_, index) => (
             <span key={index}>GIVEAWAY</span>
           ))}
         </div>
