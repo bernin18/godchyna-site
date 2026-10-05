@@ -5345,7 +5345,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="monthly-history-content">
               <div className="monthly-history-top">
                 <div className="monthly-history-heading">
-                  <span className="monthly-history-brand">CHYNA</span>
                   <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
                 </div>
               </div>
@@ -5393,8 +5392,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             <div className="monthly-history-content">
                               <div className="monthly-history-top">
                                 <div className="monthly-history-heading">
-                                  <span className="monthly-history-brand">CHYNA</span>
-                                  <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
+                                                  <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
                                 </div>
                               </div>
                               <em>
@@ -5447,7 +5445,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
                             <div className="giveaway-history-prize-row">
                               <span className="giveaway-history-skin">
-                                {pick("GIVEAWAY", "GIVEAWAY")}: {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
+                                {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
                               </span>
                               {item.skinValue !== null && (
                                 <b className="giveaway-history-value">{item.skinValue.toFixed(2)} €</b>
