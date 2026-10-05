@@ -3191,7 +3191,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         });
       });
 
-      const centerSpinDuration = 21000;
+      const centerSpinDuration = 31000;
       window.setTimeout(() => {
         setMonthlySpinning(false);
         setMonthlyWinner(selectedName);
@@ -3266,7 +3266,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <div className="monthly-wheel-glow" />
 
           <div className="monthly-brand">
-            <span>CHYNA . EVENT SPECIAL</span>
+            <span>CHYNA . SPECIAL EVENT</span>
             <strong>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</strong>
           </div>
 
