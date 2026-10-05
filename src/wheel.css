@@ -2308,3 +2308,13 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .monthly-wheel-center>strong{
  font-size:24px
 }
+
+
+/* Monthly v4: wheel moves slower than the knife and settles 2s earlier */
+.monthly-wheel-rotor{
+ transform:rotate(var(--monthly-wheel-angle,0deg))!important;
+ transition:none!important
+}
+.monthly-wheel-rotor.is-spinning{
+ transition:transform 12s cubic-bezier(.08,.72,.035,1)!important
+}
