@@ -3256,14 +3256,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           </div>
         )}
 
-        <div className="monthly-brand">
-          <span>CHYNA · SPECIAL EVENT</span>
-          <strong>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</strong>
-          <small>{pick("PATROCINADO PELA TOPSKIN", "SPONSORED BY TOPSKIN")}</small>
-        </div>
-
         <section className="monthly-wheel-stage">
           <div className="monthly-wheel-glow" />
+
+          <div className="monthly-brand">
+            <span>CHYNA . EVENT SPECIAL</span>
+            <strong>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</strong>
+          </div>
 
           <div className="monthly-wheel-shell">
             <div
