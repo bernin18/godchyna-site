@@ -459,6 +459,74 @@ function AboutPage(){
   );
 }
 
+function GiveawayAnnouncementPopup(){
+  const { pick } = useLanguage();
+  const [open, setOpen] = useState(true);
+
+  if(!open) return null;
+
+  return (
+    <div
+      className="giveaway-announcement-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="giveaway-announcement-title"
+      onClick={()=>setOpen(false)}
+    >
+      <section
+        className="giveaway-announcement-card"
+        onClick={(event)=>event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="giveaway-announcement-close"
+          onClick={()=>setOpen(false)}
+          aria-label={pick("Fechar anúncio","Close announcement")}
+        >
+          <X />
+        </button>
+
+        <div className="giveaway-announcement-sponsor">
+          <span>{pick("GIVEAWAY OFERECIDO PELA","GIVEAWAY PRESENTED BY")}</span>
+          <strong>TOPSKIN</strong>
+        </div>
+
+        <div className="giveaway-announcement-knife">
+          <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
+        </div>
+
+        <span className="giveaway-announcement-date">
+          {pick("AMANHÃ · 06/10/2026","TOMORROW · 06/10/2026")}
+        </span>
+
+        <h2 id="giveaway-announcement-title">
+          URSUS KNIFE <em>| MARBLE FADE</em>
+        </h2>
+
+        <p>
+          {pick(
+            "Giveaway amanhã na live que começa às 10h da manhã!",
+            "Giveaway tomorrow on the live stream starting at 10 AM!",
+          )}
+        </p>
+        <strong className="giveaway-announcement-callout">
+          {pick("PARTICIPEM E APAREÇAM!","JOIN IN AND SHOW UP!")}
+        </strong>
+
+        <a
+          className="giveaway-announcement-cta"
+          href={socials.twitch}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <BrandGlyph network="twitch" />
+          {pick("VER LIVE NA TWITCH","WATCH ON TWITCH")}
+        </a>
+      </section>
+    </div>
+  );
+}
+
 function Home(){
   const { lang, pick } = useLanguage();
   return (
@@ -567,11 +635,22 @@ function StorePage(){
 
 export default function App(){
   const path = window.location.pathname.replace(/\/$/, "");
-  if(path.endsWith("/sobre")) return <AboutPage/>;
-  if(path.endsWith("/configs")) return <ConfigsPage Header={Header} Footer={Footer}/>;
-  if(path.endsWith("/wheel")) return <WheelPage Header={Header} Footer={Footer}/>;
-  if(path.endsWith("/parcerias")) return <PartnersPage/>;
-  if(path.endsWith("/giveaways")) return <GiveawaysPage/>;
-  if(path.endsWith("/loja")) return <StorePage/>;
-  return <Home/>;
+
+  if(path.endsWith("/wheel")) {
+    return <WheelPage Header={Header} Footer={Footer}/>;
+  }
+
+  let page = <Home/>;
+  if(path.endsWith("/sobre")) page = <AboutPage/>;
+  else if(path.endsWith("/configs")) page = <ConfigsPage Header={Header} Footer={Footer}/>;
+  else if(path.endsWith("/parcerias")) page = <PartnersPage/>;
+  else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
+  else if(path.endsWith("/loja")) page = <StorePage/>;
+
+  return (
+    <>
+      <GiveawayAnnouncementPopup/>
+      {page}
+    </>
+  );
 }
