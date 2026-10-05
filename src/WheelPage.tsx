@@ -596,7 +596,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [monthlyRotation, setMonthlyRotation] = useState(0);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
-  const [monthlyWinnerIndex, setMonthlyWinnerIndex] = useState<number | null>(null);
   const [monthlyLaunching, setMonthlyLaunching] = useState(false);
   const [monthlyKnifeDocked, setMonthlyKnifeDocked] = useState(false);
   const [monthlyKnifeFlightStyle, setMonthlyKnifeFlightStyle] = useState<CSSProperties | null>(null);
@@ -1197,7 +1196,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlyRotation(0);
     setMonthlySpinning(false);
     setMonthlyWinner(null);
-    setMonthlyWinnerIndex(null);
     setMonthlyLaunching(false);
     setMonthlyKnifeDocked(false);
     setMonthlyKnifeFlightStyle(null);
@@ -1210,7 +1208,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (monthlySpinning) return;
     setMonthlyGiveawayMode(false);
     setMonthlyWinner(null);
-    setMonthlyWinnerIndex(null);
     setMonthlyRotation(0);
     setMonthlyLaunching(false);
     setMonthlyKnifeDocked(false);
@@ -3102,7 +3099,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const targetAngle = (360 - (selectedCenter % 360)) % 360;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
-    setMonthlyWinnerIndex(winnerIndex);
     setMonthlyLaunching(true);
     playWheelPlim();
 
@@ -3464,8 +3460,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 type="button"
                 onClick={() => {
                   setMonthlyWinner(null);
-                  setMonthlyWinnerIndex(null);
-                  setMonthlyRotation(0);
+                                setMonthlyRotation(0);
                   setMonthlyLaunching(false);
                   setMonthlyKnifeDocked(false);
                   setMonthlyKnifeFlightStyle(null);
