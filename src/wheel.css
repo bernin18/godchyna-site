@@ -5271,3 +5271,34 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   bottom:25px!important;
   font-size:28px!important;
 }
+
+/* Monthly value left of knife */
+.monthly-history-art{
+  right:8px!important;
+  width:39%!important;
+}
+
+.monthly-history-value-under-art{
+  left:43%!important;
+  right:auto!important;
+  bottom:17px!important;
+  width:auto!important;
+  min-width:0!important;
+  text-align:left!important;
+  font-size:19px!important;
+}
+
+.monthly-history-arrival .monthly-history-art{
+  right:12px!important;
+  width:39%!important;
+}
+
+.monthly-history-arrival .monthly-history-value-under-art{
+  left:44%!important;
+  right:auto!important;
+  bottom:25px!important;
+  width:auto!important;
+  min-width:0!important;
+  text-align:left!important;
+  font-size:28px!important;
+}
