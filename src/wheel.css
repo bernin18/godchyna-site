@@ -2582,3 +2582,24 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
  .monthly-participants-panel .participants-loaded{padding:7px}
  .monthly-participants-panel .participant-row-grouped{min-height:32px;margin-bottom:2px}
 }
+
+
+/* Uploaded CHYNA × TOPSKIN lockup */
+.monthly-event-branding{
+ gap:0!important
+}
+.monthly-event-branding-image{
+ display:block!important;
+ width:290px!important;
+ max-width:32vw!important;
+ max-height:92px!important;
+ height:auto!important;
+ object-fit:contain!important;
+ filter:drop-shadow(0 0 14px rgba(255,210,30,.12))!important
+}
+@media(min-width:1001px) and (max-width:1550px){
+ .monthly-event-branding-image{width:250px!important}
+}
+@media(min-width:1001px) and (max-height:780px){
+ .monthly-event-branding-image{width:220px!important}
+}
