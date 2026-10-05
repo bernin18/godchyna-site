@@ -24,7 +24,7 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .giveaway-history-top{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .giveaway-history-top em{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#718083;font-style:normal;font-size:7px;font-weight:900;letter-spacing:.08em}
 .giveaway-history-top em b{color:#d9a637;font-style:normal;font-size:9px;letter-spacing:.035em}
-.giveaway-history-card small{flex:0 0 auto;padding:3px 5px;border:1px solid rgba(185,133,31,.20);border-radius:4px;color:#b9a36f;background:rgba(185,133,31,.035);font-size:7px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
+.giveaway-history-card small{flex:0 0 auto;padding:4px 6px;border:1px solid rgba(185,133,31,.24);border-radius:4px;color:#c9b57a;background:rgba(185,133,31,.045);font-size:9px;font-weight:900;letter-spacing:.04em;white-space:nowrap}
 .giveaway-history-winner{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#879598;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900}
 .giveaway-history-winner>span{color:#879598;font-size:inherit;font-weight:900;letter-spacing:0}
 .giveaway-history-winner>b{color:#20f39a;font-weight:900;letter-spacing:.025em}
