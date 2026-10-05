@@ -3797,3 +3797,52 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   position: absolute !important;
   z-index: 10 !important;
 }
+
+/* Monthly sponsor logo: draw-only, restored large size */
+.monthly-event-branding{
+  position:fixed!important;
+  z-index:24!important;
+  left:auto!important;
+  right:30px!important;
+  top:auto!important;
+  bottom:24px!important;
+  opacity:0!important;
+  transform:translateY(10px)!important;
+  pointer-events:none!important;
+  transition:opacity .35s ease,transform .35s ease!important
+}
+
+.monthly-giveaway-page.is-focus .monthly-event-branding{
+  opacity:1!important;
+  transform:translateY(0)!important
+}
+
+.monthly-event-branding-image{
+  width:540px!important;
+  max-width:48vw!important;
+  max-height:260px!important;
+  height:auto!important;
+  filter:drop-shadow(0 0 22px rgba(255,210,30,.24))!important
+}
+
+@media(min-width:1001px) and (max-width:1550px){
+  .monthly-event-branding{
+    right:24px!important;
+    bottom:20px!important
+  }
+  .monthly-event-branding-image{
+    width:470px!important;
+    max-height:225px!important
+  }
+}
+
+@media(min-width:1001px) and (max-height:780px){
+  .monthly-event-branding{
+    right:18px!important;
+    bottom:14px!important
+  }
+  .monthly-event-branding-image{
+    width:420px!important;
+    max-height:205px!important
+  }
+}
