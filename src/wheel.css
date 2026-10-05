@@ -3912,3 +3912,71 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   left:auto!important;
   transform:scaleY(-1) rotate(12deg)!important;
 }
+
+/* Monthly event final polish: logo sparkle, CHYNAO pulse, 26s wheel + 31s knife */
+@keyframes monthlyChynaoPulse{
+  0%,100%{
+    color:#d9a637;
+    text-shadow:
+      0 0 5px rgba(217,166,55,.30),
+      0 0 12px rgba(217,166,55,.16);
+    transform:scale(1)
+  }
+  50%{
+    color:#20f39a;
+    text-shadow:
+      0 0 7px rgba(32,243,154,.70),
+      0 0 18px rgba(32,243,154,.36),
+      0 0 28px rgba(217,166,55,.18);
+    transform:scale(1.045)
+  }
+}
+
+.monthly-wheel-center:not(.has-knife)>strong{
+  display:block!important;
+  color:#d9a637!important;
+  animation:monthlyChynaoPulse 1.15s ease-in-out infinite!important;
+  transform-origin:center!important
+}
+
+/* Small pulsing sparkle over the CHYNA part of the draw logo. */
+@keyframes monthlyChynaSparkle{
+  0%,100%{
+    opacity:.25;
+    transform:scale(.65);
+    box-shadow:
+      0 0 4px rgba(255,255,255,.45),
+      0 0 8px rgba(255,214,62,.35)
+  }
+  50%{
+    opacity:1;
+    transform:scale(1.28);
+    box-shadow:
+      0 0 7px rgba(255,255,255,.95),
+      0 0 15px rgba(255,224,94,.78),
+      0 0 26px rgba(255,174,0,.42)
+  }
+}
+
+.monthly-event-branding::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:3!important;
+  left:23%!important;
+  top:18%!important;
+  width:10px!important;
+  height:10px!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle,#fff 0 18%,#fff3a7 28%,#ffc928 52%,rgba(255,173,0,.28) 68%,transparent 76%)!important;
+  animation:monthlyChynaSparkle 1.05s ease-in-out infinite!important
+}
+
+/* Exact cinematic timing requested. */
+.monthly-wheel-rotor.is-spinning{
+  transition:transform 26s cubic-bezier(.08,.72,.035,1)!important
+}
+.monthly-wheel-center.has-knife img{
+  transition:transform 31s cubic-bezier(.055,.74,.02,1)!important
+}
