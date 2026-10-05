@@ -2971,16 +2971,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return "conic-gradient(#111a20 0deg 360deg)";
     }
 
-    const stops = monthlyWheelSegments.flatMap((segment) => {
-      const span = Math.max(0, segment.endAngle - segment.startAngle);
-      const divider = Math.min(0.35, span * 0.06);
-      const colorEnd = Math.max(segment.startAngle, segment.endAngle - divider);
-
-      return [
-        `${segment.color} ${segment.startAngle.toFixed(4)}deg ${colorEnd.toFixed(4)}deg`,
-        `#05090b ${colorEnd.toFixed(4)}deg ${segment.endAngle.toFixed(4)}deg`,
-      ];
-    });
+    const stops = monthlyWheelSegments.map(
+      (segment) =>
+        `${segment.color} ${segment.startAngle.toFixed(4)}deg ${segment.endAngle.toFixed(4)}deg`,
+    );
 
     return `conic-gradient(${stops.join(",")})`;
   }, [monthlyWheelSegments]);
@@ -3216,6 +3210,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               className="monthly-wheel-rotor"
               style={{ background: monthlyWheelGradient }}
             >
+              {monthlyWheelSegments.map((segment, index) =>
+                index === 0 ? null : (
+                  <span
+                    key={`monthly-divider-${segment.name.trim().toLocaleLowerCase()}-${index}`}
+                    className="monthly-wheel-divider"
+                    style={{
+                      "--divider-angle": `${segment.startAngle}deg`,
+                    } as CSSProperties}
+                  />
+                ),
+              )}
               {renderMonthlyWheelNames()}
             </div>
 
