@@ -3868,11 +3868,11 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 }
 .monthly-winner-firework-bottom-left{
   left:-44px!important;
-  transform:rotate(168deg)!important
+  transform:rotate(192deg)!important
 }
 .monthly-winner-firework-bottom-right{
   right:-44px!important;
-  transform:rotate(192deg)!important
+  transform:rotate(168deg)!important
 }
 .monthly-winner-firework-bottom-left::before,
 .monthly-winner-firework-bottom-left::after{
