@@ -169,7 +169,8 @@ pointer-events:none}
 .giveaway-card{display:grid;grid-template-columns:.76fr 1.24fr;gap:24px;width:100%;max-width:1240px;margin-inline:auto;padding:16px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
 .knife-stage{
   min-height:215px;
-  height:215px;
+  height:auto;
+  align-self:stretch;
   position:relative;
   display:flex;
   align-items:center;
