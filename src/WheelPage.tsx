@@ -5507,6 +5507,45 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       )}
 
                       {giveawayHistory.map((item) => {
+                        if (item.giveawayType === "monthly") {
+                          return (
+                            <article
+                              className="giveaway-history-card giveaway-history-card-monthly"
+                              key={`${groupIndex}-${item.id}`}
+                            >
+                              <div className="monthly-history-smoke" aria-hidden="true" />
+                              {item.imageUrl && (
+                                <div className="monthly-history-art" aria-hidden="true">
+                                  <img src={item.imageUrl} alt="" loading="lazy" />
+                                </div>
+                              )}
+                              <small className="monthly-history-date">{formatHistoryDate(item.completedAt)}</small>
+                              <div className="monthly-history-content">
+                                <div className="monthly-history-top">
+                                  <div className="monthly-history-heading">
+                                    <b>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</b>
+                                  </div>
+                                </div>
+                                <em>
+                                  {pick("OFERECIDO POR", "OFFERED BY")} · <b>{item.offeredBy}</b>
+                                </em>
+                                <strong>
+                                  <span>{pick("VENCEDOR", "WINNER")}: </span>
+                                  <b>{item.winnerName}</b>
+                                </strong>
+                                <span className="monthly-history-skin">
+                                  {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
+                                </span>
+                              </div>
+                              {item.skinValue !== null && (
+                                <b className="monthly-history-value monthly-history-value-under-art">
+                                  $ {item.skinValue.toFixed(2)}
+                                </b>
+                              )}
+                            </article>
+                          );
+                        }
+
                         const skinImage = historySkinImage(item.skinName);
 
                         return (
@@ -5556,7 +5595,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="giveaway-history-live">
               <i />
               <span>
-                {pick("TOTAL DADO EM GIVEAWAYS DIÁRIOS", "TOTAL GIVEN IN DAILY GIVEAWAYS")}
+                {pick("TOTAL DADO EM GIVEAWAYS (GERAL)", "TOTAL GIVEN IN GIVEAWAYS (TOTAL)")}
                 <b>{giveawayHistoryTotal.toFixed(2)} €</b>
               </span>
             </div>
