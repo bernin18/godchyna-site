@@ -923,6 +923,62 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     };
   }, [session?.user.id, pick]);
 
+  useEffect(() => {
+    if (!session?.user.id || account?.role !== "admin") {
+      setMonthlyPrizeDraftName("");
+      setMonthlyPrizeDraftValue("");
+      setMonthlyPrizeDraftImagePath(null);
+      setMonthlyPrizeDraftImageUrl("");
+      setMonthlyPrizeDraftMessage("");
+      setMonthlyPrizeDraftEditing(true);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadMonthlyGiveawayPrize() {
+      const { data, error } = await supabase.rpc("get_monthly_giveaway_prize");
+
+      if (cancelled) return;
+
+      if (error) {
+        setMonthlyPrizeDraftMessage(
+          pick(
+            "Não foi possível carregar o prémio mensal.",
+            "Unable to load the monthly prize.",
+          ),
+        );
+        return;
+      }
+
+      const row = Array.isArray(data) && data.length > 0 ? data[0] : null;
+
+      setMonthlyPrizeDraftName(row?.skin_name ?? "");
+      setMonthlyPrizeDraftValue(
+        row?.skin_value === null || row?.skin_value === undefined
+          ? ""
+          : String(row.skin_value),
+      );
+      setMonthlyPrizeDraftImagePath(row?.image_path ?? null);
+      setMonthlyPrizeDraftEditing(!(row?.is_saved ?? false));
+
+      if (row?.image_path) {
+        const { data: publicData } = supabase.storage
+          .from("giveaway-prizes")
+          .getPublicUrl(row.image_path);
+        setMonthlyPrizeDraftImageUrl(publicData.publicUrl);
+      } else {
+        setMonthlyPrizeDraftImageUrl("");
+      }
+    }
+
+    void loadMonthlyGiveawayPrize();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.user.id, account?.role, pick]);
+
   async function loadGiveawayHistory() {
     const { data, error } = await supabase
       .from("giveaway_history")
