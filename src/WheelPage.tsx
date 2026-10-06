@@ -3475,11 +3475,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       monthlySpinning ||
       monthlyWinner ||
       participants.length < 1 ||
-      giveawayPrizeSaving ||
-      giveawayPrizeEditing ||
-      !giveawayPrizeName.trim() ||
-      !giveawayPrizeImageUrl ||
-      giveawayPrizeNumericValue() === null
+      monthlyPrizeDraftSaving ||
+      monthlyPrizeDraftEditing ||
+      !monthlyPrizeDraftName.trim() ||
+      !monthlyPrizeDraftImageUrl ||
+      monthlyPrizeNumericValue() === null
     ) return;
 
     const winnerIndex = randomParticipantIndex(participants.length);
@@ -3566,22 +3566,22 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   if (monthlyGiveawayMode && session && account?.role === "admin") {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
-    const monthlyPrizeImageUrl = giveawayPrizeImageUrl;
-    const monthlyPrizeName = giveawayPrizeName.trim()
-      ? formatFactoryNewSkinName(giveawayPrizeName.trim())
+    const monthlyPrizeImageUrl = monthlyPrizeDraftImageUrl;
+    const monthlyPrizeName = monthlyPrizeDraftName.trim()
+      ? formatFactoryNewSkinName(monthlyPrizeDraftName.trim())
       : pick("SEM SKIN CONFIGURADA", "NO SKIN CONFIGURED");
-    const monthlyPrizeValue = giveawayPrizeNumericValue();
+    const monthlyPrizeValue = monthlyPrizeNumericValue();
     const monthlyPrizeReady = Boolean(
-      giveawayPrizeName.trim() &&
-      giveawayPrizeImageUrl &&
+      monthlyPrizeDraftName.trim() &&
+      monthlyPrizeDraftImageUrl &&
       monthlyPrizeValue !== null &&
-      !giveawayPrizeEditing,
+      !monthlyPrizeDraftEditing,
     );
     const monthlyLocked =
       monthlyLaunching ||
       monthlySpinning ||
       Boolean(monthlyWinner) ||
-      giveawayPrizeSaving;
+      monthlyPrizeDraftSaving;
     const monthlyWinnerSegment = monthlyWinner
       ? monthlyWheelSegments.find(
           (segment) =>
@@ -3603,11 +3603,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         !monthlyWinner ||
         !monthlyPrizeReady ||
         monthlyPrizeValue === null ||
-        giveawayPrizeSaving
+        monthlyPrizeDraftSaving
       ) return;
 
-      setGiveawayPrizeSaving(true);
-      setGiveawayPrizeMessage("");
+      setMonthlyPrizeDraftSaving(true);
+      setMonthlyPrizeDraftMessage("");
 
       const winnerName = monthlyWinner;
       const prizeName = monthlyPrizeName;
@@ -3618,10 +3618,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         p_winner_name: winnerName,
       });
 
-      setGiveawayPrizeSaving(false);
+      setMonthlyPrizeDraftSaving(false);
 
       if (error) {
-        setGiveawayPrizeMessage(
+        setMonthlyPrizeDraftMessage(
           pick(
             "Não foi possível guardar o giveaway mensal. Tenta novamente.",
             "The monthly giveaway could not be saved. Please try again.",
@@ -3651,12 +3651,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       });
 
       // The monthly prize is consumed by finalization. Start the next one empty.
-      setGiveawayPrizeName("");
-      setGiveawayPrizeValue("");
-      setGiveawayPrizeImagePath(null);
-      setGiveawayPrizeImageUrl("");
-      setGiveawayPrizeEditing(true);
-      setGiveawayPrizeMessage("");
+      setMonthlyPrizeDraftName("");
+      setMonthlyPrizeDraftValue("");
+      setMonthlyPrizeDraftImagePath(null);
+      setMonthlyPrizeDraftImageUrl("");
+      setMonthlyPrizeDraftEditing(true);
+      setMonthlyPrizeDraftMessage("");
 
       setMonthlyGiveawayMode(false);
       setMonthlyWinner(null);
@@ -4056,15 +4056,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="monthly-winner-history-btn"
                   onClick={revealMonthlyWinnerInHistory}
-                  disabled={giveawayPrizeSaving}
+                  disabled={monthlyPrizeDraftSaving}
                 >
-                  {giveawayPrizeSaving
+                  {monthlyPrizeDraftSaving
                     ? pick("A GUARDAR...", "SAVING...")
-                    : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!giveawayPrizeSaving && <ArrowRight />}
+                    : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!monthlyPrizeDraftSaving && <ArrowRight />}
                 </button>
               </div>
-              {giveawayPrizeMessage && (
-                <p className="monthly-winner-save-error">{giveawayPrizeMessage}</p>
+              {monthlyPrizeDraftMessage && (
+                <p className="monthly-winner-save-error">{monthlyPrizeDraftMessage}</p>
               )}
             </div>
           </div>
