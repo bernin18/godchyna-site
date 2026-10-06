@@ -169,6 +169,7 @@ pointer-events:none}
 .giveaway-card{display:grid;grid-template-columns:.76fr 1.24fr;gap:24px;width:100%;max-width:1240px;margin-inline:auto;padding:16px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
 .knife-stage{
   min-height:215px;
+  height:215px;
   position:relative;
   display:flex;
   align-items:center;
@@ -318,9 +319,9 @@ pointer-events:none}
 .giveaway-stage-provider-logo.csgoskins{max-width:118px;max-height:28px}
 .kit-stage .giveaway-prize-image{max-width:none;object-fit:contain;object-position:center center;animation:none!important;will-change:auto;transition:opacity .18s ease,transform .22s ease;filter:drop-shadow(0 22px 20px rgba(0,0,0,.76)) drop-shadow(0 0 26px rgba(240,187,63,.24))}
 .kit-stage .kit-gallery-image-0{width:118%;height:114%;transform:scale(1.10) translateY(-18px)}
-.kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{width:92%;height:86%;transform:scale(1.04) translateY(-4px)}
+.kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{width:74%;height:68%;transform:translateY(-2px)}
 .kit-stage:hover .kit-gallery-image-0{animation:none!important;transform:scale(1.10) translateY(-18px)}
-.kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{animation:none!important;transform:scale(1.04) translateY(-4px)}
+.kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{animation:none!important;transform:translateY(-2px)}
 .kit-stage::before,.kit-stage .knife-ambient-glow,.kit-stage .knife-shine,.kit-stage .knife-sparkle{animation:none!important}
 .kit-stage .knife-shine,.kit-stage .knife-sparkle{display:none!important}
 .rare-stage{
