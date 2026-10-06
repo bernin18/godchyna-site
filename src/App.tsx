@@ -117,6 +117,10 @@ const giveaways:Giveaway[] = [
     minDeposit:"€4",
     image:"wildfire braços.webp",
     imageAlt:"AWP Wildfire Field-Tested with gloves",
+    galleryImages:[
+      {src:"wildfire braços.webp",alt:"AWP Wildfire Field-Tested with gloves"},
+      {src:"wildfire.png",alt:"AWP Wildfire Field-Tested"},
+    ],
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
     providerLogo:"csgoskins-logo.png?v=3",
@@ -343,7 +347,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${giveaway.id==="awp-wildfire"?" wildfire-arms-image":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-image":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -425,7 +429,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
               ×
             </button>
             <img
-              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire"?" wildfire-arms-lightbox-image":""}`}
+              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-lightbox-image":""}`}
               src={asset(activeGalleryImage.src)}
               alt={activeGalleryImage.alt}
             />
