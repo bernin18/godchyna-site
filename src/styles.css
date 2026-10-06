@@ -166,9 +166,9 @@ pointer-events:none}
 .partner-cta{display:inline-flex;justify-content:center;min-width:145px;padding:12px 18px;border-radius:5px;font-size:11px;font-weight:800;color:#fff}
 .orange .partner-cta{background:#ff4817}
 .blue .partner-cta{background:#087be9}
-.giveaway-card{display:grid;grid-template-columns:.74fr 1.26fr;gap:20px;width:100%;max-width:1120px;margin-inline:auto;padding:14px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
+.giveaway-card{display:grid;grid-template-columns:.76fr 1.24fr;gap:24px;width:100%;max-width:1240px;margin-inline:auto;padding:16px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
 .knife-stage{
-  min-height:190px;
+  min-height:215px;
   position:relative;
   display:flex;
   align-items:center;
@@ -194,7 +194,7 @@ pointer-events:none}
   animation:stagePulse 4.6s ease-in-out infinite;
   pointer-events:none
 }
-.knife-stage img{
+.knife-stage .giveaway-prize-image{
   position:relative;
   z-index:3;
   width:82%;
@@ -214,7 +214,7 @@ pointer-events:none}
   border-color:#2a6458;
   box-shadow:inset 0 0 32px rgba(32,243,154,.06),0 0 26px rgba(32,243,154,.08)
 }
-.knife-stage:hover img{
+.knife-stage:hover .giveaway-prize-image{
   animation-duration:3.2s,2.6s;
   filter:
     drop-shadow(0 26px 22px rgba(0,0,0,.82))
@@ -313,7 +313,13 @@ pointer-events:none}
   0%,100%{opacity:.45}
   50%{opacity:1}
 }
-.knife-stage span{position:absolute;bottom:10px;left:15px;z-index:6;color:#23343a;font-family:"Chakra Petch";font-weight:800;font-style:italic;font-size:25px}
+.giveaway-stage-provider-logo{position:absolute;left:14px;bottom:12px;z-index:7;width:auto!important;height:auto!important;object-fit:contain!important;animation:none!important;transform:none!important;filter:none!important;opacity:.9}
+.giveaway-stage-provider-logo.topskin{max-width:92px;max-height:24px}
+.giveaway-stage-provider-logo.csgoskins{max-width:118px;max-height:28px}
+.kit-stage .giveaway-prize-image{width:110%;height:108%;max-width:none;transform:scale(1.13);animation:none!important;will-change:auto;filter:drop-shadow(0 24px 22px rgba(0,0,0,.78)) drop-shadow(0 0 24px rgba(32,243,154,.18))}
+.kit-stage:hover .giveaway-prize-image{animation:none!important;transform:scale(1.13);filter:drop-shadow(0 24px 22px rgba(0,0,0,.78)) drop-shadow(0 0 24px rgba(32,243,154,.18))}
+.kit-stage::before,.kit-stage .knife-ambient-glow,.kit-stage .knife-shine,.kit-stage .knife-sparkle{animation:none!important}
+.kit-stage .knife-shine,.kit-stage .knife-sparkle{display:none!important}
 .wildfire-stage{
   background:
     radial-gradient(circle at 50% 43%,rgba(255,74,23,.12),transparent 28%),
@@ -334,7 +340,7 @@ pointer-events:none}
   background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,187,142,.80) 28%,rgba(255,72,20,0) 72%);
   box-shadow:0 0 14px rgba(255,104,49,.46)
 }
-.wildfire-stage img{
+.wildfire-stage .giveaway-prize-image{
   width:95%;
   height:82%;
   object-fit:contain;
@@ -347,7 +353,7 @@ pointer-events:none}
   border-color:rgba(255,102,42,.48);
   box-shadow:inset 0 0 32px rgba(255,82,25,.045),0 0 25px rgba(255,82,25,.055)
 }
-.wildfire-stage:hover img{
+.wildfire-stage:hover .giveaway-prize-image{
   animation-duration:3.6s,2.8s;
   filter:drop-shadow(0 28px 24px rgba(0,0,0,.84)) drop-shadow(0 0 28px rgba(255,75,24,.24))
 }
@@ -439,8 +445,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .partner-card.orange .partner-logo{width:150px;max-height:46px}
  .partner-card.blue .partner-logo{width:210px;max-height:50px}
  .partner-info{border-left:0;border-top:1px solid #1d2e32;padding:18px 0 0}
- .giveaway-card{padding:13px;gap:16px;max-width:none}
- .knife-stage{min-height:205px}
+ .giveaway-card{padding:14px;gap:18px;max-width:none}
+ .knife-stage{min-height:215px}
  .giveaway-head h3{font-size:20px}
  .active-pill{padding:8px 13px}
  .giveaway-provider-status{min-width:96px;gap:7px}
