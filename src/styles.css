@@ -320,9 +320,20 @@ pointer-events:none}
 .giveaway-stage-provider-logo.csgoskins{max-width:118px;max-height:28px}
 .kit-stage .giveaway-prize-image{max-width:none;object-fit:contain;object-position:center center;animation:none!important;will-change:auto;transition:opacity .18s ease,transform .22s ease;filter:drop-shadow(0 22px 20px rgba(0,0,0,.76)) drop-shadow(0 0 26px rgba(240,187,63,.24))}
 .kit-stage .kit-gallery-image-0{width:118%;height:114%;transform:scale(1.10) translateY(-18px)}
-.kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{width:74%;height:68%;transform:translateY(-2px)}
+.kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{
+  width:74%;
+  height:68%;
+  transform-origin:center;
+  animation:kitItemFloat 4.8s ease-in-out infinite!important
+}
 .kit-stage:hover .kit-gallery-image-0{animation:none!important;transform:scale(1.10) translateY(-18px)}
-.kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{animation:none!important;transform:translateY(-2px)}
+.kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{
+  animation:kitItemFloat 3.8s ease-in-out infinite!important
+}
+@keyframes kitItemFloat{
+  0%,100%{transform:translate3d(-4px,3px,0) rotateZ(-.7deg) scale(.995)}
+  50%{transform:translate3d(6px,-7px,0) rotateZ(.7deg) scale(1.018)}
+}
 .kit-stage::before,.kit-stage .knife-ambient-glow,.kit-stage .knife-shine,.kit-stage .knife-sparkle{animation:none!important}
 .kit-stage .knife-shine,.kit-stage .knife-sparkle{display:none!important}
 .rare-stage{
@@ -405,6 +416,16 @@ pointer-events:none}
   background:#efc050;
   box-shadow:0 0 12px rgba(239,192,80,.52)
 }
+.giveaway-preview-trigger{cursor:zoom-in}
+.giveaway-lightbox{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(2,6,8,.82);backdrop-filter:blur(9px);animation:giveawayLightboxIn .18s ease-out}
+.giveaway-lightbox-panel{position:relative;width:min(680px,calc(100vw - 48px));aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:18px;background:#071015;box-shadow:0 24px 80px rgba(0,0,0,.58);animation:giveawayLightboxPanelIn .22s cubic-bezier(.2,.75,.25,1)}
+.giveaway-lightbox-panel.rare{border:1px solid rgba(239,190,72,.62);background:radial-gradient(circle at 50% 46%,rgba(243,190,64,.18),transparent 34%),radial-gradient(circle at 50% 38%,#20190c,#050a0d 72%);box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 34px rgba(225,169,43,.16)}
+.giveaway-lightbox-panel.wildfire{border:1px solid rgba(255,92,31,.46);background:radial-gradient(circle at 50% 46%,rgba(255,74,23,.15),transparent 35%),radial-gradient(circle at 50% 38%,#21100d,#050a0d 72%);box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 34px rgba(255,82,25,.12)}
+.giveaway-lightbox-image{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.72))}
+.giveaway-lightbox-close{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(5,9,12,.76);color:#fff;font-size:26px;line-height:1;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.giveaway-lightbox-close:hover{transform:scale(1.06);border-color:rgba(255,255,255,.36);background:rgba(12,18,22,.94)}
+@keyframes giveawayLightboxIn{from{opacity:0}to{opacity:1}}
+@keyframes giveawayLightboxPanelIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
 .wildfire-stage{
   background:
     radial-gradient(circle at 50% 43%,rgba(255,74,23,.12),transparent 28%),
