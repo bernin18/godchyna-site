@@ -80,9 +80,29 @@ type Giveaway = {
   requiresProof:boolean;
   notePt?:string;
   noteEn?:string;
+  warningPt?:string;
+  warningEn?:string;
 };
 
 const giveaways:Giveaway[] = [
+  {
+    id:"bayonet-lore-gloves-omega",
+    title:"Bayonet | Lore + Gloves | Omega",
+    condition:"",
+    price:"",
+    minDeposit:"€10",
+    image:"Kit bayonet lore & Gloves Omega.webp",
+    imageAlt:"Bayonet Lore and Gloves Omega giveaway",
+    provider:"topskin",
+    providerName:"TOPSKIN",
+    providerLogo:"topskin-logo.png?v=3",
+    url:"https://topskin.net/utm/godchyna",
+    requiresProof:true,
+    notePt:"Faz um depósito mínimo de €10 e envia a prova do depósito por Discord ou Instagram.",
+    noteEn:"Make a minimum €10 deposit and send proof of the deposit through Discord or Instagram.",
+    warningPt:"ATENÇÃO: sem prova do depósito, a participação não será aceite no giveaway.",
+    warningEn:"IMPORTANT: without proof of deposit, your entry will not be accepted for the giveaway.",
+  },
   {
     id:"awp-wildfire",
     title:"AWP | Wildfire",
@@ -280,8 +300,8 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         <div className="giveaway-head">
           <div>
             <h3>{giveaway.title}</h3>
-            <p>{giveaway.condition}</p>
-            <strong className="price">{giveaway.price}</strong>
+            {giveaway.condition && <p>{giveaway.condition}</p>}
+            {giveaway.price && <strong className="price">{giveaway.price}</strong>}
           </div>
           <div className="giveaway-provider-status">
             <span className="active-pill">{pick("ATIVO","ACTIVE")}</span>
@@ -291,6 +311,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         <div className="divider"/>
         <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
         {(giveaway.notePt || giveaway.noteEn) && <p className="giveaway-copy">{pick(giveaway.notePt ?? "",giveaway.noteEn ?? "")}</p>}
+        {(giveaway.warningPt || giveaway.warningEn) && <p className="giveaway-warning">{pick(giveaway.warningPt ?? "",giveaway.warningEn ?? "")}</p>}
         <div className={`giveaway-actions ${giveaway.requiresProof?"":"single-action"}`}>
           <a className="participate" href={giveaway.url} target="_blank" rel="noopener noreferrer sponsored">{pick("PARTICIPAR","ENTER")}</a>
           {giveaway.requiresProof && <>
