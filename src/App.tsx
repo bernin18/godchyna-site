@@ -334,9 +334,16 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
             <div className="kit-toss-spark spark-b" />
             <div className="kit-toss-spark spark-c" />
             <img
-              className="kit-toss-gloves"
+              className="kit-toss-glove kit-toss-glove-left"
               src={asset("gloves omega.png")}
-              alt="Sport Gloves Omega FT"
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="kit-toss-glove kit-toss-glove-right"
+              src={asset("gloves omega.png")}
+              alt=""
+              aria-hidden="true"
             />
             <img
               className="kit-toss-knife"
