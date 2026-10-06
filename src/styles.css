@@ -320,6 +320,42 @@ pointer-events:none}
 .giveaway-stage-provider-logo.csgoskins{max-width:118px;max-height:28px}
 .kit-stage .giveaway-prize-image{max-width:none;object-fit:contain;object-position:center center;animation:none!important;will-change:auto;transition:opacity .18s ease,transform .22s ease;filter:drop-shadow(0 22px 20px rgba(0,0,0,.76)) drop-shadow(0 0 26px rgba(240,187,63,.24))}
 .kit-stage .kit-gallery-image-0{width:118%;height:114%;transform:scale(1.10) translateY(-18px)}
+.kit-inspect-scene{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  overflow:hidden;
+  cursor:zoom-in
+}
+.kit-inspect-layer{
+  position:absolute;
+  left:-9%;
+  top:-7%;
+  width:118%;
+  height:114%;
+  max-width:none;
+  object-fit:contain;
+  object-position:center center;
+  pointer-events:none;
+  filter:drop-shadow(0 22px 20px rgba(0,0,0,.76)) drop-shadow(0 0 26px rgba(240,187,63,.24));
+  transform:scale(1.10) translateY(-18px)
+}
+.kit-inspect-left{
+  clip-path:polygon(0 0,38% 0,38% 58%,56% 58%,56% 100%,0 100%)
+}
+.kit-inspect-right{
+  clip-path:polygon(38% 0,100% 0,100% 100%,56% 100%,56% 58%,38% 58%);
+  transform-origin:78% 82%;
+  animation:kitWristInspect 4.2s cubic-bezier(.37,0,.21,1) infinite;
+  will-change:transform
+}
+@keyframes kitWristInspect{
+  0%,12%,100%{transform:scale(1.10) translateY(-18px) rotate(0deg)}
+  28%{transform:scale(1.105) translateY(-20px) rotate(-2.8deg)}
+  52%{transform:scale(1.11) translateY(-22px) rotate(4.8deg)}
+  72%{transform:scale(1.105) translateY(-20px) rotate(1.5deg)}
+  88%{transform:scale(1.10) translateY(-18px) rotate(-1.3deg)}
+}
 .kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{
   width:74%;
   height:68%;
