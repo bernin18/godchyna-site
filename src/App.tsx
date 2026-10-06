@@ -82,6 +82,7 @@ type Giveaway = {
   noteEn?:string;
   warningPt?:string;
   warningEn?:string;
+  galleryImages?:Array<{src:string;alt:string}>;
 };
 
 const giveaways:Giveaway[] = [
@@ -93,6 +94,11 @@ const giveaways:Giveaway[] = [
     minDeposit:"€10",
     image:"Kit bayonet lore & Gloves Omega.webp",
     imageAlt:"Bayonet Lore and Gloves Omega giveaway",
+    galleryImages:[
+      {src:"Kit bayonet lore & Gloves Omega.webp",alt:"Bayonet Lore MW and Sport Gloves Omega FT combo"},
+      {src:"bayo lore.png",alt:"Bayonet Lore MW"},
+      {src:"gloves omega.png",alt:"Sport Gloves Omega FT"},
+    ],
     provider:"topskin",
     providerName:"TOPSKIN",
     providerLogo:"topskin-logo.png?v=3",
@@ -286,15 +292,62 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const { pick } = useLanguage();
   const isTopskin=giveaway.provider==="topskin";
   const isKitGiveaway=giveaway.id==="bayonet-lore-gloves-omega";
+  const galleryImages=giveaway.galleryImages?.length
+    ? giveaway.galleryImages
+    : [{src:giveaway.image,alt:giveaway.imageAlt}];
+  const [galleryIndex,setGalleryIndex]=useState(0);
+
+  useEffect(()=>{
+    setGalleryIndex(0);
+  },[giveaway.id]);
+
+  const hasGallery=galleryImages.length>1;
+  const activeGalleryImage=galleryImages[galleryIndex] ?? galleryImages[0];
+
+  const changeGallery=(direction:number)=>{
+    setGalleryIndex(current=>(current+direction+galleryImages.length)%galleryImages.length);
+  };
+
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider}`}>
-      <div className={`knife-stage ${isTopskin?"":"wildfire-stage"}${isKitGiveaway?" kit-stage":""}`}>
+      <div className={`knife-stage ${isTopskin?"":"wildfire-stage"}${isKitGiveaway?" kit-stage rare-stage":""}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
         <div className="knife-sparkle sparkle-2" />
         <div className="knife-sparkle sparkle-3" />
-        <img className="giveaway-prize-image" src={asset(giveaway.image)} alt={giveaway.imageAlt} />
+        {hasGallery && (
+          <button
+            type="button"
+            className="stage-arrow stage-arrow-left"
+            onClick={()=>changeGallery(-1)}
+            aria-label={pick("Imagem anterior","Previous image")}
+          >
+            ‹
+          </button>
+        )}
+        <img
+          className={`giveaway-prize-image${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}`}
+          src={asset(activeGalleryImage.src)}
+          alt={activeGalleryImage.alt}
+        />
+        {hasGallery && (
+          <button
+            type="button"
+            className="stage-arrow stage-arrow-right"
+            onClick={()=>changeGallery(1)}
+            aria-label={pick("Imagem seguinte","Next image")}
+          >
+            ›
+          </button>
+        )}
+        {hasGallery && (
+          <div className="stage-dots" aria-hidden="true">
+            {galleryImages.map((_,index)=>(
+              <span key={index} className={index===galleryIndex?"active":""} />
+            ))}
+          </div>
+        )}
         <img
           className={`giveaway-stage-provider-logo ${giveaway.provider}`}
           src={asset(giveaway.providerLogo)}
