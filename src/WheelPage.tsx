@@ -1464,6 +1464,172 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return Number.isFinite(value) && value >= 0 ? value : null;
   }
 
+  function monthlyPrizeNumericValue() {
+    const normalized = monthlyPrizeDraftValue.trim().replace(",", ".");
+    if (!normalized) return null;
+
+    const value = Number(normalized);
+    return Number.isFinite(value) && value >= 0 ? value : null;
+  }
+
+  async function saveMonthlyGiveawayPrize() {
+    if (!session?.user.id || account?.role !== "admin" || monthlyPrizeDraftSaving) return;
+
+    const normalizedValue = monthlyPrizeDraftValue.trim().replace(",", ".");
+    if (normalizedValue && monthlyPrizeNumericValue() === null) {
+      setMonthlyPrizeDraftMessage(
+        pick("Confirma o valor da skin mensal.", "Check the monthly skin value."),
+      );
+      return;
+    }
+
+    if (!monthlyPrizeDraftName.trim() || !monthlyPrizeDraftImagePath || monthlyPrizeNumericValue() === null) {
+      setMonthlyPrizeDraftMessage(
+        pick(
+          "Preenche nome, valor e imagem da skin mensal.",
+          "Add the monthly skin name, value and image.",
+        ),
+      );
+      return;
+    }
+
+    setMonthlyPrizeDraftSaving(true);
+    setMonthlyPrizeDraftMessage("");
+
+    const { error } = await supabase.rpc("save_monthly_giveaway_prize", {
+      p_skin_name: monthlyPrizeDraftName.trim(),
+      p_skin_value: monthlyPrizeNumericValue(),
+      p_image_path: monthlyPrizeDraftImagePath,
+      p_is_saved: true,
+    });
+
+    setMonthlyPrizeDraftSaving(false);
+
+    if (error) {
+      setMonthlyPrizeDraftMessage(
+        pick("Não foi possível guardar o prémio mensal.", "Unable to save the monthly prize."),
+      );
+      return;
+    }
+
+    setMonthlyPrizeDraftEditing(false);
+    setMonthlyPrizeDraftMessage(
+      pick("Prémio mensal guardado.", "Monthly prize saved."),
+    );
+  }
+
+  async function uploadMonthlyGiveawayPrizeImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file || !session?.user.id || account?.role !== "admin" || monthlyPrizeDraftSaving) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      setMonthlyPrizeDraftMessage(
+        pick("Usa uma imagem PNG, JPG ou WebP.", "Use a PNG, JPG or WebP image."),
+      );
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setMonthlyPrizeDraftMessage(
+        pick("A imagem não pode ultrapassar 5 MB.", "The image cannot exceed 5 MB."),
+      );
+      return;
+    }
+
+    setMonthlyPrizeDraftSaving(true);
+    setMonthlyPrizeDraftMessage("");
+
+    const extension =
+      file.type === "image/png"
+        ? "png"
+        : file.type === "image/webp"
+          ? "webp"
+          : "jpg";
+    const nextPath = `${session.user.id}/monthly-${crypto.randomUUID()}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("giveaway-prizes")
+      .upload(nextPath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
+
+    if (uploadError) {
+      setMonthlyPrizeDraftSaving(false);
+      setMonthlyPrizeDraftMessage(
+        pick("Não foi possível fazer upload da imagem.", "Unable to upload the image."),
+      );
+      return;
+    }
+
+    const { error: saveError } = await supabase.rpc("save_monthly_giveaway_prize", {
+      p_skin_name: monthlyPrizeDraftName.trim(),
+      p_skin_value: monthlyPrizeNumericValue(),
+      p_image_path: nextPath,
+      p_is_saved: false,
+    });
+
+    if (saveError) {
+      await supabase.storage.from("giveaway-prizes").remove([nextPath]);
+      setMonthlyPrizeDraftSaving(false);
+      setMonthlyPrizeDraftMessage(
+        pick(
+          "A imagem foi enviada, mas não foi possível preparar o prémio mensal.",
+          "The image uploaded, but the monthly prize could not be prepared.",
+        ),
+      );
+      return;
+    }
+
+    if (monthlyPrizeDraftImagePath && monthlyPrizeDraftImagePath !== nextPath) {
+      await supabase.storage.from("giveaway-prizes").remove([monthlyPrizeDraftImagePath]);
+    }
+
+    const { data: publicData } = supabase.storage
+      .from("giveaway-prizes")
+      .getPublicUrl(nextPath);
+
+    setMonthlyPrizeDraftImagePath(nextPath);
+    setMonthlyPrizeDraftImageUrl(publicData.publicUrl);
+    setMonthlyPrizeDraftEditing(true);
+    setMonthlyPrizeDraftSaving(false);
+    setMonthlyPrizeDraftMessage(pick("Imagem mensal carregada.", "Monthly image uploaded."));
+  }
+
+  async function removeMonthlyGiveawayPrize() {
+    if (!session?.user.id || account?.role !== "admin" || monthlyPrizeDraftSaving) return;
+
+    setMonthlyPrizeDraftSaving(true);
+    setMonthlyPrizeDraftMessage("");
+
+    const currentPath = monthlyPrizeDraftImagePath;
+    const { error } = await supabase.rpc("remove_monthly_giveaway_prize");
+
+    if (error) {
+      setMonthlyPrizeDraftSaving(false);
+      setMonthlyPrizeDraftMessage(
+        pick("Não foi possível remover o prémio mensal.", "Unable to remove the monthly prize."),
+      );
+      return;
+    }
+
+    if (currentPath) {
+      await supabase.storage.from("giveaway-prizes").remove([currentPath]);
+    }
+
+    setMonthlyPrizeDraftName("");
+    setMonthlyPrizeDraftValue("");
+    setMonthlyPrizeDraftImagePath(null);
+    setMonthlyPrizeDraftImageUrl("");
+    setMonthlyPrizeDraftEditing(true);
+    setMonthlyPrizeDraftSaving(false);
+    setMonthlyPrizeDraftMessage(pick("Prémio mensal removido.", "Monthly prize removed."));
+  }
+
   async function saveGiveawayPrize() {
     if (!session?.user.id || giveawayPrizeSaving) return;
 
