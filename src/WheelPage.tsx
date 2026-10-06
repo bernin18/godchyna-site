@@ -653,6 +653,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     skinName: string;
     skinValue: number | null;
     completedAt: string;
+    giveawayType: "regular" | "monthly";
+    imageUrl: string;
   }>>([]);
   const [giveawayHistoryTotal, setGiveawayHistoryTotal] = useState(0);
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -848,6 +850,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }, [monthlyHistoryDemo?.phase]);
 
   useEffect(() => {
+    if (monthlyHistoryDemo?.phase !== "landed") return;
+
+    const syncTimer = window.setTimeout(() => {
+      void loadGiveawayHistory();
+      setMonthlyHistoryDemo(null);
+    }, 1200);
+
+    return () => window.clearTimeout(syncTimer);
+  }, [monthlyHistoryDemo?.phase]);
+
+  useEffect(() => {
     if (!session?.user.id) {
       setGiveawayPrizeName("");
       setGiveawayPrizeValue("");
@@ -905,12 +918,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   async function loadGiveawayHistory() {
     const { data, error } = await supabase
       .from("giveaway_history")
-      .select("id, offered_by, winner_name, skin_name, skin_value, completed_at")
+      .select("id, offered_by, winner_name, skin_name, skin_value, completed_at, giveaway_type, image_path")
       .order("completed_at", { ascending: false });
 
     if (error) return;
 
-    const historyItems = (data ?? []).map((item) => ({
+    const historyItems = (data ?? []).map((item) => {
+      const imageUrl = item.image_path
+        ? supabase.storage.from("giveaway-prizes").getPublicUrl(item.image_path).data.publicUrl
+        : "";
+
+      return {
         id: item.id,
         offeredBy: item.offered_by || "Chyna",
         winnerName: item.winner_name,
@@ -920,7 +938,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             ? null
             : Number(item.skin_value),
         completedAt: item.completed_at,
-      }));
+        giveawayType: item.giveaway_type === "monthly" ? "monthly" as const : "regular" as const,
+        imageUrl,
+      };
+    });
 
     setGiveawayHistory(historyItems);
     setGiveawayHistoryTotal(
