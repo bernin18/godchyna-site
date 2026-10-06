@@ -490,6 +490,12 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-page h1{font-family:"Chakra Petch";font-size:70px;font-style:italic;margin:0}
 .store-page p{color:var(--green);font-family:"Chakra Petch";font-size:26px;letter-spacing:.2em}
 
+@media(min-width:1001px){
+ .giveaway-card{height:332px}
+ .knife-stage{height:100%;min-height:0}
+ .giveaway-info{height:100%;min-height:0}
+}
+
 @media(max-width:1640px) and (min-width:1001px){
  .topbar-inner{padding:0 24px}
 }
