@@ -3244,7 +3244,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       monthlyLaunching ||
       monthlySpinning ||
       monthlyWinner ||
-      participants.length < 1
+      participants.length < 1 ||
+      giveawayPrizeSaving ||
+      giveawayPrizeEditing ||
+      !giveawayPrizeName.trim() ||
+      !giveawayPrizeImageUrl ||
+      giveawayPrizeNumericValue() === null
     ) return;
 
     const winnerIndex = randomParticipantIndex(participants.length);
@@ -3331,10 +3336,22 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   if (monthlyGiveawayMode && session && account?.role === "admin") {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
-    const monthlyPrizeImageUrl = giveawayPrizeImageUrl || wheelAsset("ursus-marble-fade.png");
-    const monthlyPrizeName = formatFactoryNewSkinName(giveawayPrizeName.trim() || "Ursus Marble Fade");
-    const monthlyPrizeValue = giveawayPrizeNumericValue() ?? 150;
-    const monthlyLocked = monthlyLaunching || monthlySpinning || Boolean(monthlyWinner);
+    const monthlyPrizeImageUrl = giveawayPrizeImageUrl;
+    const monthlyPrizeName = giveawayPrizeName.trim()
+      ? formatFactoryNewSkinName(giveawayPrizeName.trim())
+      : pick("SEM SKIN CONFIGURADA", "NO SKIN CONFIGURED");
+    const monthlyPrizeValue = giveawayPrizeNumericValue();
+    const monthlyPrizeReady = Boolean(
+      giveawayPrizeName.trim() &&
+      giveawayPrizeImageUrl &&
+      monthlyPrizeValue !== null &&
+      !giveawayPrizeEditing,
+    );
+    const monthlyLocked =
+      monthlyLaunching ||
+      monthlySpinning ||
+      Boolean(monthlyWinner) ||
+      giveawayPrizeSaving;
     const monthlyWinnerSegment = monthlyWinner
       ? monthlyWheelSegments.find(
           (segment) =>
@@ -3351,19 +3368,65 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       null,
     );
 
-    function revealMonthlyWinnerInHistory() {
-      if (!monthlyWinner) return;
+    async function revealMonthlyWinnerInHistory() {
+      if (
+        !monthlyWinner ||
+        !monthlyPrizeReady ||
+        monthlyPrizeValue === null ||
+        giveawayPrizeSaving
+      ) return;
+
+      setGiveawayPrizeSaving(true);
+      setGiveawayPrizeMessage("");
+
+      const winnerName = monthlyWinner;
+      const prizeName = monthlyPrizeName;
+      const prizeValue = monthlyPrizeValue;
+      const prizeImageUrl = monthlyPrizeImageUrl;
+
+      const { data, error } = await supabase.rpc("finalize_monthly_giveaway", {
+        p_winner_name: winnerName,
+      });
+
+      setGiveawayPrizeSaving(false);
+
+      if (error) {
+        setGiveawayPrizeMessage(
+          pick(
+            "Não foi possível guardar o giveaway mensal. Tenta novamente.",
+            "The monthly giveaway could not be saved. Please try again.",
+          ),
+        );
+        return;
+      }
+
+      const finalized =
+        Array.isArray(data) && data.length > 0 ? data[0] : null;
+      const completedAt =
+        finalized?.completed_at ?? new Date().toISOString();
 
       stopMonthlyGiveawayAudio();
       setMonthlyHistoryFlightStyle(null);
       setMonthlyHistoryDemo({
-        winnerName: monthlyWinner,
-        skinName: monthlyPrizeName,
-        skinValue: monthlyPrizeValue,
-        imageUrl: monthlyPrizeImageUrl,
-        completedAt: new Date().toISOString(),
+        winnerName,
+        skinName: finalized?.archived_skin_name || prizeName,
+        skinValue:
+          finalized?.archived_skin_value === null ||
+          finalized?.archived_skin_value === undefined
+            ? prizeValue
+            : Number(finalized.archived_skin_value),
+        imageUrl: prizeImageUrl,
+        completedAt,
         phase: "showcase",
       });
+
+      // The monthly prize is consumed by finalization. Start the next one empty.
+      setGiveawayPrizeName("");
+      setGiveawayPrizeValue("");
+      setGiveawayPrizeImagePath(null);
+      setGiveawayPrizeImageUrl("");
+      setGiveawayPrizeEditing(true);
+      setGiveawayPrizeMessage("");
 
       setMonthlyGiveawayMode(false);
       setMonthlyWinner(null);
@@ -3434,7 +3497,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               type="button"
               className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}${monthlySpinning ? " is-spinning" : ""}${monthlyLocked ? " is-draw-active" : ""}`}
               onClick={spinMonthlyGiveaway}
-              disabled={monthlyLocked || participants.length < 1}
+              disabled={monthlyLocked || !monthlyPrizeReady || participants.length < 1}
               aria-label={pick("Sortear vencedor", "Draw winner")}
             >
               {monthlyKnifeDocked ? (
@@ -3588,7 +3651,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               type="button"
               className="participants-clear"
               onClick={clearParticipants}
-              disabled={monthlyLocked || participants.length < 1}
+              disabled={monthlyLocked || !monthlyPrizeReady || participants.length < 1}
             >
               <Trash2 />
             </button>
