@@ -601,6 +601,10 @@ function historySkinImage(name: string) {
 
   const images: Record<string, string> = {
     "m4a4 | evil daimyo": wheelAsset("evil Daimyo.png"),
+    "aug | eye of zapems": wheelAsset("aug eye of.png"),
+    "b squadron officer | sas": wheelAsset("b squadron.png"),
+    "desert eagle | serpent strike": wheelAsset("deagle serpent.png"),
+    "p2000 | pulse": wheelAsset("p2000 pulse.png"),
     "desert eagle | firebreathing": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk6_evb6hoH_aaHGKS0-t3pOlgQS6MmRQguynLn9ircSiTPFUgCJAkQbELsxXtktDkMurk4lTZ39hEyn_-3HsbvXxj4fFCD_RcNNN-xQ",
     "awp | ice coaled": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_DVL0PutbZtuL_GfC2OvzedxuPUnS3u3wR8lsTzTn4qqcXuXOlQmCpUiQOdYtUG_ltXgP-u04wWL3Y9NnjK-0H2dw8uldQ",
     "ak-47 | nouveau rouge": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wipC6s2vY_A6H_6cG3GVwPtJvOhuRz39zBsm5j-HyNqpd32fPVd1AsB3RbEP4xntwdPuM-jl4QaK2NpCzX_23DQJsHjpyGbntg",
@@ -1011,7 +1015,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setGiveawayHistory(historyItems);
     setGiveawayHistoryTotal(
       historyItems.reduce(
-        (total, item) => total + (item.skinValue ?? 0),
+        (total, item) =>
+          item.giveawayType === "regular"
+            ? total + (item.skinValue ?? 0)
+            : total,
         0,
       ),
     );
@@ -1850,16 +1857,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
 
     void loadGiveawayHistory();
-
-    if (archivedImagePath) {
-      if (winnerCelebrationVisibleRef.current) {
-        setWinnerGiveawayPrizeCleanupPath(archivedImagePath);
-      } else {
-        await supabase.storage
-          .from("giveaway-prizes")
-          .remove([archivedImagePath]);
-      }
-    }
 
     setGiveawayPrizeName("");
     setGiveawayPrizeValue("");
@@ -5869,7 +5866,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                           );
                         }
 
-                        const skinImage = historySkinImage(item.skinName);
+                        const skinImage = item.imageUrl || historySkinImage(item.skinName);
 
                         return (
                           <article
@@ -5918,7 +5915,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="giveaway-history-live">
               <i />
               <span>
-                {pick("TOTAL DADO EM GIVEAWAYS (GERAL)", "TOTAL GIVEN IN GIVEAWAYS (TOTAL)")}
+                {pick("TOTAL DADO EM GIVEAWAYS DIÁRIOS", "TOTAL GIVEN IN DAILY GIVEAWAYS")}
                 <b>{giveawayHistoryTotal.toFixed(2)} €</b>
               </span>
             </div>
