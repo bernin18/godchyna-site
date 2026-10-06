@@ -326,11 +326,31 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
             ‹
           </button>
         )}
-        <img
-          className={`giveaway-prize-image${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}`}
-          src={asset(activeGalleryImage.src)}
-          alt={activeGalleryImage.alt}
-        />
+        {isKitGiveaway && galleryIndex===0 ? (
+          <div className="kit-toss-scene" aria-label="Bayonet Lore animated showcase">
+            <div className="kit-toss-orbit orbit-one" />
+            <div className="kit-toss-orbit orbit-two" />
+            <div className="kit-toss-spark spark-a" />
+            <div className="kit-toss-spark spark-b" />
+            <div className="kit-toss-spark spark-c" />
+            <img
+              className="kit-toss-gloves"
+              src={asset("gloves omega.png")}
+              alt="Sport Gloves Omega FT"
+            />
+            <img
+              className="kit-toss-knife"
+              src={asset("bayo lore.png")}
+              alt="Bayonet Lore MW"
+            />
+          </div>
+        ) : (
+          <img
+            className={`giveaway-prize-image${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}`}
+            src={asset(activeGalleryImage.src)}
+            alt={activeGalleryImage.alt}
+          />
+        )}
         {hasGallery && (
           <button
             type="button"
