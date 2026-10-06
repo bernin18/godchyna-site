@@ -322,8 +322,8 @@ pointer-events:none}
 .kit-stage .kit-gallery-image-0{
   width:118%;
   height:114%;
-  transform-origin:center;
-  animation:kitComboFloat 5s ease-in-out infinite!important
+  transform:scale(1.10) translateY(-18px);
+  animation:none!important
 }
 .kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{
   width:74%;
@@ -332,14 +332,11 @@ pointer-events:none}
   animation:kitItemFloat 4.8s ease-in-out infinite!important
 }
 .kit-stage:hover .kit-gallery-image-0{
-  animation:kitComboFloat 4.2s ease-in-out infinite!important
+  animation:none!important;
+  transform:scale(1.10) translateY(-18px)
 }
 .kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{
   animation:kitItemFloat 3.8s ease-in-out infinite!important
-}
-@keyframes kitComboFloat{
-  0%,100%{transform:translate3d(-2px,1px,0) rotateZ(-.3deg) scale(1.10) translateY(-18px)}
-  50%{transform:translate3d(3px,-4px,0) rotateZ(.3deg) scale(1.108) translateY(-18px)}
 }
 @keyframes kitItemFloat{
   0%,100%{transform:translate3d(-4px,3px,0) rotateZ(-.7deg) scale(.995)}
