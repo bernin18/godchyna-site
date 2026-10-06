@@ -328,11 +328,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         )}
         {isKitGiveaway && galleryIndex===0 ? (
           <div className="kit-toss-scene" aria-label="Bayonet Lore animated showcase">
-            <div className="kit-toss-orbit orbit-one" />
-            <div className="kit-toss-orbit orbit-two" />
-            <div className="kit-toss-spark spark-a" />
-            <div className="kit-toss-spark spark-b" />
-            <div className="kit-toss-spark spark-c" />
+            <div className="kit-soft-glow" />
             <img
               className="kit-toss-arms"
               src={asset("omega braços.webp")}
