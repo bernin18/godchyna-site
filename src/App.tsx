@@ -296,10 +296,26 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
     ? giveaway.galleryImages
     : [{src:giveaway.image,alt:giveaway.imageAlt}];
   const [galleryIndex,setGalleryIndex]=useState(0);
+  const [previewOpen,setPreviewOpen]=useState(false);
 
   useEffect(()=>{
     setGalleryIndex(0);
+    setPreviewOpen(false);
   },[giveaway.id]);
+
+  useEffect(()=>{
+    if(!previewOpen) return;
+    const onKeyDown=(event:KeyboardEvent)=>{
+      if(event.key==="Escape") setPreviewOpen(false);
+    };
+    window.addEventListener("keydown",onKeyDown);
+    const previousOverflow=document.body.style.overflow;
+    document.body.style.overflow="hidden";
+    return ()=>{
+      window.removeEventListener("keydown",onKeyDown);
+      document.body.style.overflow=previousOverflow;
+    };
+  },[previewOpen]);
 
   const hasGallery=galleryImages.length>1;
   const activeGalleryImage=galleryImages[galleryIndex] ?? galleryImages[0];
@@ -327,9 +343,19 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
+          role="button"
+          tabIndex={0}
+          aria-label={pick("Abrir imagem em tamanho maior","Open larger image")}
+          onClick={()=>setPreviewOpen(true)}
+          onKeyDown={(event)=>{
+            if(event.key==="Enter" || event.key===" "){
+              event.preventDefault();
+              setPreviewOpen(true);
+            }
+          }}
         />
         {hasGallery && (
           <button
@@ -379,6 +405,33 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </div>
         </div>
       </div>
+      {previewOpen && (
+        <div
+          className="giveaway-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={pick("Pré-visualização da skin","Skin preview")}
+          onMouseDown={(event)=>{
+            if(event.currentTarget===event.target) setPreviewOpen(false);
+          }}
+        >
+          <div className={`giveaway-lightbox-panel ${isKitGiveaway?"rare":"wildfire"}`}>
+            <button
+              type="button"
+              className="giveaway-lightbox-close"
+              onClick={()=>setPreviewOpen(false)}
+              aria-label={pick("Fechar","Close")}
+            >
+              ×
+            </button>
+            <img
+              className="giveaway-lightbox-image"
+              src={asset(activeGalleryImage.src)}
+              alt={activeGalleryImage.alt}
+            />
+          </div>
+        </div>
+      )}
     </article>
   );
 }
