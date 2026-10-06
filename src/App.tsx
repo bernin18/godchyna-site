@@ -115,8 +115,8 @@ const giveaways:Giveaway[] = [
     condition:"Field-Tested / FT",
     price:"$60.00",
     minDeposit:"€4",
-    image:"wildfire.png",
-    imageAlt:"AWP Wildfire Field-Tested",
+    image:"wildfire braços.webp",
+    imageAlt:"AWP Wildfire Field-Tested with gloves",
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
     providerLogo:"csgoskins-logo.png?v=3",
@@ -343,7 +343,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${giveaway.id==="awp-wildfire"?" wildfire-arms-image":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -425,7 +425,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
               ×
             </button>
             <img
-              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}`}
+              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire"?" wildfire-arms-lightbox-image":""}`}
               src={asset(activeGalleryImage.src)}
               alt={activeGalleryImage.alt}
             />
