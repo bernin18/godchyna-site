@@ -87,8 +87,8 @@ type Giveaway = {
 const giveaways:Giveaway[] = [
   {
     id:"bayonet-lore-gloves-omega",
-    title:"Bayonet Lore & Sport Gloves | Omega",
-    condition:"Bayonet MW • Sport Gloves FT",
+    title:"Bayonet Lore MW & Sport Gloves ★ Omega FT",
+    condition:"",
     price:"$350",
     minDeposit:"€10",
     image:"Kit bayonet lore & Gloves Omega.webp",
