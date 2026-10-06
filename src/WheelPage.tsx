@@ -3747,17 +3747,31 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <span className="wave-left" />
           </div>
 
-          <div className="monthly-prize-card-media">
-            <img
-              ref={monthlyPrizeImageRef}
-              src={monthlyPrizeImageUrl}
-              alt={monthlyPrizeName}
-            />
+          <div className={`monthly-prize-card-media${monthlyPrizeReady ? "" : " is-empty"}`}>
+            {monthlyPrizeImageUrl ? (
+              <img
+                ref={monthlyPrizeImageRef}
+                src={monthlyPrizeImageUrl}
+                alt={monthlyPrizeName}
+              />
+            ) : (
+              <span className="monthly-prize-empty">
+                {pick("SEM SKIN", "NO SKIN")}
+              </span>
+            )}
           </div>
 
           <strong>{monthlyPrizeName}</strong>
           {monthlyPrizeValue !== null && (
             <b className="monthly-prize-value">$ {monthlyPrizeValue.toFixed(2)}</b>
+          )}
+          {!monthlyPrizeReady && (
+            <small className="monthly-prize-ready-note">
+              {pick(
+                "Guarda a próxima skin em CONFIGURAR SORTEIO para ativar o mensal.",
+                "Save the next skin in GIVEAWAY SETUP to activate the monthly giveaway.",
+              )}
+            </small>
           )}
         </aside>
 
@@ -3812,25 +3826,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="monthly-winner-history-btn"
                   onClick={revealMonthlyWinnerInHistory}
+                  disabled={giveawayPrizeSaving}
                 >
-                  {pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} <ArrowRight />
-                </button>
-                <button
-                  type="button"
-                  className="monthly-winner-back-btn"
-                  onClick={() => {
-                    stopMonthlyGiveawayAudio();
-                    setMonthlyWinner(null);
-                    setMonthlyKnifeRotation(45);
-                    setMonthlyWheelRotation(0);
-                    setMonthlyLaunching(false);
-                    setMonthlyKnifeDocked(false);
-                    setMonthlyKnifeFlightStyle(null);
-                  }}
-                >
-                  {pick("VOLTAR À CONFIGURAÇÃO", "BACK TO SETUP")}
+                  {giveawayPrizeSaving
+                    ? pick("A GUARDAR...", "SAVING...")
+                    : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!giveawayPrizeSaving && <ArrowRight />}
                 </button>
               </div>
+              {giveawayPrizeMessage && (
+                <p className="monthly-winner-save-error">{giveawayPrizeMessage}</p>
+              )}
             </div>
           </div>
         )}
