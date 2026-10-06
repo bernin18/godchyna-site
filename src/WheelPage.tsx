@@ -586,7 +586,7 @@ function spreadParticipantEntries(entries: string[]) {
 function formatFactoryNewSkinName(name: string) {
   const trimmed = name.trim();
   if (!trimmed) return trimmed;
-  return /(?:^|\s)FN$/i.test(trimmed) ? trimmed : `${trimmed} FN`;
+  return /(?:^|\s)(?:FN|MW|FT|WW|BS)$/i.test(trimmed) ? trimmed : `${trimmed} FN`;
 }
 
 function historySkinImage(name: string) {
@@ -600,6 +600,7 @@ function historySkinImage(name: string) {
     .toLocaleLowerCase();
 
   const images: Record<string, string> = {
+    "m4a4 | evil daimyo": wheelAsset("evil Daimyo.png"),
     "desert eagle | firebreathing": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk6_evb6hoH_aaHGKS0-t3pOlgQS6MmRQguynLn9ircSiTPFUgCJAkQbELsxXtktDkMurk4lTZ39hEyn_-3HsbvXxj4fFCD_RcNNN-xQ",
     "awp | ice coaled": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_DVL0PutbZtuL_GfC2OvzedxuPUnS3u3wR8lsTzTn4qqcXuXOlQmCpUiQOdYtUG_ltXgP-u04wWL3Y9NnjK-0H2dw8uldQ",
     "ak-47 | nouveau rouge": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wipC6s2vY_A6H_6cG3GVwPtJvOhuRz39zBsm5j-HyNqpd32fPVd1AsB3RbEP4xntwdPuM-jl4QaK2NpCzX_23DQJsHjpyGbntg",
