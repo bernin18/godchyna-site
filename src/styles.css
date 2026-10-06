@@ -316,10 +316,93 @@ pointer-events:none}
 .giveaway-stage-provider-logo{position:absolute;top:14px;left:14px;bottom:auto;z-index:7;width:auto!important;height:auto!important;object-fit:contain!important;animation:none!important;transform:none!important;filter:none!important;opacity:.95}
 .giveaway-stage-provider-logo.topskin{max-width:92px;max-height:24px}
 .giveaway-stage-provider-logo.csgoskins{max-width:118px;max-height:28px}
-.kit-stage .giveaway-prize-image{width:118%;height:114%;max-width:none;object-fit:contain;object-position:center center;transform:scale(1.10) translateY(-18px);animation:none!important;will-change:auto;filter:drop-shadow(0 24px 22px rgba(0,0,0,.78)) drop-shadow(0 0 24px rgba(32,243,154,.18))}
-.kit-stage:hover .giveaway-prize-image{animation:none!important;transform:scale(1.10) translateY(-18px);filter:drop-shadow(0 24px 22px rgba(0,0,0,.78)) drop-shadow(0 0 24px rgba(32,243,154,.18))}
+.kit-stage .giveaway-prize-image{max-width:none;object-fit:contain;object-position:center center;animation:none!important;will-change:auto;transition:opacity .18s ease,transform .22s ease;filter:drop-shadow(0 22px 20px rgba(0,0,0,.76)) drop-shadow(0 0 26px rgba(240,187,63,.24))}
+.kit-stage .kit-gallery-image-0{width:118%;height:114%;transform:scale(1.10) translateY(-18px)}
+.kit-stage .kit-gallery-image-1,.kit-stage .kit-gallery-image-2{width:92%;height:86%;transform:scale(1.04) translateY(-4px)}
+.kit-stage:hover .kit-gallery-image-0{animation:none!important;transform:scale(1.10) translateY(-18px)}
+.kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{animation:none!important;transform:scale(1.04) translateY(-4px)}
 .kit-stage::before,.kit-stage .knife-ambient-glow,.kit-stage .knife-shine,.kit-stage .knife-sparkle{animation:none!important}
 .kit-stage .knife-shine,.kit-stage .knife-sparkle{display:none!important}
+.rare-stage{
+  border-color:rgba(239,190,72,.52);
+  background:
+    radial-gradient(circle at 50% 42%,rgba(243,190,64,.17),transparent 31%),
+    radial-gradient(circle at 50% 35%,#211b0d,#070b0e 72%);
+  box-shadow:
+    inset 0 0 34px rgba(244,195,70,.07),
+    0 0 24px rgba(225,169,43,.14)
+}
+.rare-stage::before{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(245,197,76,.12),transparent 43%),
+    linear-gradient(115deg,transparent 10%,rgba(255,224,139,.05) 45%,transparent 70%)
+}
+.rare-stage .knife-ambient-glow{
+  width:270px;
+  height:230px;
+  background:radial-gradient(circle,rgba(244,195,67,.26) 0%,rgba(232,172,40,.10) 44%,transparent 74%);
+  filter:blur(18px);
+  opacity:.82
+}
+.rare-stage:hover{
+  border-color:rgba(255,214,110,.72);
+  box-shadow:
+    inset 0 0 38px rgba(248,202,82,.09),
+    0 0 32px rgba(229,173,48,.20)
+}
+.stage-arrow{
+  position:absolute;
+  top:50%;
+  z-index:9;
+  width:38px;
+  height:38px;
+  padding:0;
+  border:1px solid rgba(245,202,103,.48);
+  border-radius:50%;
+  background:rgba(8,12,14,.78);
+  color:#f8d77f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  line-height:1;
+  cursor:pointer;
+  transform:translateY(-50%);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+  box-shadow:0 0 14px rgba(230,177,54,.12);
+  backdrop-filter:blur(6px)
+}
+.stage-arrow:hover{
+  transform:translateY(-50%) scale(1.06);
+  border-color:rgba(255,222,135,.82);
+  background:rgba(15,17,15,.94);
+  box-shadow:0 0 22px rgba(236,183,57,.26)
+}
+.stage-arrow-left{left:12px}
+.stage-arrow-right{right:12px}
+.stage-dots{
+  position:absolute;
+  left:50%;
+  bottom:11px;
+  z-index:9;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  transform:translateX(-50%)
+}
+.stage-dots span{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:rgba(255,255,255,.24);
+  transition:.18s ease
+}
+.stage-dots span.active{
+  width:18px;
+  border-radius:999px;
+  background:#efc050;
+  box-shadow:0 0 12px rgba(239,192,80,.52)
+}
 .wildfire-stage{
   background:
     radial-gradient(circle at 50% 43%,rgba(255,74,23,.12),transparent 28%),
@@ -454,6 +537,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .giveaway-provider-logo{width:94px;height:24px}
  .giveaway-provider-logo.topskin{width:82px}
  .giveaway-provider-logo.csgoskins{width:98px}
+ .stage-arrow{width:34px;height:34px;font-size:25px}
+ .stage-arrow-left{left:9px}
+ .stage-arrow-right{right:9px}
  .giveaway-actions{grid-template-columns:1fr}
  .giveaway-actions.single-action{grid-template-columns:1fr}
  .footer-main{grid-template-columns:1fr;gap:23px;justify-items:center}
