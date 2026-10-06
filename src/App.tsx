@@ -83,11 +83,13 @@ type Giveaway = {
   warningPt?:string;
   warningEn?:string;
   galleryImages?:Array<{src:string;alt:string}>;
+  enabled?:boolean;
 };
 
 const giveaways:Giveaway[] = [
   {
     id:"bayonet-lore-gloves-omega",
+    enabled:false,
     title:"Bayonet Lore MW & Sport Gloves ★ Omega FT",
     condition:"",
     price:"$350",
@@ -442,33 +444,42 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 
 function HomeGiveawayRotator(){
   const { pick } = useLanguage();
+  const activeGiveaways=giveaways.filter(giveaway=>giveaway.enabled!==false);
   const [activeIndex,setActiveIndex]=useState(0);
 
   useEffect(()=>{
-    if(giveaways.length<2) return;
+    setActiveIndex(0);
+  },[activeGiveaways.length]);
+
+  useEffect(()=>{
+    if(activeGiveaways.length<2) return;
     const timer=window.setInterval(()=>{
-      setActiveIndex(current=>(current+1)%giveaways.length);
+      setActiveIndex(current=>(current+1)%activeGiveaways.length);
     },5000);
     return ()=>window.clearInterval(timer);
-  },[]);
+  },[activeGiveaways.length]);
 
-  const activeGiveaway=giveaways[activeIndex];
+  const activeGiveaway=activeGiveaways[activeIndex] ?? activeGiveaways[0];
+  if(!activeGiveaway) return null;
+
   return (
     <div className="home-giveaway-rotator">
       <div key={activeGiveaway.id} className="home-giveaway-slide">
         <GiveawayCard giveaway={activeGiveaway}/>
       </div>
-      <div className="giveaway-rotator-dots" aria-label={pick("Selecionar giveaway","Select giveaway")}>
-        {giveaways.map((giveaway,index)=>(
-          <button
-            key={giveaway.id}
-            type="button"
-            className={index===activeIndex?"active":""}
-            onClick={()=>setActiveIndex(index)}
-            aria-label={`${pick("Mostrar giveaway","Show giveaway")} ${giveaway.title}`}
-          />
-        ))}
-      </div>
+      {activeGiveaways.length>1 && (
+        <div className="giveaway-rotator-dots" aria-label={pick("Selecionar giveaway","Select giveaway")}>
+          {activeGiveaways.map((giveaway,index)=>(
+            <button
+              key={giveaway.id}
+              type="button"
+              className={index===activeIndex?"active":""}
+              onClick={()=>setActiveIndex(index)}
+              aria-label={`${pick("Mostrar giveaway","Show giveaway")} ${giveaway.title}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
