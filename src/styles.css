@@ -325,6 +325,119 @@ pointer-events:none}
 .kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{animation:none!important;transform:translateY(-2px)}
 .kit-stage::before,.kit-stage .knife-ambient-glow,.kit-stage .knife-shine,.kit-stage .knife-sparkle{animation:none!important}
 .kit-stage .knife-shine,.kit-stage .knife-sparkle{display:none!important}
+.kit-toss-scene{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:3
+}
+.kit-toss-gloves{
+  position:absolute;
+  left:50%;
+  bottom:-10%;
+  width:98%;
+  max-width:none;
+  transform:translateX(-50%);
+  object-fit:contain;
+  filter:drop-shadow(0 20px 18px rgba(0,0,0,.68));
+  animation:kitHandsFloat 3.6s ease-in-out infinite
+}
+.kit-toss-knife{
+  position:absolute;
+  left:54%;
+  top:56%;
+  width:60%;
+  max-width:none;
+  transform-origin:52% 56%;
+  object-fit:contain;
+  filter:drop-shadow(0 16px 18px rgba(0,0,0,.72)) drop-shadow(0 0 18px rgba(245,196,70,.34));
+  animation:kitKnifeToss 3.6s cubic-bezier(.42,0,.2,1) infinite
+}
+.kit-toss-orbit{
+  position:absolute;
+  left:50%;
+  top:45%;
+  width:58%;
+  height:42%;
+  border:1px solid rgba(243,193,65,.22);
+  border-radius:50%;
+  filter:blur(.2px);
+  opacity:0;
+  transform:translate(-50%,-50%) rotate(-14deg);
+  animation:kitOrbitFlash 3.6s ease-in-out infinite
+}
+.kit-toss-orbit.orbit-two{
+  width:48%;
+  height:34%;
+  border-color:rgba(255,221,128,.16);
+  transform:translate(-50%,-50%) rotate(18deg);
+  animation-delay:.12s
+}
+.kit-toss-spark{
+  position:absolute;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#f5c94f;
+  box-shadow:0 0 12px rgba(245,201,79,.9);
+  opacity:0;
+  animation:kitSpark 3.6s ease-out infinite
+}
+.kit-toss-spark.spark-a{left:43%;top:38%;animation-delay:.15s}
+.kit-toss-spark.spark-b{left:57%;top:31%;animation-delay:.34s}
+.kit-toss-spark.spark-c{left:63%;top:47%;animation-delay:.52s}
+@keyframes kitHandsFloat{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(-3px)}
+}
+@keyframes kitKnifeToss{
+  0%,10%{
+    left:54%;
+    top:56%;
+    transform:translate(-50%,-50%) rotate(-12deg) scale(1)
+  }
+  24%{
+    left:57%;
+    top:43%;
+    transform:translate(-50%,-50%) rotate(86deg) scale(1.02)
+  }
+  40%{
+    left:53%;
+    top:26%;
+    transform:translate(-50%,-50%) rotate(210deg) scale(1.04)
+  }
+  56%{
+    left:47%;
+    top:23%;
+    transform:translate(-50%,-50%) rotate(340deg) scale(1.05)
+  }
+  72%{
+    left:51%;
+    top:34%;
+    transform:translate(-50%,-50%) rotate(470deg) scale(1.03)
+  }
+  88%{
+    left:56%;
+    top:49%;
+    transform:translate(-50%,-50%) rotate(610deg) scale(1.01)
+  }
+  100%{
+    left:54%;
+    top:56%;
+    transform:translate(-50%,-50%) rotate(708deg) scale(1)
+  }
+}
+@keyframes kitOrbitFlash{
+  0%,18%,82%,100%{opacity:0}
+  32%,62%{opacity:.72}
+}
+@keyframes kitSpark{
+  0%,20%,100%{opacity:0;transform:translate(0,0) scale(.6)}
+  34%{opacity:1;transform:translate(-5px,-10px) scale(1)}
+  58%{opacity:.55;transform:translate(8px,-26px) scale(.8)}
+  74%{opacity:0;transform:translate(14px,-38px) scale(.5)}
+}
 .rare-stage{
   border-color:rgba(239,190,72,.52);
   background:
@@ -548,6 +661,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .stage-arrow{width:34px;height:34px;font-size:25px}
  .stage-arrow-left{left:9px}
  .stage-arrow-right{right:9px}
+ .kit-toss-gloves{width:106%;bottom:-7%}
+ .kit-toss-knife{width:67%}
  .giveaway-actions{grid-template-columns:1fr}
  .giveaway-actions.single-action{grid-template-columns:1fr}
  .footer-main{grid-template-columns:1fr;gap:23px;justify-items:center}
