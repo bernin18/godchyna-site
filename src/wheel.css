@@ -5638,3 +5638,37 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .monthly-prize-editor .monthly-prize-card-media img{
   max-height:76px;
 }
+
+/* Monthly pencil edit button */
+.monthly-prize-edit-btn{
+  position:absolute!important;
+  right:9px!important;
+  bottom:9px!important;
+  z-index:5!important;
+  width:28px!important;
+  min-width:28px!important;
+  height:28px!important;
+  min-height:28px!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(217,166,55,.32)!important;
+  border-radius:7px!important;
+  background:rgba(6,13,16,.88)!important;
+  color:#d9a637!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.32)!important;
+}
+
+.monthly-prize-edit-btn svg{
+  width:12px!important;
+  height:12px!important;
+  stroke-width:2.2!important;
+}
+
+.monthly-prize-edit-btn:hover:not(:disabled){
+  border-color:rgba(217,166,55,.68)!important;
+  background:#0a1418!important;
+  box-shadow:0 0 10px rgba(217,166,55,.12),0 4px 14px rgba(0,0,0,.34)!important;
+}
