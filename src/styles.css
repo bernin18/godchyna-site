@@ -325,62 +325,6 @@ pointer-events:none}
 .kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{animation:none!important;transform:translateY(-2px)}
 .kit-stage::before,.kit-stage .knife-ambient-glow,.kit-stage .knife-shine,.kit-stage .knife-sparkle{animation:none!important}
 .kit-stage .knife-shine,.kit-stage .knife-sparkle{display:none!important}
-.kit-toss-scene{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index:3
-}
-.kit-soft-glow{
-  position:absolute;
-  left:50%;
-  top:48%;
-  width:220px;
-  height:220px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(245,196,70,.20) 0%,rgba(245,196,70,.08) 42%,transparent 72%);
-  filter:blur(14px);
-  opacity:.9;
-  animation:kitGlowPulse 3.6s ease-in-out infinite
-}
-.kit-toss-arms{
-  position:absolute;
-  left:50%;
-  bottom:-2%;
-  width:112%;
-  max-width:none;
-  object-fit:contain;
-  transform:translateX(-50%);
-  filter:drop-shadow(0 16px 16px rgba(0,0,0,.58));
-  z-index:2;
-  opacity:1
-}
-.kit-toss-knife{
-  position:absolute;
-  left:58%;
-  top:46%;
-  width:34%;
-  max-width:none;
-  object-fit:contain;
-  transform:translate(-50%,-50%) rotate(-16deg);
-  transform-origin:50% 50%;
-  filter:drop-shadow(0 12px 14px rgba(0,0,0,.68)) drop-shadow(0 0 14px rgba(245,196,70,.22));
-  z-index:4;
-  will-change:transform;
-  animation:kitKnifeFloat 3.6s cubic-bezier(.45,.05,.55,.95) infinite
-}
-@keyframes kitKnifeFloat{
-  0%,100%{transform:translate(-50%,-50%) rotate(-16deg) translateY(0) scale(1)}
-  25%{transform:translate(-50%,-50%) rotate(-10deg) translateY(-6px) scale(1.01)}
-  50%{transform:translate(-50%,-50%) rotate(-4deg) translateY(-10px) scale(1.02)}
-  75%{transform:translate(-50%,-50%) rotate(-11deg) translateY(-5px) scale(1.01)}
-}
-@keyframes kitGlowPulse{
-  0%,100%{opacity:.78;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
-}
 .rare-stage{
   border-color:rgba(239,190,72,.52);
   background:
@@ -604,8 +548,6 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .stage-arrow{width:34px;height:34px;font-size:25px}
  .stage-arrow-left{left:9px}
  .stage-arrow-right{right:9px}
- .kit-toss-arms{width:112%;bottom:-2%}
- .kit-toss-knife{width:34%}
  .giveaway-actions{grid-template-columns:1fr}
  .giveaway-actions.single-action{grid-template-columns:1fr}
  .footer-main{grid-template-columns:1fr;gap:23px;justify-items:center}
