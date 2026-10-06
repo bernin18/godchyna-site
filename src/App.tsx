@@ -310,19 +310,20 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </div>
           <div className="giveaway-provider-status">
             <span className="active-pill">{pick("ATIVO","ACTIVE")}</span>
-            <img className={`giveaway-provider-logo ${giveaway.provider}`} src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
           </div>
         </div>
         <div className="divider"/>
         <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
         {(giveaway.notePt || giveaway.noteEn) && <p className="giveaway-copy">{pick(giveaway.notePt ?? "",giveaway.noteEn ?? "")}</p>}
-        {(giveaway.warningPt || giveaway.warningEn) && <p className="giveaway-warning">{pick(giveaway.warningPt ?? "",giveaway.warningEn ?? "")}</p>}
-        <div className={`giveaway-actions ${giveaway.requiresProof?"":"single-action"}`}>
-          <a className="participate" href={giveaway.url} target="_blank" rel="noopener noreferrer sponsored">{pick("PARTICIPAR","ENTER")}</a>
-          {giveaway.requiresProof && <>
-            <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> {pick("ENVIAR POR DISCORD","SEND ON DISCORD")}</a>
-            <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> {pick("ENVIAR POR INSTAGRAM","SEND ON INSTAGRAM")}</a>
-          </>}
+        <div className="giveaway-action-zone">
+          {(giveaway.warningPt || giveaway.warningEn) && <p className="giveaway-warning">{pick(giveaway.warningPt ?? "",giveaway.warningEn ?? "")}</p>}
+          <div className={`giveaway-actions ${giveaway.requiresProof?"":"single-action"}`}>
+            <a className="participate" href={giveaway.url} target="_blank" rel="noopener noreferrer sponsored">{pick("PARTICIPAR","ENTER")}</a>
+            {giveaway.requiresProof && <>
+              <a className="discord-btn" href={socials.discord} target="_blank" rel="noopener noreferrer"><BrandGlyph network="discord" /> {pick("ENVIAR POR DISCORD","SEND ON DISCORD")}</a>
+              <a className="instagram-btn" href={socials.instagram} target="_blank" rel="noopener noreferrer"><BrandGlyph network="instagram" /> {pick("ENVIAR POR INSTAGRAM","SEND ON INSTAGRAM")}</a>
+            </>}
+          </div>
         </div>
       </div>
     </article>
