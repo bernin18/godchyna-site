@@ -346,21 +346,49 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
             ‹
           </button>
         )}
-        <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-image":""}`}
-          src={asset(activeGalleryImage.src)}
-          alt={activeGalleryImage.alt}
-          role="button"
-          tabIndex={0}
-          aria-label={pick("Abrir imagem em tamanho maior","Open larger image")}
-          onClick={()=>setPreviewOpen(true)}
-          onKeyDown={(event)=>{
-            if(event.key==="Enter" || event.key===" "){
-              event.preventDefault();
-              setPreviewOpen(true);
-            }
-          }}
-        />
+        {isKitGiveaway && galleryIndex===0 ? (
+          <div
+            className="kit-inspect-scene giveaway-preview-trigger"
+            role="button"
+            tabIndex={0}
+            aria-label={pick("Abrir imagem em tamanho maior","Open larger image")}
+            onClick={()=>setPreviewOpen(true)}
+            onKeyDown={(event)=>{
+              if(event.key==="Enter" || event.key===" "){
+                event.preventDefault();
+                setPreviewOpen(true);
+              }
+            }}
+          >
+            <img
+              className="kit-inspect-layer kit-inspect-left"
+              src={asset(activeGalleryImage.src)}
+              alt={activeGalleryImage.alt}
+            />
+            <img
+              className="kit-inspect-layer kit-inspect-right"
+              src={asset(activeGalleryImage.src)}
+              alt=""
+              aria-hidden="true"
+            />
+          </div>
+        ) : (
+          <img
+            className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-image":""}`}
+            src={asset(activeGalleryImage.src)}
+            alt={activeGalleryImage.alt}
+            role="button"
+            tabIndex={0}
+            aria-label={pick("Abrir imagem em tamanho maior","Open larger image")}
+            onClick={()=>setPreviewOpen(true)}
+            onKeyDown={(event)=>{
+              if(event.key==="Enter" || event.key===" "){
+                event.preventDefault();
+                setPreviewOpen(true);
+              }
+            }}
+          />
+        )}
         {hasGallery && (
           <button
             type="button"
