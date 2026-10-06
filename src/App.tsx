@@ -87,7 +87,7 @@ type Giveaway = {
 const giveaways:Giveaway[] = [
   {
     id:"bayonet-lore-gloves-omega",
-    title:"Bayonet | Lore + Gloves | Omega",
+    title:"Bayonet Lore & Sport Gloves | Omega",
     condition:"",
     price:"",
     minDeposit:"€10",
@@ -285,16 +285,21 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
 function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const { pick } = useLanguage();
   const isTopskin=giveaway.provider==="topskin";
+  const isKitGiveaway=giveaway.id==="bayonet-lore-gloves-omega";
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider}`}>
-      <div className={`knife-stage ${isTopskin?"":"wildfire-stage"}`}>
+      <div className={`knife-stage ${isTopskin?"":"wildfire-stage"}${isKitGiveaway?" kit-stage":""}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
         <div className="knife-sparkle sparkle-2" />
         <div className="knife-sparkle sparkle-3" />
-        <img src={asset(giveaway.image)} alt={giveaway.imageAlt} />
-        <span>CS2</span>
+        <img className="giveaway-prize-image" src={asset(giveaway.image)} alt={giveaway.imageAlt} />
+        <img
+          className={`giveaway-stage-provider-logo ${giveaway.provider}`}
+          src={asset(giveaway.providerLogo)}
+          alt={giveaway.providerName}
+        />
       </div>
       <div className="giveaway-info">
         <div className="giveaway-head">
