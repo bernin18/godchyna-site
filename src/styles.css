@@ -461,6 +461,7 @@ pointer-events:none}
   width:122%;
   height:116%;
   max-width:none;
+  left:-10%;
   object-fit:contain;
   object-position:center 47%;
   transform-origin:center;
