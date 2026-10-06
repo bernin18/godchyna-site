@@ -332,98 +332,54 @@ pointer-events:none}
   pointer-events:none;
   z-index:3
 }
+.kit-soft-glow{
+  position:absolute;
+  left:50%;
+  top:48%;
+  width:220px;
+  height:220px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(245,196,70,.20) 0%,rgba(245,196,70,.08) 42%,transparent 72%);
+  filter:blur(14px);
+  opacity:.9;
+  animation:kitGlowPulse 3.6s ease-in-out infinite
+}
 .kit-toss-arms{
   position:absolute;
   left:50%;
   bottom:-2%;
-  width:118%;
+  width:112%;
   max-width:none;
   object-fit:contain;
   transform:translateX(-50%);
-  filter:drop-shadow(0 18px 16px rgba(0,0,0,.62));
+  filter:drop-shadow(0 16px 16px rgba(0,0,0,.58));
   z-index:2;
-  opacity:1;
-  animation:kitArmsFloat 3.8s ease-in-out infinite
+  opacity:1
 }
 .kit-toss-knife{
   position:absolute;
-  left:60%;
-  top:62%;
+  left:58%;
+  top:46%;
   width:34%;
   max-width:none;
   object-fit:contain;
+  transform:translate(-50%,-50%) rotate(-16deg);
   transform-origin:50% 50%;
-  filter:drop-shadow(0 12px 14px rgba(0,0,0,.70)) drop-shadow(0 0 14px rgba(245,196,70,.24));
+  filter:drop-shadow(0 12px 14px rgba(0,0,0,.68)) drop-shadow(0 0 14px rgba(245,196,70,.22));
   z-index:4;
-  will-change:left,top,transform;
-  animation:kitKnifeTossSmooth 3.8s cubic-bezier(.22,.61,.36,1) infinite
+  will-change:transform;
+  animation:kitKnifeFloat 3.6s cubic-bezier(.45,.05,.55,.95) infinite
 }
-.kit-toss-orbit{display:none}
-.kit-toss-spark{
-  position:absolute;
-  width:4px;
-  height:4px;
-  border-radius:50%;
-  background:#f5c94f;
-  box-shadow:0 0 10px rgba(245,201,79,.75);
-  opacity:0;
-  z-index:3;
-  animation:kitSparkSoft 3.8s ease-out infinite
+@keyframes kitKnifeFloat{
+  0%,100%{transform:translate(-50%,-50%) rotate(-16deg) translateY(0) scale(1)}
+  25%{transform:translate(-50%,-50%) rotate(-10deg) translateY(-6px) scale(1.01)}
+  50%{transform:translate(-50%,-50%) rotate(-4deg) translateY(-10px) scale(1.02)}
+  75%{transform:translate(-50%,-50%) rotate(-11deg) translateY(-5px) scale(1.01)}
 }
-.kit-toss-spark.spark-a{left:46%;top:35%;animation-delay:.18s}
-.kit-toss-spark.spark-b{left:54%;top:30%;animation-delay:.34s}
-.kit-toss-spark.spark-c{left:60%;top:42%;animation-delay:.5s}
-@keyframes kitArmsFloat{
-  0%,100%{transform:translateX(-50%) translateY(0)}
-  50%{transform:translateX(-50%) translateY(-2px)}
-}
-@keyframes kitKnifeTossSmooth{
-  0%,12%{
-    left:60%;
-    top:62%;
-    transform:translate(-50%,-50%) rotate(-28deg) scale(.98)
-  }
-  24%{
-    left:58%;
-    top:50%;
-    transform:translate(-50%,-50%) rotate(18deg) scale(1)
-  }
-  38%{
-    left:54%;
-    top:34%;
-    transform:translate(-50%,-50%) rotate(120deg) scale(1.02)
-  }
-  50%{
-    left:50%;
-    top:26%;
-    transform:translate(-50%,-50%) rotate(210deg) scale(1.04)
-  }
-  62%{
-    left:47%;
-    top:30%;
-    transform:translate(-50%,-50%) rotate(300deg) scale(1.03)
-  }
-  74%{
-    left:51%;
-    top:42%;
-    transform:translate(-50%,-50%) rotate(390deg) scale(1.01)
-  }
-  88%{
-    left:57%;
-    top:56%;
-    transform:translate(-50%,-50%) rotate(470deg) scale(.99)
-  }
-  100%{
-    left:60%;
-    top:62%;
-    transform:translate(-50%,-50%) rotate(512deg) scale(.98)
-  }
-}
-@keyframes kitSparkSoft{
-  0%,30%,100%{opacity:0;transform:translate(0,0) scale(.6)}
-  42%{opacity:.9;transform:translate(-4px,-8px) scale(1)}
-  60%{opacity:.45;transform:translate(8px,-18px) scale(.8)}
-  76%{opacity:0;transform:translate(12px,-28px) scale(.5)}
+@keyframes kitGlowPulse{
+  0%,100%{opacity:.78;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
 }
 .rare-stage{
   border-color:rgba(239,190,72,.52);
@@ -648,7 +604,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .stage-arrow{width:34px;height:34px;font-size:25px}
  .stage-arrow-left{left:9px}
  .stage-arrow-right{right:9px}
- .kit-toss-arms{width:118%;bottom:-2%}
+ .kit-toss-arms{width:112%;bottom:-2%}
  .kit-toss-knife{width:34%}
  .giveaway-actions{grid-template-columns:1fr}
  .giveaway-actions.single-action{grid-template-columns:1fr}
