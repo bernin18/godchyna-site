@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, ComponentType, CSSProperties } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { ArrowLeft, ArrowRight, LogIn, LogOut, Save, Ticket, Trash2, Upload, UserRound, Users, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, ArrowRight, LogIn, LogOut, Pencil, Save, Ticket, Trash2, Upload, UserRound, Users, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import "./wheel.css";
@@ -1513,9 +1513,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
 
     setMonthlyPrizeDraftEditing(false);
-    setMonthlyPrizeDraftMessage(
-      pick("Prémio mensal guardado.", "Monthly prize saved."),
-    );
+    setMonthlyPrizeDraftMessage("");
   }
 
   async function uploadMonthlyGiveawayPrizeImage(event: ChangeEvent<HTMLInputElement>) {
@@ -4086,13 +4084,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   }
                 }}
                 disabled={monthlyLocked}
+                aria-label={pick("Editar prémio mensal", "Edit monthly prize")}
+                title={pick("Editar prémio mensal", "Edit monthly prize")}
               >
-                {pick("EDITAR PRÉMIO MENSAL", "EDIT MONTHLY PRIZE")}
+                <Pencil />
               </button>
             </>
           )}
 
-          {monthlyPrizeDraftMessage && !monthlyWinner && (
+          {monthlyPrizeDraftEditing && monthlyPrizeDraftMessage && !monthlyWinner && (
             <small className="monthly-prize-ready-note">{monthlyPrizeDraftMessage}</small>
           )}
         </aside>
