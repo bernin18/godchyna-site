@@ -5413,7 +5413,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 
 .giveaway-history-card-monthly .monthly-history-skin{
   display:block!important;
-  margin-top:8px!important;
+  margin-top:19px!important;
   font-size:11px!important;
   line-height:1.24!important;
 }
@@ -5430,5 +5430,5 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 
 .monthly-history-arrival .monthly-history-skin{
   display:block!important;
-  margin-top:10px!important;
+  margin-top:18px!important;
 }
