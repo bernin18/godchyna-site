@@ -3977,31 +3977,123 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <span className="wave-left" />
           </div>
 
-          <div className={`monthly-prize-card-media${monthlyPrizeReady ? "" : " is-empty"}`}>
-            {monthlyPrizeImageUrl ? (
-              <img
-                ref={monthlyPrizeImageRef}
-                src={monthlyPrizeImageUrl}
-                alt={monthlyPrizeName}
-              />
-            ) : (
-              <span className="monthly-prize-empty">
-                {pick("SEM SKIN", "NO SKIN")}
-              </span>
-            )}
-          </div>
+          <input
+            ref={monthlyPrizeUploadInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            hidden
+            onChange={uploadMonthlyGiveawayPrizeImage}
+          />
 
-          <strong>{monthlyPrizeName}</strong>
-          {monthlyPrizeValue !== null && (
-            <b className="monthly-prize-value">$ {monthlyPrizeValue.toFixed(2)}</b>
-          )}
-          {!monthlyPrizeReady && (
-            <small className="monthly-prize-ready-note">
-              {pick(
-                "Guarda a próxima skin em CONFIGURAR SORTEIO para ativar o mensal.",
-                "Save the next skin in GIVEAWAY SETUP to activate the monthly giveaway.",
+          {monthlyPrizeDraftEditing ? (
+            <div className="monthly-prize-editor">
+              <div className={`monthly-prize-card-media${monthlyPrizeDraftImageUrl ? "" : " is-empty"}`}>
+                {monthlyPrizeDraftImageUrl ? (
+                  <img src={monthlyPrizeDraftImageUrl} alt="" />
+                ) : (
+                  <span className="monthly-prize-empty">
+                    {pick("SEM SKIN", "NO SKIN")}
+                  </span>
+                )}
+              </div>
+
+              <label>
+                <span>{pick("SKIN MENSAL", "MONTHLY SKIN")}</span>
+                <input
+                  type="text"
+                  value={monthlyPrizeDraftName}
+                  onChange={(event) => {
+                    setMonthlyPrizeDraftName(event.target.value);
+                    setMonthlyPrizeDraftMessage("");
+                  }}
+                  placeholder="Ursus Marble Fade"
+                  disabled={monthlyPrizeDraftSaving}
+                />
+              </label>
+
+              <label>
+                <span>{pick("VALOR", "VALUE")}</span>
+                <div className="monthly-prize-editor-value">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={monthlyPrizeDraftValue}
+                    onChange={(event) => {
+                      setMonthlyPrizeDraftValue(event.target.value);
+                      setMonthlyPrizeDraftMessage("");
+                    }}
+                    placeholder="150.00"
+                    disabled={monthlyPrizeDraftSaving}
+                  />
+                  <b>$</b>
+                </div>
+              </label>
+
+              <div className="monthly-prize-editor-actions">
+                <button
+                  type="button"
+                  onClick={() => monthlyPrizeUploadInputRef.current?.click()}
+                  disabled={monthlyPrizeDraftSaving}
+                >
+                  <Upload />
+                  {monthlyPrizeDraftImageUrl ? pick("TROCAR", "REPLACE") : pick("UPLOAD", "UPLOAD")}
+                </button>
+                <button
+                  type="button"
+                  className="is-save"
+                  onClick={saveMonthlyGiveawayPrize}
+                  disabled={monthlyPrizeDraftSaving}
+                >
+                  <Save />
+                  {monthlyPrizeDraftSaving ? pick("A GUARDAR...", "SAVING...") : pick("GUARDAR", "SAVE")}
+                </button>
+              </div>
+
+              {(monthlyPrizeDraftImagePath || monthlyPrizeDraftName || monthlyPrizeDraftValue) && (
+                <button
+                  type="button"
+                  className="monthly-prize-editor-remove"
+                  onClick={removeMonthlyGiveawayPrize}
+                  disabled={monthlyPrizeDraftSaving}
+                >
+                  <Trash2 />
+                  {pick("REMOVER PRÉMIO MENSAL", "REMOVE MONTHLY PRIZE")}
+                </button>
               )}
-            </small>
+            </div>
+          ) : (
+            <>
+              <div className="monthly-prize-card-media">
+                <img
+                  ref={monthlyPrizeImageRef}
+                  src={monthlyPrizeImageUrl}
+                  alt={monthlyPrizeName}
+                />
+              </div>
+
+              <strong>{monthlyPrizeName}</strong>
+              {monthlyPrizeValue !== null && (
+                <b className="monthly-prize-value">$ {monthlyPrizeValue.toFixed(2)}</b>
+              )}
+
+              <button
+                type="button"
+                className="monthly-prize-edit-btn"
+                onClick={() => {
+                  if (!monthlyLocked) {
+                    setMonthlyPrizeDraftEditing(true);
+                    setMonthlyPrizeDraftMessage("");
+                  }
+                }}
+                disabled={monthlyLocked}
+              >
+                {pick("EDITAR PRÉMIO MENSAL", "EDIT MONTHLY PRIZE")}
+              </button>
+            </>
+          )}
+
+          {monthlyPrizeDraftMessage && !monthlyWinner && (
+            <small className="monthly-prize-ready-note">{monthlyPrizeDraftMessage}</small>
           )}
         </aside>
 
