@@ -1843,10 +1843,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return;
     }
 
-    const archivedImagePath =
-      Array.isArray(data) && data.length > 0
-        ? data[0]?.archived_image_path ?? null
-        : null;
     const archivedSkinName =
       Array.isArray(data) && data.length > 0
         ? data[0]?.archived_skin_name ?? ""
