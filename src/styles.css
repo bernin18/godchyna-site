@@ -375,7 +375,7 @@ pointer-events:none}
 .giveaway-head p{margin:0;color:#d2d9d7}
 .price{display:block;color:var(--green);font-size:19px;margin-top:4px}
 .active-pill{border:1px solid #09d987;color:#18f3a1;padding:8px 18px;border-radius:6px;font-weight:800;font-size:11px}
-.divider{height:1px;background:#15292e;margin:10px 0}
+.divider{height:1px;background:#15292e;margin:10px 0 20px}
 .minimum{color:var(--green)}
 .giveaway-copy{color:#d0d6d5;line-height:1.45;font-size:12px;max-width:760px;margin-top:7px;margin-bottom:6px}
 .giveaway-action-zone{margin-top:38px;padding-top:0}
