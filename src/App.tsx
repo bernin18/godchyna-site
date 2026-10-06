@@ -468,7 +468,82 @@ function GiveawayAnnouncementPopup(){
     <div
       className="giveaway-announcement-overlay"
       role="dialog"
-      aria-modal="an>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>{pick("COMUNIDADE","COMMUNITY")}</span></div>
+      aria-modal="true"
+      aria-labelledby="giveaway-announcement-title"
+      onClick={()=>setOpen(false)}
+    >
+      <section
+        className="giveaway-announcement-card"
+        onClick={(event)=>event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="giveaway-announcement-close"
+          onClick={()=>setOpen(false)}
+          aria-label={pick("Fechar anúncio","Close announcement")}
+        >
+          <X />
+        </button>
+
+        <div className="giveaway-announcement-sponsor">
+          <span>{pick("GIVEAWAY PATROCINADO PELA","GIVEAWAY SPONSORED BY")}</span>
+          <strong>TOPSKIN</strong>
+        </div>
+
+        <div className="giveaway-announcement-knife">
+          <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
+        </div>
+
+        <span className="giveaway-announcement-date">
+          {pick("HOJE · 06/10/2026","TODAY · 06/10/2026")}
+        </span>
+
+        <h2 id="giveaway-announcement-title">
+          URSUS KNIFE <em>| MARBLE FADE</em>
+        </h2>
+
+        <p>
+          {pick(
+            "Giveaway a ser sorteado! Aparece na live 🔥",
+            "Giveaway being drawn today! Join the live stream 🔥",
+          )}
+        </p>
+        <strong className="giveaway-announcement-callout">
+          {pick("NÃO PERCAS O SORTEIO!","DON’T MISS THE DRAW!")}
+        </strong>
+
+        <a
+          className="giveaway-announcement-cta"
+          href={socials.twitch}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <BrandGlyph network="twitch" />
+          {pick("VER LIVE NA TWITCH","WATCH ON TWITCH")}
+        </a>
+      </section>
+    </div>
+  );
+}
+
+function Home(){
+  const { lang, pick } = useLanguage();
+  return (
+    <>
+      <Header/>
+      <main>
+        <section
+          id="inicio"
+          className="hero"
+          style={{
+            backgroundImage: `linear-gradient(90deg,rgba(4,11,13,.98) 0%,rgba(4,12,14,.92) 31%,rgba(4,12,14,.62) 49%,rgba(3,8,10,.20) 72%,rgba(3,8,10,.44) 100%), url("${asset("hero-green-bg.png?v=3")}")`,
+          }}
+        >
+          <div className="hero-glow"/>
+          <div className="hero-copy">
+            <p className="eyebrow">{pick("BEM-VINDO AO MUNDO DO","WELCOME TO THE WORLD OF")}</p>
+            <h1>CHYNA</h1>
+            <div className="hero-tags"><span>SKINS</span><i>•</i><span>GIVEAWAYS</span><i>•</i><span>{pick("COMUNIDADE","COMMUNITY")}</span></div>
             <p className="hero-text">{lang==="pt"?<>Acompanha as streams, participa nos giveaways,<br className="desktop-break"/> usa os meus códigos e faz parte desta comunidade!</>:<>Follow the streams, enter the giveaways,<br className="desktop-break"/> use my codes and become part of the community!</>}</p>
             <div className="hero-cta-row">
               <a
@@ -571,5 +646,9 @@ export default function App(){
   else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
   else if(path.endsWith("/loja")) page = <StorePage/>;
 
-  return page;
+  return (
+    <>
+      {page}
+    </>
+  );
 }
