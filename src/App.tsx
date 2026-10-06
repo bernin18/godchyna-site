@@ -459,7 +459,7 @@ function AboutPage(){
   );
 }
 
-const GIVEAWAY_ANNOUNCEMENT_SESSION_KEY = "godchyna-topskin-ursus-2026-10-06-seen";
+const GIVEAWAY_ANNOUNCEMENT_SESSION_KEY = "godchyna-topskin-ursus-2026-10-06-live-draw-seen";
 
 function GiveawayAnnouncementPopup(){
   const { pick } = useLanguage();
@@ -511,7 +511,7 @@ function GiveawayAnnouncementPopup(){
         </div>
 
         <span className="giveaway-announcement-date">
-          {pick("AMANHÃ · 06/10/2026","TOMORROW · 06/10/2026")}
+          {pick("HOJE · 06/10/2026","TODAY · 06/10/2026")}
         </span>
 
         <h2 id="giveaway-announcement-title">
@@ -520,12 +520,12 @@ function GiveawayAnnouncementPopup(){
 
         <p>
           {pick(
-            "Giveaway amanhã na live que começa às 10h da manhã!",
-            "Giveaway tomorrow on the live stream starting at 10 AM!",
+            "Giveaway a ser sorteado! Aparece na live 🔥",
+            "Giveaway being drawn today! Join the live stream 🔥",
           )}
         </p>
         <strong className="giveaway-announcement-callout">
-          {pick("PARTICIPEM E APAREÇAM!","JOIN IN AND SHOW UP!")}
+          {pick("NÃO PERCAS O SORTEIO!","DON’T MISS THE DRAW!")}
         </strong>
 
         <a
