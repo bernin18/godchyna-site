@@ -5432,3 +5432,34 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   display:block!important;
   margin-top:18px!important;
 }
+
+/* Monthly winner vertical spacing polish */
+.giveaway-history-card-monthly .monthly-history-content>strong{
+  display:block!important;
+  margin-top:8px!important;
+  margin-bottom:10px!important;
+  font-size:13px!important;
+  line-height:1.12!important;
+}
+
+.giveaway-history-card-monthly .monthly-history-content>strong>b{
+  display:block!important;
+  margin-top:4px!important;
+  font-size:18px!important;
+  line-height:1.05!important;
+}
+
+.monthly-history-arrival .monthly-history-content>strong{
+  display:block!important;
+  margin-top:10px!important;
+  margin-bottom:12px!important;
+  font-size:16px!important;
+  line-height:1.1!important;
+}
+
+.monthly-history-arrival .monthly-history-content>strong>b{
+  display:block!important;
+  margin-top:5px!important;
+  font-size:23px!important;
+  line-height:1.05!important;
+}
