@@ -5505,3 +5505,136 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   opacity:.65;
   cursor:wait;
 }
+
+/* Separate monthly prize editor */
+.monthly-prize-editor{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.monthly-prize-editor label{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  text-align:left;
+}
+
+.monthly-prize-editor label>span{
+  color:#7d8b8e;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.09em;
+}
+
+.monthly-prize-editor input{
+  width:100%;
+  min-width:0;
+  border:1px solid rgba(185,133,31,.28);
+  border-radius:6px;
+  background:#04090b;
+  color:#edf1ef;
+  padding:7px 8px;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:9px;
+  outline:none;
+}
+
+.monthly-prize-editor input:focus{
+  border-color:rgba(217,166,55,.72);
+  box-shadow:0 0 0 2px rgba(217,166,55,.08);
+}
+
+.monthly-prize-editor-value{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 24px;
+  align-items:center;
+}
+
+.monthly-prize-editor-value b{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  border:1px solid rgba(185,133,31,.28);
+  border-left:0;
+  border-radius:0 6px 6px 0;
+  color:#d9a637;
+  background:#071014;
+  font-size:10px;
+}
+
+.monthly-prize-editor-value input{
+  border-radius:6px 0 0 6px;
+}
+
+.monthly-prize-editor-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+}
+
+.monthly-prize-editor-actions button,
+.monthly-prize-editor-remove,
+.monthly-prize-edit-btn{
+  border:1px solid rgba(185,133,31,.32);
+  border-radius:6px;
+  background:#071014;
+  color:#c7d1d2;
+  min-height:30px;
+  padding:6px 7px;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.04em;
+  cursor:pointer;
+}
+
+.monthly-prize-editor-actions button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+
+.monthly-prize-editor-actions button svg,
+.monthly-prize-editor-remove svg{
+  width:11px;
+  height:11px;
+}
+
+.monthly-prize-editor-actions .is-save{
+  border-color:rgba(32,243,154,.34);
+  color:#20f39a;
+}
+
+.monthly-prize-editor-remove{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  width:100%;
+  border-color:rgba(255,95,78,.22);
+  color:#df7a6d;
+}
+
+.monthly-prize-edit-btn{
+  width:100%;
+  margin-top:10px;
+  color:#d9a637;
+}
+
+.monthly-prize-editor button:disabled,
+.monthly-prize-edit-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.monthly-prize-editor .monthly-prize-card-media{
+  height:84px;
+}
+
+.monthly-prize-editor .monthly-prize-card-media img{
+  max-height:76px;
+}
