@@ -90,15 +90,15 @@ const giveaways:Giveaway[] = [
   {
     id:"bayonet-lore-gloves-omega",
     enabled:false,
-    title:"Bayonet Lore MW & Sport Gloves ★ Omega FT",
+    title:"Bayonet Lore FT & Sport Gloves ★ Omega FT",
     condition:"",
     price:"$350",
     minDeposit:"€10",
     image:"Kit bayonet lore & Gloves Omega.webp",
     imageAlt:"Bayonet Lore and Gloves Omega giveaway",
     galleryImages:[
-      {src:"Kit bayonet lore & Gloves Omega.webp",alt:"Bayonet Lore MW and Sport Gloves Omega FT combo"},
-      {src:"bayo lore.png",alt:"Bayonet Lore MW"},
+      {src:"Kit bayonet lore & Gloves Omega.webp",alt:"Bayonet Lore FT and Sport Gloves Omega FT combo"},
+      {src:"bayo lore.png",alt:"Bayonet Lore FT"},
       {src:"gloves omega.png",alt:"Sport Gloves Omega FT"},
     ],
     provider:"topskin",
