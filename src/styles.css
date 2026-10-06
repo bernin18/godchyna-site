@@ -458,12 +458,12 @@ pointer-events:none}
   animation:wildfireFloat 4.8s ease-in-out infinite,wildfireGlow 2.8s ease-in-out infinite
 }
 .wildfire-stage .wildfire-arms-image{
-  width:122%;
-  height:116%;
+  width:132%;
+  height:124%;
   max-width:none;
-  left:-10%;
+  left:-14%;
   object-fit:contain;
-  object-position:center 47%;
+  object-position:center 48%;
   transform-origin:center;
   animation:wildfireArmsFloat 4.8s ease-in-out infinite,wildfireGlow 2.8s ease-in-out infinite
 }
