@@ -423,6 +423,7 @@ pointer-events:none}
 .giveaway-lightbox-panel.wildfire{border:1px solid rgba(255,92,31,.46);background:radial-gradient(circle at 50% 46%,rgba(255,74,23,.15),transparent 35%),radial-gradient(circle at 50% 38%,#21100d,#050a0d 72%);box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 34px rgba(255,82,25,.12)}
 .giveaway-lightbox-image{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.72))}
 .kit-combo-lightbox-image{width:132%;height:132%;max-width:none;transform:translateY(-5%) scale(1.08);object-fit:contain}
+.wildfire-arms-lightbox-image{width:130%;height:130%;max-width:none;transform:translateY(-4%) scale(1.06);object-fit:contain}
 .giveaway-lightbox-close{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(5,9,12,.76);color:#fff;font-size:26px;line-height:1;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
 .giveaway-lightbox-close:hover{transform:scale(1.06);border-color:rgba(255,255,255,.36);background:rgba(12,18,22,.94)}
 @keyframes giveawayLightboxIn{from{opacity:0}to{opacity:1}}
@@ -456,6 +457,15 @@ pointer-events:none}
   transform-style:flat;
   animation:wildfireFloat 4.8s ease-in-out infinite,wildfireGlow 2.8s ease-in-out infinite
 }
+.wildfire-stage .wildfire-arms-image{
+  width:122%;
+  height:116%;
+  max-width:none;
+  object-fit:contain;
+  object-position:center 47%;
+  transform-origin:center;
+  animation:wildfireArmsFloat 4.8s ease-in-out infinite,wildfireGlow 2.8s ease-in-out infinite
+}
 .wildfire-stage:hover{
   border-color:rgba(255,102,42,.48);
   box-shadow:inset 0 0 32px rgba(255,82,25,.045),0 0 25px rgba(255,82,25,.055)
@@ -467,6 +477,10 @@ pointer-events:none}
 @keyframes wildfireFloat{
   0%,100%{transform:translate3d(-5px,4px,0) rotateZ(-1deg) scale(.99)}
   50%{transform:translate3d(7px,-9px,0) rotateZ(1deg) scale(1.025)}
+}
+@keyframes wildfireArmsFloat{
+  0%,100%{transform:translate3d(-3px,3px,0) rotateZ(-.35deg) scale(1)}
+  50%{transform:translate3d(4px,-5px,0) rotateZ(.35deg) scale(1.012)}
 }
 @keyframes wildfireGlow{
   0%,100%{filter:drop-shadow(0 24px 22px rgba(0,0,0,.80)) drop-shadow(0 0 16px rgba(255,75,24,.16))}
