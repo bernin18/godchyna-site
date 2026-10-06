@@ -425,7 +425,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
               ×
             </button>
             <img
-              className="giveaway-lightbox-image"
+              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}`}
               src={asset(activeGalleryImage.src)}
               alt={activeGalleryImage.alt}
             />
