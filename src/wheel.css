@@ -478,11 +478,11 @@ radial-gradient(circle at 50% 35%,rgba(255,255,255,.035),transparent 52%),
 .case-start-round-btn::after{content:"";position:absolute;inset:-5px;border:2px solid #20f39a;border-radius:12px;box-shadow:0 0 12px rgba(32,243,154,.32),0 0 26px rgba(32,243,154,.18);opacity:.76;pointer-events:none;animation:wheel-spin-pulse 1.45s ease-in-out infinite}
 .case-start-round-btn:hover::after{opacity:1;box-shadow:0 0 16px rgba(32,243,154,.46),0 0 32px rgba(32,243,154,.26)}
 
-.case-drop-result{position:relative;z-index:2;width:min(640px,100%);min-height:86px;margin-top:12px;padding:9px 14px;border:1px solid color-mix(in srgb,var(--case-accent) 38%,#22343a);border-radius:9px;background:var(--case-accent-soft);display:flex;align-items:center;justify-content:center;gap:15px}
+.case-drop-result{position:relative;z-index:2;width:min(640px,100%);min-height:86px;margin-top:12px;padding:8px 14px;border:1px solid color-mix(in srgb,var(--case-accent) 38%,#22343a);border-radius:9px;background:var(--case-accent-soft);display:flex;align-items:center;justify-content:center;gap:10px}
 .case-drop-result-top{margin-top:14px;margin-bottom:-8px;animation:case-drop-reveal .28s ease-out both}
 @keyframes case-drop-reveal{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-.case-drop-image{width:105px;height:64px;display:grid;place-items:center}
-.case-drop-image img{max-width:100%;max-height:62px;object-fit:contain}
+.case-drop-image{width:190px;height:70px;flex:0 0 190px;display:grid;place-items:center;overflow:visible}
+.case-drop-image img{width:100%;height:100%;max-width:190px;max-height:70px;object-fit:contain;transform:scale(1.16);transform-origin:center}
 .case-drop-result>div:last-child{min-width:0;display:flex;flex-direction:column}
 .case-drop-result span{color:#748386;font-size:7px;font-weight:900;letter-spacing:.13em}
 .case-drop-result strong{margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f0f4f2;font-family:"Chakra Petch",sans-serif;font-size:11px}
