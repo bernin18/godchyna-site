@@ -767,20 +767,14 @@ function DeliveredGiveaways(){
   return (
     <section className="delivered-giveaways" aria-labelledby="delivered-giveaways-title">
       <header className="delivered-giveaways-heading">
-        <div>
-          <span className="delivered-kicker">{pick("HISTÓRICO","HISTORY")}</span>
-          <h2 id="delivered-giveaways-title">{pick("GIVEAWAYS ENTREGUES","DELIVERED GIVEAWAYS")}</h2>
-          <p>{pick("Momentos reais dos sorteios e prémios já entregues à comunidade.","Real giveaway moments and prizes already delivered to the community.")}</p>
-        </div>
-        <span className="delivered-count">01</span>
+        <h2 id="delivered-giveaways-title">{pick("GIVEAWAYS ENTREGUES","DELIVERED GIVEAWAYS")}</h2>
       </header>
 
       <article className="delivered-giveaway-card">
         <div className="delivered-clip-wrap">
           <div className="delivered-clip-topline">
             <span className="delivered-live-dot" />
-            <strong>{pick("CLIP DO SORTEIO","GIVEAWAY CLIP")}</strong>
-            <span>TWITCH</span>
+            <strong>{pick("SORTEIO NA TWITCH","TWITCH GIVEAWAY")}</strong>
           </div>
           <div className="delivered-clip-frame">
             <iframe
