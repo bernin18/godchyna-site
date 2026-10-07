@@ -2678,16 +2678,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult) {
-    const reelPool = [...round.skins, CASE_RARE_PLACEHOLDER];
+    const randomVisualSkin = () => {
+      const rareVisualRoll = randomParticipantIndex(1_000_000) / 10_000;
+      return rareVisualRoll < CASE_RARE_CHANCE
+        ? CASE_RARE_PLACEHOLDER
+        : round.skins[randomParticipantIndex(round.skins.length)];
+    };
+
     const fillerCount = 24;
-    const reel = Array.from({ length: fillerCount }, () =>
-      reelPool[randomParticipantIndex(reelPool.length)],
-    );
+    const reel = Array.from({ length: fillerCount }, randomVisualSkin);
     reel.push(winningSkin);
-    reel.push(
-      reelPool[randomParticipantIndex(reelPool.length)],
-      reelPool[randomParticipantIndex(reelPool.length)],
-    );
+    reel.push(randomVisualSkin(), randomVisualSkin());
     return reel;
   }
 
@@ -4498,7 +4499,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         >
                           {caseReel.map((skin, index) => (
                             <article
-                              className={`case-reel-item${!caseRolling && caseLastOpening && index === 24 ? " is-target" : ""}`}
+                              className={`case-reel-item${skin.skinName === "ITEM RARO" ? " is-rare" : ""}${!caseRolling && caseLastOpening && index === 24 ? " is-target" : ""}`}
                               key={`${skin.skinName}-${index}`}
                             >
                               <img src={skin.imageUrl} alt="" />
