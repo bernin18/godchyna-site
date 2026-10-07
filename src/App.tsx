@@ -759,6 +759,62 @@ function PartnersPage(){
   return <><Header/><main className="subpage partners-page"><header className="section-title"><h1>{pick("PARCERIAS","PARTNERS")}</h1><p>{pick("Usa os meus códigos e apoia o canal!","Use my codes and support the channel!")}</p></header><div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div></main><Footer/></>;
 }
 
+function DeliveredGiveaways(){
+  const { pick } = useLanguage();
+  const clipId="AggressiveAthleticCobblerDancingBanana-6fbd-lIcvCYjzRU6";
+  const clipSrc=`https://clips.twitch.tv/embed?clip=${clipId}&parent=godchyna.com&parent=www.godchyna.com&autoplay=false`;
+
+  return (
+    <section className="delivered-giveaways" aria-labelledby="delivered-giveaways-title">
+      <header className="delivered-giveaways-heading">
+        <div>
+          <span className="delivered-kicker">{pick("HISTÓRICO","HISTORY")}</span>
+          <h2 id="delivered-giveaways-title">{pick("GIVEAWAYS ENTREGUES","DELIVERED GIVEAWAYS")}</h2>
+          <p>{pick("Momentos reais dos sorteios e prémios já entregues à comunidade.","Real giveaway moments and prizes already delivered to the community.")}</p>
+        </div>
+        <span className="delivered-count">01</span>
+      </header>
+
+      <article className="delivered-giveaway-card">
+        <div className="delivered-clip-wrap">
+          <div className="delivered-clip-topline">
+            <span className="delivered-live-dot" />
+            <strong>{pick("CLIP DO SORTEIO","GIVEAWAY CLIP")}</strong>
+            <span>TWITCH</span>
+          </div>
+          <div className="delivered-clip-frame">
+            <iframe
+              src={clipSrc}
+              title={pick("Clip do giveaway mensal entregue","Delivered monthly giveaway clip")}
+              allowFullScreen
+              loading="lazy"
+              scrolling="no"
+            />
+          </div>
+        </div>
+
+        <div className="delivered-prize-panel">
+          <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
+          <div className="delivered-prize-visual">
+            <div className="delivered-prize-glow" />
+            <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade Factory New" />
+          </div>
+          <div className="delivered-prize-copy">
+            <span>{pick("GIVEAWAY MENSAL","MONTHLY GIVEAWAY")}</span>
+            <h3>Ursus Knife | Marble Fade</h3>
+            <p>Factory New</p>
+            <strong>$150</strong>
+          </div>
+          <div className="delivered-winner">
+            <span>{pick("VENCEDOR","WINNER")}</span>
+            <b>Bush</b>
+          </div>
+        </div>
+      </article>
+    </section>
+  );
+}
+
 function GiveawaysPage(){
   const { pick } = useLanguage();
   return (
@@ -769,6 +825,7 @@ function GiveawaysPage(){
         <div className="giveaways-page-list">
           {giveaways.filter(giveaway=>giveaway.enabled!==false).map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
         </div>
+        <DeliveredGiveaways/>
       </main>
       <Footer/>
     </>
