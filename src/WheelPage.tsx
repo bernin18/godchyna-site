@@ -290,11 +290,87 @@ const ROUND_4_SKINS: PlinkoResult[] = [
   },
 ];
 
+const CASE_RARE_PLACEHOLDER: PlinkoResult = {
+  label: "ITEM RARO",
+  skinName: "ITEM RARO",
+  imageUrl: "/raro.jpg",
+  valueEur: 0,
+  status: "safe",
+};
+
+const CASE_RARE_ITEMS: Record<number, [PlinkoResult, PlinkoResult]> = {
+  1: [
+    {
+      label: "Slaughter",
+      skinName: "★ Falchion Knife | Slaughter FN",
+      imageUrl: "/skins/round-1/falchion slau.png",
+      valueEur: 200,
+      status: "safe",
+    },
+    {
+      label: "Bronze Morph",
+      skinName: "★ Sport Gloves | Bronze Morph FN",
+      imageUrl: "/skins/round-1/bronze morph.png",
+      valueEur: 360,
+      status: "safe",
+    },
+  ],
+  2: [
+    {
+      label: "Slaughter",
+      skinName: "★ Talon Knife | Slaughter FN",
+      imageUrl: "/skins/round-2/talon slau.png",
+      valueEur: 545,
+      status: "safe",
+    },
+    {
+      label: "Big Game",
+      skinName: "★ Sport Gloves | Big Game FN",
+      imageUrl: "/skins/round-2/big game.png",
+      valueEur: 625,
+      status: "safe",
+    },
+  ],
+  3: [
+    {
+      label: "Slaughter",
+      skinName: "★ Butterfly Knife | Slaughter FN",
+      imageUrl: "/skins/round-3/butterfly slau.webp",
+      valueEur: 1200,
+      status: "safe",
+    },
+    {
+      label: "Fade",
+      skinName: "★ Specialist Gloves | Fade FN",
+      imageUrl: "/skins/round-3/gloves fade.png",
+      valueEur: 1450,
+      status: "safe",
+    },
+  ],
+  4: [
+    {
+      label: "Black Pearl",
+      skinName: "★ Butterfly Knife | Doppler Black Pearl FN",
+      imageUrl: "/skins/round-4/butterfly-knife-doppler-factory-new-black-pearl.webp",
+      valueEur: 11000,
+      status: "safe",
+    },
+    {
+      label: "Pandora's Box",
+      skinName: "★ Sport Gloves | Pandora's Box FN",
+      imageUrl: "/skins/round-4/pandora box.png",
+      valueEur: 17000,
+      status: "safe",
+    },
+  ],
+};
+
 type CaseRound = {
   number: number;
   label: string;
   tone: "green" | "purple" | "red" | "gold";
   skins: PlinkoResult[];
+  rareItems: [PlinkoResult, PlinkoResult];
   caseImage: string;
 };
 
@@ -311,6 +387,7 @@ const CASE_ROUNDS: CaseRound[] = [
     label: "GREEN CASE",
     tone: "green",
     skins: ROUND_1_SKINS,
+    rareItems: CASE_RARE_ITEMS[1],
     caseImage: "/Case verde.png",
   },
   {
@@ -318,6 +395,7 @@ const CASE_ROUNDS: CaseRound[] = [
     label: "PURPLE CASE",
     tone: "purple",
     skins: ROUND_2_SKINS,
+    rareItems: CASE_RARE_ITEMS[2],
     caseImage: "/case Roxa.png",
   },
   {
@@ -325,6 +403,7 @@ const CASE_ROUNDS: CaseRound[] = [
     label: "RED CASE",
     tone: "red",
     skins: ROUND_3_SKINS,
+    rareItems: CASE_RARE_ITEMS[3],
     caseImage: "/Case vermelha.png",
   },
   {
@@ -332,12 +411,14 @@ const CASE_ROUNDS: CaseRound[] = [
     label: "GOLD CASE",
     tone: "gold",
     skins: ROUND_4_SKINS,
+    rareItems: CASE_RARE_ITEMS[4],
     caseImage: "/gold case.png",
   },
 ];
 
-const CASE_BASE_WEIGHTS = [25, 22, 18, 14, 9, 6, 3.5, 1.8, 0.7];
-const CASE_MAX_WEIGHTS = [21, 19, 16, 13, 10, 8, 5, 3, 5];
+const CASE_RARE_CHANCE = 3;
+const CASE_BASE_WEIGHTS = [24.244713, 21.335347, 17.456193, 13.577039, 8.728097, 5.818731, 3.39426, 1.745619, 0.7];
+const CASE_MAX_WEIGHTS = [20.336842, 18.4, 15.494737, 12.589474, 9.684211, 7.747368, 4.842105, 2.905263, 5];
 
 function caseBoostProgress(entries: number) {
   const cappedEntries = Math.max(1, Math.min(150, entries));
@@ -355,18 +436,36 @@ function caseTopSkinChance(entries: number) {
   return caseWeightsForEntries(entries)[CASE_BASE_WEIGHTS.length - 1];
 }
 
-function pickCaseSkin(skins: PlinkoResult[], entries: number) {
-  const sorted = [...skins].sort((a, b) => a.valueEur - b.valueEur);
+function pickCaseDrop(round: CaseRound, entries: number) {
+  const rareRoll = randomParticipantIndex(1_000_000) / 10_000;
+
+  if (rareRoll < CASE_RARE_CHANCE) {
+    const finalSkin = round.rareItems[randomParticipantIndex(round.rareItems.length)];
+    return {
+      reelSkin: CASE_RARE_PLACEHOLDER,
+      finalSkin,
+      isRare: true,
+    };
+  }
+
+  const sorted = [...round.skins].sort((a, b) => a.valueEur - b.valueEur);
   const weights = caseWeightsForEntries(entries);
-  const roll = randomParticipantIndex(1_000_000) / 10_000;
+  const normalRoll = randomParticipantIndex(970_000) / 10_000;
   let cursor = 0;
 
   for (let index = 0; index < sorted.length; index += 1) {
     cursor += weights[index] ?? 0;
-    if (roll < cursor) return sorted[index];
+    if (normalRoll < cursor) {
+      return {
+        reelSkin: sorted[index],
+        finalSkin: sorted[index],
+        isRare: false,
+      };
+    }
   }
 
-  return sorted[sorted.length - 1];
+  const fallback = sorted[sorted.length - 1];
+  return { reelSkin: fallback, finalSkin: fallback, isRare: false };
 }
 
 const wheelAsset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
@@ -2579,14 +2678,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult) {
+    const reelPool = [...round.skins, CASE_RARE_PLACEHOLDER];
     const fillerCount = 24;
     const reel = Array.from({ length: fillerCount }, () =>
-      round.skins[randomParticipantIndex(round.skins.length)],
+      reelPool[randomParticipantIndex(reelPool.length)],
     );
     reel.push(winningSkin);
     reel.push(
-      round.skins[randomParticipantIndex(round.skins.length)],
-      round.skins[randomParticipantIndex(round.skins.length)],
+      reelPool[randomParticipantIndex(reelPool.length)],
+      reelPool[randomParticipantIndex(reelPool.length)],
     );
     return reel;
   }
@@ -2610,18 +2710,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
-    const winningSkin = pickCaseSkin(round.skins, entries);
+    const drop = pickCaseDrop(round, entries);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
       entries,
-      skin: winningSkin,
+      skin: drop.finalSkin,
     };
 
     setCaseRolling(true);
     setCaseLastOpening(null);
     setCaseStopOffset(randomParticipantIndex(105) - 52);
-    setCaseReel(buildCaseReel(round, winningSkin));
+    setCaseReel(buildCaseReel(round, drop.reelSkin));
     setCaseReelRun(false);
 
     window.setTimeout(() => {
@@ -2633,9 +2733,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     window.setTimeout(() => {
       stopCaseReelAudio();
-      setCaseOpenings((current) => [...current, opening]);
-      setCaseLastOpening(opening);
-      setCaseRolling(false);
+
+      const reveal = () => {
+        setCaseOpenings((current) => [...current, opening]);
+        setCaseLastOpening(opening);
+        setCaseRolling(false);
+      };
+
+      if (drop.isRare) {
+        window.setTimeout(reveal, 700);
+      } else {
+        reveal();
+      }
     }, 5050);
   }
 
@@ -4357,6 +4466,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             <span>{skin.valueEur.toFixed(2)} €</span>
                           </article>
                         ))}
+                      <article className="case-contents-rare" key="case-rare-item">
+                        <img src={CASE_RARE_PLACEHOLDER.imageUrl} alt="Item raro" />
+                        <strong>ITEM RARO</strong>
+                        <span>{CASE_RARE_CHANCE.toFixed(2)}%</span>
+                      </article>
                     </div>
 
                     <button
@@ -4389,7 +4503,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             >
                               <img src={skin.imageUrl} alt="" />
                               <strong>{skin.label}</strong>
-                              <span>{skin.valueEur.toFixed(2)} €</span>
+                              <span>{skin.skinName === "ITEM RARO" ? `${CASE_RARE_CHANCE.toFixed(2)}%` : `${skin.valueEur.toFixed(2)} €`}</span>
                             </article>
                           ))}
                         </div>
