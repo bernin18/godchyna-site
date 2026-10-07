@@ -52,11 +52,10 @@ const peripherals: GearItem[] = [
   },
   {
     category: "HEADSET",
-    name: "HyperX Cloud II",
-    detail: "7.1",
-    image: "ChatGPT Image 22_09_2026, 19_57_58 (4).png",
-    imageWidth: "80%",
-    imageHeight: "86%",
+    name: "SteelSeries Nova Pro Omni",
+    image: "Steelseries Nova pro Omni.png",
+    imageWidth: "82%",
+    imageHeight: "88%",
   },
   {
     category: "MOUSEPAD",
