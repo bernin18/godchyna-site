@@ -2,6 +2,9 @@
 .wheel-page{max-width:1600px;margin:auto;min-height:78vh;padding:54px 72px 90px;background:
 radial-gradient(circle at 18% 9%,rgba(248,193,45,.08),transparent 28rem),
 radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
+
+.wheel-hero-brand{display:inline-flex;align-items:center;gap:0}
+.wheel-hero-coin-o{width:.82em;height:.82em;margin-left:.03em;object-fit:contain;vertical-align:-.06em;filter:drop-shadow(0 0 8px rgba(217,166,55,.22))}
 .wheel-hero{max-width:920px;margin:0 auto 34px;text-align:center}
 .wheel-kicker,.wheel-side-kicker{color:#f4bf2f;font-family:"Chakra Petch",sans-serif;font-size:10px;font-weight:800;letter-spacing:.22em}
 .wheel-hero h1{font-family:"Exo 2",sans-serif;font-size:64px;font-style:italic;line-height:.95;margin:9px 0 16px;letter-spacing:-.045em}
