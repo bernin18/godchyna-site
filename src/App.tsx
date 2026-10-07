@@ -810,7 +810,7 @@ function GiveawaysPage(){
     <>
       <Header/>
       <main className="subpage giveaways-page">
-        <header className="section-title"><h1>GIVEAWAYS</h1><p>{pick("Todos os giveaways ativos aparecem nesta página.","All active giveaways appear on this page.")}</p></header>
+        <header className="section-title"><h1>GIVEAWAYS</h1></header>
         <div className="giveaways-page-list">
           {giveaways.filter(giveaway=>giveaway.enabled!==false).map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
         </div>
