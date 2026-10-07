@@ -28,11 +28,19 @@ type PlinkoResult = {
 
 const CHY_COIN_IMAGE = "/CHY coin.png";
 
-function ChyAmount({ value, prefix = "" }: { value: number; prefix?: string }) {
+function ChyAmount({
+  value,
+  prefix = "",
+  fullName = false,
+}: {
+  value: number;
+  prefix?: string;
+  fullName?: boolean;
+}) {
   return (
     <span className="chy-amount">
       <img src={CHY_COIN_IMAGE} alt="" aria-hidden="true" />
-      <span>{prefix}{value.toFixed(2)} CHY</span>
+      <span>{prefix}{value.toFixed(2)} {fullName ? "Chynoes" : "CHY"}</span>
     </span>
   );
 }
@@ -4446,7 +4454,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <div>
                       <span>{pick("DROP", "DROP")}</span>
                       <strong>{caseLastOpening.skin.skinName}</strong>
-                      <b><ChyAmount value={caseLastOpening.skin.valueEur} prefix="+" /></b>
+                      <b><ChyAmount value={caseLastOpening.skin.valueEur} prefix="+" fullName /></b>
                     </div>
                   </div>
                 )}
@@ -4720,7 +4728,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             <img src={result.imageUrl} alt={result.skinName} />
                             <div>
                               <b>{result.skinName}</b>
-                              <span><ChyAmount value={result.valueEur} /></span>
+                              <span><ChyAmount value={result.valueEur} fullName /></span>
                             </div>
                           </div>
                         ) : waitingForTiebreak ? (
@@ -4878,7 +4886,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <>
                     <strong>{plinkoRewardNotice.reward.skinName}</strong>{" "}
                     {pick("no valor de", "worth")}{" "}
-                    <em><ChyAmount value={plinkoRewardNotice.reward.valueEur} /></em>!
+                    <em><ChyAmount value={plinkoRewardNotice.reward.valueEur} fullName /></em>!
                   </>
                 ) : (
                   <>{pick("skin!", "skin!")}</>
