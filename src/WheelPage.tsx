@@ -436,10 +436,10 @@ function caseTopSkinChance(entries: number) {
   return caseWeightsForEntries(entries)[CASE_BASE_WEIGHTS.length - 1];
 }
 
-function pickCaseDrop(round: CaseRound, entries: number) {
+function pickCaseDrop(round: CaseRound, entries: number, forceRare = false) {
   const rareRoll = randomParticipantIndex(1_000_000) / 10_000;
 
-  if (rareRoll < CASE_RARE_CHANCE) {
+  if (forceRare || rareRoll < CASE_RARE_CHANCE) {
     const finalSkin = round.rareItems[randomParticipantIndex(round.rareItems.length)];
     return {
       reelSkin: CASE_RARE_PLACEHOLDER,
@@ -2711,7 +2711,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
-    const drop = pickCaseDrop(round, entries);
+    const drop = pickCaseDrop(round, entries, isTestGiveaway);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
