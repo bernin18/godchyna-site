@@ -2722,7 +2722,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
-    const drop = pickCaseDrop(round, entries, isTestGiveaway);
+    const drop = pickCaseDrop(round, entries);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
