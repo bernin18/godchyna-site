@@ -518,6 +518,17 @@ pointer-events:none}
 .giveaway-rotator-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;background:#314047;cursor:pointer;transition:.25s ease;box-shadow:none}
 .giveaway-rotator-dots button.active{width:22px;border-radius:999px;background:var(--green);box-shadow:0 0 12px rgba(32,243,154,.28)}
 .giveaways-page-list{display:flex;flex-direction:column;gap:18px}
+.giveaways-active-section{margin-top:8px}
+.giveaways-subheading{
+  margin:0 0 18px;
+  color:#f0f4f3;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:30px;
+  font-style:italic;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:.02em;
+}
 @keyframes giveawaySwapIn{
   0%{opacity:0;transform:translateX(22px) scale(.992)}
   100%{opacity:1;transform:translateX(0) scale(1)}
