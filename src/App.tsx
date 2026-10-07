@@ -784,7 +784,6 @@ function DeliveredGiveaways(){
         </div>
 
         <div className="delivered-prize-panel">
-          <img className="delivered-prize-provider-logo" src={asset("topskin-logo.png?v=3")} alt="TOPSKIN" />
           <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
           <div className="delivered-prize-visual">
             <div className="delivered-prize-glow" />
