@@ -772,10 +772,6 @@ function DeliveredGiveaways(){
 
       <article className="delivered-giveaway-card">
         <div className="delivered-clip-wrap">
-          <div className="delivered-clip-topline">
-            <span className="delivered-live-dot" />
-            <strong>{pick("SORTEIO NA TWITCH","TWITCH GIVEAWAY")}</strong>
-          </div>
           <div className="delivered-clip-frame">
             <iframe
               src={clipSrc}
