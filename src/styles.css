@@ -834,7 +834,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 .delivered-giveaway-card{
   display:grid;
-  grid-template-columns:minmax(0,2.15fr) minmax(260px,.72fr);
+  grid-template-columns:minmax(0,1.72fr) minmax(300px,.86fr);
   gap:0;
   overflow:hidden;
   border:1px solid #183037;
@@ -870,7 +870,10 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-clip-frame{
   position:relative;
   overflow:hidden;
+  width:92%;
+  max-width:860px;
   aspect-ratio:16/9;
+  margin:0 auto;
   border:1px solid #1a3238;
   border-radius:10px;
   background:#020405;
@@ -909,13 +912,13 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:138px;
-  margin:6px 0 4px;
+  min-height:155px;
+  margin:8px 0 10px;
 }
 .delivered-prize-glow{
   position:absolute;
-  width:150px;
-  height:82px;
+  width:175px;
+  height:94px;
   border-radius:50%;
   background:radial-gradient(circle,rgba(224,173,43,.16),rgba(224,173,43,.04) 48%,transparent 72%);
   filter:blur(13px);
@@ -924,35 +927,31 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   position:relative;
   z-index:1;
   width:auto;
-  max-width:190px;
-  max-height:118px;
+  max-width:220px;
+  max-height:132px;
   object-fit:contain;
   filter:drop-shadow(0 14px 16px rgba(0,0,0,.72)) drop-shadow(0 0 12px rgba(224,173,43,.11));
   transform:rotate(-3deg);
 }
-.delivered-prize-copy span{
-  color:#20f39a;
-  font-family:"Chakra Petch",sans-serif;
-  font-size:8.5px;
-  font-weight:900;
-  letter-spacing:.13em;
+.delivered-prize-copy{
+  margin-top:14px;
 }
 .delivered-prize-copy h3{
-  margin:6px 0 2px;
+  margin:0 0 3px;
   color:#f0f4f3;
   font-family:"Chakra Petch",sans-serif;
-  font-size:19px;
+  font-size:21px;
   line-height:1.08;
 }
 .delivered-prize-copy p{
-  margin:0 0 6px;
+  margin:0 0 7px;
   color:#879396;
-  font-size:10px;
+  font-size:11px;
 }
 .delivered-prize-copy strong{
   color:#20f39a;
   font-family:"Chakra Petch",sans-serif;
-  font-size:19px;
+  font-size:21px;
 }
 .delivered-winner{
   display:flex;
@@ -960,31 +959,35 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   justify-content:space-between;
   gap:12px;
   margin-top:auto;
-  padding-top:13px;
+  padding-top:14px;
   border-top:1px solid #162a30;
 }
 .delivered-winner span{
-  color:#748286;
-  font-size:8.5px;
+  color:#9aa8ab;
+  font-size:11px;
   font-weight:900;
-  letter-spacing:.14em;
+  letter-spacing:.16em;
 }
 .delivered-winner b{
-  color:#eef3f1;
+  color:#d9a637;
   font-family:"Chakra Petch",sans-serif;
-  font-size:14px;
+  font-size:18px;
+  font-weight:900;
 }
 @media(max-width:1000px){
   .delivered-giveaway-card{grid-template-columns:1fr}
   .delivered-clip-wrap{border-right:0;border-bottom:1px solid #183037}
+  .delivered-clip-frame{width:100%;max-width:none}
   .delivered-prize-panel{min-height:auto}
-  .delivered-prize-visual{min-height:140px}
+  .delivered-prize-visual{min-height:145px}
 }
 @media(max-width:560px){
   .delivered-giveaways{margin-top:42px;padding-top:28px}
   .delivered-giveaways-heading h2{font-size:25px}
   .delivered-clip-wrap{padding:10px}
   .delivered-prize-panel{padding:16px}
-  .delivered-prize-visual{min-height:125px}
-  .delivered-prize-visual img{max-width:170px;max-height:105px}
+  .delivered-prize-visual{min-height:130px}
+  .delivered-prize-visual img{max-width:185px;max-height:112px}
+  .delivered-winner span{font-size:10px}
+  .delivered-winner b{font-size:17px}
 }
