@@ -26,6 +26,17 @@ type PlinkoResult = {
   status: "safe" | "eliminated";
 };
 
+const CHY_COIN_IMAGE = "/CHY coin.png";
+
+function ChyAmount({ value, prefix = "" }: { value: number; prefix?: string }) {
+  return (
+    <span className="chy-amount">
+      <img src={CHY_COIN_IMAGE} alt="" aria-hidden="true" />
+      <span>{prefix}{value.toFixed(2)} CHY</span>
+    </span>
+  );
+}
+
 const ROUND_1_SKINS: PlinkoResult[] = [
   {
     label: "Neo-Noir",
@@ -4381,8 +4392,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                           <small>{player.entries} {pick("entradas", "entries")}</small>
                         </div>
                         <div className="case-player-score">
-                          <b>{player.total.toFixed(2)} €</b>
-                          <small>+{(latest?.skin.valueEur ?? 0).toFixed(2)} €</small>
+                          <b><ChyAmount value={player.total} /></b>
+                          <small><ChyAmount value={latest?.skin.valueEur ?? 0} prefix="+" /></small>
                         </div>
                       </div>
                     );
@@ -4435,7 +4446,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <div>
                       <span>{pick("DROP", "DROP")}</span>
                       <strong>{caseLastOpening.skin.skinName}</strong>
-                      <b>+{caseLastOpening.skin.valueEur.toFixed(2)} €</b>
+                      <b><ChyAmount value={caseLastOpening.skin.valueEur} prefix="+" /></b>
                     </div>
                   </div>
                 )}
@@ -4464,7 +4475,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                           <article key={skin.skinName}>
                             <img src={skin.imageUrl} alt={skin.skinName} />
                             <strong>{skin.label}</strong>
-                            <span>{skin.valueEur.toFixed(2)} €</span>
+                            <span><ChyAmount value={skin.valueEur} /></span>
                           </article>
                         ))}
                       <article className="case-contents-rare" key="case-rare-item">
@@ -4504,7 +4515,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             >
                               <img src={skin.imageUrl} alt="" />
                               <strong>{skin.label}</strong>
-                              <span>{skin.skinName === "ITEM RARO" ? `${CASE_RARE_CHANCE.toFixed(2)}%` : `${skin.valueEur.toFixed(2)} €`}</span>
+                              <span>{skin.skinName === "ITEM RARO" ? `${CASE_RARE_CHANCE.toFixed(2)}%` : <ChyAmount value={skin.valueEur} />}</span>
                             </article>
                           ))}
                         </div>
@@ -4709,7 +4720,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             <img src={result.imageUrl} alt={result.skinName} />
                             <div>
                               <b>{result.skinName}</b>
-                              <span>{result.valueEur.toFixed(2)} €</span>
+                              <span><ChyAmount value={result.valueEur} /></span>
                             </div>
                           </div>
                         ) : waitingForTiebreak ? (
@@ -4867,7 +4878,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <>
                     <strong>{plinkoRewardNotice.reward.skinName}</strong>{" "}
                     {pick("no valor de", "worth")}{" "}
-                    <em>{plinkoRewardNotice.reward.valueEur.toFixed(2)} €</em>!
+                    <em><ChyAmount value={plinkoRewardNotice.reward.valueEur} /></em>!
                   </>
                 ) : (
                   <>{pick("skin!", "skin!")}</>
@@ -4956,10 +4967,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       `tiraram uma ${plinkoTieNotice.skinName}!`,
                       `pulled the same ${plinkoTieNotice.skinName}!`,
                     )
-                  : pick(
-                      `empataram com o menor valor: ${plinkoTieNotice.valueEur.toFixed(2)} €!`,
-                      `tied for the lowest value: ${plinkoTieNotice.valueEur.toFixed(2)} €!`,
-                    )}
+                  : (
+                    <>
+                      {pick("empataram com o menor valor:", "tied for the lowest value:")}{" "}
+                      <ChyAmount value={plinkoTieNotice.valueEur} />!
+                    </>
+                  )}
               </h2>
               <p>
                 {pick(
