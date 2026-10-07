@@ -836,11 +836,14 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   display:grid;
   grid-template-columns:minmax(0,1.72fr) minmax(300px,.86fr);
   gap:0;
-  overflow:visible;
-  border:0;
-  border-radius:0;
-  background:transparent;
-  box-shadow:none;
+  overflow:hidden;
+  padding:14px;
+  border:1px solid #183037;
+  border-radius:14px;
+  background:
+    radial-gradient(circle at 84% 42%,rgba(32,243,154,.055),transparent 28%),
+    linear-gradient(145deg,#081216,#050a0d);
+  box-shadow:0 18px 55px rgba(0,0,0,.28);
 }
 .delivered-clip-wrap{
   display:flex;
@@ -875,7 +878,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   flex-direction:column;
   min-width:0;
   min-height:360px;
-  margin:0;
+  margin-left:14px;
   padding:18px 20px 16px;
   border:1px solid #183037;
   border-radius:12px;
