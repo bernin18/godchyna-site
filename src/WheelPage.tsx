@@ -5857,7 +5857,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       </main>
       <main className="wheel-page">
         <section className="wheel-hero">
-          <h1>{pick("RODA DO", "CHYNA'S")} <strong>{pick("CHYNAO", "WHEEL")}</strong></h1>
+          <h1>
+            {pick("RODA DO", "CHYNA'S")}{" "}
+            <strong className="wheel-hero-brand">
+              {pick(
+                <>CHYNA<img className="wheel-hero-coin-o" src="/CHY coin.png" alt="O" /></>,
+                <>WHEEL</>,
+              )}
+            </strong>
+          </h1>
           <p>{pick(
             "Survivor Wheel → TOP 5 → Plinko. Sorteios rápidos, visuais e feitos para giveaways.",
             "Survivor Wheel → TOP 5 → Plinko. Fast, visual and built for giveaways.",
