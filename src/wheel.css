@@ -5676,3 +5676,11 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   background:#0a1418!important;
   box-shadow:0 0 10px rgba(217,166,55,.12),0 4px 14px rgba(0,0,0,.34)!important;
 }
+
+
+/* Fictional CHY currency used only inside CHYNAO Case and Plinko values */
+.chy-amount{display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;vertical-align:middle}
+.chy-amount>img{width:15px;height:15px;object-fit:contain;flex:0 0 15px;filter:drop-shadow(0 0 4px rgba(217,166,55,.22))}
+.chy-amount>span{display:inline-block;color:inherit;font:inherit;font-weight:inherit;letter-spacing:inherit}
+.case-player-score small .chy-amount>img,.case-reel-item .chy-amount>img,.case-contents-grid .chy-amount>img,.plinko-finalist-result .chy-amount>img{width:13px;height:13px;flex-basis:13px}
+.plinko-reward-modal .chy-amount>img,.plinko-tie-modal .chy-amount>img,.case-drop-result .chy-amount>img{width:18px;height:18px;flex-basis:18px}
