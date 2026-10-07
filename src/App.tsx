@@ -767,7 +767,7 @@ function DeliveredGiveaways(){
   return (
     <section className="delivered-giveaways" aria-labelledby="delivered-giveaways-title">
       <header className="delivered-giveaways-heading">
-        <h2 id="delivered-giveaways-title">{pick("GIVEAWAYS ENTREGUES","DELIVERED GIVEAWAYS")}</h2>
+        <h2 id="delivered-giveaways-title">{pick("ENTREGUES","DELIVERED")}</h2>
       </header>
 
       <article className="delivered-giveaway-card">
@@ -811,9 +811,12 @@ function GiveawaysPage(){
       <Header/>
       <main className="subpage giveaways-page">
         <header className="section-title"><h1>GIVEAWAYS</h1></header>
-        <div className="giveaways-page-list">
-          {giveaways.filter(giveaway=>giveaway.enabled!==false).map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
-        </div>
+        <section className="giveaways-active-section" aria-labelledby="active-giveaways-title">
+          <h2 id="active-giveaways-title" className="giveaways-subheading">{pick("ATIVOS","ACTIVE")}</h2>
+          <div className="giveaways-page-list">
+            {giveaways.filter(giveaway=>giveaway.enabled!==false).map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
+          </div>
+        </section>
         <DeliveredGiveaways/>
       </main>
       <Footer/>
