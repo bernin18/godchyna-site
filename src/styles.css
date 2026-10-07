@@ -835,21 +835,19 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-giveaway-card{
   display:grid;
   grid-template-columns:minmax(0,1.72fr) minmax(300px,.86fr);
-  gap:0;
-  overflow:hidden;
-  border:1px solid #183037;
-  border-radius:14px;
-  background:
-    radial-gradient(circle at 84% 42%,rgba(32,243,154,.055),transparent 28%),
-    linear-gradient(145deg,#081216,#050a0d);
-  box-shadow:0 18px 55px rgba(0,0,0,.28);
+  gap:14px;
+  overflow:visible;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
 }
 .delivered-clip-wrap{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:14px 10px 14px 16px;
-  border-right:0;
+  padding:0;
+  border:0;
 }
 .delivered-clip-frame{
   position:relative;
@@ -877,7 +875,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   flex-direction:column;
   min-width:0;
   min-height:360px;
-  margin:14px 16px 14px 10px;
+  margin:0;
   padding:18px 20px 16px;
   border:1px solid #183037;
   border-radius:12px;
@@ -968,9 +966,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 @media(max-width:1000px){
   .delivered-giveaway-card{grid-template-columns:1fr}
-  .delivered-clip-wrap{border-right:0;border-bottom:1px solid #183037;padding:14px}
+  .delivered-clip-wrap{border:0;padding:0}
   .delivered-clip-frame{width:100%;max-width:none}
-  .delivered-prize-panel{min-height:auto;margin:0;border:0;border-radius:0}
+  .delivered-prize-panel{min-height:auto;margin:0}
   .delivered-prize-visual{min-height:145px}
   .delivered-prize-copy{margin-top:22px}
 }
