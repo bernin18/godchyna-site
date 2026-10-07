@@ -794,7 +794,6 @@ function DeliveredGiveaways(){
             <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade Factory New" />
           </div>
           <div className="delivered-prize-copy">
-            <span>{pick("GIVEAWAY MENSAL","MONTHLY GIVEAWAY")}</span>
             <h3>Ursus Knife | Marble Fade</h3>
             <p>Factory New</p>
             <strong>$150</strong>
