@@ -116,7 +116,7 @@ const giveaways:Giveaway[] = [
     title:"AWP | Wildfire",
     condition:"Field-Tested / FT",
     price:"$60.00",
-    minDeposit:"€10",
+    minDeposit:"€4",
     image:"wildfire braços.webp",
     imageAlt:"AWP Wildfire Field-Tested with gloves",
     galleryImages:[
@@ -128,8 +128,8 @@ const giveaways:Giveaway[] = [
     providerLogo:"csgoskins-logo.png?v=3",
     url:"https://csgo-skins.com/?ref=GODCHYNA",
     requiresProof:true,
-    notePt:"Faz um depósito mínimo de €10 e envia a prova do depósito por Discord ou Instagram.",
-    noteEn:"Make a minimum €10 deposit and send proof of the deposit through Discord or Instagram.",
+    notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
+    noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
   },
 ];
 
