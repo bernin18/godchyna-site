@@ -130,6 +130,8 @@ const giveaways:Giveaway[] = [
     requiresProof:true,
     notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
+    warningPt:"ATENÇÃO: sem prova do depósito, a participação não será aceite no giveaway.",
+    warningEn:"IMPORTANT: without proof of deposit, your entry will not be accepted for the giveaway.",
   },
 ];
 
