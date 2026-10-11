@@ -3411,7 +3411,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   const largeWheelVisual = participants.length > DIRECT_TOP_FIVE_THRESHOLD;
   const displayedGroupedParticipants = useMemo(
-    () => filteredGroupedParticipants.slice(0, LARGE_WHEEL_LIST_LIMIT),
+    () =>
+      [...filteredGroupedParticipants]
+        .sort((a, b) => {
+          if (b.count !== a.count) return b.count - a.count;
+          return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+        })
+        .slice(0, LARGE_WHEEL_LIST_LIMIT),
     [filteredGroupedParticipants],
   );
   const hiddenGroupedParticipantCount = Math.max(
