@@ -780,10 +780,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     imageUrl: string;
   }>>([]);
   const [giveawayHistoryTotal, setGiveawayHistoryTotal] = useState(0);
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot" | "reset">("login");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [participantInput, setParticipantInput] = useState("");
   const [quickParticipantName, setQuickParticipantName] = useState("");
   const [quickParticipantCount, setQuickParticipantCount] = useState(1);
@@ -914,8 +915,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setLoadingSession(false);
     });
 
-    const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    const { data } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession);
+
+      if (event === "PASSWORD_RECOVERY") {
+        setMode("reset");
+        setShowAuth(true);
+        setMessage("");
+        setPassword("");
+        setConfirmPassword("");
+      }
+
       if (!nextSession) {
         setAccount(null);
         setConfiguring(false);
@@ -1415,10 +1425,98 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return () => { cancelled = true; };
   }, [session?.user.id, pick]);
 
+  function friendlyAuthError(error: { message?: string; code?: string } | null) {
+    const code = error?.code ?? "";
+    const rawMessage = (error?.message ?? "").toLocaleLowerCase();
+
+    if (code === "over_email_send_rate_limit" || rawMessage.includes("email rate limit exceeded")) {
+      return pick(
+        "Não foi possível enviar o email agora. Foram feitos demasiados pedidos em pouco tempo; aguarda alguns minutos e tenta novamente.",
+        "We couldn't send the email right now. Too many requests were made in a short time; wait a few minutes and try again.",
+      );
+    }
+
+    if (code === "email_not_confirmed" || rawMessage.includes("email not confirmed")) {
+      return pick(
+        "Confirma primeiro o teu email através do link que recebeste.",
+        "Confirm your email first using the link we sent you.",
+      );
+    }
+
+    if (rawMessage.includes("user already registered")) {
+      return pick(
+        "Já existe uma conta com este email. Tenta iniciar sessão ou recuperar a password.",
+        "An account already exists with this email. Try signing in or resetting your password.",
+      );
+    }
+
+    return pick(
+      "Não foi possível concluir o pedido. Tenta novamente daqui a pouco.",
+      "We couldn't complete the request. Please try again shortly.",
+    );
+  }
+
   async function submitAuth(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
     setMessage("");
+
+    if (mode === "forgot") {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://godchyna.com/wheel",
+      });
+
+      if (error) {
+        setMessage(friendlyAuthError(error));
+      } else {
+        setMessage(pick(
+          "Enviámos um link para o teu email. Abre-o para escolher uma nova password.",
+          "We sent a link to your email. Open it to choose a new password.",
+        ));
+      }
+
+      setBusy(false);
+      return;
+    }
+
+    if (mode === "reset") {
+      if (password.length < 6) {
+        setMessage(pick(
+          "A nova password tem de ter pelo menos 6 caracteres.",
+          "Your new password must be at least 6 characters long.",
+        ));
+        setBusy(false);
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setMessage(pick(
+          "As duas passwords não são iguais.",
+          "The two passwords do not match.",
+        ));
+        setBusy(false);
+        return;
+      }
+
+      const { error } = await supabase.auth.updateUser({ password });
+
+      if (error) {
+        setMessage(friendlyAuthError(error));
+      } else {
+        await supabase.auth.signOut();
+        setMode("login");
+        setPassword("");
+        setConfirmPassword("");
+        setShowAuth(true);
+        setMessage(pick(
+          "Password alterada com sucesso. Já podes iniciar sessão.",
+          "Password changed successfully. You can now sign in.",
+        ));
+      }
+
+      setBusy(false);
+      return;
+    }
 
     if (mode === "signup") {
       const { error } = await supabase.auth.signUp({
@@ -1430,8 +1528,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         },
       });
 
-      if (error) setMessage(error.message);
-      else {
+      if (error) {
+        setMessage(friendlyAuthError(error));
+      } else {
         setMessage(pick(
           "Conta criada. Confirma o email e depois inicia sessão.",
           "Account created. Confirm your email, then sign in.",
@@ -1440,7 +1539,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) setMessage(pick("Email ou password incorretos.", "Incorrect email or password."));
+      if (error) {
+        setMessage(
+          error.code === "email_not_confirmed"
+            ? friendlyAuthError(error)
+            : pick("Email ou password incorretos.", "Incorrect email or password."),
+        );
+      }
     }
 
     setBusy(false);
@@ -6114,24 +6219,52 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 </button>
                 <small>{pick("A roda fica visível para todos. Só precisas de conta para a usar.", "Everyone can see the wheel. You only need an account to use it.")}</small>
               </div>
-            ) : !session ? (
+            ) : !session || mode === "reset" ? (
               <div className="wheel-auth-card">
                 <div className="wheel-auth-head">
                   <UserRound />
                   <div>
                     <span>{pick("CONTA CHYNA", "CHYNA ACCOUNT")}</span>
-                    <h2>{mode === "login" ? pick("INICIAR SESSÃO", "SIGN IN") : pick("CRIAR CONTA", "CREATE ACCOUNT")}</h2>
+                    <h2>
+                      {mode === "login"
+                        ? pick("INICIAR SESSÃO", "SIGN IN")
+                        : mode === "signup"
+                          ? pick("CRIAR CONTA", "CREATE ACCOUNT")
+                          : mode === "forgot"
+                            ? pick("RECUPERAR PASSWORD", "RESET PASSWORD")
+                            : pick("NOVA PASSWORD", "NEW PASSWORD")}
+                    </h2>
                   </div>
                 </div>
 
-                <div className="wheel-auth-tabs">
-                  <button className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setMessage(""); }}>
-                    {pick("ENTRAR", "SIGN IN")}
-                  </button>
-                  <button className={mode === "signup" ? "active" : ""} onClick={() => { setMode("signup"); setMessage(""); }}>
-                    {pick("CRIAR CONTA", "SIGN UP")}
-                  </button>
-                </div>
+                {(mode === "login" || mode === "signup") && (
+                  <div className="wheel-auth-tabs">
+                    <button className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setMessage(""); }}>
+                      {pick("ENTRAR", "SIGN IN")}
+                    </button>
+                    <button className={mode === "signup" ? "active" : ""} onClick={() => { setMode("signup"); setMessage(""); }}>
+                      {pick("CRIAR CONTA", "SIGN UP")}
+                    </button>
+                  </div>
+                )}
+
+                {mode === "forgot" && (
+                  <p className="wheel-auth-helper">
+                    {pick(
+                      "Escreve o email da tua conta e enviamos-te um link para definires uma nova password.",
+                      "Enter your account email and we'll send you a link to set a new password.",
+                    )}
+                  </p>
+                )}
+
+                {mode === "reset" && (
+                  <p className="wheel-auth-helper">
+                    {pick(
+                      "Escolhe uma nova password para a tua conta.",
+                      "Choose a new password for your account.",
+                    )}
+                  </p>
+                )}
 
                 <form className="wheel-auth-form" onSubmit={submitAuth}>
                   {mode === "signup" && (
@@ -6140,22 +6273,79 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       <input value={displayName} onChange={(event) => setDisplayName(event.target.value)} placeholder="Chyna" autoComplete="name" />
                     </label>
                   )}
-                  <label>
-                    <span>EMAIL</span>
-                    <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="email@example.com" autoComplete="email" />
-                  </label>
-                  <label>
-                    <span>PASSWORD</span>
-                    <input type="password" required minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} />
-                  </label>
+
+                  {mode !== "reset" && (
+                    <label>
+                      <span>EMAIL</span>
+                      <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="email@example.com" autoComplete="email" />
+                    </label>
+                  )}
+
+                  {(mode === "login" || mode === "signup") && (
+                    <label>
+                      <span>PASSWORD</span>
+                      <input type="password" required minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} />
+                    </label>
+                  )}
+
+                  {mode === "reset" && (
+                    <>
+                      <label>
+                        <span>{pick("NOVA PASSWORD", "NEW PASSWORD")}</span>
+                        <input type="password" required minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" autoComplete="new-password" />
+                      </label>
+                      <label>
+                        <span>{pick("CONFIRMAR PASSWORD", "CONFIRM PASSWORD")}</span>
+                        <input type="password" required minLength={6} value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="••••••••" autoComplete="new-password" />
+                      </label>
+                    </>
+                  )}
+
+                  {mode === "login" && (
+                    <button
+                      className="wheel-forgot-password"
+                      type="button"
+                      onClick={() => {
+                        setMode("forgot");
+                        setMessage("");
+                        setPassword("");
+                      }}
+                    >
+                      {pick("Esqueceste-te da password?", "Forgot your password?")}
+                    </button>
+                  )}
+
                   <button className="wheel-primary-btn" type="submit" disabled={busy}>
                     <LogIn />
-                    {busy ? pick("A PROCESSAR...", "PROCESSING...") : mode === "login" ? pick("ENTRAR", "SIGN IN") : pick("CRIAR CONTA", "CREATE ACCOUNT")}
+                    {busy
+                      ? pick("A PROCESSAR...", "PROCESSING...")
+                      : mode === "login"
+                        ? pick("ENTRAR", "SIGN IN")
+                        : mode === "signup"
+                          ? pick("CRIAR CONTA", "CREATE ACCOUNT")
+                          : mode === "forgot"
+                            ? pick("ENVIAR LINK", "SEND LINK")
+                            : pick("ALTERAR PASSWORD", "CHANGE PASSWORD")}
                   </button>
                 </form>
 
-                <button className="wheel-back-btn" type="button" onClick={() => setShowAuth(false)}>
-                  {pick("VOLTAR", "BACK")}
+                <button
+                  className="wheel-back-btn"
+                  type="button"
+                  onClick={() => {
+                    if (mode === "forgot" || mode === "reset") {
+                      setMode("login");
+                      setMessage("");
+                      setPassword("");
+                      setConfirmPassword("");
+                    } else {
+                      setShowAuth(false);
+                    }
+                  }}
+                >
+                  {mode === "forgot" || mode === "reset"
+                    ? pick("VOLTAR", "BACK")
+                    : pick("VOLTAR", "BACK")}
                 </button>
 
                 {message && <p className="wheel-auth-message">{message}</p>}
