@@ -1365,3 +1365,32 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     drop-shadow(0 0 28px rgba(46,220,115,.76))
     drop-shadow(0 0 44px rgba(46,220,115,.42))!important;
 }
+
+
+/* ===== Wildfire popup tuning ===== */
+.active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-visual{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(255,78,38,.20),transparent 34%),
+    radial-gradient(circle at 50% 38%,rgba(170,35,18,.20),transparent 52%),
+    linear-gradient(180deg,#140908 0%,#1a0b0a 52%,#090d10 100%)!important;
+}
+.active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-prize{
+  width:104%!important;
+  height:292px!important;
+  max-height:292px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:translate(-1%,6px) scale(1.20)!important;
+  filter:
+    drop-shadow(0 22px 30px rgba(0,0,0,.46))
+    drop-shadow(0 0 18px rgba(255,78,38,.20))
+    drop-shadow(0 0 36px rgba(255,78,38,.14))!important;
+}
+@media(max-width:700px){
+  .active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-prize{
+    width:104%!important;
+    height:190px!important;
+    max-height:190px!important;
+    transform:translateY(4px) scale(1.12)!important;
+  }
+}
