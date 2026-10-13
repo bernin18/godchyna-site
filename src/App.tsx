@@ -134,8 +134,6 @@ const giveaways:Giveaway[] = [
     url:"https://csgo-skins.com/?ref=GODCHYNA",
     requiresProof:true,
     startDate:"07/10",
-    notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
-    noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
     partnerNotePt:"A data do sorteio é determinada pelo parceiro. O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor, de forma a permitir a verificação da legitimidade do sorteio.",
     partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
   },
@@ -526,7 +524,6 @@ function HomeGiveawayRotator(){
 }
 
 const ACTIVE_GIVEAWAY_POPUP_INDEX_KEY = "chyna-active-giveaway-popup-index";
-const ACTIVE_GIVEAWAY_POPUP_SEEN_KEY = "godchyna-active-giveaway-popup-seen-v2";
 
 function ActiveGiveawayPopup(){
   const { pick } = useLanguage();
@@ -537,25 +534,21 @@ function ActiveGiveawayPopup(){
   useEffect(()=>{
     if(activeGiveaways.length===0 || typeof window==="undefined") return;
 
+    let nextIndex=0;
     try{
-      if(window.localStorage.getItem(ACTIVE_GIVEAWAY_POPUP_SEEN_KEY)==="1") return;
-
       const stored=window.localStorage.getItem(ACTIVE_GIVEAWAY_POPUP_INDEX_KEY);
       const previous=stored===null?-1:Number(stored);
-      const nextIndex=Number.isFinite(previous)?(previous+1)%activeGiveaways.length:0;
-
+      nextIndex=Number.isFinite(previous)?(previous+1)%activeGiveaways.length:0;
       window.localStorage.setItem(ACTIVE_GIVEAWAY_POPUP_INDEX_KEY,String(nextIndex));
-      window.localStorage.setItem(ACTIVE_GIVEAWAY_POPUP_SEEN_KEY,"1");
-
-      const timer=window.setTimeout(()=>{
-        setGiveaway(activeGiveaways[nextIndex] ?? activeGiveaways[0]);
-      },700);
-
-      return ()=>window.clearTimeout(timer);
     }catch{
-      const timer=window.setTimeout(()=>setGiveaway(activeGiveaways[0]),700);
-      return ()=>window.clearTimeout(timer);
+      nextIndex=0;
     }
+
+    const timer=window.setTimeout(()=>{
+      setGiveaway(activeGiveaways[nextIndex] ?? activeGiveaways[0]);
+    },450);
+
+    return ()=>window.clearTimeout(timer);
   },[activeGiveaways.length]);
 
   useEffect(()=>{
