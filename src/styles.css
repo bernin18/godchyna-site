@@ -167,6 +167,14 @@ pointer-events:none}
 .orange .partner-cta{background:#ff4817}
 .blue .partner-cta{background:#087be9}
 .giveaway-card{display:grid;grid-template-columns:.76fr 1.24fr;gap:24px;width:100%;max-width:1240px;margin-inline:auto;padding:16px;border:1px solid #1a3035;border-radius:11px;background:linear-gradient(120deg,#071015,#071015 58%,#091218)}
+.giveaway-hydra-gloves-emerald{
+  border-color:rgba(57,211,116,.30);
+  background:
+    radial-gradient(circle at 18% 48%,rgba(45,186,94,.14),transparent 34%),
+    radial-gradient(circle at 82% 36%,rgba(24,126,68,.12),transparent 42%),
+    linear-gradient(120deg,#06120d 0%,#07150f 56%,#07110d 100%);
+  box-shadow:inset 0 0 34px rgba(46,199,101,.035),0 0 20px rgba(32,243,154,.035)
+}
 .knife-stage{
   min-height:215px;
   height:auto;
@@ -436,6 +444,34 @@ pointer-events:none}
 .giveaway-lightbox-close:hover{transform:scale(1.06);border-color:rgba(255,255,255,.36);background:rgba(12,18,22,.94)}
 @keyframes giveawayLightboxIn{from{opacity:0}to{opacity:1}}
 @keyframes giveawayLightboxPanelIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.emerald-stage{
+  background:
+    radial-gradient(circle at 50% 43%,rgba(57,211,116,.18),transparent 30%),
+    radial-gradient(circle at 50% 35%,#0d2518,#050b08 72%);
+  border-color:rgba(57,211,116,.30);
+  box-shadow:inset 0 0 30px rgba(57,211,116,.035)
+}
+.emerald-stage::before{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(57,211,116,.12),transparent 44%),
+    linear-gradient(115deg,transparent 10%,rgba(116,255,158,.03) 45%,transparent 70%)
+}
+.emerald-stage .knife-ambient-glow{
+  width:270px;
+  height:220px;
+  background:radial-gradient(circle,rgba(57,211,116,.23) 0%,rgba(57,211,116,.08) 45%,transparent 74%)
+}
+.emerald-stage .knife-sparkle{
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(173,255,197,.82) 28%,rgba(57,211,116,0) 72%);
+  box-shadow:0 0 14px rgba(57,211,116,.48)
+}
+.emerald-stage .giveaway-prize-image{
+  filter:drop-shadow(0 24px 22px rgba(0,0,0,.8)) drop-shadow(0 0 24px rgba(57,211,116,.24))
+}
+.emerald-stage:hover{
+  border-color:rgba(72,230,132,.52);
+  box-shadow:inset 0 0 32px rgba(57,211,116,.06),0 0 26px rgba(57,211,116,.09)
+}
 .wildfire-stage{
   background:
     radial-gradient(circle at 50% 43%,rgba(255,74,23,.12),transparent 28%),
