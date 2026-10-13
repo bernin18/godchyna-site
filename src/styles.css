@@ -1387,3 +1387,17 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .giveaway-awp-wildfire .giveaway-info{
   padding-bottom:18px!important;
 }
+
+.active-giveaway-popup{width:min(780px,calc(100vw - 40px))!important;min-height:330px!important;height:auto!important;display:grid!important;grid-template-columns:minmax(285px,.95fr) minmax(340px,1.05fr)!important;grid-template-rows:auto!important;align-items:stretch!important;overflow:hidden!important;border-radius:16px!important}
+.active-giveaway-popup .active-giveaway-popup-close{position:absolute!important;top:12px!important;right:12px!important;left:auto!important;bottom:auto!important;z-index:10!important;width:34px!important;height:34px!important;margin:0!important}
+.active-giveaway-popup .active-giveaway-popup-visual{position:relative!important;z-index:1!important;grid-column:1!important;grid-row:1!important;min-height:330px!important;height:auto!important}
+.active-giveaway-popup .active-giveaway-popup-copy{position:relative!important;z-index:1!important;grid-column:2!important;grid-row:1!important;min-width:0!important;padding:34px 38px 30px!important}
+.active-giveaway-popup-prize{width:94%!important;height:245px!important;max-height:245px!important}
+.active-giveaway-popup-copy h2{font-size:30px!important;line-height:1.04!important}
+.active-giveaway-popup-code{margin-top:14px!important}
+.active-giveaway-popup-deposit{margin-top:12px!important}
+.active-giveaway-popup-warning{margin-top:10px!important}
+.active-giveaway-popup-actions{margin-top:14px!important}
+.active-giveaway-popup-actions .active-giveaway-popup-cta{min-height:42px!important}
+.active-giveaway-popup-more{min-height:38px!important}
+@media(max-width:700px){.active-giveaway-popup{width:min(94vw,520px)!important;grid-template-columns:1fr!important;grid-template-rows:auto auto!important}.active-giveaway-popup .active-giveaway-popup-visual{grid-column:1!important;grid-row:1!important;min-height:190px!important}.active-giveaway-popup .active-giveaway-popup-copy{grid-column:1!important;grid-row:2!important;padding:24px 22px 22px!important}.active-giveaway-popup-prize{height:165px!important;max-height:165px!important}}
