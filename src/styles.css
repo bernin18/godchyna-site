@@ -1790,3 +1790,95 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     inset 7px 0 18px rgba(255,78,38,.05),
     -3px 0 12px rgba(255,78,38,.18);
 }
+
+
+/* ===== M4A1-S Black Lotus giveaway ===== */
+.giveaway-m4a1s-black-lotus{
+  border-color:rgba(160,82,255,.38)!important;
+  background:
+    radial-gradient(circle at 16% 50%,rgba(150,68,255,.18),transparent 36%),
+    radial-gradient(circle at 82% 38%,rgba(92,30,180,.13),transparent 44%),
+    linear-gradient(120deg,#100817 0%,#140b1d 56%,#0d0d13 100%)!important;
+  box-shadow:
+    inset 0 0 36px rgba(153,76,255,.045),
+    0 0 22px rgba(145,68,255,.055)!important;
+}
+.lotus-stage{
+  border-color:rgba(169,92,255,.36)!important;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(156,79,255,.23),transparent 30%),
+    radial-gradient(circle at 50% 35%,#231135,#07080d 72%)!important;
+  box-shadow:
+    inset 0 0 34px rgba(158,82,255,.06),
+    0 0 24px rgba(137,64,230,.12)!important;
+}
+.lotus-stage::before{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(158,82,255,.12),transparent 44%),
+    linear-gradient(115deg,transparent 10%,rgba(207,169,255,.035) 45%,transparent 70%)!important;
+}
+.lotus-stage .knife-ambient-glow{
+  background:radial-gradient(circle,rgba(161,84,255,.24) 0%,rgba(136,63,230,.08) 44%,transparent 74%)!important;
+}
+.lotus-stage .lotus-arms-image{
+  animation:none!important;
+  transform:none!important;
+  width:126%;
+  height:120%;
+  max-width:none;
+  object-fit:contain;
+  object-position:center 52%;
+  filter:
+    drop-shadow(0 20px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 24px rgba(158,82,255,.24))!important;
+}
+.lotus-stage .lotus-single-image{
+  width:94%;
+  height:84%;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 22px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 28px rgba(158,82,255,.28))!important;
+}
+
+/* Black Lotus popup: purple theme */
+.active-giveaway-popup.popup-m4a1s-black-lotus .active-giveaway-popup-visual{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(158,82,255,.24),transparent 34%),
+    radial-gradient(circle at 50% 40%,rgba(102,43,187,.22),transparent 54%),
+    linear-gradient(180deg,#0d0713 0%,#160b21 52%,#09090f 100%)!important;
+}
+.active-giveaway-popup.popup-m4a1s-black-lotus::before{
+  background:conic-gradient(
+    from var(--snake-angle),
+    transparent 0deg 305deg,
+    rgba(164,90,255,.10) 312deg,
+    rgba(164,90,255,.64) 322deg,
+    rgba(240,226,255,1) 334deg,
+    rgba(164,90,255,1) 344deg,
+    rgba(164,90,255,.50) 352deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 8px rgba(164,90,255,.95))
+    drop-shadow(0 0 18px rgba(164,90,255,.70))
+    drop-shadow(0 0 30px rgba(164,90,255,.36))!important;
+}
+.active-giveaway-popup.popup-m4a1s-black-lotus .active-giveaway-popup-prize{
+  width:94%!important;
+  height:250px!important;
+  max-height:250px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:scale(1.06)!important;
+  filter:
+    drop-shadow(0 22px 30px rgba(0,0,0,.46))
+    drop-shadow(0 0 18px rgba(158,82,255,.22))
+    drop-shadow(0 0 36px rgba(158,82,255,.15))!important;
+}
+.active-giveaway-popup.popup-m4a1s-black-lotus .active-giveaway-popup-copy{
+  border-left:5px solid rgba(164,90,255,.95);
+  box-shadow:
+    inset 7px 0 18px rgba(164,90,255,.05),
+    -3px 0 12px rgba(164,90,255,.20);
+}
