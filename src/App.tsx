@@ -138,6 +138,27 @@ const giveaways:Giveaway[] = [
     partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
   },
   {
+    id:"m4a1s-black-lotus",
+    title:"M4A1-S | Black Lotus",
+    condition:"StatTrak™ Field-Tested / FT",
+    price:"$14.00",
+    minDeposit:"€3",
+    image:"black lotus braços.webp",
+    imageAlt:"M4A1-S Black Lotus StatTrak Field-Tested with arms",
+    galleryImages:[
+      {src:"black lotus braços.webp",alt:"M4A1-S Black Lotus StatTrak Field-Tested with arms"},
+      {src:"M4a1 black lotus.png",alt:"M4A1-S Black Lotus StatTrak Field-Tested"},
+    ],
+    provider:"csgoskins",
+    providerName:"CSGO-SKINS",
+    providerLogo:"csgoskins-logo.png?v=3",
+    url:"https://csgo-skins.com/?ref=GODCHYNA",
+    requiresProof:true,
+    startDate:"07/10",
+    partnerNotePt:"A data do sorteio é determinada pelo parceiro. O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor, de forma a permitir a verificação da legitimidade do sorteio.",
+    partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
+  },
+  {
     id:"hydra-gloves-emerald",
     title:"Hydra Gloves | Emerald",
     condition:"",
@@ -329,6 +350,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const isTopskin=giveaway.provider==="topskin";
   const isKitGiveaway=giveaway.id==="bayonet-lore-gloves-omega";
   const isWildfire=giveaway.id==="awp-wildfire";
+  const isLotus=giveaway.id==="m4a1s-black-lotus";
   const isEmerald=giveaway.id==="hydra-gloves-emerald";
   const galleryImages=giveaway.galleryImages?.length
     ? giveaway.galleryImages
@@ -364,7 +386,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider} giveaway-${giveaway.id}`}>
-      <div className={`knife-stage${isWildfire?" wildfire-stage":""}${isEmerald?" emerald-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
+      <div className={`knife-stage${isWildfire?" wildfire-stage":""}${isLotus?" lotus-stage":""}${isEmerald?" emerald-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
@@ -381,7 +403,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isEmerald && galleryIndex===0?" hydra-arms-image stage-image-static":""}${isEmerald && galleryIndex>0?" hydra-single-image stage-image-floating":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isLotus && galleryIndex===0?" lotus-arms-image stage-image-static":""}${isLotus && galleryIndex>0?" lotus-single-image stage-image-floating":""}${isEmerald && galleryIndex===0?" hydra-arms-image stage-image-static":""}${isEmerald && galleryIndex>0?" hydra-single-image stage-image-floating":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -601,9 +623,11 @@ function ActiveGiveawayPopup(){
       ? "gloves hydra emerald.png"
       : giveaway.id==="awp-wildfire"
         ? "wildfire.png"
-        : giveaway.id==="bayonet-lore-gloves-omega"
-          ? "omega lore pop up.png"
-          : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
+        : giveaway.id==="m4a1s-black-lotus"
+          ? "M4a1 black lotus.png"
+          : giveaway.id==="bayonet-lore-gloves-omega"
+            ? "omega lore pop up.png"
+            : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
 
   if(isComboPopup){
     return (
