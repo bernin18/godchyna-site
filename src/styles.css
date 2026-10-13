@@ -1375,3 +1375,15 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   width:86%!important;
   height:80%!important
 }
+
+
+/* ===== Wildfire spacing test ===== */
+.giveaway-awp-wildfire .giveaway-action-zone{
+  margin-top:24px!important;
+}
+.giveaway-awp-wildfire .giveaway-actions{
+  margin-top:0!important;
+}
+.giveaway-awp-wildfire .giveaway-info{
+  padding-bottom:18px!important;
+}
