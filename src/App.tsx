@@ -577,7 +577,9 @@ function ActiveGiveawayPopup(){
       ? "gloves hydra emerald.png"
       : giveaway.id==="awp-wildfire"
         ? "wildfire.png"
-        : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
+        : giveaway.id==="bayonet-lore-gloves-omega"
+          ? "omega lore pop up.png"
+          : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
 
   return (
     <div
