@@ -1509,3 +1509,100 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     transform:scale(1.03)!important;
   }
 }
+
+
+/* ===== True border-following snake glow ===== */
+@property --snake-angle{
+  syntax:"<angle>";
+  inherits:false;
+  initial-value:0deg;
+}
+.active-giveaway-popup{
+  overflow:visible!important;
+}
+.active-giveaway-popup::before{
+  content:""!important;
+  position:absolute!important;
+  inset:-4px!important;
+  z-index:4!important;
+  border-radius:20px!important;
+  padding:4px!important;
+  transform:none!important;
+  background:
+    conic-gradient(
+      from var(--snake-angle),
+      transparent 0deg 305deg,
+      rgba(32,243,154,.10) 312deg,
+      rgba(32,243,154,.60) 322deg,
+      rgba(255,255,255,1) 334deg,
+      rgba(32,243,154,1) 344deg,
+      rgba(32,243,154,.45) 352deg,
+      transparent 360deg
+    )!important;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0)!important;
+  -webkit-mask-composite:xor!important;
+  mask-composite:exclude!important;
+  filter:
+    drop-shadow(0 0 8px rgba(32,243,154,.95))
+    drop-shadow(0 0 18px rgba(32,243,154,.70))
+    drop-shadow(0 0 30px rgba(32,243,154,.36))!important;
+  animation:snakeBorderRun 1.55s linear infinite!important;
+  pointer-events:none!important;
+}
+@keyframes snakeBorderRun{
+  to{--snake-angle:360deg}
+}
+.active-giveaway-popup.popup-bayonet-lore-gloves-omega::before,
+.active-giveaway-popup.popup-topskin::before{
+  background:
+    conic-gradient(
+      from var(--snake-angle),
+      transparent 0deg 305deg,
+      rgba(244,191,47,.10) 312deg,
+      rgba(244,191,47,.62) 322deg,
+      rgba(255,247,209,1) 334deg,
+      rgba(244,191,47,1) 344deg,
+      rgba(244,191,47,.48) 352deg,
+      transparent 360deg
+    )!important;
+  filter:
+    drop-shadow(0 0 8px rgba(244,191,47,.95))
+    drop-shadow(0 0 18px rgba(244,191,47,.70))
+    drop-shadow(0 0 30px rgba(244,191,47,.36))!important;
+}
+.active-giveaway-popup.popup-awp-wildfire::before{
+  background:
+    conic-gradient(
+      from var(--snake-angle),
+      transparent 0deg 305deg,
+      rgba(255,78,38,.10) 312deg,
+      rgba(255,78,38,.64) 322deg,
+      rgba(255,236,229,1) 334deg,
+      rgba(255,78,38,1) 344deg,
+      rgba(255,78,38,.50) 352deg,
+      transparent 360deg
+    )!important;
+  filter:
+    drop-shadow(0 0 8px rgba(255,78,38,.95))
+    drop-shadow(0 0 18px rgba(255,78,38,.70))
+    drop-shadow(0 0 30px rgba(255,78,38,.36))!important;
+}
+.active-giveaway-popup.popup-hydra-gloves-emerald::before{
+  background:
+    conic-gradient(
+      from var(--snake-angle),
+      transparent 0deg 305deg,
+      rgba(46,220,115,.10) 312deg,
+      rgba(46,220,115,.64) 322deg,
+      rgba(236,255,243,1) 334deg,
+      rgba(46,220,115,1) 344deg,
+      rgba(46,220,115,.50) 352deg,
+      transparent 360deg
+    )!important;
+  filter:
+    drop-shadow(0 0 8px rgba(46,220,115,.95))
+    drop-shadow(0 0 18px rgba(46,220,115,.70))
+    drop-shadow(0 0 30px rgba(46,220,115,.36))!important;
+}
