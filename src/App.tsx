@@ -524,6 +524,7 @@ function HomeGiveawayRotator(){
 }
 
 const ACTIVE_GIVEAWAY_POPUP_INDEX_KEY = "chyna-active-giveaway-popup-index";
+let activeGiveawayPopupShownThisPageLoad = false;
 
 function ActiveGiveawayPopup(){
   const { pick } = useLanguage();
@@ -533,6 +534,10 @@ function ActiveGiveawayPopup(){
 
   useEffect(()=>{
     if(activeGiveaways.length===0 || typeof window==="undefined") return;
+
+    // Show once per real page load/refresh. SPA tab/route changes do not reset this.
+    if(activeGiveawayPopupShownThisPageLoad) return;
+    activeGiveawayPopupShownThisPageLoad = true;
 
     let nextIndex=0;
     try{
