@@ -6118,7 +6118,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                           );
                         }
 
-                        const skinImage = item.imageUrl || historySkinImage(item.skinName);
+                        const mappedHistoryImage = historySkinImage(item.skinName);
+                        const skinImage = /bleeding edge/i.test(item.skinName)
+                          ? mappedHistoryImage
+                          : item.imageUrl || mappedHistoryImage;
 
                         return (
                           <article
