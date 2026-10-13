@@ -1822,12 +1822,12 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 .lotus-stage .lotus-arms-image{
   animation:none!important;
-  transform:none!important;
-  width:126%;
-  height:120%;
+  transform:translateX(-18px) scale(1.08)!important;
+  width:136%;
+  height:128%;
   max-width:none;
   object-fit:contain;
-  object-position:center 52%;
+  object-position:center 50%;
   filter:
     drop-shadow(0 20px 20px rgba(0,0,0,.78))
     drop-shadow(0 0 24px rgba(158,82,255,.24))!important;
