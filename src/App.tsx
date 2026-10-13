@@ -572,6 +572,8 @@ function ActiveGiveawayPopup(){
 
   if(!giveaway) return null;
 
+  const isComboPopup=giveaway.id==="bayonet-lore-gloves-omega";
+
   const popupImage =
     giveaway.id==="hydra-gloves-emerald"
       ? "gloves hydra emerald.png"
@@ -580,6 +582,60 @@ function ActiveGiveawayPopup(){
         : giveaway.id==="bayonet-lore-gloves-omega"
           ? "omega lore pop up.png"
           : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
+
+  if(isComboPopup){
+    return (
+      <div
+        className="active-giveaway-popup-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-label={pick("Giveaway ativo","Active giveaway")}
+        onMouseDown={(event)=>{
+          if(event.currentTarget===event.target) setGiveaway(null);
+        }}
+      >
+        <article className="combo-image-popup">
+          <img
+            className="combo-image-popup-art"
+            src={asset("Pop up combo.png")}
+            alt={pick("Giveaway Bayonet Lore e Sport Gloves Omega","Bayonet Lore and Sport Gloves Omega giveaway")}
+          />
+
+          <button
+            type="button"
+            className="combo-popup-hotspot combo-popup-close"
+            onClick={()=>setGiveaway(null)}
+            aria-label={pick("Fechar","Close")}
+            title={pick("Fechar","Close")}
+          />
+
+          <button
+            type="button"
+            className={`combo-popup-hotspot combo-popup-copy${copied?" copied":""}`}
+            onClick={copyGiveawayCode}
+            aria-label={copied?pick("Código copiado","Code copied"):pick("Copiar código GODCHYNA","Copy GODCHYNA code")}
+            title={copied?pick("Copiado!","Copied!"):pick("Copiar código","Copy code")}
+          />
+
+          <a
+            className="combo-popup-hotspot combo-popup-enter"
+            href={giveaway.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            aria-label={pick("Participar no giveaway","Enter giveaway")}
+            title={pick("Participar","Enter")}
+          />
+
+          <a
+            className="combo-popup-hotspot combo-popup-more"
+            href="./giveaways"
+            aria-label={pick("Ver outros giveaways","See other giveaways")}
+            title={pick("Ver outros giveaways","See other giveaways")}
+          />
+        </article>
+      </div>
+    );
+  }
 
   return (
     <div
