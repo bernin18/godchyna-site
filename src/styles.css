@@ -1313,3 +1313,55 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .active-giveaway-popup-actions .active-giveaway-popup-cta{min-height:42px!important}
 .active-giveaway-popup-more{min-height:38px!important}
 @media(max-width:700px){.active-giveaway-popup{width:min(94vw,520px)!important;grid-template-columns:1fr!important;grid-template-rows:auto auto!important}.active-giveaway-popup .active-giveaway-popup-visual{grid-column:1!important;grid-row:1!important;min-height:190px!important}.active-giveaway-popup .active-giveaway-popup-copy{grid-column:1!important;grid-row:2!important;padding:24px 22px 22px!important}.active-giveaway-popup-prize{height:165px!important;max-height:165px!important}}
+
+
+/* ===== Popup final visual tuning ===== */
+.active-giveaway-popup.popup-hydra-gloves-emerald .active-giveaway-popup-visual{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(46,220,115,.20),transparent 34%),
+    radial-gradient(circle at 50% 40%,rgba(24,160,78,.20),transparent 52%),
+    linear-gradient(180deg,#06110d 0%,#081913 52%,#06100c 100%)!important;
+}
+.active-giveaway-popup.popup-hydra-gloves-emerald .active-giveaway-popup-prize{
+  filter:
+    drop-shadow(0 20px 30px rgba(0,0,0,.42))
+    drop-shadow(0 0 18px rgba(46,220,115,.20))
+    drop-shadow(0 0 34px rgba(46,220,115,.14))!important;
+}
+.active-giveaway-popup::before{
+  inset:-3px!important;
+  padding:3.5px!important;
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 228deg,
+    rgba(32,243,154,.12) 242deg,
+    rgba(32,243,154,.65) 258deg,
+    rgba(255,255,255,1) 274deg,
+    rgba(32,243,154,1) 292deg,
+    rgba(32,243,154,.92) 312deg,
+    rgba(32,243,154,.28) 334deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 12px rgba(32,243,154,1))
+    drop-shadow(0 0 26px rgba(32,243,154,.72))
+    drop-shadow(0 0 42px rgba(32,243,154,.38))!important;
+  animation:giveawaySnakeGlow 1.85s linear infinite!important;
+}
+.active-giveaway-popup.popup-hydra-gloves-emerald::before{
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 228deg,
+    rgba(46,220,115,.14) 242deg,
+    rgba(46,220,115,.72) 258deg,
+    rgba(232,255,241,1) 274deg,
+    rgba(46,220,115,1) 292deg,
+    rgba(46,220,115,.96) 312deg,
+    rgba(46,220,115,.30) 334deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 12px rgba(46,220,115,1))
+    drop-shadow(0 0 28px rgba(46,220,115,.76))
+    drop-shadow(0 0 44px rgba(46,220,115,.42))!important;
+}
