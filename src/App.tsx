@@ -524,6 +524,7 @@ function HomeGiveawayRotator(){
 }
 
 const ACTIVE_GIVEAWAY_POPUP_INDEX_KEY = "chyna-active-giveaway-popup-index";
+const ACTIVE_GIVEAWAY_POPUP_SESSION_KEY = "chyna-active-giveaway-popup-session-seen";
 let activeGiveawayPopupShownThisPageLoad = false;
 
 function ActiveGiveawayPopup(){
@@ -535,9 +536,25 @@ function ActiveGiveawayPopup(){
   useEffect(()=>{
     if(activeGiveaways.length===0 || typeof window==="undefined") return;
 
-    // Show once per real page load/refresh. SPA tab/route changes do not reset this.
+    // Same document / SPA route change: never show again.
     if(activeGiveawayPopupShownThisPageLoad) return;
-    activeGiveawayPopupShownThisPageLoad = true;
+
+    const navEntry=performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const isRefresh=navEntry?.type==="reload";
+
+    let shouldShow=isRefresh;
+    try{
+      const seenThisTab=sessionStorage.getItem(ACTIVE_GIVEAWAY_POPUP_SESSION_KEY)==="1";
+      // First real entry in this browser tab may show once.
+      // Internal full-page navigation keeps sessionStorage and therefore stays silent.
+      if(!seenThisTab) shouldShow=true;
+      sessionStorage.setItem(ACTIVE_GIVEAWAY_POPUP_SESSION_KEY,"1");
+    }catch{
+      // If sessionStorage is unavailable, keep refresh behavior only.
+    }
+
+    activeGiveawayPopupShownThisPageLoad=true;
+    if(!shouldShow) return;
 
     let nextIndex=0;
     try{
