@@ -1394,3 +1394,116 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     transform:translateY(4px) scale(1.12)!important;
   }
 }
+
+
+/* ===== Popup snake visibility + individual skin sizing ===== */
+.active-giveaway-popup{
+  overflow:visible!important;
+}
+.active-giveaway-popup::before{
+  inset:-5px!important;
+  padding:5px!important;
+  border-radius:21px!important;
+  z-index:5!important;
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 210deg,
+    rgba(32,243,154,.18) 226deg,
+    rgba(32,243,154,.82) 246deg,
+    rgba(255,255,255,1) 266deg,
+    rgba(32,243,154,1) 288deg,
+    rgba(32,243,154,.98) 312deg,
+    rgba(32,243,154,.42) 338deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 14px rgba(32,243,154,1))
+    drop-shadow(0 0 30px rgba(32,243,154,.90))
+    drop-shadow(0 0 54px rgba(32,243,154,.48))!important;
+  animation:giveawaySnakeGlow 1.35s linear infinite!important;
+  pointer-events:none!important;
+}
+.active-giveaway-popup::after{
+  z-index:0!important;
+}
+.active-giveaway-popup > *{
+  position:relative;
+  z-index:2;
+}
+.active-giveaway-popup > .active-giveaway-popup-close{
+  z-index:10!important;
+}
+
+/* Hydra individual glove */
+.active-giveaway-popup.popup-hydra-gloves-emerald .active-giveaway-popup-visual{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(46,220,115,.24),transparent 34%),
+    radial-gradient(circle at 50% 40%,rgba(24,160,78,.22),transparent 54%),
+    linear-gradient(180deg,#06110d 0%,#081913 52%,#06100c 100%)!important;
+}
+.active-giveaway-popup.popup-hydra-gloves-emerald::before{
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 210deg,
+    rgba(46,220,115,.18) 226deg,
+    rgba(46,220,115,.84) 246deg,
+    rgba(238,255,244,1) 266deg,
+    rgba(46,220,115,1) 288deg,
+    rgba(46,220,115,.98) 312deg,
+    rgba(46,220,115,.44) 338deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 14px rgba(46,220,115,1))
+    drop-shadow(0 0 32px rgba(46,220,115,.90))
+    drop-shadow(0 0 56px rgba(46,220,115,.50))!important;
+}
+.active-giveaway-popup.popup-hydra-gloves-emerald .active-giveaway-popup-prize{
+  width:82%!important;
+  height:245px!important;
+  max-height:245px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:scale(1.08)!important;
+}
+
+/* Wildfire individual AWP */
+.active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-visual{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,78,38,.24),transparent 34%),
+    radial-gradient(circle at 50% 40%,rgba(170,35,18,.22),transparent 54%),
+    linear-gradient(180deg,#140908 0%,#1a0b0a 52%,#090d10 100%)!important;
+}
+.active-giveaway-popup.popup-awp-wildfire::before{
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 210deg,
+    rgba(255,78,38,.18) 226deg,
+    rgba(255,78,38,.84) 246deg,
+    rgba(255,238,232,1) 266deg,
+    rgba(255,78,38,1) 288deg,
+    rgba(255,78,38,.98) 312deg,
+    rgba(255,78,38,.44) 338deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 14px rgba(255,78,38,1))
+    drop-shadow(0 0 32px rgba(255,78,38,.90))
+    drop-shadow(0 0 56px rgba(255,78,38,.50))!important;
+}
+.active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-prize{
+  width:94%!important;
+  height:250px!important;
+  max-height:250px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:scale(1.06)!important;
+}
+@media(max-width:700px){
+  .active-giveaway-popup.popup-hydra-gloves-emerald .active-giveaway-popup-prize,
+  .active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-prize{
+    height:175px!important;
+    max-height:175px!important;
+    transform:scale(1.03)!important;
+  }
+}
