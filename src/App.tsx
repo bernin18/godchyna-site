@@ -98,10 +98,10 @@ const giveaways:Giveaway[] = [
     condition:"",
     price:"$400",
     minDeposit:"€10",
-    image:"Kit bayonet lore & Gloves Omega.webp",
+    image:"Combo omega lore braços.webp",
     imageAlt:"Bayonet Lore and Gloves Omega giveaway",
     galleryImages:[
-      {src:"Kit bayonet lore & Gloves Omega.webp",alt:"Bayonet Lore FT and Sport Gloves Omega FT combo"},
+      {src:"Combo omega lore braços.webp",alt:"Bayonet Lore FT and Sport Gloves Omega FT combo"},
       {src:"bayo lore.png",alt:"Bayonet Lore FT"},
       {src:"gloves omega.png",alt:"Sport Gloves Omega FT"},
     ],
