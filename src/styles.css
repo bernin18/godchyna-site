@@ -328,9 +328,9 @@ pointer-events:none}
 .giveaway-stage-provider-logo.csgoskins{max-width:118px;max-height:28px}
 .kit-stage .giveaway-prize-image{max-width:none;object-fit:contain;object-position:center center;animation:none!important;will-change:auto;transition:opacity .18s ease,transform .22s ease;filter:drop-shadow(0 22px 20px rgba(0,0,0,.76)) drop-shadow(0 0 26px rgba(240,187,63,.24))}
 .kit-stage .kit-gallery-image-0{
-  width:132%;
-  height:146%;
-  transform:translateX(-10px) translateY(-34px) scale(1.12) rotate(-1deg);
+  width:148%;
+  height:162%;
+  transform:translateX(4px) translateY(-12px) scale(1.16) rotate(-1deg);
   object-fit:contain;
   object-position:center bottom;
   animation:none!important
@@ -343,7 +343,7 @@ pointer-events:none}
 }
 .kit-stage:hover .kit-gallery-image-0{
   animation:none!important;
-  transform:translateX(-10px) translateY(-34px) scale(1.12) rotate(-1deg)
+  transform:translateX(4px) translateY(-12px) scale(1.16) rotate(-1deg)
 }
 .kit-stage:hover .kit-gallery-image-1,.kit-stage:hover .kit-gallery-image-2{
   animation:kitItemFloat 3.8s ease-in-out infinite!important
