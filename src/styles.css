@@ -1086,3 +1086,204 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   .delivered-winner span{font-size:10px}
   .delivered-winner b{font-size:17px}
 }
+
+
+/* ===== Giveaway visual refresh: 2026-10-13 ===== */
+
+/* Full-card themes */
+.giveaway-awp-wildfire{
+  border-color:rgba(255,78,38,.34)!important;
+  background:
+    radial-gradient(circle at 16% 50%,rgba(255,63,26,.16),transparent 36%),
+    radial-gradient(circle at 82% 38%,rgba(153,24,12,.10),transparent 44%),
+    linear-gradient(120deg,#160907 0%,#120b0b 56%,#0c1013 100%)!important;
+  box-shadow:inset 0 0 34px rgba(255,68,27,.035),0 0 20px rgba(255,68,27,.045)
+}
+.giveaway-bayonet-lore-gloves-omega{
+  border-color:rgba(244,191,47,.36)!important;
+  background:
+    radial-gradient(circle at 16% 50%,rgba(244,191,47,.16),transparent 36%),
+    radial-gradient(circle at 82% 38%,rgba(181,132,13,.10),transparent 44%),
+    linear-gradient(120deg,#151106 0%,#121008 56%,#0d1012 100%)!important;
+  box-shadow:inset 0 0 34px rgba(244,191,47,.035),0 0 20px rgba(244,191,47,.045)
+}
+
+/* Arms/combo stay static; isolated items still animate */
+.stage-image-static{
+  animation:none!important;
+  will-change:auto!important
+}
+.emerald-stage .hydra-arms-image{
+  animation:none!important;
+  transform:none!important;
+  width:118%;
+  height:112%;
+  max-width:none;
+  object-fit:contain;
+  object-position:center 51%
+}
+.wildfire-stage .wildfire-arms-image{
+  animation:none!important;
+  transform:none!important;
+  width:132%;
+  height:124%;
+  max-width:none;
+  left:-14%;
+  object-fit:contain;
+  object-position:center 48%
+}
+.stage-image-floating{
+  animation:knifeShowcaseSpin 5.6s ease-in-out infinite,knifeGlowPulse 2.6s ease-in-out infinite!important
+}
+.emerald-stage .hydra-single-image{
+  width:78%;
+  height:78%;
+  filter:drop-shadow(0 22px 20px rgba(0,0,0,.78)) drop-shadow(0 0 28px rgba(57,211,116,.28))
+}
+.knife-stage:hover .stage-image-static{
+  animation:none!important
+}
+.knife-stage:hover .stage-image-floating{
+  animation-duration:3.2s,2.6s!important
+}
+
+/* Popup */
+.active-giveaway-popup{
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(48,245,165,.26)!important;
+  box-shadow:0 30px 95px rgba(0,0,0,.62),0 0 34px rgba(32,243,154,.08)!important
+}
+.active-giveaway-popup::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  z-index:0;
+  border-radius:18px;
+  padding:2px;
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 245deg,
+    rgba(32,243,154,.04) 255deg,
+    rgba(32,243,154,.58) 278deg,
+    rgba(190,255,226,1) 300deg,
+    rgba(32,243,154,.95) 316deg,
+    rgba(32,243,154,.10) 340deg,
+    transparent 360deg
+  );
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  filter:drop-shadow(0 0 7px rgba(32,243,154,.72)) drop-shadow(0 0 18px rgba(32,243,154,.36));
+  animation:giveawaySnakeGlow 3.8s linear infinite;
+  pointer-events:none
+}
+.active-giveaway-popup::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  z-index:0;
+  border-radius:15px;
+  background:
+    radial-gradient(circle at 10% 18%,rgba(32,243,154,.05),transparent 30%),
+    linear-gradient(135deg,rgba(7,16,21,.98),rgba(5,14,18,.99));
+  pointer-events:none
+}
+.active-giveaway-popup>*{position:relative;z-index:1}
+@keyframes giveawaySnakeGlow{to{transform:rotate(360deg)}}
+
+.active-giveaway-popup.popup-topskin::before,
+.active-giveaway-popup.popup-bayonet-lore-gloves-omega::before{
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 245deg,
+    rgba(244,191,47,.04) 255deg,
+    rgba(244,191,47,.62) 278deg,
+    rgba(255,235,166,1) 300deg,
+    rgba(244,191,47,.95) 316deg,
+    rgba(244,191,47,.10) 340deg,
+    transparent 360deg
+  );
+  filter:drop-shadow(0 0 7px rgba(244,191,47,.68)) drop-shadow(0 0 18px rgba(244,191,47,.30))
+}
+.active-giveaway-popup.popup-awp-wildfire::before{
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 245deg,
+    rgba(255,79,38,.04) 255deg,
+    rgba(255,79,38,.62) 278deg,
+    rgba(255,190,162,1) 300deg,
+    rgba(255,79,38,.95) 316deg,
+    rgba(255,79,38,.10) 340deg,
+    transparent 360deg
+  );
+  filter:drop-shadow(0 0 7px rgba(255,79,38,.68)) drop-shadow(0 0 18px rgba(255,79,38,.30))
+}
+.active-giveaway-popup.popup-hydra-gloves-emerald::before{
+  background:conic-gradient(
+    from 0deg,
+    transparent 0deg 245deg,
+    rgba(47,235,135,.04) 255deg,
+    rgba(47,235,135,.62) 278deg,
+    rgba(194,255,219,1) 300deg,
+    rgba(47,235,135,.95) 316deg,
+    rgba(47,235,135,.10) 340deg,
+    transparent 360deg
+  )
+}
+.active-giveaway-popup-code{
+  display:flex!important;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:11px 12px 11px 13px!important
+}
+.active-giveaway-popup-code-text{min-width:0}
+.active-giveaway-popup-code-text span{display:block;color:#899698;font-size:8.5px;font-weight:800;letter-spacing:.14em}
+.active-giveaway-popup-code-text b{display:block;margin-top:2px;color:#f4bf2f;font-family:"Chakra Petch",sans-serif;font-size:22px;letter-spacing:.05em}
+.active-giveaway-popup-copy-btn{
+  flex:0 0 38px;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid #31434a;
+  border-radius:8px;
+  background:#091419;
+  color:#e4eeeb;
+  cursor:pointer;
+  transition:transform .18s ease,border-color .18s ease,color .18s ease,background .18s ease
+}
+.active-giveaway-popup-copy-btn:hover{transform:translateY(-1px);border-color:#547078;background:#0d1b20}
+.active-giveaway-popup-copy-btn.copied{color:#24f0a3;border-color:#24f0a3;background:rgba(36,240,163,.07)}
+.active-giveaway-popup-copy-btn svg{width:16px;height:16px}
+.active-giveaway-popup-deposit{margin:13px 0 0!important;color:#bec8c7!important;font-size:12px!important;line-height:1.5!important}
+.active-giveaway-popup-deposit strong{color:#20f39a;font-size:13px;font-weight:900}
+.active-giveaway-popup-warning{
+  margin:12px 0 0!important;
+  color:#ff6258!important;
+  font-size:10.5px!important;
+  line-height:1.45!important;
+  font-weight:900!important;
+  text-transform:uppercase;
+  text-shadow:0 0 10px rgba(255,98,88,.18)
+}
+.active-giveaway-popup-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:17px}
+.active-giveaway-popup-actions .active-giveaway-popup-cta{margin-top:0!important}
+.active-giveaway-popup-more{
+  min-height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #294047;
+  border-radius:7px;
+  background:rgba(10,20,24,.84);
+  color:#dce6e3;
+  font-size:10.5px;
+  font-weight:900;
+  letter-spacing:.055em;
+  text-decoration:none;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease
+}
+.active-giveaway-popup-more:hover{transform:translateY(-1px);border-color:#49656d;background:#0d1a20}
