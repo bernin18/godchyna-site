@@ -600,6 +600,7 @@ function ActiveGiveawayPopup(){
             src={asset("Pop up combo.png")}
             alt={pick("Giveaway Bayonet Lore e Sport Gloves Omega","Bayonet Lore and Sport Gloves Omega giveaway")}
           />
+          <span className="combo-popup-eye-glow" aria-hidden="true" />
 
           <button
             type="button"
