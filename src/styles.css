@@ -1703,3 +1703,46 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     width:98vw;
   }
 }
+
+
+/* ===== Combo snake eye blink ===== */
+.combo-popup-eye-glow{
+  position:absolute;
+  z-index:6;
+  pointer-events:none;
+  top:9.6%;
+  left:11.1%;
+  width:1.55%;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,
+      rgba(255,255,230,1) 0%,
+      rgba(255,235,120,1) 28%,
+      rgba(255,196,24,.96) 54%,
+      rgba(255,170,0,.35) 72%,
+      rgba(255,170,0,0) 100%);
+  box-shadow:
+    0 0 5px rgba(255,238,120,.95),
+    0 0 10px rgba(255,200,35,.90),
+    0 0 20px rgba(255,176,0,.70),
+    0 0 34px rgba(255,176,0,.40);
+  transform:translate(-50%,-50%) scale(1);
+  transform-origin:center;
+  animation:comboSnakeEyeBlink 2.2s ease-in-out infinite;
+}
+
+@keyframes comboSnakeEyeBlink{
+  0%,16%,22%,52%,58%,100%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+  }
+  19%,55%{
+    opacity:.15;
+    transform:translate(-50%,-50%) scale(.62);
+  }
+  20%,56%{
+    opacity:.03;
+    transform:translate(-50%,-50%) scale(.45);
+  }
+}
