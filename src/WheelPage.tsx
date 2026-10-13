@@ -718,6 +718,7 @@ function historySkinImage(name: string) {
     .toLocaleLowerCase();
 
   const images: Record<string, string> = {
+    "usp-s | bleeding edge": wheelAsset("Usp bleeding.png"),
     "m4a4 | evil daimyo": wheelAsset("evil Daimyo.png"),
     "aug | eye of zapems": wheelAsset("aug eye of.png"),
     "b squadron officer | sas": wheelAsset("b squadron.png"),
