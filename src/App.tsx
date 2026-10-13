@@ -572,7 +572,12 @@ function ActiveGiveawayPopup(){
 
   if(!giveaway) return null;
 
-  const popupImage=giveaway.galleryImages?.[0]?.src ?? giveaway.image;
+  const popupImage =
+    giveaway.id==="hydra-gloves-emerald"
+      ? "gloves hydra emerald.png"
+      : giveaway.id==="awp-wildfire"
+        ? "wildfire.png"
+        : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
 
   return (
     <div
