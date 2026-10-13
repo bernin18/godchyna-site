@@ -175,7 +175,7 @@ const giveaways:Giveaway[] = [
     providerLogo:"csgoskins-logo.png?v=3",
     url:"https://csgo-skins.com/?ref=GODCHYNA",
     requiresProof:true,
-    startDate:"07/10",
+    startDate:"07/10/26",
     drawDate:"11/11/26",
     notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
