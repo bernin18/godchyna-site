@@ -1775,3 +1775,18 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   0%,100%{opacity:.48;transform:scale(.995)}
   50%{opacity:.92;transform:scale(1.012)}
 }
+
+
+/* ===== Popup vertical separators ===== */
+.active-giveaway-popup.popup-hydra-gloves-emerald .active-giveaway-popup-copy{
+  border-left:5px solid rgba(32,243,154,.95);
+  box-shadow:
+    inset 7px 0 18px rgba(32,243,154,.05),
+    -3px 0 12px rgba(32,243,154,.18);
+}
+.active-giveaway-popup.popup-awp-wildfire .active-giveaway-popup-copy{
+  border-left:5px solid rgba(255,78,38,.95);
+  box-shadow:
+    inset 7px 0 18px rgba(255,78,38,.05),
+    -3px 0 12px rgba(255,78,38,.18);
+}
