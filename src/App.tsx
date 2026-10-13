@@ -82,6 +82,10 @@ type Giveaway = {
   noteEn?:string;
   warningPt?:string;
   warningEn?:string;
+  startDate?:string;
+  drawDate?:string;
+  partnerNotePt?:string;
+  partnerNoteEn?:string;
   galleryImages?:Array<{src:string;alt:string}>;
   enabled?:boolean;
 };
@@ -106,10 +110,11 @@ const giveaways:Giveaway[] = [
     providerLogo:"topskin-logo.png?v=3",
     url:"https://topskin.net/utm/godchyna",
     requiresProof:true,
+    drawDate:"17/11",
     notePt:"Faz um depósito mínimo de €10 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €10 deposit and send proof of the deposit through Discord or Instagram.",
-    warningPt:"ATENÇÃO: sem prova do depósito, a participação não será aceite no giveaway.",
-    warningEn:"IMPORTANT: without proof of deposit, your entry will not be accepted for the giveaway.",
+    warningPt:"ATENÇÃO: SEM PROVA DO DEPÓSITO, A PARTICIPAÇÃO NÃO SERÁ ACEITE NO GIVEAWAY.",
+    warningEn:"IMPORTANT: WITHOUT PROOF OF DEPOSIT, YOUR ENTRY WILL NOT BE ACCEPTED FOR THE GIVEAWAY.",
   },
   {
     id:"awp-wildfire",
@@ -130,10 +135,36 @@ const giveaways:Giveaway[] = [
     requiresProof:true,
     notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
-    warningPt:"ATENÇÃO: sem prova do depósito, a participação não será aceite no giveaway.",
-    warningEn:"IMPORTANT: without proof of deposit, your entry will not be accepted for the giveaway.",
+    partnerNotePt:"A data do sorteio é determinada pelo parceiro. O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor, de forma a permitir a verificação da legitimidade do sorteio.",
+    partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
+    warningPt:"ATENÇÃO: SEM PROVA DO DEPÓSITO, A PARTICIPAÇÃO NÃO SERÁ ACEITE NO GIVEAWAY.",
+    warningEn:"IMPORTANT: WITHOUT PROOF OF DEPOSIT, YOUR ENTRY WILL NOT BE ACCEPTED FOR THE GIVEAWAY.",
   },
-];
+  {
+    id:"hydra-gloves-emerald",
+    title:"Hydra Gloves | Emerald",
+    condition:"",
+    price:"$35.00",
+    minDeposit:"€4",
+    image:"Gloves emerald braços.webp",
+    imageAlt:"Hydra Gloves Emerald with arms",
+    galleryImages:[
+      {src:"Gloves emerald braços.webp",alt:"Hydra Gloves Emerald with arms"},
+      {src:"gloves hydra emerald.png",alt:"Hydra Gloves Emerald"},
+    ],
+    provider:"csgoskins",
+    providerName:"CSGO-SKINS",
+    providerLogo:"csgoskins-logo.png?v=3",
+    url:"https://csgo-skins.com/?ref=GODCHYNA",
+    requiresProof:true,
+    startDate:"07/10",
+    drawDate:"11/11",
+    notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
+    noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
+    warningPt:"ATENÇÃO: SEM PROVA DO DEPÓSITO, A PARTICIPAÇÃO NÃO SERÁ ACEITE NO GIVEAWAY.",
+    warningEn:"IMPORTANT: WITHOUT PROOF OF DEPOSIT, YOUR ENTRY WILL NOT BE ACCEPTED FOR THE GIVEAWAY.",
+  },
+]
 
 function Brand() {
   return <a className="brand" href="./">CHYNA</a>;
@@ -401,7 +432,14 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         </div>
         <div className="divider"/>
         <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
+        {(giveaway.startDate || giveaway.drawDate) && (
+          <div className="giveaway-dates">
+            {giveaway.startDate && <span><b>{pick("INÍCIO","START")}</b> {giveaway.startDate}</span>}
+            {giveaway.drawDate && <span><b>{pick("SORTEIO","DRAW")}</b> {giveaway.drawDate}</span>}
+          </div>
+        )}
         {(giveaway.notePt || giveaway.noteEn) && <p className="giveaway-copy">{pick(giveaway.notePt ?? "",giveaway.noteEn ?? "")}</p>}
+        {(giveaway.partnerNotePt || giveaway.partnerNoteEn) && <p className="giveaway-partner-note">{pick(giveaway.partnerNotePt ?? "",giveaway.partnerNoteEn ?? "")}</p>}
         <div className="giveaway-action-zone">
           {(giveaway.warningPt || giveaway.warningEn) && <p className="giveaway-warning">{pick(giveaway.warningPt ?? "",giveaway.warningEn ?? "")}</p>}
           <div className={`giveaway-actions ${giveaway.requiresProof?"":"single-action"}`}>
@@ -482,6 +520,108 @@ function HomeGiveawayRotator(){
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function ActiveGiveawayPopup(){
+  const { pick } = useLanguage();
+  const [giveaway,setGiveaway]=useState<Giveaway|null>(null);
+  const activeGiveaways=giveaways.filter(item=>item.enabled!==false);
+
+  useEffect(()=>{
+    if(activeGiveaways.length===0) return;
+
+    let nextIndex=0;
+    try{
+      const stored=window.localStorage.getItem("chyna-active-giveaway-popup-index");
+      const previous=stored===null?-1:Number(stored);
+      nextIndex=Number.isFinite(previous)?(previous+1)%activeGiveaways.length:0;
+      window.localStorage.setItem("chyna-active-giveaway-popup-index",String(nextIndex));
+    }catch{
+      nextIndex=Math.floor(Math.random()*activeGiveaways.length);
+    }
+
+    const timer=window.setTimeout(()=>{
+      setGiveaway(activeGiveaways[nextIndex] ?? activeGiveaways[0]);
+    },700);
+
+    return ()=>window.clearTimeout(timer);
+  },[activeGiveaways.length]);
+
+  useEffect(()=>{
+    if(!giveaway) return;
+    const onKeyDown=(event:KeyboardEvent)=>{
+      if(event.key==="Escape") setGiveaway(null);
+    };
+    window.addEventListener("keydown",onKeyDown);
+    return ()=>window.removeEventListener("keydown",onKeyDown);
+  },[giveaway]);
+
+  if(!giveaway) return null;
+
+  const popupImage=giveaway.galleryImages?.[0]?.src ?? giveaway.image;
+
+  return (
+    <div
+      className="active-giveaway-popup-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label={pick("Giveaway ativo","Active giveaway")}
+      onMouseDown={(event)=>{
+        if(event.currentTarget===event.target) setGiveaway(null);
+      }}
+    >
+      <article className={`active-giveaway-popup popup-${giveaway.provider}`}>
+        <button
+          type="button"
+          className="active-giveaway-popup-close"
+          onClick={()=>setGiveaway(null)}
+          aria-label={pick("Fechar","Close")}
+        >
+          ×
+        </button>
+
+        <div className="active-giveaway-popup-visual">
+          <img className="active-giveaway-popup-provider" src={asset(giveaway.providerLogo)} alt={giveaway.providerName}/>
+          <img className="active-giveaway-popup-prize" src={asset(popupImage)} alt={giveaway.imageAlt}/>
+        </div>
+
+        <div className="active-giveaway-popup-copy">
+          <span className="active-giveaway-popup-kicker">{pick("GIVEAWAY ATIVO","ACTIVE GIVEAWAY")}</span>
+          <h2>{giveaway.title}</h2>
+          {giveaway.condition && <p className="active-giveaway-popup-condition">{giveaway.condition}</p>}
+          <strong className="active-giveaway-popup-price">{giveaway.price}</strong>
+
+          {(giveaway.startDate || giveaway.drawDate) && (
+            <div className="active-giveaway-popup-dates">
+              {giveaway.startDate && <span>{pick("Início","Start")}: <b>{giveaway.startDate}</b></span>}
+              {giveaway.drawDate && <span>{pick("Sorteio","Draw")}: <b>{giveaway.drawDate}</b></span>}
+            </div>
+          )}
+
+          <div className="active-giveaway-popup-code">
+            <span>{pick("UTILIZA O CÓDIGO","USE CODE")}</span>
+            <b>GODCHYNA</b>
+          </div>
+
+          <p>
+            {pick(
+              `Faz um depósito mínimo de ${giveaway.minDeposit} e participa no giveaway.`,
+              `Make a minimum deposit of ${giveaway.minDeposit} and enter the giveaway.`,
+            )}
+          </p>
+
+          <a
+            className="active-giveaway-popup-cta"
+            href={giveaway.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+          >
+            {pick("PARTICIPAR","ENTER")}
+          </a>
+        </div>
+      </article>
     </div>
   );
 }
@@ -836,7 +976,12 @@ export default function App(){
   const path = window.location.pathname.replace(/\/$/, "");
 
   if(path.endsWith("/wheel")) {
-    return <WheelPage Header={Header} Footer={Footer}/>;
+    return (
+      <>
+        <WheelPage Header={Header} Footer={Footer}/>
+        <ActiveGiveawayPopup/>
+      </>
+    );
   }
 
   let page = <Home/>;
@@ -849,6 +994,7 @@ export default function App(){
   return (
     <>
       {page}
+      <ActiveGiveawayPopup/>
     </>
   );
 }
