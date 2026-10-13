@@ -1821,13 +1821,14 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   background:radial-gradient(circle,rgba(161,84,255,.24) 0%,rgba(136,63,230,.08) 44%,transparent 74%)!important;
 }
 .lotus-stage .lotus-arms-image{
-  animation:none!important;
-  transform:translateX(-18px) scale(1.08)!important;
-  width:136%;
-  height:128%;
+  width:132%;
+  height:124%;
   max-width:none;
+  left:-14%;
   object-fit:contain;
-  object-position:center 50%;
+  object-position:center 48%;
+  transform-origin:center;
+  animation:none!important;
   filter:
     drop-shadow(0 20px 20px rgba(0,0,0,.78))
     drop-shadow(0 0 24px rgba(158,82,255,.24))!important;
