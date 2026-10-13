@@ -133,12 +133,11 @@ const giveaways:Giveaway[] = [
     providerLogo:"csgoskins-logo.png?v=3",
     url:"https://csgo-skins.com/?ref=GODCHYNA",
     requiresProof:true,
+    startDate:"07/10",
     notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
     partnerNotePt:"A data do sorteio é determinada pelo parceiro. O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor, de forma a permitir a verificação da legitimidade do sorteio.",
     partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
-    warningPt:"ATENÇÃO: SEM PROVA DO DEPÓSITO, A PARTICIPAÇÃO NÃO SERÁ ACEITE NO GIVEAWAY.",
-    warningEn:"IMPORTANT: WITHOUT PROOF OF DEPOSIT, YOUR ENTRY WILL NOT BE ACCEPTED FOR THE GIVEAWAY.",
   },
   {
     id:"hydra-gloves-emerald",
@@ -331,6 +330,8 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const { pick } = useLanguage();
   const isTopskin=giveaway.provider==="topskin";
   const isKitGiveaway=giveaway.id==="bayonet-lore-gloves-omega";
+  const isWildfire=giveaway.id==="awp-wildfire";
+  const isEmerald=giveaway.id==="hydra-gloves-emerald";
   const galleryImages=giveaway.galleryImages?.length
     ? giveaway.galleryImages
     : [{src:giveaway.image,alt:giveaway.imageAlt}];
@@ -364,8 +365,8 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   };
 
   return (
-    <article className={`giveaway-card giveaway-${giveaway.provider}`}>
-      <div className={`knife-stage ${isTopskin?"":"wildfire-stage"}${isKitGiveaway?" kit-stage rare-stage":""}`}>
+    <article className={`giveaway-card giveaway-${giveaway.provider} giveaway-${giveaway.id}`}>
+      <div className={`knife-stage${isWildfire?" wildfire-stage":""}${isEmerald?" emerald-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
@@ -434,7 +435,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
         {(giveaway.startDate || giveaway.drawDate) && (
           <div className="giveaway-dates">
-            {giveaway.startDate && <span><b>{pick("INÍCIO","START")}</b> {giveaway.startDate}</span>}
+            {giveaway.startDate && <span><b>{pick("INICIADO","STARTED")}</b> {giveaway.startDate}</span>}
             {giveaway.drawDate && <span><b>{pick("SORTEIO","DRAW")}</b> {giveaway.drawDate}</span>}
           </div>
         )}
@@ -595,7 +596,7 @@ function ActiveGiveawayPopup(){
 
           {(giveaway.startDate || giveaway.drawDate) && (
             <div className="active-giveaway-popup-dates">
-              {giveaway.startDate && <span>{pick("Início","Start")}: <b>{giveaway.startDate}</b></span>}
+              {giveaway.startDate && <span>{pick("Iniciado","Started")}: <b>{giveaway.startDate}</b></span>}
               {giveaway.drawDate && <span>{pick("Sorteio","Draw")}: <b>{giveaway.drawDate}</b></span>}
             </div>
           )}
