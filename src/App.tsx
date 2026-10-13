@@ -383,7 +383,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-image":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isEmerald && galleryIndex===0?" hydra-arms-image stage-image-static":""}${isEmerald && galleryIndex>0?" hydra-single-image stage-image-floating":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -525,29 +525,37 @@ function HomeGiveawayRotator(){
   );
 }
 
+const ACTIVE_GIVEAWAY_POPUP_INDEX_KEY = "chyna-active-giveaway-popup-index";
+const ACTIVE_GIVEAWAY_POPUP_SEEN_KEY = "godchyna-active-giveaway-popup-seen-v2";
+
 function ActiveGiveawayPopup(){
   const { pick } = useLanguage();
   const [giveaway,setGiveaway]=useState<Giveaway|null>(null);
+  const [copied,setCopied]=useState(false);
   const activeGiveaways=giveaways.filter(item=>item.enabled!==false);
 
   useEffect(()=>{
-    if(activeGiveaways.length===0) return;
+    if(activeGiveaways.length===0 || typeof window==="undefined") return;
 
-    let nextIndex=0;
     try{
-      const stored=window.localStorage.getItem("chyna-active-giveaway-popup-index");
+      if(window.localStorage.getItem(ACTIVE_GIVEAWAY_POPUP_SEEN_KEY)==="1") return;
+
+      const stored=window.localStorage.getItem(ACTIVE_GIVEAWAY_POPUP_INDEX_KEY);
       const previous=stored===null?-1:Number(stored);
-      nextIndex=Number.isFinite(previous)?(previous+1)%activeGiveaways.length:0;
-      window.localStorage.setItem("chyna-active-giveaway-popup-index",String(nextIndex));
+      const nextIndex=Number.isFinite(previous)?(previous+1)%activeGiveaways.length:0;
+
+      window.localStorage.setItem(ACTIVE_GIVEAWAY_POPUP_INDEX_KEY,String(nextIndex));
+      window.localStorage.setItem(ACTIVE_GIVEAWAY_POPUP_SEEN_KEY,"1");
+
+      const timer=window.setTimeout(()=>{
+        setGiveaway(activeGiveaways[nextIndex] ?? activeGiveaways[0]);
+      },700);
+
+      return ()=>window.clearTimeout(timer);
     }catch{
-      nextIndex=Math.floor(Math.random()*activeGiveaways.length);
+      const timer=window.setTimeout(()=>setGiveaway(activeGiveaways[0]),700);
+      return ()=>window.clearTimeout(timer);
     }
-
-    const timer=window.setTimeout(()=>{
-      setGiveaway(activeGiveaways[nextIndex] ?? activeGiveaways[0]);
-    },700);
-
-    return ()=>window.clearTimeout(timer);
   },[activeGiveaways.length]);
 
   useEffect(()=>{
@@ -558,6 +566,16 @@ function ActiveGiveawayPopup(){
     window.addEventListener("keydown",onKeyDown);
     return ()=>window.removeEventListener("keydown",onKeyDown);
   },[giveaway]);
+
+  async function copyGiveawayCode(){
+    try{
+      await navigator.clipboard.writeText("GODCHYNA");
+      setCopied(true);
+      window.setTimeout(()=>setCopied(false),1500);
+    }catch(error){
+      console.warn("Unable to copy giveaway code",error);
+    }
+  }
 
   if(!giveaway) return null;
 
@@ -573,7 +591,7 @@ function ActiveGiveawayPopup(){
         if(event.currentTarget===event.target) setGiveaway(null);
       }}
     >
-      <article className={`active-giveaway-popup popup-${giveaway.provider}`}>
+      <article className={`active-giveaway-popup popup-${giveaway.provider} popup-${giveaway.id}`}>
         <button
           type="button"
           className="active-giveaway-popup-close"
@@ -602,25 +620,46 @@ function ActiveGiveawayPopup(){
           )}
 
           <div className="active-giveaway-popup-code">
-            <span>{pick("UTILIZA O CÓDIGO","USE CODE")}</span>
-            <b>GODCHYNA</b>
+            <div className="active-giveaway-popup-code-text">
+              <span>{pick("UTILIZA O CÓDIGO","USE CODE")}</span>
+              <b>GODCHYNA</b>
+            </div>
+            <button
+              type="button"
+              className={`active-giveaway-popup-copy-btn${copied?" copied":""}`}
+              onClick={copyGiveawayCode}
+              aria-label={pick("Copiar código","Copy code")}
+              title={pick("Copiar código","Copy code")}
+            >
+              {copied?<Check/>:<Copy/>}
+            </button>
           </div>
 
-          <p>
-            {pick(
-              `Faz um depósito mínimo de ${giveaway.minDeposit} e participa no giveaway.`,
-              `Make a minimum deposit of ${giveaway.minDeposit} and enter the giveaway.`,
-            )}
+          <p className="active-giveaway-popup-deposit">
+            {pick("Faz um depósito mínimo de ","Make a minimum deposit of ")}
+            <strong>{giveaway.minDeposit}</strong>
+            {pick(" e participa no giveaway."," and enter the giveaway.")}
           </p>
 
-          <a
-            className="active-giveaway-popup-cta"
-            href={giveaway.url}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-          >
-            {pick("PARTICIPAR","ENTER")}
-          </a>
+          {(giveaway.warningPt || giveaway.warningEn) && (
+            <p className="active-giveaway-popup-warning">
+              {pick(giveaway.warningPt ?? "",giveaway.warningEn ?? "")}
+            </p>
+          )}
+
+          <div className="active-giveaway-popup-actions">
+            <a
+              className="active-giveaway-popup-cta"
+              href={giveaway.url}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+            >
+              {pick("PARTICIPAR","ENTER")}
+            </a>
+            <a className="active-giveaway-popup-more" href="./giveaways">
+              {pick("VER OUTROS GIVEAWAYS","SEE OTHER GIVEAWAYS")}
+            </a>
+          </div>
         </div>
       </article>
     </div>
