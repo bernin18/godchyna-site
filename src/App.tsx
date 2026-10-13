@@ -482,7 +482,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
             if(event.currentTarget===event.target) setPreviewOpen(false);
           }}
         >
-          <div className={`giveaway-lightbox-panel ${isKitGiveaway?"rare":"wildfire"}`}>
+          <div className={`giveaway-lightbox-panel ${isKitGiveaway?"rare":isLotus?"lotus":"wildfire"}`}>
             <button
               type="button"
               className="giveaway-lightbox-close"
@@ -492,7 +492,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
               ×
             </button>
             <img
-              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-lightbox-image":""}`}
+              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-lightbox-image":""}${giveaway.id==="m4a1s-black-lotus" && galleryIndex===0?" lotus-arms-lightbox-image":""}`}
               src={asset(activeGalleryImage.src)}
               alt={activeGalleryImage.alt}
             />
