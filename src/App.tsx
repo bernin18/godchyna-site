@@ -184,6 +184,65 @@ const giveaways:Giveaway[] = [
   },
 ]
 
+const zurichDateTimeFormatter = new Intl.DateTimeFormat("en-CA",{
+  timeZone:"Europe/Zurich",
+  year:"numeric", month:"2-digit", day:"2-digit",
+  hour:"2-digit", minute:"2-digit", second:"2-digit",
+  hourCycle:"h23",
+});
+
+function parseGiveawayDate(date:string){
+  const match=date.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{2}|\\d{4})$/);
+  if(!match) return null;
+  const day=Number(match[1]);
+  const month=Number(match[2]);
+  const yearRaw=Number(match[3]);
+  const year=yearRaw<100?2000+yearRaw:yearRaw;
+  return {day,month,year};
+}
+
+function getZurichMidnightTimestamp(date?:string){
+  if(!date) return null;
+  const parsed=parseGiveawayDate(date);
+  if(!parsed) return null;
+  const utcGuess=Date.UTC(parsed.year,parsed.month-1,parsed.day,0,0,0);
+  const parts=zurichDateTimeFormatter.formatToParts(new Date(utcGuess));
+  const values=Object.fromEntries(parts.map(part=>[part.type,part.value]));
+  const representedAsUtc=Date.UTC(Number(values.year),Number(values.month)-1,Number(values.day),Number(values.hour),Number(values.minute),Number(values.second));
+  const zurichOffset=representedAsUtc-utcGuess;
+  return utcGuess-zurichOffset;
+}
+
+function isGiveawayDrawReached(giveaway:Giveaway,now=Date.now()){
+  const target=getZurichMidnightTimestamp(giveaway.drawDate);
+  return target!==null && now>=target;
+}
+
+function useNowTick(){
+  const [now,setNow]=useState(()=>Date.now());
+  useEffect(()=>{
+    const timer=window.setInterval(()=>setNow(Date.now()),1000);
+    return ()=>window.clearInterval(timer);
+  },[]);
+  return now;
+}
+
+function GiveawayCountdown({drawDate}:{drawDate:string}){
+  const { pick }=useLanguage();
+  const now=useNowTick();
+  const target=getZurichMidnightTimestamp(drawDate);
+  if(target===null) return null;
+  const remaining=Math.max(0,target-now);
+  const totalSeconds=Math.floor(remaining/1000);
+  const days=Math.floor(totalSeconds/86400);
+  const hours=Math.floor((totalSeconds%86400)/3600);
+  const minutes=Math.floor((totalSeconds%3600)/60);
+  const seconds=totalSeconds%60;
+  if(remaining<=0) return <span className="giveaway-countdown expired"><b>{pick("ENCERRADO","ENDED")}</b></span>;
+  const clock=[hours,minutes,seconds].map(value=>String(value).padStart(2,"0")).join(":");
+  return <span className="giveaway-countdown"><b>{pick("TERMINA EM","ENDS IN")}</b><strong>{days>0?days+"d "+clock:clock}</strong></span>;
+}
+
 function Brand() {
   return <a className="brand" href="./">CHYNA</a>;
 }
@@ -456,7 +515,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         {(giveaway.startDate || giveaway.drawDate) && (
           <div className="giveaway-dates">
             {giveaway.startDate && <span><b>{pick("INICIADO","STARTED")}</b> {giveaway.startDate}</span>}
-            {giveaway.drawDate && <span><b>{pick("SORTEIO","DRAW")}</b> {giveaway.drawDate}</span>}
+            {giveaway.drawDate && <GiveawayCountdown drawDate={giveaway.drawDate}/>}
           </div>
         )}
         {(giveaway.notePt || giveaway.noteEn) && <p className="giveaway-copy">{pick(giveaway.notePt ?? "",giveaway.noteEn ?? "")}</p>}
@@ -505,7 +564,8 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 
 function HomeGiveawayRotator(){
   const { pick } = useLanguage();
-  const activeGiveaways=giveaways.filter(giveaway=>giveaway.enabled!==false);
+  const now=useNowTick();
+  const activeGiveaways=giveaways.filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now));
   const [activeIndex,setActiveIndex]=useState(0);
 
   useEffect(()=>{
@@ -553,7 +613,8 @@ function ActiveGiveawayPopup(){
   const { pick } = useLanguage();
   const [giveaway,setGiveaway]=useState<Giveaway|null>(null);
   const [copied,setCopied]=useState(false);
-  const activeGiveaways=giveaways.filter(item=>item.enabled!==false);
+  const now=useNowTick();
+  const activeGiveaways=giveaways.filter(item=>item.enabled!==false && !isGiveawayDrawReached(item,now));
 
   useEffect(()=>{
     if(activeGiveaways.length===0 || typeof window==="undefined") return;
@@ -1044,16 +1105,49 @@ function PartnersPage(){
   return <><Header/><main className="subpage partners-page"><header className="section-title"><h1>{pick("PARCERIAS","PARTNERS")}</h1><p>{pick("Usa os meus códigos e apoia o canal!","Use my codes and support the channel!")}</p></header><div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div></main><Footer/></>;
 }
 
-function DeliveredGiveaways(){
+function DeliveredGiveaways({now}:{now:number}){
   const { pick } = useLanguage();
   const clipId="AggressiveAthleticCobblerDancingBanana-6fbd-lIcvCYjzRU6";
-  const clipSrc=`https://clips.twitch.tv/embed?clip=${clipId}&parent=godchyna.com&parent=www.godchyna.com&autoplay=false`;
+  const clipSrc="https://clips.twitch.tv/embed?clip="+clipId+"&parent=godchyna.com&parent=www.godchyna.com&autoplay=false";
+  const autoDelivered=giveaways.filter(giveaway=>giveaway.enabled!==false && isGiveawayDrawReached(giveaway,now));
 
   return (
     <section className="delivered-giveaways" aria-labelledby="delivered-giveaways-title">
       <header className="delivered-giveaways-heading">
         <h2 id="delivered-giveaways-title">{pick("ENTREGUES","DELIVERED")}</h2>
       </header>
+
+      {autoDelivered.map(giveaway=>{
+        const deliveredImage=giveaway.galleryImages?.[1]?.src ?? giveaway.image;
+        return (
+          <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
+            <div className="delivered-clip-wrap">
+              <div className="delivered-clip-frame delivered-clip-pending">
+                <span>{pick("CLIP EM BREVE","CLIP COMING SOON")}</span>
+              </div>
+            </div>
+            <div className={"delivered-prize-panel delivered-"+giveaway.id}>
+              <img className="delivered-prize-provider-logo" src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
+              <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
+              <div className="delivered-prize-visual">
+                <div className="delivered-prize-glow" />
+                <img src={asset(deliveredImage)} alt={giveaway.imageAlt} />
+              </div>
+              <div className="delivered-prize-copy">
+                <h3>{giveaway.title}</h3>
+                {giveaway.condition && <p>{giveaway.condition}</p>}
+                <strong>{giveaway.price}</strong>
+              </div>
+              {giveaway.drawDate && (
+                <div className="delivered-winner delivered-date-row">
+                  <span>{pick("ENCERRADO EM","ENDED ON")}</span>
+                  <b>{giveaway.drawDate}</b>
+                </div>
+              )}
+            </div>
+          </article>
+        );
+      })}
 
       <article className="delivered-giveaway-card">
         <div className="delivered-clip-wrap">
@@ -1067,7 +1161,6 @@ function DeliveredGiveaways(){
             />
           </div>
         </div>
-
         <div className="delivered-prize-panel">
           <img className="delivered-prize-provider-logo" src={asset("topskin-logo.png?v=3")} alt="TOPSKIN" />
           <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
@@ -1092,6 +1185,8 @@ function DeliveredGiveaways(){
 
 function GiveawaysPage(){
   const { pick } = useLanguage();
+  const now=useNowTick();
+  const activeGiveaways=giveaways.filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now));
   return (
     <>
       <Header/>
@@ -1100,10 +1195,10 @@ function GiveawaysPage(){
         <section className="giveaways-active-section" aria-labelledby="active-giveaways-title">
           <h2 id="active-giveaways-title" className="giveaways-subheading">{pick("ATIVOS","ACTIVE")}</h2>
           <div className="giveaways-page-list">
-            {giveaways.filter(giveaway=>giveaway.enabled!==false).map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
+            {activeGiveaways.map(giveaway=><GiveawayCard key={giveaway.id} giveaway={giveaway}/>)}
           </div>
         </section>
-        <DeliveredGiveaways/>
+        <DeliveredGiveaways now={now}/>
       </main>
       <Footer/>
     </>
