@@ -1894,3 +1894,66 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-clip-pending{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 48%,rgba(32,243,154,.07),transparent 35%),#020405}
 .delivered-clip-pending span{padding:10px 14px;border:1px solid #1b353c;border-radius:999px;color:#8f9da0;font-family:"Chakra Petch",sans-serif;font-size:12px;font-weight:800;letter-spacing:.10em}
 .delivered-date-row b{color:#20f39a;font-size:15px}
+
+
+/* ===== Popup giveaway countdowns ===== */
+.active-giveaway-popup-dates .giveaway-countdown{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+.active-giveaway-popup-dates .giveaway-countdown b{
+  color:#f4bf2f;
+  font-size:11px;
+  letter-spacing:.02em;
+}
+.active-giveaway-popup-dates .giveaway-countdown strong{
+  color:#eef3f1;
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+}
+
+.combo-popup-countdown{
+  position:absolute;
+  z-index:7;
+  top:38.1%;
+  left:53.8%;
+  width:32.8%;
+  height:5.7%;
+  display:flex;
+  align-items:center;
+  padding:0 1.1%;
+  box-sizing:border-box;
+  background:
+    linear-gradient(90deg,rgba(8,13,10,.995) 0%,rgba(9,14,11,.99) 78%,rgba(9,14,11,.94) 100%);
+  border-radius:6px;
+  pointer-events:none;
+}
+.combo-popup-countdown .giveaway-countdown{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  padding:0;
+  border:0;
+  background:transparent;
+  white-space:nowrap;
+}
+.combo-popup-countdown .giveaway-countdown b{
+  color:#f5c62e;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:clamp(8px,1vw,14px);
+  font-weight:900;
+  letter-spacing:.03em;
+}
+.combo-popup-countdown .giveaway-countdown strong{
+  color:#fff;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:clamp(9px,1.1vw,16px);
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+}
