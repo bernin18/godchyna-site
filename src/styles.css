@@ -1885,3 +1885,12 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     inset 7px 0 18px rgba(164,90,255,.05),
     -3px 0 12px rgba(164,90,255,.20);
 }
+
+
+/* ===== Giveaway live countdown + automatic delivered state ===== */
+.giveaway-dates .giveaway-countdown{gap:8px}
+.giveaway-countdown strong{color:#f2f5f4;font-family:"Chakra Petch",sans-serif;font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.giveaway-countdown.expired b{color:#ff5c52}
+.delivered-clip-pending{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 48%,rgba(32,243,154,.07),transparent 35%),#020405}
+.delivered-clip-pending span{padding:10px 14px;border:1px solid #1b353c;border-radius:999px;color:#8f9da0;font-family:"Chakra Petch",sans-serif;font-size:12px;font-weight:800;letter-spacing:.10em}
+.delivered-date-row b{color:#20f39a;font-size:15px}
