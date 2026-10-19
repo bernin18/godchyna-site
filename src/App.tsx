@@ -192,7 +192,7 @@ const zurichDateTimeFormatter = new Intl.DateTimeFormat("en-CA",{
 });
 
 function parseGiveawayDate(date:string){
-  const match=date.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{2}|\\d{4})$/);
+  const match=date.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
   if(!match) return null;
   const day=Number(match[1]);
   const month=Number(match[2]);
