@@ -708,6 +708,11 @@ function ActiveGiveawayPopup(){
             alt={pick("Giveaway Bayonet Lore e Sport Gloves Omega","Bayonet Lore and Sport Gloves Omega giveaway")}
           />
           <span className="combo-popup-eye-glow" aria-hidden="true" />
+          {giveaway.drawDate && (
+            <div className="combo-popup-countdown">
+              <GiveawayCountdown drawDate={giveaway.drawDate}/>
+            </div>
+          )}
 
           <button
             type="button"
@@ -779,7 +784,7 @@ function ActiveGiveawayPopup(){
           {(giveaway.startDate || giveaway.drawDate) && (
             <div className="active-giveaway-popup-dates">
               {giveaway.startDate && <span>{pick("Iniciado","Started")}: <b>{giveaway.startDate}</b></span>}
-              {giveaway.drawDate && <span>{pick("Sorteio","Draw")}: <b>{giveaway.drawDate}</b></span>}
+              {giveaway.drawDate && <GiveawayCountdown drawDate={giveaway.drawDate}/>} 
             </div>
           )}
 
