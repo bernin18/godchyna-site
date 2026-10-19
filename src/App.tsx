@@ -162,7 +162,7 @@ const giveaways:Giveaway[] = [
     id:"hydra-gloves-emerald",
     title:"Hydra Gloves | Emerald",
     condition:"Field-Tested / FT",
-    price:"$35.00",
+    price:"$40.00",
     minDeposit:"€4",
     image:"Gloves emerald braços.webp",
     imageAlt:"Hydra Gloves Emerald with arms",
