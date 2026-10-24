@@ -6172,9 +6172,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               <span>
                 {(() => {
                   const regularGiveawayCount=giveawayHistory.filter(item=>item.giveawayType==="regular").length;
-                  return pick(
-                    `${regularGiveawayCount} ${regularGiveawayCount===1?"GIVEAWAY DADO":"GIVEAWAYS DADOS"} NO VALOR DE`,
-                    `${regularGiveawayCount} ${regularGiveawayCount===1?"GIVEAWAY GIVEN":"GIVEAWAYS GIVEN"} WORTH`,
+                  return (
+                    <>
+                      <b className="giveaway-history-count">{regularGiveawayCount}</b>
+                      {" "}
+                      {pick(
+                        regularGiveawayCount===1?"GIVEAWAY DADO NO VALOR DE":"GIVEAWAYS DADOS NO VALOR DE",
+                        regularGiveawayCount===1?"GIVEAWAY GIVEN WORTH":"GIVEAWAYS GIVEN WORTH",
+                      )}
+                    </>
                   );
                 })()}
                 <b>{giveawayHistoryTotal.toFixed(2)} €</b>
