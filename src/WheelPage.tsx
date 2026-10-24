@@ -6170,7 +6170,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div className="giveaway-history-live">
               <i />
               <span>
-                {pick("TOTAL DADO EM GIVEAWAYS DIÁRIOS", "TOTAL GIVEN IN DAILY GIVEAWAYS")}
+                {(() => {
+                  const regularGiveawayCount=giveawayHistory.filter(item=>item.giveawayType==="regular").length;
+                  return pick(
+                    `${regularGiveawayCount} ${regularGiveawayCount===1?"GIVEAWAY DADO":"GIVEAWAYS DADOS"} NO VALOR DE`,
+                    `${regularGiveawayCount} ${regularGiveawayCount===1?"GIVEAWAY GIVEN":"GIVEAWAYS GIVEN"} WORTH`,
+                  );
+                })()}
                 <b>{giveawayHistoryTotal.toFixed(2)} €</b>
               </span>
             </div>
