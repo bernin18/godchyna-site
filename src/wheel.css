@@ -39,7 +39,7 @@ radial-gradient(circle at 82% 72%,rgba(32,243,154,.035),transparent 32rem)}
 .giveaway-history-live i{width:6px;height:6px;margin-bottom:2px;border-radius:50%;background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.5);animation:giveaway-history-live 1.5s ease-in-out infinite}
 .giveaway-history-live span{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .giveaway-history-live b{color:#d9a637;font-size:13px;font-weight:900;letter-spacing:.025em;text-shadow:0 0 10px rgba(217,166,55,.18)}
-.giveaway-history-count{color:#d9a637!important;font-size:9px!important;font-weight:900!important;letter-spacing:.085em!important;text-shadow:0 0 10px rgba(217,166,55,.18)}
+.giveaway-history-count{color:#d9a637!important;font-size:13px!important;font-weight:900!important;letter-spacing:.025em!important;text-shadow:0 0 10px rgba(217,166,55,.18)}
 @keyframes giveaway-history-roll{from{transform:translateY(0)}to{transform:translateY(calc(-50% - 5px))}}
 @keyframes giveaway-history-live{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
 
