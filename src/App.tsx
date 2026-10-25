@@ -22,7 +22,7 @@ const socials = {
   twitch: "https://www.twitch.tv/godchyna",
   tiktok: "https://www.tiktok.com/@godchyna",
   instagram: "https://www.instagram.com/godchyna_/",
-  discord: "https://discord.gg/AfPMSzSK8",
+  discord: "https://discord.gg/mdXvwBj8rv",
   x: "https://x.com/GODChyna",
 };
 
