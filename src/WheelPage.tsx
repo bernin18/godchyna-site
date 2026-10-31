@@ -872,6 +872,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [caseReelRun, setCaseReelRun] = useState(false);
   const [caseStopOffset, setCaseStopOffset] = useState(0);
   const [caseLastOpening, setCaseLastOpening] = useState<CaseOpening | null>(null);
+  const [caseRareDropNotice, setCaseRareDropNotice] = useState<CaseOpening | null>(null);
   const [caseWinnerNotice, setCaseWinnerNotice] = useState<string | null>(null);
   const [caseTiebreakPlayers, setCaseTiebreakPlayers] = useState<string[]>([]);
   const [caseRoundIntroVisible, setCaseRoundIntroVisible] = useState(false);
@@ -2418,6 +2419,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     overtone.stop(now + 0.035);
   }
 
+  function playLegendaryRareDropSound() {
+    if (!soundEnabled) return;
+
+    try {
+      const audio = new Audio(wheelAsset("audio/legendary-loot-drop-sound-a6ycxkcl.wav"));
+      audio.volume = 0.9;
+      void audio.play();
+    } catch (error) {
+      console.warn("Unable to play legendary rare drop sound", error);
+    }
+  }
+
   function stopCaseReelAudio() {
     if (caseReelAnimationRef.current !== null) {
       window.cancelAnimationFrame(caseReelAnimationRef.current);
@@ -2864,6 +2877,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         setCaseOpenings((current) => [...current, opening]);
         setCaseLastOpening(opening);
         setCaseRolling(false);
+
+        if (drop.isRare) {
+          playLegendaryRareDropSound();
+          setCaseRareDropNotice(opening);
+        }
       };
 
       if (drop.isRare) {
@@ -2887,6 +2905,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (casePlayerIndex < activePlayers.length - 1) {
       setCasePlayerIndex((index) => index + 1);
       setCaseLastOpening(null);
+      setCaseRareDropNotice(null);
       setCaseReelRun(false);
       setCaseStopOffset(0);
       setCaseAutoOpenPending(true);
@@ -2904,6 +2923,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCasePlayerIndex(0);
       setCaseRoundOrder(rankedPlayers);
       setCaseLastOpening(null);
+      setCaseRareDropNotice(null);
       setCaseReel([]);
       setCaseReelRun(false);
       setCaseStopOffset(0);
@@ -2925,6 +2945,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setCaseRound(CASE_ROUNDS.length);
       setCasePlayerIndex(0);
       setCaseLastOpening(null);
+      setCaseRareDropNotice(null);
       setCaseReel([]);
       setCaseReelRun(false);
       setCaseStopOffset(0);
@@ -4688,6 +4709,43 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             </div>
           </section>
         </main>
+
+        {caseRareDropNotice && (
+          <div
+            className="case-rare-drop-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="case-rare-drop-title"
+          >
+            <div className="case-rare-drop-modal">
+              <span className="case-rare-drop-kicker">{pick("ITEM RARO!", "RARE ITEM!")}</span>
+              <div className="case-rare-drop-image">
+                <img
+                  src={caseRareDropNotice.skin.imageUrl}
+                  alt={caseRareDropNotice.skin.skinName}
+                />
+              </div>
+              <h2 id="case-rare-drop-title">{caseRareDropNotice.skin.skinName}</h2>
+              <strong className="case-rare-drop-value">
+                <ChyAmount value={caseRareDropNotice.skin.valueEur} fullName />
+              </strong>
+              <p>
+                {pick(
+                  `Drop raro para ${caseRareDropNotice.playerName}`,
+                  `Rare drop for ${caseRareDropNotice.playerName}`,
+                )}
+              </p>
+              <button
+                type="button"
+                className="case-rare-drop-close"
+                onClick={() => setCaseRareDropNotice(null)}
+                autoFocus
+              >
+                {pick("FECHAR", "CLOSE")}
+              </button>
+            </div>
+          </div>
+        )}
 
         {caseWinnerNotice && (
           <div
