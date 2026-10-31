@@ -4731,7 +4731,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </div>
               <h2 id="case-rare-drop-title">{caseRareDropNotice.skin.skinName}</h2>
               <strong className="case-rare-drop-value">
-                {Math.round(caseRareDropNotice.skin.valueEur)} Chynoes
+                <span className="chy-amount">
+                  <img src={CHY_COIN_IMAGE} alt="" aria-hidden="true" />
+                  <span>{Math.round(caseRareDropNotice.skin.valueEur)} CHY</span>
+                </span>
               </strong>
               <button
                 type="button"
