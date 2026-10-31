@@ -5691,3 +5691,98 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .chy-amount>span{display:inline-block;color:inherit;font:inherit;font-weight:inherit;letter-spacing:inherit}
 .case-player-score small .chy-amount>img,.case-reel-item .chy-amount>img,.case-contents-grid .chy-amount>img,.plinko-finalist-result .chy-amount>img{width:13px;height:13px;flex-basis:13px}
 .plinko-reward-modal .chy-amount>img,.plinko-tie-modal .chy-amount>img,.case-drop-result .chy-amount>img{width:18px;height:18px;flex-basis:18px}
+
+
+/* ===== CHYNAO CASE rare drop highlight ===== */
+.case-rare-drop-overlay{
+  position:fixed;
+  inset:0;
+  z-index:13000;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:rgba(2,5,7,.78);
+  backdrop-filter:blur(8px);
+  animation:caseRareOverlayIn .18s ease-out
+}
+.case-rare-drop-modal{
+  width:min(520px,calc(100vw - 40px));
+  padding:26px 28px 24px;
+  border:1px solid rgba(255,196,39,.55);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 50% 34%,rgba(255,190,38,.14),transparent 36%),
+    linear-gradient(180deg,#0b1013 0%,#070b0e 100%);
+  box-shadow:
+    0 28px 90px rgba(0,0,0,.66),
+    0 0 32px rgba(255,190,38,.16);
+  text-align:center;
+  animation:caseRareModalIn .22s cubic-bezier(.2,.8,.25,1)
+}
+.case-rare-drop-kicker{
+  display:block;
+  margin-bottom:10px;
+  color:#f2bd2e;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.16em
+}
+.case-rare-drop-image{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:210px;
+  margin:4px 0 8px
+}
+.case-rare-drop-image img{
+  width:min(92%,360px);
+  max-height:220px;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 18px 24px rgba(0,0,0,.72))
+    drop-shadow(0 0 24px rgba(255,190,38,.22))
+}
+.case-rare-drop-modal h2{
+  margin:4px 0 4px;
+  color:#f4f7f6;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:24px;
+  line-height:1.12
+}
+.case-rare-drop-value{
+  display:block;
+  color:#f2bd2e;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:19px;
+  font-weight:900
+}
+.case-rare-drop-modal p{
+  margin:10px 0 18px;
+  color:#95a2a4;
+  font-size:12px
+}
+.case-rare-drop-close{
+  width:100%;
+  min-height:44px;
+  border:1px solid rgba(255,196,39,.42);
+  border-radius:9px;
+  background:linear-gradient(180deg,#e4ad20,#bf8612);
+  color:#111;
+  font-family:"Chakra Petch",sans-serif;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+  cursor:pointer
+}
+.case-rare-drop-close:hover{
+  filter:brightness(1.06)
+}
+@keyframes caseRareOverlayIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes caseRareModalIn{
+  from{opacity:0;transform:translateY(8px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
