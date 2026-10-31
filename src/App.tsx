@@ -119,6 +119,7 @@ const giveaways:Giveaway[] = [
   },
   {
     id:"awp-wildfire",
+    enabled:false,
     title:"AWP | Wildfire",
     condition:"Field-Tested / FT",
     price:"$60.00",
