@@ -2428,7 +2428,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     try {
       const audio = new Audio(wheelAsset("audio/legendary-loot-drop-sound-a6ycxkcl.wav"));
-      audio.volume = 0.9;
+      audio.volume = 0.78;
       void audio.play();
     } catch (error) {
       console.warn("Unable to play legendary rare drop sound", error);
@@ -4731,14 +4731,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </div>
               <h2 id="case-rare-drop-title">{caseRareDropNotice.skin.skinName}</h2>
               <strong className="case-rare-drop-value">
-                <ChyAmount value={caseRareDropNotice.skin.valueEur} fullName />
+                {Math.round(caseRareDropNotice.skin.valueEur)} Chynoes
               </strong>
-              <p>
-                {pick(
-                  `Drop raro para ${caseRareDropNotice.playerName}`,
-                  `Rare drop for ${caseRareDropNotice.playerName}`,
-                )}
-              </p>
               <button
                 type="button"
                 className="case-rare-drop-close"
