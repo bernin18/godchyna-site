@@ -758,6 +758,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [showAuth, setShowAuth] = useState(false);
   const [configuring, setConfiguring] = useState(false);
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
+  const isTestGiveawayRef = useRef(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
   const [monthlyKnifeRotation, setMonthlyKnifeRotation] = useState(45);
   const [monthlyWheelRotation, setMonthlyWheelRotation] = useState(0);
@@ -1565,6 +1566,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!account || loadingAccount) return;
 
     setMonthlyGiveawayMode(false);
+    isTestGiveawayRef.current = false;
     setIsTestGiveaway(false);
     giveawayFinalizedRef.current = false;
     setWinnerGiveawayPrizeName("");
@@ -1650,6 +1652,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function openMonthlyGiveaway() {
     if (!account || loadingAccount || account.role !== "admin") return;
 
+    isTestGiveawayRef.current = false;
     setIsTestGiveaway(false);
     setConfiguring(false);
     setMonthlyKnifeRotation(45);
@@ -1680,6 +1683,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!account || loadingAccount || account.role !== "admin") return;
 
     setMonthlyGiveawayMode(false);
+    isTestGiveawayRef.current = true;
     setIsTestGiveaway(true);
     giveawayFinalizedRef.current = false;
     setWinnerGiveawayPrizeName("");
@@ -2849,7 +2853,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
-    const drop = pickCaseDrop(round, entries, isTestGiveaway);
+    const drop = pickCaseDrop(round, entries, isTestGiveawayRef.current);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
