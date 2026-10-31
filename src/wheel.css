@@ -5768,6 +5768,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .case-rare-drop-close{
   width:100%;
   min-height:44px;
+  margin-top:14px;
   border:1px solid rgba(255,196,39,.42);
   border-radius:9px;
   background:linear-gradient(180deg,#e4ad20,#bf8612);
