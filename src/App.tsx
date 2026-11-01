@@ -589,7 +589,9 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 function HomeGiveawayRotator(){
   const { pick } = useLanguage();
   const now=useNowTick();
-  const activeGiveaways=giveaways.filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now));
+  const activeGiveaways=giveaways
+    .filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now))
+    .sort((a,b)=>a.id==="survival-tiger-tooth"?-1:b.id==="survival-tiger-tooth"?1:0);
   const [activeIndex,setActiveIndex]=useState(0);
 
   useEffect(()=>{
