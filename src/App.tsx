@@ -400,7 +400,6 @@ function Header() {
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>{pick("LOJA","SHOP")}</a>
         </nav>
         <div className="header-actions">
-          <LanguageSwitch/>
           <div className="header-auth">
             {authLoading ? null : user ? (
               <a className="header-profile-link" href="./perfil" aria-label={pick("Abrir perfil","Open profile")}>
@@ -416,6 +415,7 @@ function Header() {
               </button>
             )}
           </div>
+          <LanguageSwitch/>
           <div className="desktop-social"><SocialIcons /></div>
         </div>
         <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label={pick("Abrir menu","Open menu")}>
