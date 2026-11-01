@@ -442,7 +442,8 @@ pointer-events:none}
 .giveaway-lightbox-panel.lotus{border:1px solid rgba(164,90,255,.52);background:radial-gradient(circle at 50% 46%,rgba(158,82,255,.18),transparent 35%),radial-gradient(circle at 50% 38%,#1a0d29,#05080d 72%);box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 34px rgba(148,72,235,.16)}
 .giveaway-lightbox-image{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.72))}
 .kit-combo-lightbox-image{width:132%;height:132%;max-width:none;transform:translateX(-6%) translateY(-5%) scale(1.08);object-fit:contain}
-.wildfire-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}\n.tiger-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(2%) scale(1.65);object-fit:contain}
+.wildfire-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}
+.tiger-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(2%) scale(1.65);object-fit:contain}
 .lotus-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}
 .giveaway-lightbox-close{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(5,9,12,.76);color:#fff;font-size:26px;line-height:1;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
 .giveaway-lightbox-close:hover{transform:scale(1.06);border-color:rgba(255,255,255,.36);background:rgba(12,18,22,.94)}
