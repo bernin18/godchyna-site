@@ -12,6 +12,8 @@ import {
 import ReputationSection from "./ReputationSection";
 import ConfigsPage from "./ConfigsPage";
 import WheelPage from "./WheelPage";
+import ProfilePage from "./ProfilePage";
+import { getUserAvatar, getUserDisplayName, signInWithTwitch, useAuthSession } from "./auth";
 import { useLanguage } from "./i18n";
 import "./about.css";
 import "./extra-pages.css";
@@ -347,9 +349,20 @@ function StreamStatus() {
 
 function Header() {
   const { pick } = useLanguage();
+  const { user, loading: authLoading } = useAuthSession();
   const [open,setOpen]=useState(false);
   const path=window.location.pathname.replace(/\/$/,"");
-  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/wheel")&&!path.endsWith("/loja");
+  const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/wheel")&&!path.endsWith("/loja")&&!path.endsWith("/perfil");
+  const authAvatar=getUserAvatar(user);
+  const authName=getUserDisplayName(user);
+
+  async function handleHeaderTwitchLogin(){
+    const { error }=await signInWithTwitch();
+    if(error){
+      console.warn("Unable to start Twitch login",error);
+      window.alert(pick("O login Twitch ainda não está disponível. Tenta novamente mais tarde.","Twitch login is not available yet. Please try again later."));
+    }
+  }
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -386,7 +399,25 @@ function Header() {
           <a className={path.endsWith("/wheel")?"active wheel-nav-link": "wheel-nav-link"} href="./wheel" onClick={()=>setOpen(false)}>{pick("RODA DO CHYNAO","CHYNA WHEEL")}</a>
           <a className={path.endsWith("/loja")?"active":""} href="./loja" onClick={()=>setOpen(false)}>{pick("LOJA","SHOP")}</a>
         </nav>
-        <div className="header-actions"><LanguageSwitch/><div className="desktop-social"><SocialIcons /></div></div>
+        <div className="header-actions">
+          <LanguageSwitch/>
+          <div className="desktop-social"><SocialIcons /></div>
+          <div className="header-auth">
+            {authLoading ? null : user ? (
+              <a className="header-profile-link" href="./perfil" aria-label={pick("Abrir perfil","Open profile")}>
+                {authAvatar
+                  ? <img src={authAvatar} alt="" aria-hidden="true"/>
+                  : <span className="header-profile-fallback">{authName.slice(0,1).toUpperCase()}</span>}
+                <span>{authName}</span>
+              </a>
+            ) : (
+              <button className="header-twitch-login" type="button" onClick={handleHeaderTwitchLogin}>
+                <img src="https://cdn.simpleicons.org/twitch/FFFFFF" alt="" aria-hidden="true"/>
+                <span>{pick("ENTRAR COM TWITCH","SIGN IN WITH TWITCH")}</span>
+              </button>
+            )}
+          </div>
+        </div>
         <button className="menu-btn" onClick={()=>setOpen(v=>!v)} aria-label={pick("Abrir menu","Open menu")}>
           {open ? <X/> : <Menu/>}
         </button>
@@ -1261,6 +1292,7 @@ export default function App(){
   else if(path.endsWith("/parcerias")) page = <PartnersPage/>;
   else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
   else if(path.endsWith("/loja")) page = <StorePage/>;
+  else if(path.endsWith("/perfil")) page = <ProfilePage Header={Header} Footer={Footer}/>;
 
   return (
     <>
