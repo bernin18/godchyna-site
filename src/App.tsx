@@ -147,8 +147,8 @@ const giveaways:Giveaway[] = [
     condition:"Factory New / FN",
     price:"$124",
     minDeposit:"€6",
-    image:"Survival Tiger.png",
-    imageAlt:"Survival Knife Tiger Tooth Factory New",
+    image:"braços Survival Tiger 2.webp",
+    imageAlt:"Survival Knife Tiger Tooth Factory New with arms",
     galleryImages:[
       {src:"Survival Tiger.png",alt:"Survival Knife Tiger Tooth Factory New"},
       {src:"braços Survival Tiger 2.webp",alt:"Survival Knife Tiger Tooth Factory New with arms"},
@@ -168,8 +168,8 @@ const giveaways:Giveaway[] = [
     condition:"StatTrak™ Field-Tested / FT",
     price:"$14.00",
     minDeposit:"€3",
-    image:"M4a1 black lotus.png",
-    imageAlt:"M4A1-S Black Lotus StatTrak Field-Tested",
+    image:"black lotus braços.webp",
+    imageAlt:"M4A1-S Black Lotus StatTrak Field-Tested with arms",
     galleryImages:[
       {src:"M4a1 black lotus.png",alt:"M4A1-S Black Lotus StatTrak Field-Tested"},
       {src:"black lotus braços.webp",alt:"M4A1-S Black Lotus StatTrak Field-Tested with arms"},
@@ -189,8 +189,8 @@ const giveaways:Giveaway[] = [
     condition:"Field-Tested / FT",
     price:"$40.00",
     minDeposit:"€4",
-    image:"gloves hydra emerald.png",
-    imageAlt:"Hydra Gloves Emerald",
+    image:"Gloves emerald braços.webp",
+    imageAlt:"Hydra Gloves Emerald with arms",
     galleryImages:[
       {src:"gloves hydra emerald.png",alt:"Hydra Gloves Emerald"},
       {src:"Gloves emerald braços.webp",alt:"Hydra Gloves Emerald with arms"},
@@ -517,7 +517,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-arms-image stage-image-static":""}${isTiger && galleryIndex>0?" tiger-single-image stage-image-floating":""}${isLotus && galleryIndex===0?" lotus-arms-image stage-image-static":""}${isLotus && galleryIndex>0?" lotus-single-image stage-image-floating":""}${isEmerald && galleryIndex===0?" hydra-arms-image stage-image-static":""}${isEmerald && galleryIndex>0?" hydra-single-image stage-image-floating":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -606,7 +606,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
               ×
             </button>
             <img
-              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-lightbox-image":""}${giveaway.id==="survival-tiger-tooth" && galleryIndex===0?" tiger-arms-lightbox-image":""}${giveaway.id==="m4a1s-black-lotus" && galleryIndex===0?" lotus-arms-lightbox-image":""}`}
+              className={`giveaway-lightbox-image${isKitGiveaway && galleryIndex===0?" kit-combo-lightbox-image":""}${giveaway.id==="awp-wildfire" && galleryIndex===0?" wildfire-arms-lightbox-image":""}${giveaway.id==="survival-tiger-tooth" && galleryIndex>0?" tiger-arms-lightbox-image":""}${giveaway.id==="m4a1s-black-lotus" && galleryIndex>0?" lotus-arms-lightbox-image":""}`}
               src={asset(activeGalleryImage.src)}
               alt={activeGalleryImage.alt}
             />
