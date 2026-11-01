@@ -411,7 +411,7 @@ function Header() {
             ) : (
               <button className="header-twitch-login" type="button" onClick={handleHeaderTwitchLogin}>
                 <img src="https://cdn.simpleicons.org/twitch/FFFFFF" alt="" aria-hidden="true"/>
-                <span>{pick("ENTRAR COM TWITCH","SIGN IN WITH TWITCH")}</span>
+                <span>LOGIN</span>
               </button>
             )}
           </div>
