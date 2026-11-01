@@ -145,10 +145,10 @@ const giveaways:Giveaway[] = [
     condition:"Factory New / FN",
     price:"$124",
     minDeposit:"€6",
-    image:"braços Survival Tiger.webp",
+    image:"braços Survival Tiger 2.webp",
     imageAlt:"Survival Knife Tiger Tooth Factory New with arms",
     galleryImages:[
-      {src:"braços Survival Tiger.webp",alt:"Survival Knife Tiger Tooth Factory New with arms"},
+      {src:"braços Survival Tiger 2.webp",alt:"Survival Knife Tiger Tooth Factory New with arms"},
       {src:"Survival Tiger.png",alt:"Survival Knife Tiger Tooth Factory New"},
     ],
     provider:"csgoskins",
