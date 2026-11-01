@@ -90,6 +90,34 @@ export default function ProfilePage({
   const [tradeSaving, setTradeSaving] = useState(false);
   const [tradeMessage, setTradeMessage] = useState("");
 
+
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel(`viewer-rewards-${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "viewer_rewards",
+          filter: `user_id=eq.${user.id}`,
+        },
+        payload => {
+          const next = payload.new as RewardsRow | undefined;
+          if (next && typeof next === "object") {
+            setRewards(current => ({ ...current, ...next }));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   useEffect(() => {
     if (!user) {
       setProfile(null);
@@ -407,8 +435,8 @@ export default function ProfilePage({
                 </div>
                 <p>
                   {pick(
-                    "As recompensas por horas, subs, gifts, raids, donations e streaks serão creditadas aqui quando ativarmos a integração da stream.",
-                    "Rewards from watch time, subs, gifts, raids, donations and streaks will be credited here once the stream integration is enabled."
+                    "Os valores atualizam automaticamente quando o GODCHYNA recebe novos dados da stream.",
+                    "Values update automatically whenever GODCHYNA receives new stream data."
                   )}
                 </p>
               </article>
