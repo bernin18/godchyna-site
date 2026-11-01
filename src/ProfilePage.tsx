@@ -296,7 +296,6 @@ export default function ProfilePage({
                   <i className="profile-online-dot" />
                 </div>
                 <div>
-                  <span className="profile-eyebrow">{pick("A MINHA CONTA", "MY ACCOUNT")}</span>
                   <h1>{displayName}</h1>
                   <div className="profile-twitch-name">
                     <TwitchMark />
@@ -433,12 +432,7 @@ export default function ProfilePage({
                   <span>{pick("Streams vistas", "Streams watched")}</span>
                   <strong>{rewards.streams_watched ?? 0}</strong>
                 </div>
-                <p>
-                  {pick(
-                    "Os valores atualizam automaticamente quando o GODCHYNA recebe novos dados da stream.",
-                    "Values update automatically whenever GODCHYNA receives new stream data."
-                  )}
-                </p>
+
               </article>
             </section>
           </div>
