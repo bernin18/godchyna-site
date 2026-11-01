@@ -442,7 +442,7 @@ pointer-events:none}
 .giveaway-lightbox-panel.lotus{border:1px solid rgba(164,90,255,.52);background:radial-gradient(circle at 50% 46%,rgba(158,82,255,.18),transparent 35%),radial-gradient(circle at 50% 38%,#1a0d29,#05080d 72%);box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 34px rgba(148,72,235,.16)}
 .giveaway-lightbox-image{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.72))}
 .kit-combo-lightbox-image{width:132%;height:132%;max-width:none;transform:translateX(-6%) translateY(-5%) scale(1.08);object-fit:contain}
-.wildfire-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}
+.wildfire-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}\n.tiger-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}
 .lotus-arms-lightbox-image{width:142%;height:142%;max-width:none;transform:translateX(-14%) translateY(-4%) scale(1.10);object-fit:contain}
 .giveaway-lightbox-close{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(5,9,12,.76);color:#fff;font-size:26px;line-height:1;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
 .giveaway-lightbox-close:hover{transform:scale(1.06);border-color:rgba(255,255,255,.36);background:rgba(12,18,22,.94)}
@@ -1957,4 +1957,95 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   font-weight:900;
   font-variant-numeric:tabular-nums;
   letter-spacing:.01em;
+}
+
+
+/* ===== Survival Tiger Tooth giveaway ===== */
+.giveaway-survival-tiger-tooth{
+  border-color:rgba(239,190,72,.42)!important;
+  background:
+    radial-gradient(circle at 16% 50%,rgba(239,178,45,.18),transparent 36%),
+    radial-gradient(circle at 82% 38%,rgba(126,82,15,.14),transparent 44%),
+    linear-gradient(120deg,#161007 0%,#1b1308 56%,#0d0d13 100%)!important;
+  box-shadow:
+    inset 0 0 36px rgba(239,183,51,.05),
+    0 0 22px rgba(239,183,51,.07)!important;
+}
+.tiger-stage{
+  border-color:rgba(239,190,72,.40)!important;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(240,181,42,.23),transparent 30%),
+    radial-gradient(circle at 50% 35%,#2a1b08,#07080d 72%)!important;
+  box-shadow:
+    inset 0 0 34px rgba(240,181,42,.06),
+    0 0 24px rgba(240,181,42,.12)!important;
+}
+.tiger-stage::before{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(240,181,42,.12),transparent 44%),
+    linear-gradient(115deg,transparent 10%,rgba(255,214,126,.04) 45%,transparent 70%)!important;
+}
+.tiger-stage .knife-ambient-glow{
+  background:radial-gradient(circle,rgba(240,181,42,.24) 0%,rgba(240,181,42,.08) 44%,transparent 74%)!important;
+}
+.tiger-stage .tiger-arms-image{
+  width:132%;
+  height:124%;
+  max-width:none;
+  left:-14%;
+  object-fit:contain;
+  object-position:center 48%;
+  transform-origin:center;
+  animation:none!important;
+  filter:
+    drop-shadow(0 20px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 24px rgba(240,181,42,.24))!important;
+}
+.tiger-stage .tiger-single-image{
+  width:94%;
+  height:84%;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 22px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 28px rgba(240,181,42,.28))!important;
+}
+.active-giveaway-popup.popup-survival-tiger-tooth .active-giveaway-popup-visual{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(240,181,42,.24),transparent 34%),
+    radial-gradient(circle at 50% 40%,rgba(168,108,18,.22),transparent 54%),
+    linear-gradient(180deg,#110d06 0%,#1c1207 52%,#09090f 100%)!important;
+}
+.active-giveaway-popup.popup-survival-tiger-tooth::before{
+  background:conic-gradient(
+    from var(--snake-angle),
+    transparent 0deg 305deg,
+    rgba(239,190,72,.10) 312deg,
+    rgba(239,190,72,.64) 322deg,
+    rgba(255,243,206,1) 334deg,
+    rgba(239,190,72,1) 344deg,
+    rgba(239,190,72,.50) 352deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 8px rgba(239,190,72,.92))
+    drop-shadow(0 0 18px rgba(239,190,72,.64))
+    drop-shadow(0 0 30px rgba(239,190,72,.34))!important;
+}
+.active-giveaway-popup.popup-survival-tiger-tooth .active-giveaway-popup-prize{
+  width:94%!important;
+  height:250px!important;
+  max-height:250px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:scale(1.06)!important;
+  filter:
+    drop-shadow(0 22px 30px rgba(0,0,0,.46))
+    drop-shadow(0 0 18px rgba(240,181,42,.24))
+    drop-shadow(0 0 36px rgba(240,181,42,.16))!important;
+}
+.active-giveaway-popup.popup-survival-tiger-tooth .active-giveaway-popup-copy{
+  border-left:5px solid rgba(239,190,72,.95);
+  box-shadow:
+    inset 7px 0 18px rgba(239,190,72,.05),
+    -3px 0 12px rgba(239,190,72,.20);
 }
