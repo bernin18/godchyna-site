@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  CheckCircle2,
   Clock3,
+  ExternalLink,
   Flame,
   Gamepad2,
   Link2,
@@ -82,6 +84,11 @@ export default function ProfilePage({
   const [rewards, setRewards] = useState<RewardsRow>(emptyRewards);
   const [pageLoading, setPageLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [steamLinking, setSteamLinking] = useState(false);
+  const [steamError, setSteamError] = useState("");
+  const [tradeUrl, setTradeUrl] = useState("");
+  const [tradeSaving, setTradeSaving] = useState(false);
+  const [tradeMessage, setTradeMessage] = useState("");
 
   useEffect(() => {
     if (!user) {
@@ -110,7 +117,9 @@ export default function ProfilePage({
       if (profileResult.error) console.warn("Unable to load profile", profileResult.error);
       if (rewardsResult.error) console.warn("Unable to load rewards", rewardsResult.error);
 
-      setProfile((profileResult.data as ProfileRow | null) ?? fallbackProfile(user));
+      const loadedProfile=(profileResult.data as ProfileRow | null) ?? fallbackProfile(user);
+      setProfile(loadedProfile);
+      setTradeUrl(loadedProfile.trade_url ?? "");
       setRewards((rewardsResult.data as RewardsRow | null) ?? emptyRewards);
       setPageLoading(false);
     });
@@ -138,6 +147,72 @@ export default function ProfilePage({
     window.location.href = new URL(import.meta.env.BASE_URL || "/", window.location.origin).toString();
   }
 
+  async function handleSteamLink() {
+    if (!user || steamLinking) return;
+    setSteamError("");
+    setSteamLinking(true);
+
+    const { data, error } = await supabase.functions.invoke("steam-link", {
+      method: "POST",
+      body: {},
+    });
+
+    if (error || !data?.url) {
+      console.warn("Unable to start Steam linking", error);
+      setSteamError(
+        pick(
+          "Não foi possível iniciar a ligação à Steam. Tenta novamente.",
+          "Unable to start Steam linking. Please try again."
+        )
+      );
+      setSteamLinking(false);
+      return;
+    }
+
+    window.location.assign(data.url);
+  }
+
+  async function saveTradeUrl() {
+    if (!user || !profile?.steam_id || tradeSaving) return;
+    const value=tradeUrl.trim();
+    setTradeMessage("");
+
+    if (
+      value &&
+      !/^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?/.test(value)
+    ) {
+      setTradeMessage(
+        pick(
+          "Usa um Trade URL oficial da Steam.",
+          "Use an official Steam Trade URL."
+        )
+      );
+      return;
+    }
+
+    setTradeSaving(true);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ trade_url: value || null })
+      .eq("id", user.id);
+
+    setTradeSaving(false);
+
+    if (error) {
+      console.warn("Unable to save Trade URL", error);
+      setTradeMessage(pick("Não foi possível guardar.", "Unable to save."));
+      return;
+    }
+
+    setProfile(current => current ? { ...current, trade_url: value || null } : current);
+    setTradeMessage(pick("Trade URL guardado.", "Trade URL saved."));
+  }
+
+  const steamStatus =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("steam")
+      : null;
+
   return (
     <>
       <Header />
@@ -153,8 +228,8 @@ export default function ProfilePage({
             <h1>{pick("ENTRA COM A TUA TWITCH", "SIGN IN WITH TWITCH")}</h1>
             <p>
               {pick(
-                "A tua conta Twitch será o teu perfil GODCHYNA. Aqui vais acompanhar Watch Points, CHY, horas assistidas, streaks e, mais tarde, ligar a Steam.",
-                "Your Twitch account becomes your GODCHYNA profile. Track Watch Points, CHY, watch time, streaks and later connect Steam here."
+                "A tua conta Twitch será o teu perfil GODCHYNA. Aqui vais acompanhar Watch Points, CHY, horas assistidas, streaks e ligar a tua Steam.",
+                "Your Twitch account becomes your GODCHYNA profile. Track Watch Points, CHY, watch time, streaks and connect your Steam account here."
               )}
             </p>
             <button className="profile-twitch-login" type="button" onClick={handleLogin}>
@@ -172,6 +247,20 @@ export default function ProfilePage({
           </section>
         ) : (
           <div className="profile-shell">
+            {steamStatus && (
+              <div className={`profile-steam-status ${steamStatus==="connected"?"success":"error"}`}>
+                {steamStatus==="connected" ? <CheckCircle2 /> : <ShieldCheck />}
+                <span>
+                  {steamStatus==="connected"
+                    ? pick("Conta Steam ligada com sucesso.", "Steam account connected successfully.")
+                    : steamStatus==="already-linked"
+                      ? pick("Esta conta Steam já está ligada a outro perfil GODCHYNA.", "This Steam account is already linked to another GODCHYNA profile.")
+                      : steamStatus==="cancelled"
+                        ? pick("Ligação à Steam cancelada.", "Steam linking cancelled.")
+                        : pick("Não foi possível ligar a Steam. Tenta novamente.", "Unable to link Steam. Please try again.")}
+                </span>
+              </div>
+            )}
             <section className="profile-hero-card">
               <div className="profile-identity">
                 <div className="profile-avatar-wrap">
@@ -235,18 +324,65 @@ export default function ProfilePage({
                   <b>{pick("LIGADA", "CONNECTED")}</b>
                 </div>
 
-                <div className="profile-connection">
+                <div className={`profile-connection${profile?.steam_id?" connected":""}`}>
                   <div className="profile-connection-logo steam">
                     <img src="https://cdn.simpleicons.org/steam/FFFFFF" alt="" aria-hidden="true" />
                   </div>
                   <div className="profile-connection-copy">
                     <strong>Steam</strong>
-                    <span>{profile?.steam_display_name || pick("Ainda não ligada", "Not connected yet")}</span>
+                    <span>
+                      {profile?.steam_display_name
+                        || (profile?.steam_id ? `SteamID ${profile.steam_id}` : pick("Ainda não ligada", "Not connected yet"))}
+                    </span>
                   </div>
-                  <button type="button" disabled={!profile?.steam_id}>
-                    {profile?.steam_id ? pick("LIGADA", "CONNECTED") : pick("LIGAR STEAM · EM BREVE", "CONNECT STEAM · SOON")}
-                  </button>
+                  {profile?.steam_id ? (
+                    <a
+                      className="profile-steam-open"
+                      href={`https://steamcommunity.com/profiles/${profile.steam_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink />
+                      {pick("VER STEAM", "VIEW STEAM")}
+                    </a>
+                  ) : (
+                    <button
+                      className="profile-steam-connect"
+                      type="button"
+                      onClick={handleSteamLink}
+                      disabled={steamLinking}
+                    >
+                      {steamLinking ? pick("A LIGAR…", "CONNECTING…") : pick("LIGAR STEAM", "CONNECT STEAM")}
+                    </button>
+                  )}
                 </div>
+
+                {steamError && <p className="profile-connection-error">{steamError}</p>}
+
+                {profile?.steam_id && (
+                  <div className="profile-trade-box">
+                    <div className="profile-trade-heading">
+                      <div>
+                        <strong>STEAM TRADE URL</strong>
+                        <span>{pick("Usado para receber as skins resgatadas.", "Used to receive redeemed skins.")}</span>
+                      </div>
+                      {profile.trade_url && <CheckCircle2 />}
+                    </div>
+                    <div className="profile-trade-row">
+                      <input
+                        type="url"
+                        value={tradeUrl}
+                        onChange={event=>setTradeUrl(event.target.value)}
+                        placeholder="https://steamcommunity.com/tradeoffer/new/?partner=..."
+                        spellCheck={false}
+                      />
+                      <button type="button" onClick={saveTradeUrl} disabled={tradeSaving}>
+                        {tradeSaving ? pick("A GUARDAR…", "SAVING…") : pick("GUARDAR", "SAVE")}
+                      </button>
+                    </div>
+                    {tradeMessage && <p>{tradeMessage}</p>}
+                  </div>
+                )}
               </article>
 
               <article className="profile-panel profile-progress-panel">
