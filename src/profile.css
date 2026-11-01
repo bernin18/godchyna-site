@@ -82,6 +82,29 @@
 .profile-connection-copy span{margin-top:4px;color:#788689;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .profile-connection>b{color:#20f39a;font-size:9px;letter-spacing:.08em}
 .profile-connection button{padding:8px 10px;border:1px solid #2d3c40;border-radius:6px;background:#0d1417;color:#707c7e;font-size:9px;font-weight:900;letter-spacing:.06em}
+.profile-steam-status{display:flex;align-items:center;gap:9px;margin:0 0 14px;padding:11px 14px;border:1px solid;border-radius:9px;font-size:11px;font-weight:700}
+.profile-steam-status svg{width:16px;height:16px;flex:0 0 auto}
+.profile-steam-status.success{border-color:rgba(32,243,154,.28);background:rgba(32,243,154,.07);color:#9df7d2}
+.profile-steam-status.error{border-color:rgba(255,98,88,.28);background:rgba(255,98,88,.07);color:#ff9a93}
+.profile-connection.connected{border-color:rgba(32,243,154,.22)}
+.profile-steam-connect{border-color:rgba(255,255,255,.18)!important;background:linear-gradient(180deg,#1a2327,#10171a)!important;color:#f2f5f4!important;cursor:pointer}
+.profile-steam-connect:hover:not(:disabled){border-color:rgba(255,255,255,.34)!important;transform:translateY(-1px)}
+.profile-steam-connect:disabled{opacity:.55;cursor:wait}
+.profile-steam-open{display:inline-flex;align-items:center;gap:5px;padding:8px 10px;border:1px solid rgba(32,243,154,.26);border-radius:6px;background:rgba(32,243,154,.06);color:#20f39a;font-size:9px;font-weight:900;letter-spacing:.05em;text-decoration:none}
+.profile-steam-open svg{width:12px;height:12px}
+.profile-connection-error{margin:8px 2px 0;color:#ff786f;font-size:10px}
+.profile-trade-box{margin-top:12px;padding:14px;border:1px solid #1b2b2f;border-radius:10px;background:#070c0e}
+.profile-trade-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.profile-trade-heading>div strong,.profile-trade-heading>div span{display:block}
+.profile-trade-heading>div strong{font-family:"Chakra Petch",sans-serif;font-size:10px;letter-spacing:.08em}
+.profile-trade-heading>div span{margin-top:4px;color:#68777a;font-size:9.5px}
+.profile-trade-heading>svg{width:16px;height:16px;color:#20f39a}
+.profile-trade-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.profile-trade-row input{min-width:0;height:38px;padding:0 11px;border:1px solid #22343a;border-radius:7px;outline:none;background:#0a1114;color:#dfe6e5;font-size:10px}
+.profile-trade-row input:focus{border-color:rgba(32,243,154,.44);box-shadow:0 0 0 2px rgba(32,243,154,.05)}
+.profile-trade-row button{min-width:86px;border:1px solid rgba(32,243,154,.34);border-radius:7px;background:rgba(32,243,154,.08);color:#20f39a;font-size:9px;font-weight:900;letter-spacing:.05em;cursor:pointer}
+.profile-trade-row button:disabled{opacity:.55;cursor:wait}
+.profile-trade-box>p{margin:8px 0 0;color:#8aa09d;font-size:9.5px}
 .profile-progress-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #162326;color:#839194;font-size:11px}
 .profile-progress-row strong{color:#f1f4f3;font-family:"Chakra Petch",sans-serif;font-size:16px}
 .profile-progress-panel>p{margin:18px 0 0;color:#647276;font-size:10.5px;line-height:1.6}
@@ -106,4 +129,8 @@
   .profile-stat-grid{grid-template-columns:1fr 1fr}
   .profile-stat-card{min-height:125px;padding:16px}
   .profile-stat-card>strong{font-size:25px}
+  .profile-trade-row{grid-template-columns:1fr}
+  .profile-trade-row button{min-height:38px}
+  .profile-steam-open{font-size:0;padding:8px}
 }
+
