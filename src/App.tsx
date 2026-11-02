@@ -5,7 +5,6 @@ import {
   Copy,
   Menu,
   ShoppingCart,
-  Tag,
   TrendingUp,
   X,
 } from "lucide-react";
@@ -1333,15 +1332,6 @@ function StorePage(){
                   </div>
                 </div>
 
-                <div className="store-wp-note">
-                  <Tag/>
-                  <span>
-                    {pick(
-                      "WP equivalente mostrado como referência. Nas compras reais, os WP podem cobrir até 25% do valor.",
-                      "Equivalent WP shown as a reference. On real purchases, WP can cover up to 25% of the value.",
-                    )}
-                  </span>
-                </div>
 
                 <button className="store-redeem-btn" type="button" disabled>
                   <ShoppingCart/>
