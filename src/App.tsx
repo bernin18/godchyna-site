@@ -1271,7 +1271,85 @@ function GiveawaysPage(){
 
 function StorePage(){
   const { pick } = useLanguage();
-  return <><Header/><main className="store-page"><h1>{pick("LOJA","SHOP")}</h1><p>{pick("EM BREVE","COMING SOON")}</p></main><Footer/></>;
+
+  return (
+    <>
+      <Header/>
+      <main className="store-page">
+        <section className="store-shell">
+          <header className="store-hero">
+            <span className="store-kicker">GODCHYNA MARKET</span>
+            <h1>{pick("LOJA","SHOP")}</h1>
+            <p>
+              {pick(
+                "Resgata skins com CHY. Os Watch Points aparecem como valor equivalente e poderão complementar compras.",
+                "Redeem skins with CHY. Watch Points are shown as an equivalent value and can complement purchases.",
+              )}
+            </p>
+          </header>
+
+          <div className="store-toolbar">
+            <div>
+              <span>{pick("SKINS DISPONÍVEIS","AVAILABLE SKINS")}</span>
+              <strong>1</strong>
+            </div>
+            <span className="store-demo-note">DEMO</span>
+          </div>
+
+          <section className="store-grid" aria-label={pick("Produtos da loja","Shop products")}>
+            <article className="store-product-card store-product-demo">
+              <div className="store-product-visual">
+                <span className="store-demo-badge">DEMO</span>
+                <div className="store-product-glow"/>
+                <img
+                  src={asset("deagle serpent.png")}
+                  alt="StatTrak Desert Eagle Serpent Strike"
+                />
+              </div>
+
+              <div className="store-product-body">
+                <div className="store-product-meta">
+                  <span>DESERT EAGLE</span>
+                  <span className="store-stattrak">STATTRAK™</span>
+                </div>
+
+                <h2>Serpent Strike</h2>
+
+                <div className="store-product-divider"/>
+
+                <div className="store-price-row">
+                  <div className="store-price-primary">
+                    <span>{pick("PREÇO","PRICE")}</span>
+                    <strong>5 <b>CHY</b></strong>
+                  </div>
+                  <div className="store-price-secondary">
+                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
+                    <strong>6.000 <b>WP</b></strong>
+                  </div>
+                </div>
+
+                <div className="store-wp-note">
+                  <Tag/>
+                  <span>
+                    {pick(
+                      "WP equivalente mostrado como referência. Nas compras reais, os WP podem cobrir até 25% do valor.",
+                      "Equivalent WP shown as a reference. On real purchases, WP can cover up to 25% of the value.",
+                    )}
+                  </span>
+                </div>
+
+                <button className="store-redeem-btn" type="button" disabled>
+                  <ShoppingCart/>
+                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
+                </button>
+              </div>
+            </article>
+          </section>
+        </section>
+      </main>
+      <Footer/>
+    </>
+  );
 }
 
 export default function App(){
