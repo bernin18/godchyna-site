@@ -1,7 +1,8 @@
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, ComponentType, CSSProperties } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { ArrowLeft, ArrowRight, LogIn, LogOut, Pencil, Save, Ticket, Trash2, Upload, UserRound, Users, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, ArrowRight, Pencil, Save, Ticket, Trash2, Upload, UserRound, Users, Volume2, VolumeX } from "lucide-react";
+import { getUserDisplayName, signInWithTwitch } from "./auth";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import "./wheel.css";
@@ -755,7 +756,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [account, setAccount] = useState<AccountData | null>(null);
   const [loadingSession, setLoadingSession] = useState(true);
   const [loadingAccount, setLoadingAccount] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
   const [configuring, setConfiguring] = useState(false);
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
@@ -781,11 +781,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     imageUrl: string;
   }>>([]);
   const [giveawayHistoryTotal, setGiveawayHistoryTotal] = useState(0);
-  const [mode, setMode] = useState<"login" | "signup" | "forgot" | "reset">("login");
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [participantInput, setParticipantInput] = useState("");
   const [quickParticipantName, setQuickParticipantName] = useState("");
   const [quickParticipantCount, setQuickParticipantCount] = useState(1);
@@ -919,14 +914,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     const { data } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession);
-
-      if (event === "PASSWORD_RECOVERY") {
-        setMode("reset");
-        setShowAuth(true);
-        setMessage("");
-        setPassword("");
-        setConfirmPassword("");
-      }
 
       if (!nextSession) {
         setAccount(null);
@@ -1413,7 +1400,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           setMessage(pick("Não foi possível carregar a conta.", "Unable to load your account."));
         } else {
           setAccount({
-            displayName: profile?.display_name || session!.user.email?.split("@")[0] || "User",
+            displayName: profile?.display_name || getUserDisplayName(session!.user),
             role: profile?.role === "admin" ? "admin" : "user",
             dayPasses: wallet?.day_passes ?? 0,
             activeUntil: wallet?.active_until ?? null,
@@ -1427,135 +1414,22 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return () => { cancelled = true; };
   }, [session?.user.id, pick]);
 
-  function friendlyAuthError(error: { message?: string; code?: string } | null) {
-    const code = error?.code ?? "";
-    const rawMessage = (error?.message ?? "").toLocaleLowerCase();
-
-    if (code === "over_email_send_rate_limit" || rawMessage.includes("email rate limit exceeded")) {
-      return pick(
-        "Não foi possível enviar o email agora. Foram feitos demasiados pedidos em pouco tempo; aguarda alguns minutos e tenta novamente.",
-        "We couldn't send the email right now. Too many requests were made in a short time; wait a few minutes and try again.",
-      );
-    }
-
-    if (code === "email_not_confirmed" || rawMessage.includes("email not confirmed")) {
-      return pick(
-        "Confirma primeiro o teu email através do link que recebeste.",
-        "Confirm your email first using the link we sent you.",
-      );
-    }
-
-    if (rawMessage.includes("user already registered")) {
-      return pick(
-        "Já existe uma conta com este email. Tenta iniciar sessão ou recuperar a password.",
-        "An account already exists with this email. Try signing in or resetting your password.",
-      );
-    }
-
-    return pick(
-      "Não foi possível concluir o pedido. Tenta novamente daqui a pouco.",
-      "We couldn't complete the request. Please try again shortly.",
-    );
-  }
-
-  async function submitAuth(event: FormEvent) {
-    event.preventDefault();
+  async function loginWithTwitch() {
     setBusy(true);
     setMessage("");
 
-    if (mode === "forgot") {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://godchyna.com/wheel",
-      });
+    const { error } = await signInWithTwitch("wheel");
 
-      if (error) {
-        setMessage(friendlyAuthError(error));
-      } else {
-        setMessage(pick(
-          "Enviámos um link para o teu email. Abre-o para escolher uma nova password.",
-          "We sent a link to your email. Open it to choose a new password.",
-        ));
-      }
-
+    if (error) {
+      console.warn("Unable to start Twitch login", error);
+      setMessage(
+        pick(
+          "Não foi possível iniciar sessão com a Twitch. Tenta novamente.",
+          "Unable to start Twitch login. Please try again.",
+        ),
+      );
       setBusy(false);
-      return;
     }
-
-    if (mode === "reset") {
-      if (password.length < 6) {
-        setMessage(pick(
-          "A nova password tem de ter pelo menos 6 caracteres.",
-          "Your new password must be at least 6 characters long.",
-        ));
-        setBusy(false);
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        setMessage(pick(
-          "As duas passwords não são iguais.",
-          "The two passwords do not match.",
-        ));
-        setBusy(false);
-        return;
-      }
-
-      const { error } = await supabase.auth.updateUser({ password });
-
-      if (error) {
-        setMessage(friendlyAuthError(error));
-      } else {
-        await supabase.auth.signOut();
-        setMode("login");
-        setPassword("");
-        setConfirmPassword("");
-        setShowAuth(true);
-        setMessage(pick(
-          "Password alterada com sucesso. Já podes iniciar sessão.",
-          "Password changed successfully. You can now sign in.",
-        ));
-      }
-
-      setBusy(false);
-      return;
-    }
-
-    if (mode === "signup") {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { display_name: displayName.trim() || email.split("@")[0] },
-          emailRedirectTo: "https://godchyna.com/wheel",
-        },
-      });
-
-      if (error) {
-        setMessage(friendlyAuthError(error));
-      } else {
-        setMessage(pick(
-          "Conta criada. Confirma o email e depois inicia sessão.",
-          "Account created. Confirm your email, then sign in.",
-        ));
-        setMode("login");
-      }
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        setMessage(
-          error.code === "email_not_confirmed"
-            ? friendlyAuthError(error)
-            : pick("Email ou password incorretos.", "Incorrect email or password."),
-        );
-      }
-    }
-
-    setBusy(false);
-  }
-
-  async function signOut() {
-    await supabase.auth.signOut();
-    setShowAuth(false);
   }
 
   const activeUntil = account?.activeUntil ? new Date(account.activeUntil) : null;
@@ -6277,197 +6151,71 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <aside className="wheel-side-panel">
             {loadingSession ? (
               <div className="wheel-loading">{pick("A carregar...", "Loading...")}</div>
-            ) : !session && !showAuth ? (
-              <div className="wheel-use-card">
-                <span className="wheel-side-kicker">{pick("PRONTO PARA COMEÇAR?", "READY TO START?")}</span>
-                <h2>{pick("USA JÁ PARA FAZER OS TEUS SORTEIOS!", "USE IT NOW FOR YOUR GIVEAWAYS!")}</h2>
-                <p>{pick(
-                  "Cria uma conta ou inicia sessão para guardar os teus Day Passes e usar a Roda do Chynao.",
-                  "Create an account or sign in to keep your Day Passes and use Chyna's Wheel.",
-                )}</p>
-                <button className="wheel-use-btn" onClick={() => setShowAuth(true)}>
-                  {pick("USAR", "USE NOW")} <ArrowRight />
-                </button>
-                <small>{pick("A roda fica visível para todos. Só precisas de conta para a usar.", "Everyone can see the wheel. You only need an account to use it.")}</small>
-              </div>
-            ) : !session || mode === "reset" ? (
-              <div className="wheel-auth-card">
-                <div className="wheel-auth-head">
-                  <UserRound />
-                  <div>
-                    <span>{pick("CONTA CHYNA", "CHYNA ACCOUNT")}</span>
-                    <h2>
-                      {mode === "login"
-                        ? pick("INICIAR SESSÃO", "SIGN IN")
-                        : mode === "signup"
-                          ? pick("CRIAR CONTA", "CREATE ACCOUNT")
-                          : mode === "forgot"
-                            ? pick("RECUPERAR PASSWORD", "RESET PASSWORD")
-                            : pick("NOVA PASSWORD", "NEW PASSWORD")}
-                    </h2>
-                  </div>
+            ) : !session ? (
+              <div className="wheel-user-card wheel-pass-card wheel-pass-login-card">
+                <div className="wheel-pass-login-mark" aria-hidden="true">
+                  <img src="https://cdn.simpleicons.org/twitch/FFFFFF" alt="" />
                 </div>
-
-                {(mode === "login" || mode === "signup") && (
-                  <div className="wheel-auth-tabs">
-                    <button className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setMessage(""); }}>
-                      {pick("ENTRAR", "SIGN IN")}
-                    </button>
-                    <button className={mode === "signup" ? "active" : ""} onClick={() => { setMode("signup"); setMessage(""); }}>
-                      {pick("CRIAR CONTA", "SIGN UP")}
-                    </button>
-                  </div>
-                )}
-
-                {mode === "forgot" && (
-                  <p className="wheel-auth-helper">
-                    {pick(
-                      "Escreve o email da tua conta e enviamos-te um link para definires uma nova password.",
-                      "Enter your account email and we'll send you a link to set a new password.",
-                    )}
-                  </p>
-                )}
-
-                {mode === "reset" && (
-                  <p className="wheel-auth-helper">
-                    {pick(
-                      "Escolhe uma nova password para a tua conta.",
-                      "Choose a new password for your account.",
-                    )}
-                  </p>
-                )}
-
-                <form className="wheel-auth-form" onSubmit={submitAuth}>
-                  {mode === "signup" && (
-                    <label>
-                      <span>{pick("NOME", "NAME")}</span>
-                      <input value={displayName} onChange={(event) => setDisplayName(event.target.value)} placeholder="Chyna" autoComplete="name" />
-                    </label>
+                <span className="wheel-side-kicker">GODCHYNA</span>
+                <h2>{pick("ENTRA COM A TWITCH", "SIGN IN WITH TWITCH")}</h2>
+                <p>
+                  {pick(
+                    "Usa a mesma conta Twitch do resto do site. Os teus Giveaway Passes ficam automaticamente associados à tua conta.",
+                    "Use the same Twitch account as the rest of the site. Your Giveaway Passes are automatically linked to your account.",
                   )}
-
-                  {mode !== "reset" && (
-                    <label>
-                      <span>EMAIL</span>
-                      <input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="email@example.com" autoComplete="email" />
-                    </label>
-                  )}
-
-                  {(mode === "login" || mode === "signup") && (
-                    <label>
-                      <span>PASSWORD</span>
-                      <input type="password" required minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} />
-                    </label>
-                  )}
-
-                  {mode === "reset" && (
-                    <>
-                      <label>
-                        <span>{pick("NOVA PASSWORD", "NEW PASSWORD")}</span>
-                        <input type="password" required minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" autoComplete="new-password" />
-                      </label>
-                      <label>
-                        <span>{pick("CONFIRMAR PASSWORD", "CONFIRM PASSWORD")}</span>
-                        <input type="password" required minLength={6} value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="••••••••" autoComplete="new-password" />
-                      </label>
-                    </>
-                  )}
-
-                  {mode === "login" && (
-                    <button
-                      className="wheel-forgot-password"
-                      type="button"
-                      onClick={() => {
-                        setMode("forgot");
-                        setMessage("");
-                        setPassword("");
-                      }}
-                    >
-                      {pick("Esqueceste-te da password?", "Forgot your password?")}
-                    </button>
-                  )}
-
-                  <button className="wheel-primary-btn" type="submit" disabled={busy}>
-                    <LogIn />
-                    {busy
-                      ? pick("A PROCESSAR...", "PROCESSING...")
-                      : mode === "login"
-                        ? pick("ENTRAR", "SIGN IN")
-                        : mode === "signup"
-                          ? pick("CRIAR CONTA", "CREATE ACCOUNT")
-                          : mode === "forgot"
-                            ? pick("ENVIAR LINK", "SEND LINK")
-                            : pick("ALTERAR PASSWORD", "CHANGE PASSWORD")}
-                  </button>
-                </form>
-
+                </p>
                 <button
-                  className="wheel-back-btn"
+                  className="wheel-twitch-login-btn"
                   type="button"
-                  onClick={() => {
-                    if (mode === "forgot" || mode === "reset") {
-                      setMode("login");
-                      setMessage("");
-                      setPassword("");
-                      setConfirmPassword("");
-                    } else {
-                      setShowAuth(false);
-                    }
-                  }}
+                  onClick={loginWithTwitch}
+                  disabled={busy}
                 >
-                  {mode === "forgot" || mode === "reset"
-                    ? pick("VOLTAR", "BACK")
-                    : pick("VOLTAR", "BACK")}
+                  <img src="https://cdn.simpleicons.org/twitch/FFFFFF" alt="" aria-hidden="true" />
+                  {busy ? pick("A LIGAR...", "CONNECTING...") : pick("LOGIN COM TWITCH", "LOGIN WITH TWITCH")}
                 </button>
-
                 {message && <p className="wheel-auth-message">{message}</p>}
               </div>
             ) : (
-              <div className="wheel-user-card">
-                <div className="wheel-account-top">
+              <div className="wheel-user-card wheel-pass-card">
+                <div className="wheel-pass-account">
                   <div className="wheel-auth-head">
                     <UserRound />
                     <div>
-                      <span>{account?.role === "admin" ? "ADMIN" : pick("UTILIZADOR", "USER")}</span>
-                      <h2>{loadingAccount ? "..." : account?.displayName || session.user.email}</h2>
+                      <span>{account?.role === "admin" ? "ADMIN · TWITCH" : "TWITCH"}</span>
+                      <h2>{loadingAccount ? "..." : account?.displayName || getUserDisplayName(session.user)}</h2>
                     </div>
                   </div>
-                  <button className="wheel-signout" onClick={signOut}><LogOut /> {pick("SAIR", "SIGN OUT")}</button>
                 </div>
 
-                <div className="wheel-account-grid">
-                  <div>
+                <div className="wheel-pass-balance">
+                  <div className="wheel-pass-ticket">
                     <Ticket />
-                    <span>DAY PASSES</span>
-                    <strong>{account?.role === "admin" ? "∞" : account?.dayPasses ?? 0}</strong>
                   </div>
                   <div>
-                    <span>{pick("ACESSO", "ACCESS")}</span>
-                    <strong className={account?.role === "admin" || (!ADMIN_ONLY_WHEEL && hasActivePass) ? "active" : ""}>
+                    <span>GIVEAWAY PASSES</span>
+                    <strong>{account?.role === "admin" ? "∞" : account?.dayPasses ?? 0}</strong>
+                    <small>
                       {account?.role === "admin"
-                        ? "UNLIMITED"
-                        : ADMIN_ONLY_WHEEL
-                          ? pick("EM DESENVOLVIMENTO", "IN DEVELOPMENT")
-                          : hasActivePass
-                            ? pick("ATIVO", "ACTIVE")
-                            : pick("SEM PASSE ATIVO", "NO ACTIVE PASS")}
-                    </strong>
-                    {activeUntil && hasActivePass && account?.role !== "admin" && <small>{pick("Até", "Until")} {activeUntil.toLocaleString()}</small>}
+                        ? pick("Acesso ilimitado para administração", "Unlimited admin access")
+                        : pick("Disponíveis na tua conta Twitch", "Available on your Twitch account")}
+                    </small>
                   </div>
                 </div>
 
-                <button
-                  className="wheel-use-btn logged"
-                  type="button"
-                  onClick={openConfigurator}
-                  disabled={busy || loadingAccount || (ADMIN_ONLY_WHEEL && account?.role !== "admin")}
-                >
-                  {ADMIN_ONLY_WHEEL && account?.role !== "admin"
-                    ? pick("EM DESENVOLVIMENTO", "IN DEVELOPMENT")
-                    : busy
+                {(!ADMIN_ONLY_WHEEL || account?.role === "admin") && (
+                  <button
+                    className="wheel-use-btn logged"
+                    type="button"
+                    onClick={openConfigurator}
+                    disabled={busy || loadingAccount}
+                  >
+                    {busy
                       ? pick("A ATIVAR...", "ACTIVATING...")
                       : pick("CONFIGURAR SORTEIO", "SET UP GIVEAWAY")}{" "}
-                  {(!ADMIN_ONLY_WHEEL || account?.role === "admin") && <ArrowRight />}
-                </button>
+                    <ArrowRight />
+                  </button>
+                )}
+
                 {account?.role === "admin" && (
                   <>
                     <button
