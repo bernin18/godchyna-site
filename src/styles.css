@@ -671,6 +671,82 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-redeem-btn svg{width:16px;height:16px}
 .store-redeem-btn:disabled{cursor:not-allowed;opacity:.78}
 
+/* Store rarity: Classified (purple) */
+.store-product-classified{
+  border-color:rgba(164,90,255,.66);
+  background:
+    linear-gradient(155deg,rgba(18,9,27,.98),rgba(7,8,13,.99));
+  box-shadow:
+    0 22px 54px rgba(0,0,0,.32),
+    inset 0 0 28px rgba(158,82,255,.035),
+    0 0 10px rgba(164,90,255,.22);
+  animation:storeClassifiedPulse 2.15s ease-in-out infinite;
+}
+.store-product-classified .store-product-visual{
+  background:
+    radial-gradient(circle at 50% 52%,rgba(158,82,255,.24),transparent 31%),
+    radial-gradient(circle at 50% 45%,rgba(102,43,187,.20),transparent 56%),
+    linear-gradient(180deg,#0d0713 0%,#130a1d 52%,#080b10 100%);
+}
+.store-product-classified .store-product-visual::after{
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(164,90,255,.18),
+    rgba(164,90,255,.75),
+    rgba(240,226,255,.42),
+    rgba(164,90,255,.75),
+    rgba(164,90,255,.18),
+    transparent
+  );
+}
+.store-product-classified .store-product-glow{
+  background:rgba(158,82,255,.18);
+  filter:blur(29px);
+}
+.store-product-classified .store-product-visual img{
+  filter:
+    drop-shadow(0 18px 15px rgba(0,0,0,.60))
+    drop-shadow(0 0 19px rgba(158,82,255,.24));
+}
+.store-product-classified .store-demo-badge{
+  border-color:rgba(164,90,255,.58);
+  color:#c99aff;
+  background:rgba(19,8,28,.88);
+  box-shadow:0 0 14px rgba(164,90,255,.18);
+}
+.store-product-classified .store-product-divider{
+  background:linear-gradient(90deg,transparent,rgba(164,90,255,.38),transparent);
+}
+.store-product-classified .store-price-primary{
+  border-color:rgba(164,90,255,.30);
+  background:linear-gradient(145deg,rgba(164,90,255,.075),#071015);
+}
+.store-product-classified .store-price-secondary{
+  border-color:rgba(164,90,255,.22);
+}
+.store-product-classified .store-redeem-btn{
+  border-color:rgba(164,90,255,.28);
+  background:linear-gradient(180deg,rgba(22,10,31,.60),#0a1216);
+}
+@keyframes storeClassifiedPulse{
+  0%,100%{
+    border-color:rgba(164,90,255,.46);
+    box-shadow:
+      0 22px 54px rgba(0,0,0,.32),
+      inset 0 0 28px rgba(158,82,255,.03),
+      0 0 7px rgba(164,90,255,.16);
+  }
+  50%{
+    border-color:rgba(190,125,255,.95);
+    box-shadow:
+      0 22px 54px rgba(0,0,0,.32),
+      inset 0 0 34px rgba(158,82,255,.07),
+      0 0 14px rgba(164,90,255,.55),
+      0 0 28px rgba(164,90,255,.24);
+  }
+}
+
 @media(min-width:1001px){
  .giveaway-card{height:332px}
  .knife-stage{height:100%;min-height:0}
