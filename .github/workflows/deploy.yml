@@ -45,6 +45,11 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_BUILD_SHA: ${{ github.sha }}
+
+      - name: Write build version
+        run: printf '{"sha":"%s"}\n' "$GITHUB_SHA" > dist/version.json
 
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
