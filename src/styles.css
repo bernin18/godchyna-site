@@ -623,9 +623,53 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .footer-center i{font-style:normal}
 .legal{text-align:center;margin-top:20px;color:#677477;font-size:10px;line-height:1.55}
 .subpage{max-width:1500px;margin:auto;min-height:72vh;padding:70px 50px}
-.store-page{min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.store-page h1{font-family:"Chakra Petch";font-size:70px;font-style:italic;margin:0}
-.store-page p{color:var(--green);font-family:"Chakra Petch";font-size:26px;letter-spacing:.2em}
+.store-page{
+ min-height:72vh;
+ padding:58px 50px 78px;
+ background:
+  radial-gradient(circle at 18% 14%,rgba(32,243,154,.055),transparent 28rem),
+  radial-gradient(circle at 78% 18%,rgba(217,166,55,.045),transparent 30rem),
+  #05090c
+}
+.store-shell{width:min(1320px,100%);margin:0 auto}
+.store-hero{text-align:left;max-width:760px}
+.store-kicker{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.2em}
+.store-hero h1{margin:8px 0 10px;color:#f2f5f4;font-family:"Exo 2",sans-serif;font-size:58px;font-style:italic;font-weight:900;line-height:.95;letter-spacing:-.035em}
+.store-hero p{max-width:680px;margin:0;color:#849295;font-size:13px;line-height:1.65}
+.store-toolbar{margin:34px 0 18px;padding:12px 14px;border:1px solid #1a2a2f;border-radius:10px;display:flex;align-items:center;justify-content:space-between;background:#071014}
+.store-toolbar>div{display:flex;align-items:center;gap:9px}
+.store-toolbar>div span{color:#718083;font-size:8px;font-weight:900;letter-spacing:.14em}
+.store-toolbar>div strong{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:16px}
+.store-demo-note{padding:5px 8px;border:1px solid rgba(217,166,55,.32);border-radius:999px;color:#d9a637;background:rgba(217,166,55,.055);font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.15em}
+.store-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.store-product-card{overflow:hidden;border:1px solid #21343a;border-radius:15px;background:linear-gradient(155deg,#091317,#060b0e);box-shadow:0 28px 72px rgba(0,0,0,.28),inset 0 0 38px rgba(32,243,154,.018)}
+.store-product-visual{position:relative;height:285px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:
+ radial-gradient(circle at 50% 54%,rgba(223,84,37,.15),transparent 28%),
+ radial-gradient(circle at 50% 58%,rgba(32,243,154,.065),transparent 52%),
+ linear-gradient(180deg,#0a1418,#071014)}
+.store-product-visual::after{content:"";position:absolute;left:20px;right:20px;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(32,243,154,.35),rgba(217,166,55,.28),transparent)}
+.store-product-glow{position:absolute;width:250px;height:120px;bottom:28px;border-radius:50%;background:rgba(217,166,55,.09);filter:blur(34px)}
+.store-product-visual img{position:relative;z-index:2;display:block;max-width:91%;max-height:235px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 22px 18px rgba(0,0,0,.58)) drop-shadow(0 0 15px rgba(210,70,30,.14))}
+.store-demo-badge{position:absolute;z-index:4;right:14px;top:14px;padding:7px 10px;border:1px solid rgba(32,243,154,.46);border-radius:6px;color:#20f39a;background:rgba(3,15,10,.82);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;letter-spacing:.16em;box-shadow:0 0 16px rgba(32,243,154,.08)}
+.store-product-body{padding:20px}
+.store-product-meta{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.store-product-meta>span:first-child{color:#6f7d80;font-size:8px;font-weight:900;letter-spacing:.15em}
+.store-stattrak{color:#f08a37!important}
+.store-product-body h2{margin:7px 0 0;color:#f2f5f4;font-family:"Chakra Petch",sans-serif;font-size:27px;font-weight:900;line-height:1.05}
+.store-product-divider{height:1px;margin:17px 0;background:#17272c}
+.store-price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.store-price-primary,.store-price-secondary{min-height:82px;padding:13px;border:1px solid #1c3035;border-radius:9px;background:#071015;display:flex;flex-direction:column;justify-content:center}
+.store-price-primary{border-color:rgba(217,166,55,.28);background:linear-gradient(145deg,rgba(217,166,55,.07),#071015)}
+.store-price-secondary{border-color:rgba(32,243,154,.18)}
+.store-price-row span{color:#657477;font-size:7px;font-weight:900;letter-spacing:.12em}
+.store-price-row strong{margin-top:5px;color:#f2f4f3;font-family:"Chakra Petch",sans-serif;font-size:21px;line-height:1}
+.store-price-primary strong b{color:#d9a637}
+.store-price-secondary strong b{color:#20f39a}
+.store-wp-note{margin-top:11px;display:flex;gap:8px;align-items:flex-start;color:#667679;font-size:8px;line-height:1.45}
+.store-wp-note svg{width:14px;height:14px;flex:0 0 14px;color:#20f39a;margin-top:1px}
+.store-redeem-btn{width:100%;min-height:48px;margin-top:17px;border:1px solid #26363b;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:8px;background:#0a1216;color:#687679;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.12em}
+.store-redeem-btn svg{width:16px;height:16px}
+.store-redeem-btn:disabled{cursor:not-allowed;opacity:.78}
 
 @media(min-width:1001px){
  .giveaway-card{height:332px}
