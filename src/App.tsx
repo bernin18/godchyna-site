@@ -1278,7 +1278,6 @@ function StorePage(){
       <main className="store-page">
         <section className="store-shell">
           <header className="store-hero">
-            <span className="store-kicker">GODCHYNA MARKET</span>
             <h1>{pick("LOJA","SHOP")}</h1>
             <p>
               {pick(
@@ -1288,13 +1287,6 @@ function StorePage(){
             </p>
           </header>
 
-          <div className="store-toolbar">
-            <div>
-              <span>{pick("SKINS DISPONÍVEIS","AVAILABLE SKINS")}</span>
-              <strong>1</strong>
-            </div>
-            <span className="store-demo-note">DEMO</span>
-          </div>
 
           <section className="store-grid" aria-label={pick("Produtos da loja","Shop products")}>
             <article className="store-product-card store-product-demo store-product-classified">
