@@ -5,6 +5,7 @@ import {
   Copy,
   Menu,
   ShoppingCart,
+  Tag,
   TrendingUp,
   X,
 } from "lucide-react";
