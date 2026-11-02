@@ -1293,6 +1293,9 @@ function StorePage(){
               <div className="store-product-visual">
                 <span className="store-demo-badge">DEMO</span>
                 <div className="store-product-glow"/>
+                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
+                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
+                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
                 <img
                   src={asset("deagle serpent.png")}
                   alt="StatTrak Desert Eagle Serpent Strike"
