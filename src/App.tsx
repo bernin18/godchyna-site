@@ -1297,7 +1297,7 @@ function StorePage(){
           </div>
 
           <section className="store-grid" aria-label={pick("Produtos da loja","Shop products")}>
-            <article className="store-product-card store-product-demo">
+            <article className="store-product-card store-product-demo store-product-classified">
               <div className="store-product-visual">
                 <span className="store-demo-badge">DEMO</span>
                 <div className="store-product-glow"/>
