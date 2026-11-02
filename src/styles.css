@@ -681,6 +681,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .topbar-inner{padding:0 24px}
 }
 @media(max-width:1000px){
+ .store-page{padding:46px 24px 64px}
+ .store-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .topbar-inner{padding:0 24px}
  .desktop-social{display:none}
  .header-actions{margin-left:auto}
@@ -696,6 +698,13 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
  .giveaway-card{grid-template-columns:1fr}
 }
 @media(max-width:720px){
+ .store-page{padding:38px 18px 54px}
+ .store-hero h1{font-size:44px}
+ .store-hero p{font-size:12px}
+ .store-grid{grid-template-columns:1fr}
+ .store-product-visual{height:245px}
+ .store-product-visual img{max-height:205px}
+ .store-price-row{grid-template-columns:1fr}
  .topbar-inner{height:66px;padding:0 18px}
  .nav{top:66px}
  .brand{font-size:25px}
