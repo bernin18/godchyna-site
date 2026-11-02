@@ -1315,6 +1315,11 @@ function StorePage(){
 
                 <h2>Serpent Strike</h2>
 
+                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
+                  <span className="store-stock-dot" aria-hidden="true"/>
+                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                </div>
+
                 <div className="store-product-divider"/>
 
                 <div className="store-price-row">
