@@ -105,6 +105,25 @@ linear-gradient(145deg,#091116,#05090c);overflow:hidden;box-shadow:0 25px 80px r
 .wheel-account-grid span{color:#778487;font-size:8px;font-weight:800;letter-spacing:.12em}
 .wheel-account-grid strong{font-family:"Chakra Petch",sans-serif;font-size:21px;margin-top:4px}
 .wheel-account-grid strong.active{color:#20f39a}.wheel-account-grid small{color:#718083;margin-top:4px;font-size:9px}
+.wheel-pass-card{min-height:0;overflow:hidden;position:relative}
+.wheel-pass-card::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(145,70,255,.7),rgba(244,191,47,.45),transparent)}
+.wheel-pass-login-card{text-align:center;padding-top:34px}
+.wheel-pass-login-card h2{margin:11px 0 10px;color:#f4f6f5;font-family:"Chakra Petch",sans-serif;font-size:27px;line-height:1.08}
+.wheel-pass-login-card p{max-width:330px;margin:0 auto 22px;color:#8f9b9d;font-size:12px;line-height:1.65}
+.wheel-pass-login-mark{width:58px;height:58px;margin:0 auto 17px;border:1px solid rgba(145,70,255,.42);border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(145,70,255,.17),rgba(145,70,255,.035));box-shadow:0 0 26px rgba(145,70,255,.12)}
+.wheel-pass-login-mark img{width:27px;height:27px;display:block}
+.wheel-twitch-login-btn{width:100%;min-height:52px;border:1px solid rgba(169,112,255,.72);border-radius:8px;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(90deg,#6f2fd1,#9146ff);color:#fff;font-family:"Chakra Petch",sans-serif;font-size:11px;font-weight:900;letter-spacing:.09em;cursor:pointer;transition:.18s ease;box-shadow:0 0 24px rgba(145,70,255,.10)}
+.wheel-twitch-login-btn img{width:18px;height:18px}
+.wheel-twitch-login-btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 0 28px rgba(145,70,255,.20)}
+.wheel-twitch-login-btn:disabled{opacity:.55;cursor:wait}
+.wheel-pass-account{padding-bottom:19px;border-bottom:1px solid #18282d}
+.wheel-pass-balance{margin-top:18px;padding:19px;border:1px solid rgba(244,191,47,.18);border-radius:11px;display:flex;align-items:center;gap:15px;background:radial-gradient(circle at 14% 50%,rgba(244,191,47,.075),transparent 42%),#071015}
+.wheel-pass-ticket{width:48px;height:48px;flex:0 0 48px;border:1px solid rgba(244,191,47,.30);border-radius:11px;display:grid;place-items:center;background:rgba(244,191,47,.055)}
+.wheel-pass-ticket svg{width:23px;height:23px;color:#f4bf2f}
+.wheel-pass-balance>div:last-child{min-width:0;display:flex;flex-direction:column}
+.wheel-pass-balance span{color:#7b888a;font-size:8px;font-weight:900;letter-spacing:.16em}
+.wheel-pass-balance strong{margin-top:2px;color:#f4bf2f;font-family:"Chakra Petch",sans-serif;font-size:30px;line-height:1;font-weight:900}
+.wheel-pass-balance small{margin-top:6px;color:#68777a;font-size:9px;line-height:1.35}
 @media(max-width:1320px) and (min-width:1001px){
  .wheel-showcase{grid-template-columns:minmax(520px,1fr) minmax(330px,.72fr);max-width:1180px}
  .giveaway-history{display:none}
