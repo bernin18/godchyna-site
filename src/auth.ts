@@ -59,7 +59,7 @@ export function useAuthSession() {
 
 export async function signInWithTwitch(returnPath = "perfil") {
   const base = import.meta.env.BASE_URL || "/";
-  const normalizedPath = returnPath.replace(/^\\/+/, "");
+  const normalizedPath = returnPath.replace(/^\/+/, "");
   const redirectTo = new URL(`${base}${normalizedPath}`, window.location.origin).toString();
 
   return supabase.auth.signInWithOAuth({
