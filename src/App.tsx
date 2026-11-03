@@ -1454,7 +1454,6 @@ function StorePage(){
               <section id="store-skins" className="store-category-section">
                 <header className="store-category-heading">
                   <div>
-                    <span>{pick("INVENTÁRIO","INVENTORY")}</span>
                     <h2>SKINS</h2>
                   </div>
                   <p>{pick("Skins disponíveis para resgate.","Skins available to redeem.")}</p>
@@ -1738,7 +1737,6 @@ function StorePage(){
               <section id="store-mbway" className="store-category-section">
                 <header className="store-category-heading">
                   <div>
-                    <span>{pick("SALDO & PRÉMIOS","BALANCE & REWARDS")}</span>
                     <h2>MB WAY</h2>
                   </div>
                 </header>
@@ -1751,7 +1749,6 @@ function StorePage(){
               <section id="store-services" className="store-category-section">
                 <header className="store-category-heading">
                   <div>
-                    <span>{pick("OUTROS RESGATES","OTHER REWARDS")}</span>
                     <h2>{pick("SERVIÇOS","SERVICES")}</h2>
                   </div>
                 </header>
