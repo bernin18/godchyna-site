@@ -122,6 +122,15 @@ export default function AdminRedemptionsPage({
   async function markDelivered(row: RedemptionRow) {
     if (!user || row.status !== "pending" || updatingId !== null) return;
 
+    const confirmed = window.confirm(
+      pick(
+        "Tens a certeza que pretendes concluir a ação?",
+        "Are you sure you want to complete this action?"
+      )
+    );
+
+    if (!confirmed) return;
+
     setUpdatingId(row.id);
     setError("");
 
