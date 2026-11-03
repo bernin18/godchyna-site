@@ -821,9 +821,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   filter:
     drop-shadow(0 18px 15px rgba(0,0,0,.60))
     drop-shadow(0 0 19px rgba(158,82,255,.24));
-  animation:
-    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
-    storeClassifiedWeaponGlow 2.8s ease-in-out infinite;
+  animation:none;
+  transition:transform .28s ease,filter .28s ease;
 }
 .store-product-classified .store-demo-badge{
   border-color:rgba(164,90,255,.58);
@@ -896,9 +895,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   filter:
     drop-shadow(0 16px 13px rgba(0,0,0,.62))
     drop-shadow(0 0 18px rgba(217,166,55,.22));
-  animation:
-    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
-    storeGoldWeaponGlow 2.8s ease-in-out infinite;
+  animation:none;
+  transition:transform .28s ease,filter .28s ease;
 }
 .store-product-gold .store-sparkle{
   background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,226,149,.88) 30%,rgba(217,166,55,0) 72%);
@@ -999,9 +997,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   filter:
     drop-shadow(0 16px 13px rgba(0,0,0,.62))
     drop-shadow(0 0 18px rgba(255,86,180,.22));
-  animation:
-    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
-    storePinkWeaponGlow 2.8s ease-in-out infinite;
+  animation:none;
+  transition:transform .28s ease,filter .28s ease;
 }
 .store-product-pink .store-sparkle{
   background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,190,228,.88) 30%,rgba(255,86,180,0) 72%);
@@ -1101,9 +1098,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   filter:
     drop-shadow(0 16px 13px rgba(0,0,0,.62))
     drop-shadow(0 0 18px rgba(76,153,255,.22));
-  animation:
-    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
-    storeBlueWeaponGlow 2.8s ease-in-out infinite;
+  animation:none;
+  transition:transform .28s ease,filter .28s ease;
 }
 .store-product-blue .store-sparkle{
   background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(188,220,255,.88) 30%,rgba(76,153,255,0) 72%);
@@ -1165,8 +1161,30 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   }
 }
 
+
+.store-product-classified .store-product-visual:hover img{
+  animation:
+    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
+    storeClassifiedWeaponGlow 2.8s ease-in-out infinite;
+}
+.store-product-gold .store-product-visual:hover img{
+  animation:
+    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
+    storeGoldWeaponGlow 2.8s ease-in-out infinite;
+}
+.store-product-pink .store-product-visual:hover img{
+  animation:
+    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
+    storePinkWeaponGlow 2.8s ease-in-out infinite;
+}
+.store-product-blue .store-product-visual:hover img{
+  animation:
+    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
+    storeBlueWeaponGlow 2.8s ease-in-out infinite;
+}
+
 @keyframes storeClassifiedWeaponFloat{
-  0%,100%{transform:translate3d(-4px,3px,0) rotateZ(-.8deg) scale(.995)}
+  0%,100%{transform:translate3d(0,0,0) rotateZ(0) scale(1)}
   50%{transform:translate3d(6px,-7px,0) rotateZ(.8deg) scale(1.018)}
 }
 
