@@ -73,9 +73,14 @@
 
 
 .profile-redemptions-section{margin-top:14px;padding:18px;border:1px solid #1c2d31;border-radius:14px;background:#080e10}
-.profile-redemptions-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px}
+.profile-redemptions-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px}
 .profile-redemptions-heading h2{margin:4px 0 0;font-family:"Chakra Petch",sans-serif;font-size:25px;font-style:italic}
-.profile-redemptions-heading>svg{width:19px;color:#536166}
+.profile-redemptions-help{display:flex;align-items:center;justify-content:flex-end;gap:10px;max-width:560px}
+.profile-redemptions-help p{margin:0;color:#718083;font-size:9.5px;line-height:1.45;text-align:right}
+.profile-redemptions-help-links{display:flex;align-items:center;gap:6px}
+.profile-redemptions-help-links a{padding:5px 7px;border:1px solid #26383e;border-radius:6px;background:#0a1114;color:#9eabad;font:900 7.5px "Chakra Petch",sans-serif;letter-spacing:.06em;text-decoration:none;transition:.2s ease}
+.profile-redemptions-help-links a:hover{border-color:rgba(32,243,154,.45);color:#20f39a}
+.profile-redemptions-help>svg{width:19px;min-width:19px;color:#536166}
 .profile-redemptions-list{display:grid;gap:9px}
 .profile-redemption-card{display:grid;grid-template-columns:minmax(250px,1.35fr) minmax(125px,.65fr) minmax(125px,.65fr) minmax(105px,.5fr) minmax(105px,.5fr);align-items:center;gap:14px;padding:13px 15px;border:1px solid #1a2b2f;border-radius:12px;background:#071013}
 .profile-redemption-card.pending{border-left:3px solid #ffc438}
@@ -103,6 +108,9 @@
   .profile-redemption-state{justify-content:flex-start}
 }
 @media(max-width:720px){
+  .profile-redemptions-heading{align-items:flex-start;flex-direction:column}
+  .profile-redemptions-help{max-width:none;width:100%;justify-content:flex-start;flex-wrap:wrap}
+  .profile-redemptions-help p{text-align:left}
   .profile-redemption-card{grid-template-columns:1fr}
   .profile-redemption-product{grid-column:auto}
   .profile-redemption-state{justify-content:flex-start}
