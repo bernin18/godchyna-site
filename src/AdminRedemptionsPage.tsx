@@ -277,7 +277,7 @@ export default function AdminRedemptionsPage({
                         <div>
                           <span>{row.item_type.replace("_", " ").toUpperCase()}</span>
                           <h2>{row.item_name}</h2>
-                          <small>#{row.id} · {formatDate(row.created_at)}</small>
+                          <small>#{row.id}</small>
                         </div>
                       </div>
 
@@ -290,8 +290,20 @@ export default function AdminRedemptionsPage({
                         </div>
                       </div>
 
+                      <div className="admin-redemption-date">
+                        <span>{pick("DATA DE RESGATE", "REDEMPTION DATE")}</span>
+                        <strong>{formatDate(row.created_at)}</strong>
+                      </div>
+
+                      <div className="admin-redemption-date">
+                        <span>{pick("DATA DE ENTREGA", "DELIVERY DATE")}</span>
+                        <strong className={delivered ? "delivered-date" : ""}>
+                          {delivered ? formatDate(row.delivered_at) : "—"}
+                        </strong>
+                      </div>
+
                       <div className="admin-redemption-cost">
-                        <span>{pick("CUSTO", "COST")}</span>
+                        <span>{pick("VALOR", "VALUE")}</span>
                         <strong>{Number(row.chy_used).toLocaleString("pt-PT", { maximumFractionDigits: 2 })} CHY</strong>
                         {row.wp_used > 0 && <small>+ {Number(row.wp_used).toLocaleString("pt-PT")} WP</small>}
                       </div>
@@ -302,9 +314,7 @@ export default function AdminRedemptionsPage({
                           {delivered ? pick("ENTREGUE", "DELIVERED") : pick("PENDENTE", "PENDING")}
                         </span>
 
-                        {delivered ? (
-                          <small>{formatDate(row.delivered_at)}</small>
-                        ) : (
+                        {delivered ? null : (
                           <button
                             type="button"
                             onClick={() => markDelivered(row)}
