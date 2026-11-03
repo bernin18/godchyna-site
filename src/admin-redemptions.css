@@ -36,6 +36,8 @@
 .admin-redemption-user>svg{width:17px;color:#78878a}
 .admin-redemption-user strong,.admin-redemption-user small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admin-redemption-user strong{margin-top:3px;color:#e5ebea;font-size:11px}
+.admin-redemption-user-link{display:block;margin-top:3px;color:#e5ebea;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-redemption-user-link:hover{color:#20f39a;text-decoration:underline;text-underline-offset:3px}
 .admin-redemption-cost strong{display:block;margin-top:4px;color:#e3b441;font:900 15px "Chakra Petch",sans-serif}
 .admin-redemption-cost small{display:block;margin-top:3px;color:#20f39a}
 .admin-redemption-action{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
