@@ -46,6 +46,20 @@ type RewardsRow = {
   streams_watched: number;
 };
 
+type RedemptionRow = {
+  id: number;
+  item_name: string;
+  item_type: "skin" | "service" | "promo_code";
+  item_image_path: string | null;
+  chy_used: number | string;
+  wp_used: number;
+  status: "pending" | "delivered" | "cancelled";
+  created_at: string;
+  delivered_at: string | null;
+};
+
+const profileAsset = (name: string) => `${import.meta.env.BASE_URL}${name.replace(/^\/+/, "")}`;
+
 function TwitchMark() {
   return <img src="https://cdn.simpleicons.org/twitch/FFFFFF" alt="" aria-hidden="true" />;
 }
@@ -93,7 +107,61 @@ export default function ProfilePage({
   const [tradeSaving, setTradeSaving] = useState(false);
   const [tradeMessage, setTradeMessage] = useState("");
   const [pendingRedemptions, setPendingRedemptions] = useState(0);
+  const [redemptions, setRedemptions] = useState<RedemptionRow[]>([]);
 
+
+
+  useEffect(() => {
+    if (!user) {
+      setRedemptions([]);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadRedemptions() {
+      const { data, error } = await supabase
+        .from("store_redemptions")
+        .select("id,item_name,item_type,item_image_path,chy_used,wp_used,status,created_at,delivered_at")
+        .eq("user_id", user!.id)
+        .order("created_at", { ascending: false });
+
+      if (cancelled) return;
+
+      if (error) {
+        console.warn("Unable to load profile redemptions", error);
+        return;
+      }
+
+      setRedemptions((data ?? []) as RedemptionRow[]);
+    }
+
+    void loadRedemptions();
+
+    const channel = supabase
+      .channel(`profile-redemptions-${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "store_redemptions",
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          void loadRedemptions();
+        }
+      )
+      .subscribe();
+
+    const timer = window.setInterval(() => void loadRedemptions(), 15000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+      void supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -203,6 +271,17 @@ export default function ProfilePage({
   const watchHours = useMemo(() => Math.floor((rewards.watch_minutes ?? 0) / 60), [rewards.watch_minutes]);
   const watchMinutes = (rewards.watch_minutes ?? 0) % 60;
   const chy = Number(rewards.chy_balance ?? 0);
+
+  function formatRedemptionDate(value: string | null) {
+    if (!value) return "—";
+    return new Intl.DateTimeFormat("pt-PT", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(value));
+  }
 
   async function handleLogin() {
     setAuthError("");
@@ -384,6 +463,73 @@ export default function ProfilePage({
                 <small><Flame /> {pick("streams consecutivas", "consecutive streams")}</small>
               </article>
             </section>
+
+            {redemptions.length > 0 && (
+              <section className="profile-redemptions-section">
+                <header className="profile-redemptions-heading">
+                  <div>
+                    <span className="profile-eyebrow">{pick("LOJA", "SHOP")}</span>
+                    <h2>{pick("OS MEUS RESGATES", "MY REDEMPTIONS")}</h2>
+                  </div>
+                  <PackageCheck />
+                </header>
+
+                <div className="profile-redemptions-list">
+                  {redemptions.map(redemption => {
+                    const delivered = redemption.status === "delivered";
+
+                    return (
+                      <article
+                        key={redemption.id}
+                        className={`profile-redemption-card ${delivered ? "delivered" : "pending"}`}
+                      >
+                        <div className="profile-redemption-product">
+                          <div className="profile-redemption-image">
+                            {redemption.item_image_path ? (
+                              <img src={profileAsset(redemption.item_image_path)} alt={redemption.item_name} />
+                            ) : (
+                              <PackageCheck />
+                            )}
+                          </div>
+                          <div>
+                            <span>{redemption.item_type.replace("_", " ").toUpperCase()}</span>
+                            <h3>{redemption.item_name}</h3>
+                            <small>#{redemption.id}</small>
+                          </div>
+                        </div>
+
+                        <div className="profile-redemption-date">
+                          <span>{pick("DATA DE RESGATE", "REDEMPTION DATE")}</span>
+                          <strong>{formatRedemptionDate(redemption.created_at)}</strong>
+                        </div>
+
+                        <div className="profile-redemption-date">
+                          <span>{pick("DATA DE ENTREGA", "DELIVERY DATE")}</span>
+                          <strong className={delivered ? "delivered-date" : ""}>
+                            {delivered ? formatRedemptionDate(redemption.delivered_at) : "—"}
+                          </strong>
+                        </div>
+
+                        <div className="profile-redemption-value">
+                          <span>{pick("VALOR", "VALUE")}</span>
+                          <strong>{Number(redemption.chy_used).toLocaleString("pt-PT", { maximumFractionDigits: 2 })} CHY</strong>
+                          {redemption.wp_used > 0 && (
+                            <small>+ {Number(redemption.wp_used).toLocaleString("pt-PT")} WP</small>
+                          )}
+                        </div>
+
+                        <div className="profile-redemption-state">
+                          <span className={`profile-redemption-status ${redemption.status}`}>
+                            {delivered ? <CheckCircle2 /> : <Clock3 />}
+                            {delivered ? pick("ENTREGUE", "DELIVERED") : pick("PENDENTE", "PENDING")}
+                          </span>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
 
             <section className="profile-grid">
               <article className="profile-panel">
