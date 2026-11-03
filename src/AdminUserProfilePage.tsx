@@ -81,7 +81,19 @@ export default function AdminUserProfilePage({Header,Footer}:{Header:React.Compo
               </article>
               <article className="admin-user-panel">
                 <span>STEAM</span>
-                <strong>{profile.steam_display_name || profile.steam_id || pick("Não ligada","Not connected")}</strong>
+                {profile.steam_id ? (
+                  <a
+                    className="admin-user-steam-profile-link"
+                    href={`https://steamcommunity.com/profiles/${profile.steam_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <strong>{profile.steam_display_name || profile.steam_id}</strong>
+                    <ExternalLink />
+                  </a>
+                ) : (
+                  <strong>{pick("Não ligada","Not connected")}</strong>
+                )}
               </article>
             </div>
 
