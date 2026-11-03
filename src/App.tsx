@@ -1504,7 +1504,7 @@ function StorePage(){
                   <span>SPECIALIST GLOVES</span>
                 </div>
 
-                <h2>★ Mogul</h2>
+                <h2>★ Mogul <span className="store-condition-inline store-condition-gold">FT</span></h2>
 
                 <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
                   <span className="store-stock-dot" aria-hidden="true"/>
