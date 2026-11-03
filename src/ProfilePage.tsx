@@ -308,7 +308,7 @@ export default function ProfilePage({
               </div>
               <div className="profile-hero-actions">
                 {profile?.role === "admin" && (
-                  <a className="profile-admin-link" href={`${import.meta.env.BASE_URL}admin/resgates`}>
+                  <a className="profile-admin-link" href={`${import.meta.env.BASE_URL}resgates`}>
                     <PackageCheck />
                     {pick("RESGATES", "REDEMPTIONS")}
                   </a>
