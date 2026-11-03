@@ -1368,7 +1368,7 @@ function StorePage(){
                   <span className="store-stattrak">STATTRAK™</span>
                 </div>
 
-                <h2>Serpent Strike FN</h2>
+                <h2>Serpent Strike <span className="store-condition-inline store-condition-classified">FN</span></h2>
 
                 <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
                   <span className="store-stock-dot" aria-hidden="true"/>
@@ -1404,7 +1404,7 @@ function StorePage(){
                 <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
                 <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
                 <img
-                  src={asset("Kukri FT.webp")}
+                  src={asset("Kukri FT.png")}
                   alt="Kukri Knife Crimson Web Field-Tested"
                 />
               </div>
@@ -1412,10 +1412,9 @@ function StorePage(){
               <div className="store-product-body">
                 <div className="store-product-meta">
                   <span>KUKRI KNIFE</span>
-                  <span className="store-condition-gold">FT</span>
                 </div>
 
-                <h2>Crimson Web FT</h2>
+                <h2>Crimson Web <span className="store-condition-inline store-condition-gold">FT</span></h2>
 
                 <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
                   <span className="store-stock-dot" aria-hidden="true"/>
