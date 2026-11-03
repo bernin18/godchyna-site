@@ -1308,7 +1308,7 @@ function StorePage(){
                   <span className="store-stattrak">STATTRAK™</span>
                 </div>
 
-                <h2>Serpent Strike</h2>
+                <h2>Serpent Strike FN</h2>
 
                 <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
                   <span className="store-stock-dot" aria-hidden="true"/>
