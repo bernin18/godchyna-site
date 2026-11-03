@@ -11,9 +11,9 @@
 .admin-user-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .admin-user-panel{padding:20px;border:1px solid #1b2c30;border-radius:13px;background:#080e10}
 .admin-user-panel strong{display:block;margin-top:6px;color:#e6eceb;font:900 14px "Chakra Petch",sans-serif}
-.admin-user-steam-profile-link{display:inline-flex;align-items:center;gap:7px;margin-top:6px;color:#e6eceb;text-decoration:none}
-.admin-user-steam-profile-link strong{margin-top:0}
-.admin-user-steam-profile-link svg{width:14px;height:14px;color:#20f39a}
+.admin-user-steam-profile-link{display:flex;align-items:center;gap:7px;width:max-content;margin-top:6px;color:#e6eceb;text-decoration:none}
+.admin-user-steam-profile-link strong{margin-top:0;display:block}
+.admin-user-steam-profile-link svg{width:14px;height:14px;color:#20f39a;flex:0 0 auto}
 .admin-user-steam-profile-link:hover strong{color:#20f39a;text-decoration:underline;text-underline-offset:3px}
 .admin-user-trade{margin-top:12px;padding:22px;border:1px solid;border-radius:14px;background:#080e10}
 .admin-user-trade.ready{border-color:rgba(32,243,154,.30);background:radial-gradient(circle at 92% 20%,rgba(32,243,154,.08),transparent 32%),#080e10}
