@@ -531,7 +531,6 @@ export default function ProfilePage({
                                 </span>
                               )}
                             </h3>
-                            <small>#{redemption.id}</small>
                           </div>
                         </div>
 
