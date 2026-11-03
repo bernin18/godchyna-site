@@ -92,6 +92,7 @@ export default function ProfilePage({
   const [tradeUrl, setTradeUrl] = useState("");
   const [tradeSaving, setTradeSaving] = useState(false);
   const [tradeMessage, setTradeMessage] = useState("");
+  const [pendingRedemptions, setPendingRedemptions] = useState(0);
 
 
   useEffect(() => {
@@ -159,6 +160,42 @@ export default function ProfilePage({
       cancelled = true;
     };
   }, [user]);
+
+  useEffect(() => {
+    if (!user || profile?.role !== "admin") {
+      setPendingRedemptions(0);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function refreshPendingRedemptions() {
+      const { count, error } = await supabase
+        .from("store_redemptions")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pending");
+
+      if (cancelled) return;
+
+      if (error) {
+        console.warn("Unable to load pending redemptions", error);
+        return;
+      }
+
+      setPendingRedemptions(count ?? 0);
+    }
+
+    void refreshPendingRedemptions();
+    const timer = window.setInterval(() => void refreshPendingRedemptions(), 15000);
+    const onRedemptionsChanged = () => void refreshPendingRedemptions();
+    window.addEventListener("godchyna:redemptions-changed", onRedemptionsChanged);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+      window.removeEventListener("godchyna:redemptions-changed", onRedemptionsChanged);
+    };
+  }, [profile?.role, user]);
 
   const avatar = profile?.avatar_url || getUserAvatar(user);
   const displayName = profile?.display_name || getUserDisplayName(user);
@@ -311,6 +348,11 @@ export default function ProfilePage({
                   <a className="profile-admin-link" href={`${import.meta.env.BASE_URL}resgates`}>
                     <PackageCheck />
                     {pick("RESGATES", "REDEMPTIONS")}
+                    {pendingRedemptions > 0 && (
+                      <b className="profile-admin-badge">
+                        {pendingRedemptions > 99 ? "99+" : pendingRedemptions}
+                      </b>
+                    )}
                   </a>
                 )}
                 <button className="profile-logout" type="button" onClick={handleLogout}>
