@@ -470,7 +470,19 @@ export default function ProfilePage({
                   <div>
                     <h2>{pick("OS MEUS RESGATES", "MY REDEMPTIONS")}</h2>
                   </div>
-                  <PackageCheck />
+                  <div className="profile-redemptions-help">
+                    <p>
+                      {pick(
+                        "Em caso de problemas ou dúvidas, entra em contacto comigo pelo Discord ou Instagram.",
+                        "If you have any problems or questions, contact me through Discord or Instagram."
+                      )}
+                    </p>
+                    <div className="profile-redemptions-help-links">
+                      <a href="https://discord.gg/mdXvwBj8rv" target="_blank" rel="noopener noreferrer">DISCORD</a>
+                      <a href="https://www.instagram.com/godchyna_/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+                    </div>
+                    <PackageCheck />
+                  </div>
                 </header>
 
                 <div className="profile-redemptions-list">
