@@ -1380,7 +1380,7 @@ function StorePage(){
                 <div className="store-price-row">
                   <div className="store-price-primary">
                     <span>{pick("PREÇO","PRICE")}</span>
-                    <strong>5 <b>CHY</b></strong>
+                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>5</strong>
                   </div>
                   <div className="store-price-secondary">
                     <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
@@ -1426,7 +1426,7 @@ function StorePage(){
                 <div className="store-price-row">
                   <div className="store-price-primary">
                     <span>{pick("PREÇO","PRICE")}</span>
-                    <strong>84 <b>CHY</b></strong>
+                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>84</strong>
                   </div>
                   <div className="store-price-secondary">
                     <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
@@ -1471,7 +1471,7 @@ function StorePage(){
                 <div className="store-price-row">
                   <div className="store-price-primary">
                     <span>{pick("PREÇO","PRICE")}</span>
-                    <strong>30 <b>CHY</b></strong>
+                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>30</strong>
                   </div>
                   <div className="store-price-secondary">
                     <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
@@ -1516,7 +1516,7 @@ function StorePage(){
                 <div className="store-price-row">
                   <div className="store-price-primary">
                     <span>{pick("PREÇO","PRICE")}</span>
-                    <strong>84 <b>CHY</b></strong>
+                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>84</strong>
                   </div>
                   <div className="store-price-secondary">
                     <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
@@ -1561,7 +1561,7 @@ function StorePage(){
                 <div className="store-price-row">
                   <div className="store-price-primary">
                     <span>{pick("PREÇO","PRICE")}</span>
-                    <strong>7,8 <b>CHY</b></strong>
+                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>7,8</strong>
                   </div>
                   <div className="store-price-secondary">
                     <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
