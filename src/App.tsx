@@ -14,6 +14,7 @@ import ConfigsPage from "./ConfigsPage";
 import WheelPage from "./WheelPage";
 import ProfilePage from "./ProfilePage";
 import AdminRedemptionsPage from "./AdminRedemptionsPage";
+import AdminUserProfilePage from "./AdminUserProfilePage";
 import { getUserAvatar, getUserDisplayName, signInWithTwitch, useAuthSession } from "./auth";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
@@ -1648,6 +1649,7 @@ export default function App(){
   else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
   else if(path.endsWith("/loja")) page = <StorePage/>;
   else if(path.endsWith("/resgates")) page = <AdminRedemptionsPage Header={Header} Footer={Footer}/>;
+  else if(path.endsWith("/cliente")) page = <AdminUserProfilePage Header={Header} Footer={Footer}/>;
   else if(path.endsWith("/perfil")) page = <ProfilePage Header={Header} Footer={Footer}/>;
 
   return (
