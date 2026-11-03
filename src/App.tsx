@@ -14,6 +14,7 @@ import ConfigsPage from "./ConfigsPage";
 import WheelPage from "./WheelPage";
 import ProfilePage from "./ProfilePage";
 import { getUserAvatar, getUserDisplayName, signInWithTwitch, useAuthSession } from "./auth";
+import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import "./about.css";
 import "./extra-pages.css";
@@ -1271,6 +1272,65 @@ function GiveawaysPage(){
 
 function StorePage(){
   const { pick } = useLanguage();
+  const { user, loading: authLoading } = useAuthSession();
+  const [storeAccess, setStoreAccess] = useState<"loading"|"admin"|"maintenance">("loading");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function resolveStoreAccess() {
+      if (authLoading) return;
+
+      if (!user?.id) {
+        if (!cancelled) setStoreAccess("maintenance");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (cancelled) return;
+
+      if (error) {
+        console.warn("Unable to resolve store access", error);
+        setStoreAccess("maintenance");
+        return;
+      }
+
+      setStoreAccess(data?.role === "admin" ? "admin" : "maintenance");
+    }
+
+    void resolveStoreAccess();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, user?.id]);
+
+  if (storeAccess !== "admin") {
+    return (
+      <>
+        <Header/>
+        <main className="store-page store-maintenance-page">
+          <section className="store-maintenance-card">
+            <span className="store-maintenance-dot" aria-hidden="true"/>
+            <span className="store-maintenance-kicker">{pick("LOJA","SHOP")}</span>
+            <h1>{pick("EM MANUTENÇÃO","UNDER MAINTENANCE")}</h1>
+            <p>
+              {pick(
+                "Estamos a preparar a loja. Volta em breve.",
+                "We're preparing the shop. Check back soon.",
+              )}
+            </p>
+          </section>
+        </main>
+        <Footer/>
+      </>
+    );
+  }
 
   return (
     <>
