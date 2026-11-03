@@ -200,12 +200,6 @@ export default function AdminRedemptionsPage({
               <div>
                 <span>{pick("ADMINISTRAÇÃO DA LOJA", "STORE ADMIN")}</span>
                 <h1>{pick("RESGATES & ENTREGAS", "REDEMPTIONS & DELIVERIES")}</h1>
-                <p>
-                  {pick(
-                    "Controla aqui tudo o que foi resgatado. A entrega é manual e só fica concluída quando um admin marcar o pedido como entregue.",
-                    "Manage everything redeemed here. Fulfilment is manual and only completes when an admin marks the order as delivered."
-                  )}
-                </p>
               </div>
               <PackageCheck />
             </header>
