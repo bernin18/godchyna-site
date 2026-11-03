@@ -708,52 +708,32 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-product-classified .store-sparkle{
   position:absolute;
   z-index:3;
-  width:10px;
-  height:10px;
+  width:8px;
+  height:8px;
   border-radius:50%;
   pointer-events:none;
-  background:
-    radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(236,209,255,.88) 26%,rgba(168,92,255,0) 72%);
-  box-shadow:
-    0 0 10px rgba(222,172,255,.48),
-    0 0 22px rgba(168,92,255,.30);
-  animation:storeSparkleTwinkle 2.8s ease-in-out infinite;
-}
-.store-product-classified .store-sparkle::before,
-.store-product-classified .store-sparkle::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  border-radius:999px;
-  background:rgba(255,255,255,.92);
-  box-shadow:0 0 8px rgba(255,255,255,.42);
-}
-.store-product-classified .store-sparkle::before{
-  width:2px;
-  height:14px;
-}
-.store-product-classified .store-sparkle::after{
-  width:14px;
-  height:2px;
+  opacity:0;
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(225,194,255,.84) 30%,rgba(164,90,255,0) 72%);
+  box-shadow:0 0 12px rgba(204,148,255,.58);
 }
 .store-product-classified .store-sparkle-1{
   top:22%;
-  left:24%;
-  animation-delay:0s;
+  right:26%;
+  animation:sparkleOne 3.2s ease-in-out infinite;
 }
 .store-product-classified .store-sparkle-2{
-  top:34%;
-  right:21%;
-  animation-delay:.85s;
-  transform:scale(.82);
+  bottom:24%;
+  left:22%;
+  width:6px;
+  height:6px;
+  animation:sparkleTwo 4.1s ease-in-out infinite;
 }
 .store-product-classified .store-sparkle-3{
-  bottom:23%;
-  left:31%;
-  animation-delay:1.55s;
-  transform:scale(.68);
+  top:48%;
+  left:63%;
+  width:9px;
+  height:9px;
+  animation:sparkleThree 3.7s ease-in-out infinite;
 }
 .store-product-classified .store-product-visual img{
   transform-origin:center;
@@ -794,13 +774,6 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-product-classified .store-redeem-btn{
   border-color:rgba(164,90,255,.28);
   background:linear-gradient(180deg,rgba(22,10,31,.60),#0a1216);
-}
-
-@keyframes storeSparkleTwinkle{
-  0%,100%{opacity:.18;filter:blur(.15px)}
-  45%{opacity:.75}
-  55%{opacity:1;filter:blur(0)}
-  70%{opacity:.45}
 }
 
 @keyframes storeClassifiedWeaponFloat{
