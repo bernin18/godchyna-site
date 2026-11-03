@@ -372,26 +372,27 @@ function Header() {
       return;
     }
 
+    const currentUser=user;
     let cancelled=false;
 
     async function refreshAdminBadge(){
       const { data, error }=await supabase
         .from("profiles")
         .select("display_name,role")
-        .eq("id",user.id)
+        .eq("id",currentUser.id)
         .maybeSingle();
 
       if(cancelled) return;
 
       if(error){
         console.warn("Unable to load header profile",error);
-        setProfileName(getUserDisplayName(user));
+        setProfileName(getUserDisplayName(currentUser));
         setIsAdmin(false);
         setPendingRedemptions(0);
         return;
       }
 
-      setProfileName(data?.display_name || getUserDisplayName(user));
+      setProfileName(data?.display_name || getUserDisplayName(currentUser));
       const admin=data?.role==="admin";
       setIsAdmin(admin);
 
