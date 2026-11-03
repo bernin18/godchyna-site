@@ -86,13 +86,30 @@
 .profile-redemption-card{display:grid;grid-template-columns:minmax(250px,1.35fr) minmax(125px,.65fr) minmax(125px,.65fr) minmax(105px,.5fr) minmax(105px,.5fr);align-items:center;gap:14px;padding:13px 15px;border:1px solid #1a2b2f;border-radius:12px;background:#071013}
 .profile-redemption-card.pending{border-left:3px solid #ffc438}
 .profile-redemption-card.delivered{border-left:3px solid #20f39a;background:linear-gradient(90deg,rgba(32,243,154,.035),#071013 26%)}
+.profile-redemption-card.rarity-pink{border-color:rgba(255,86,180,.45);background:radial-gradient(circle at 8% 50%,rgba(255,86,180,.10),transparent 24%),#071013}
+.profile-redemption-card.rarity-pink.pending{border-left-color:#ff70c4}
+.profile-redemption-card.rarity-classified{border-color:rgba(158,82,255,.45);background:radial-gradient(circle at 8% 50%,rgba(158,82,255,.10),transparent 24%),#071013}
+.profile-redemption-card.rarity-classified.pending{border-left-color:#b96cff}
+.profile-redemption-card.rarity-gold{border-color:rgba(217,166,55,.48);background:radial-gradient(circle at 8% 50%,rgba(217,166,55,.10),transparent 24%),#071013}
+.profile-redemption-card.rarity-gold.pending{border-left-color:#ffc438}
+.profile-redemption-card.rarity-blue{border-color:rgba(76,153,255,.45);background:radial-gradient(circle at 8% 50%,rgba(76,153,255,.10),transparent 24%),#071013}
+.profile-redemption-card.rarity-blue.pending{border-left-color:#68b0ff}
 .profile-redemption-product{display:flex;align-items:center;gap:12px;min-width:0}
 .profile-redemption-image{width:68px;height:52px;flex:0 0 68px;display:flex;align-items:center;justify-content:center;border:1px solid #1c2d31;border-radius:8px;background:#060b0d;overflow:hidden}
 .profile-redemption-image img{width:100%;height:100%;object-fit:contain}
+.profile-redemption-card.rarity-pink .profile-redemption-image img{filter:drop-shadow(0 0 10px rgba(255,86,180,.24))}
+.profile-redemption-card.rarity-classified .profile-redemption-image img{filter:drop-shadow(0 0 10px rgba(158,82,255,.24))}
+.profile-redemption-card.rarity-gold .profile-redemption-image img{filter:drop-shadow(0 0 10px rgba(217,166,55,.24))}
+.profile-redemption-card.rarity-blue .profile-redemption-image img{filter:drop-shadow(0 0 10px rgba(76,153,255,.24))}
 .profile-redemption-image svg{width:21px;color:#526064}
 .profile-redemption-product>div:last-child{min-width:0}
 .profile-redemption-product span,.profile-redemption-date span,.profile-redemption-value span{display:block;color:#68777a;font:900 8px "Chakra Petch",sans-serif;letter-spacing:.12em}
 .profile-redemption-product h3{margin:3px 0;color:#eff4f3;font:900 16px "Chakra Petch",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-redemption-condition{margin-left:5px;font-size:.78em;font-weight:900;letter-spacing:.04em}
+.profile-redemption-condition.rarity-pink{color:#ff70c4;text-shadow:0 0 10px rgba(255,112,196,.24)}
+.profile-redemption-condition.rarity-classified{color:#b96cff;text-shadow:0 0 10px rgba(185,108,255,.24)}
+.profile-redemption-condition.rarity-gold{color:#ffc438;text-shadow:0 0 10px rgba(255,196,56,.24)}
+.profile-redemption-condition.rarity-blue{color:#68b0ff;text-shadow:0 0 10px rgba(104,176,255,.24)}
 .profile-redemption-product small,.profile-redemption-value small{color:#657477;font-size:9px}
 .profile-redemption-date strong{display:block;margin-top:5px;color:#dce4e3;font:900 10px "Chakra Petch",sans-serif;white-space:nowrap}
 .profile-redemption-date strong.delivered-date{color:#20f39a}
