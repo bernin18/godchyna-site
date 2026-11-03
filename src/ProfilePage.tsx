@@ -468,7 +468,6 @@ export default function ProfilePage({
               <section className="profile-redemptions-section">
                 <header className="profile-redemptions-heading">
                   <div>
-                    <span className="profile-eyebrow">{pick("LOJA", "SHOP")}</span>
                     <h2>{pick("OS MEUS RESGATES", "MY REDEMPTIONS")}</h2>
                   </div>
                   <PackageCheck />
