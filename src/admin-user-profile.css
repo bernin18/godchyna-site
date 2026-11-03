@@ -1,0 +1,26 @@
+.admin-user-page{min-height:calc(100vh - 150px);padding:72px 50px 80px;background:radial-gradient(circle at 16% 14%,rgba(32,243,154,.055),transparent 24%),radial-gradient(circle at 86% 18%,rgba(145,71,255,.055),transparent 24%),#05090b}
+.admin-user-shell,.admin-user-state{width:min(1040px,100%);margin:0 auto}
+.admin-user-back{display:inline-flex;align-items:center;gap:7px;margin-bottom:13px;color:#819092;font:900 9px "Chakra Petch",sans-serif;letter-spacing:.07em;text-decoration:none}
+.admin-user-back svg{width:14px;height:14px}
+.admin-user-hero{display:flex;align-items:center;gap:18px;padding:24px 26px;border:1px solid #1d3034;border-radius:16px;background:linear-gradient(120deg,#0b1215,#080d0f);box-shadow:0 22px 60px rgba(0,0,0,.22)}
+.admin-user-avatar{width:72px;height:72px;flex:0 0 72px;border:1px solid #2a3b40;border-radius:14px;overflow:hidden;background:#0c1518}
+.admin-user-avatar img,.admin-user-avatar span{width:100%;height:100%;display:flex;align-items:center;justify-content:center;object-fit:cover;color:#20f39a;font:900 28px "Chakra Petch",sans-serif}
+.admin-user-hero>div:last-child>span,.admin-user-panel>span,.admin-user-trade>span{color:#68777a;font:900 8px "Chakra Petch",sans-serif;letter-spacing:.13em}
+.admin-user-hero h1{margin:5px 0 4px;font:italic 900 34px "Chakra Petch",sans-serif}
+.admin-user-hero p{margin:0;color:#a08fbd;font-size:11px}
+.admin-user-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.admin-user-panel{padding:20px;border:1px solid #1b2c30;border-radius:13px;background:#080e10}
+.admin-user-panel strong{display:block;margin-top:6px;color:#e6eceb;font:900 14px "Chakra Petch",sans-serif}
+.admin-user-trade{margin-top:12px;padding:22px;border:1px solid;border-radius:14px;background:#080e10}
+.admin-user-trade.ready{border-color:rgba(32,243,154,.30);background:radial-gradient(circle at 92% 20%,rgba(32,243,154,.08),transparent 32%),#080e10}
+.admin-user-trade.missing{border-color:rgba(255,196,56,.26);background:radial-gradient(circle at 92% 20%,rgba(255,196,56,.06),transparent 32%),#080e10}
+.admin-user-trade h2{margin:5px 0 0;font:italic 900 22px "Chakra Petch",sans-serif}
+.admin-user-trade-url{margin-top:16px;padding:12px;border:1px solid #1d3034;border-radius:8px;background:#050a0c;color:#aebbb9;font:700 10px/1.5 monospace;overflow-wrap:anywhere;user-select:all}
+.admin-user-trade>p{margin:14px 0 0;color:#718083;font-size:10.5px}
+.admin-user-state{display:flex;min-height:330px;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;border:1px solid #1b2c30;border-radius:14px;background:#080e10}
+.admin-user-state>svg{width:37px;height:37px;color:#536166}
+.admin-user-state h1{margin:13px 0 7px;font:italic 900 25px "Chakra Petch",sans-serif}
+.admin-user-state p{max-width:560px;margin:0;color:#718083;font-size:11px;line-height:1.6}
+.admin-user-loader{width:10px;height:10px;border-radius:50%;background:#20f39a;box-shadow:0 0 14px #20f39a;animation:adminUserPulse 1s ease-in-out infinite}
+@keyframes adminUserPulse{50%{opacity:.35;transform:scale(.75)}}
+@media(max-width:720px){.admin-user-page{padding:42px 18px 60px}.admin-user-grid{grid-template-columns:1fr}.admin-user-hero{padding:19px}.admin-user-avatar{width:60px;height:60px;flex-basis:60px}.admin-user-hero h1{font-size:27px}}
