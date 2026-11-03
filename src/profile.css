@@ -19,10 +19,11 @@
 }
 .header-twitch-login:hover,.header-profile-link:hover{border-color:rgba(168,111,255,.8);background:rgba(145,71,255,.18);transform:translateY(-1px)}
 .header-twitch-login img{width:14px;height:14px}
-.header-profile-link{max-width:170px;padding:3px 10px 3px 4px;border-color:#26383e;background:#0a1114}
+.header-profile-link{position:relative;max-width:170px;padding:3px 10px 3px 4px;border-color:#26383e;background:#0a1114}
 .header-profile-link img,.header-profile-fallback{width:27px;height:27px;border-radius:6px;object-fit:cover;background:#111a1e}
 .header-profile-fallback{display:flex;align-items:center;justify-content:center;color:#20f39a}
 .header-profile-link span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-pending-badge{position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;padding:0 4px;display:flex;align-items:center;justify-content:center;border:2px solid #081012;border-radius:999px;background:#ff3b45;color:#fff;font:900 9px/1 "Chakra Petch",sans-serif;box-shadow:0 0 12px rgba(255,59,69,.48)}
 
 .profile-page{min-height:calc(100vh - 150px);padding:72px 50px 80px;background:
   radial-gradient(circle at 14% 16%,rgba(145,71,255,.07),transparent 25%),
@@ -51,9 +52,10 @@
 .profile-twitch-name{display:flex;align-items:center;gap:7px;color:#a996c7;font-size:12px}
 .profile-twitch-name img{width:14px;height:14px}
 .profile-hero-actions{display:flex;align-items:center;gap:8px}
-.profile-admin-link{display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid rgba(32,243,154,.32);border-radius:7px;background:rgba(32,243,154,.07);color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.055em;text-decoration:none;transition:.2s ease}
+.profile-admin-link{position:relative;display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid rgba(32,243,154,.32);border-radius:7px;background:rgba(32,243,154,.07);color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.055em;text-decoration:none;transition:.2s ease}
 .profile-admin-link:hover{border-color:rgba(32,243,154,.58);background:rgba(32,243,154,.11);transform:translateY(-1px)}
 .profile-admin-link svg{width:15px;height:15px}
+.profile-admin-badge{min-width:18px;height:18px;padding:0 4px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:#ff3b45;color:#fff;font:900 9px/1 "Chakra Petch",sans-serif;box-shadow:0 0 12px rgba(255,59,69,.42)}
 .profile-logout{display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid #28383d;border-radius:7px;background:#091013;color:#8f9da0;font-size:10px;font-weight:800;cursor:pointer}
 .profile-logout svg{width:15px}
 
