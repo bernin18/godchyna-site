@@ -641,33 +641,33 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-toolbar>div span{color:#718083;font-size:8px;font-weight:900;letter-spacing:.14em}
 .store-toolbar>div strong{color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:16px}
 .store-demo-note{padding:5px 8px;border:1px solid rgba(217,166,55,.32);border-radius:999px;color:#d9a637;background:rgba(217,166,55,.055);font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.15em}
-.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,275px));gap:15px;justify-content:start}
-.store-product-card{width:100%;max-width:275px;overflow:hidden;border:1px solid #21343a;border-radius:13px;background:linear-gradient(155deg,#091317,#060b0e);box-shadow:0 22px 54px rgba(0,0,0,.28),inset 0 0 32px rgba(32,243,154,.018)}
-.store-product-visual{position:relative;height:172px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:
+.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,245px));gap:15px;justify-content:start;margin-top:28px}
+.store-product-card{width:100%;max-width:245px;overflow:hidden;border:1px solid #21343a;border-radius:12px;background:linear-gradient(155deg,#091317,#060b0e);box-shadow:0 20px 48px rgba(0,0,0,.28),inset 0 0 28px rgba(32,243,154,.018)}
+.store-product-visual{position:relative;height:154px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:
  radial-gradient(circle at 50% 54%,rgba(223,84,37,.15),transparent 28%),
  radial-gradient(circle at 50% 58%,rgba(32,243,154,.065),transparent 52%),
  linear-gradient(180deg,#0a1418,#071014)}
 .store-product-visual::after{content:"";position:absolute;left:20px;right:20px;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(32,243,154,.35),rgba(217,166,55,.28),transparent)}
-.store-product-glow{position:absolute;width:172px;height:78px;bottom:16px;border-radius:50%;background:rgba(217,166,55,.09);filter:blur(28px)}
-.store-product-visual img{position:relative;z-index:2;display:block;max-width:89%;max-height:145px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 18px 15px rgba(0,0,0,.58)) drop-shadow(0 0 13px rgba(210,70,30,.14))}
+.store-product-glow{position:absolute;width:154px;height:70px;bottom:14px;border-radius:50%;background:rgba(217,166,55,.09);filter:blur(26px)}
+.store-product-visual img{position:relative;z-index:2;display:block;max-width:88%;max-height:130px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 16px 13px rgba(0,0,0,.58)) drop-shadow(0 0 12px rgba(210,70,30,.14))}
 .store-demo-badge{position:absolute;z-index:4;right:11px;top:11px;padding:6px 8px;border:1px solid rgba(32,243,154,.46);border-radius:6px;color:#20f39a;background:rgba(3,15,10,.82);font-family:"Chakra Petch",sans-serif;font-size:7px;font-weight:900;letter-spacing:.14em;box-shadow:0 0 14px rgba(32,243,154,.08)}
-.store-product-body{padding:12px}
+.store-product-body{padding:10px}
 .store-product-meta{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .store-product-meta>span:first-child{color:#6f7d80;font-size:8px;font-weight:900;letter-spacing:.15em}
 .store-stattrak{color:#f08a37!important}
-.store-product-body h2{margin:5px 0 0;color:#f2f5f4;font-family:"Chakra Petch",sans-serif;font-size:20px;font-weight:900;line-height:1.05}
+.store-product-body h2{margin:5px 0 0;color:#f2f5f4;font-family:"Chakra Petch",sans-serif;font-size:18px;font-weight:900;line-height:1.05}
 .store-stock-row{display:flex;align-items:center;gap:6px;margin-top:7px;color:#aebbb9;font-family:"Chakra Petch",sans-serif;font-size:7.5px;font-weight:900;letter-spacing:.1em}
 .store-stock-dot{width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.55)}
 .store-product-divider{height:1px;margin:10px 0;background:#17272c}
 .store-price-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.store-price-primary,.store-price-secondary{min-height:59px;padding:9px;border:1px solid #1c3035;border-radius:8px;background:#071015;display:flex;flex-direction:column;justify-content:center}
+.store-price-primary,.store-price-secondary{min-height:54px;padding:8px;border:1px solid #1c3035;border-radius:8px;background:#071015;display:flex;flex-direction:column;justify-content:center}
 .store-price-primary{border-color:rgba(217,166,55,.28);background:linear-gradient(145deg,rgba(217,166,55,.07),#071015)}
 .store-price-secondary{border-color:rgba(32,243,154,.18)}
 .store-price-row span{color:#657477;font-size:6.5px;font-weight:900;letter-spacing:.11em}
-.store-price-row strong{margin-top:4px;color:#f2f4f3;font-family:"Chakra Petch",sans-serif;font-size:17px;line-height:1}
+.store-price-row strong{margin-top:4px;color:#f2f4f3;font-family:"Chakra Petch",sans-serif;font-size:16px;line-height:1}
 .store-price-primary strong b{color:#d9a637}
 .store-price-secondary strong b{color:#20f39a}
-.store-redeem-btn{width:100%;min-height:39px;margin-top:9px;border:1px solid #26363b;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:7px;background:#0a1216;color:#687679;font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:900;letter-spacing:.11em}
+.store-redeem-btn{width:100%;min-height:36px;margin-top:8px;border:1px solid #26363b;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:7px;background:#0a1216;color:#687679;font-family:"Chakra Petch",sans-serif;font-size:7.5px;font-weight:900;letter-spacing:.11em}
 .store-redeem-btn svg{width:16px;height:16px}
 .store-redeem-btn:disabled{cursor:not-allowed;opacity:.78}
 
