@@ -354,10 +354,79 @@ function Header() {
   const { pick } = useLanguage();
   const { user, loading: authLoading } = useAuthSession();
   const [open,setOpen]=useState(false);
+  const [profileName,setProfileName]=useState("");
+  const [isAdmin,setIsAdmin]=useState(false);
+  const [pendingRedemptions,setPendingRedemptions]=useState(0);
   const path=window.location.pathname.replace(/\/$/,"");
   const isHome=!path.endsWith("/sobre")&&!path.endsWith("/configs")&&!path.endsWith("/giveaways")&&!path.endsWith("/parcerias")&&!path.endsWith("/wheel")&&!path.endsWith("/loja")&&!path.endsWith("/perfil");
   const authAvatar=getUserAvatar(user);
-  const authName=getUserDisplayName(user);
+  const authName=profileName || getUserDisplayName(user);
+
+  useEffect(()=>{
+    if(authLoading) return;
+
+    if(!user){
+      setProfileName("");
+      setIsAdmin(false);
+      setPendingRedemptions(0);
+      return;
+    }
+
+    let cancelled=false;
+
+    async function refreshAdminBadge(){
+      const { data, error }=await supabase
+        .from("profiles")
+        .select("display_name,role")
+        .eq("id",user.id)
+        .maybeSingle();
+
+      if(cancelled) return;
+
+      if(error){
+        console.warn("Unable to load header profile",error);
+        setProfileName(getUserDisplayName(user));
+        setIsAdmin(false);
+        setPendingRedemptions(0);
+        return;
+      }
+
+      setProfileName(data?.display_name || getUserDisplayName(user));
+      const admin=data?.role==="admin";
+      setIsAdmin(admin);
+
+      if(!admin){
+        setPendingRedemptions(0);
+        return;
+      }
+
+      const { count, error: countError }=await supabase
+        .from("store_redemptions")
+        .select("id",{count:"exact",head:true})
+        .eq("status","pending");
+
+      if(cancelled) return;
+
+      if(countError){
+        console.warn("Unable to load pending redemptions",countError);
+        return;
+      }
+
+      setPendingRedemptions(count ?? 0);
+    }
+
+    void refreshAdminBadge();
+
+    const timer=window.setInterval(()=>void refreshAdminBadge(),15000);
+    const onRedemptionsChanged=()=>void refreshAdminBadge();
+    window.addEventListener("godchyna:redemptions-changed",onRedemptionsChanged);
+
+    return ()=>{
+      cancelled=true;
+      window.clearInterval(timer);
+      window.removeEventListener("godchyna:redemptions-changed",onRedemptionsChanged);
+    };
+  },[authLoading,user]);
 
   async function handleHeaderTwitchLogin(){
     const { error }=await signInWithTwitch();
@@ -409,7 +478,18 @@ function Header() {
                 {authAvatar
                   ? <img src={authAvatar} alt="" aria-hidden="true"/>
                   : <span className="header-profile-fallback">{authName.slice(0,1).toUpperCase()}</span>}
-                <span>{authName}</span>
+                <span className="header-profile-name">{authName}</span>
+                {isAdmin && pendingRedemptions>0 && (
+                  <b
+                    className="admin-pending-badge"
+                    aria-label={pick(
+                      `${pendingRedemptions} entregas pendentes`,
+                      `${pendingRedemptions} pending deliveries`,
+                    )}
+                  >
+                    {pendingRedemptions>99?"99+":pendingRedemptions}
+                  </b>
+                )}
               </a>
             ) : (
               <button className="header-twitch-login" type="button" onClick={handleHeaderTwitchLogin}>
