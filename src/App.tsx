@@ -1530,6 +1530,51 @@ function StorePage(){
                 </button>
               </div>
             </article>
+
+            <article className="store-product-card store-product-pink">
+              <div className="store-product-visual">
+                <span className="store-demo-badge">DEMO</span>
+                <div className="store-product-glow"/>
+                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
+                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
+                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
+                <img
+                  src={asset("Party Animal.png")}
+                  alt="M4A1-S Party Animal"
+                />
+              </div>
+
+              <div className="store-product-body">
+                <div className="store-product-meta">
+                  <span>M4A1-S</span>
+                </div>
+
+                <h2>Party Animal</h2>
+
+                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
+                  <span className="store-stock-dot" aria-hidden="true"/>
+                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                </div>
+
+                <div className="store-product-divider"/>
+
+                <div className="store-price-row">
+                  <div className="store-price-primary">
+                    <span>{pick("PREÇO","PRICE")}</span>
+                    <strong>7,8 <b>CHY</b></strong>
+                  </div>
+                  <div className="store-price-secondary">
+                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
+                    <strong>9.360 <b>WP</b></strong>
+                  </div>
+                </div>
+
+                <button className="store-redeem-btn" type="button" disabled>
+                  <ShoppingCart/>
+                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
+                </button>
+              </div>
+            </article>
           </section>
         </section>
       </main>
