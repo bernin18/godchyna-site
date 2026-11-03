@@ -13,6 +13,7 @@ import ReputationSection from "./ReputationSection";
 import ConfigsPage from "./ConfigsPage";
 import WheelPage from "./WheelPage";
 import ProfilePage from "./ProfilePage";
+import AdminRedemptionsPage from "./AdminRedemptionsPage";
 import { getUserAvatar, getUserDisplayName, signInWithTwitch, useAuthSession } from "./auth";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
@@ -1646,6 +1647,7 @@ export default function App(){
   else if(path.endsWith("/parcerias")) page = <PartnersPage/>;
   else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
   else if(path.endsWith("/loja")) page = <StorePage/>;
+  else if(path.endsWith("/admin/resgates")) page = <AdminRedemptionsPage Header={Header} Footer={Footer}/>;
   else if(path.endsWith("/perfil")) page = <ProfilePage Header={Header} Footer={Footer}/>;
 
   return (
