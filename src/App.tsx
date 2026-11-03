@@ -1549,7 +1549,7 @@ function StorePage(){
                   <span>M4A1-S</span>
                 </div>
 
-                <h2>Party Animal</h2>
+                <h2>Party Animal <span className="store-condition-inline store-condition-pink">FT</span></h2>
 
                 <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
                   <span className="store-stock-dot" aria-hidden="true"/>
