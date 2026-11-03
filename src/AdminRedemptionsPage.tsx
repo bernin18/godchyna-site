@@ -165,6 +165,8 @@ export default function AdminRedemptionsPage({
           }
         : item
     )));
+
+    window.dispatchEvent(new Event("godchyna:redemptions-changed"));
   }
 
   function formatDate(value: string | null) {
