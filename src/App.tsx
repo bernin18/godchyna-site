@@ -1647,7 +1647,7 @@ export default function App(){
   else if(path.endsWith("/parcerias")) page = <PartnersPage/>;
   else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
   else if(path.endsWith("/loja")) page = <StorePage/>;
-  else if(path.endsWith("/admin/resgates")) page = <AdminRedemptionsPage Header={Header} Footer={Footer}/>;
+  else if(path.endsWith("/resgates")) page = <AdminRedemptionsPage Header={Header} Footer={Footer}/>;
   else if(path.endsWith("/perfil")) page = <ProfilePage Header={Header} Footer={Footer}/>;
 
   return (
