@@ -1431,7 +1431,36 @@ function StorePage(){
           </header>
 
 
-          <section className="store-grid" aria-label={pick("Produtos da loja","Shop products")}>
+          <div className="store-layout">
+            <aside className="store-sidebar" aria-label={pick("Categorias da loja","Shop categories")}>
+              <span className="store-sidebar-title">{pick("CATEGORIAS","CATEGORIES")}</span>
+              <nav className="store-sidebar-nav">
+                <a href="#store-skins">
+                  <span className="store-sidebar-dot skins" aria-hidden="true"/>
+                  {pick("SKINS","SKINS")}
+                </a>
+                <a href="#store-mbway">
+                  <span className="store-sidebar-dot mbway" aria-hidden="true"/>
+                  MB WAY
+                </a>
+                <a href="#store-services">
+                  <span className="store-sidebar-dot services" aria-hidden="true"/>
+                  {pick("SERVIÇOS","SERVICES")}
+                </a>
+              </nav>
+            </aside>
+
+            <div className="store-content">
+              <section id="store-skins" className="store-category-section">
+                <header className="store-category-heading">
+                  <div>
+                    <span>{pick("INVENTÁRIO","INVENTORY")}</span>
+                    <h2>SKINS</h2>
+                  </div>
+                  <p>{pick("Skins disponíveis para resgate.","Skins available to redeem.")}</p>
+                </header>
+
+                <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
             <article className="store-product-card store-product-demo store-product-classified">
               <div className="store-product-visual">
                 <span className="store-demo-badge">DEMO</span>
@@ -1703,7 +1732,36 @@ function StorePage(){
                 </button>
               </div>
             </article>
-          </section>
+                </section>
+              </section>
+
+              <section id="store-mbway" className="store-category-section">
+                <header className="store-category-heading">
+                  <div>
+                    <span>{pick("SALDO & PRÉMIOS","BALANCE & REWARDS")}</span>
+                    <h2>MB WAY</h2>
+                  </div>
+                </header>
+                <div className="store-category-empty">
+                  <strong>MB WAY</strong>
+                  <span>{pick("Opções de resgate em breve.","Redemption options coming soon.")}</span>
+                </div>
+              </section>
+
+              <section id="store-services" className="store-category-section">
+                <header className="store-category-heading">
+                  <div>
+                    <span>{pick("OUTROS RESGATES","OTHER REWARDS")}</span>
+                    <h2>{pick("SERVIÇOS","SERVICES")}</h2>
+                  </div>
+                </header>
+                <div className="store-category-empty">
+                  <strong>{pick("SERVIÇOS","SERVICES")}</strong>
+                  <span>{pick("Novos serviços disponíveis em breve.","New services coming soon.")}</span>
+                </div>
+              </section>
+            </div>
+          </div>
         </section>
       </main>
       <Footer/>
