@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowLeft, ExternalLink, ShieldCheck, UserRound } from "lucide-react";
 import { useAuthSession } from "./auth";
 import { useLanguage } from "./i18n";
 import { supabase } from "./supabase";
