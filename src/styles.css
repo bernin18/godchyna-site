@@ -712,6 +712,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-product-meta>span:first-child{color:#6f7d80;font-size:8px;font-weight:900;letter-spacing:.15em}
 .store-stattrak{color:#f08a37!important}
 .store-product-body h2{margin:5px 0 0;color:#f2f5f4;font-family:"Chakra Petch",sans-serif;font-size:18px;font-weight:900;line-height:1.05}
+.store-condition-inline{margin-left:4px;font-size:.78em;font-weight:900;letter-spacing:.04em}
+.store-condition-classified{color:#b96cff;text-shadow:0 0 10px rgba(185,108,255,.28)}
 .store-stock-row{display:flex;align-items:center;gap:6px;margin-top:7px;color:#aebbb9;font-family:"Chakra Petch",sans-serif;font-size:7.5px;font-weight:900;letter-spacing:.1em}
 .store-stock-dot{width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:#20f39a;box-shadow:0 0 9px rgba(32,243,154,.55)}
 .store-product-divider{height:1px;margin:10px 0;background:#17272c}
@@ -903,7 +905,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   border-color:rgba(217,166,55,.27);
   background:linear-gradient(180deg,rgba(31,24,8,.60),#0a1216);
 }
-.store-condition-gold{color:#ffc438!important}
+.store-condition-gold{color:#ffc438!important;text-shadow:0 0 10px rgba(255,196,56,.26)}
 
 @keyframes storeGoldWeaponGlow{
   0%,100%{
