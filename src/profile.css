@@ -115,7 +115,7 @@
 .profile-redemption-product>div:last-child{min-width:0}
 .profile-redemption-product span,.profile-redemption-date span,.profile-redemption-value span{display:block;color:#68777a;font:900 8px "Chakra Petch",sans-serif;letter-spacing:.12em}
 .profile-redemption-product h3{margin:3px 0;color:#eff4f3;font:900 16px "Chakra Petch",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.profile-redemption-condition{margin-left:7px;font-size:1.34em;font-weight:900;letter-spacing:.045em;display:inline-block;vertical-align:baseline;line-height:1}
+.profile-redemption-product .profile-redemption-condition{margin-left:7px;font-size:18px;font-weight:900;letter-spacing:.045em;display:inline-block;vertical-align:baseline;line-height:1}
 .profile-redemption-condition.rarity-pink{color:#c91f85;text-shadow:0 1px 0 rgba(0,0,0,.52),0 0 10px rgba(201,31,133,.32)}
 .profile-redemption-condition.rarity-classified{color:#b96cff;text-shadow:0 0 10px rgba(185,108,255,.24)}
 .profile-redemption-condition.rarity-gold{color:#ffc438;text-shadow:0 0 10px rgba(255,196,56,.24)}
