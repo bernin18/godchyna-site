@@ -832,6 +832,109 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   background:linear-gradient(180deg,rgba(22,10,31,.60),#0a1216);
 }
 
+
+.store-product-gold{
+  border-color:rgba(217,166,55,.52);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(217,166,55,.07),transparent 32%),
+    linear-gradient(155deg,#151006,#080b0e);
+  box-shadow:
+    0 20px 48px rgba(0,0,0,.30),
+    inset 0 0 28px rgba(217,166,55,.035),
+    0 0 10px rgba(217,166,55,.20);
+  animation:storeGoldPulse 2.15s ease-in-out infinite;
+}
+.store-product-gold .store-product-visual{
+  background:
+    radial-gradient(circle at 50% 52%,rgba(217,166,55,.23),transparent 31%),
+    radial-gradient(circle at 50% 45%,rgba(145,96,22,.18),transparent 56%),
+    linear-gradient(180deg,#151006 0%,#1a1206 52%,#080b10 100%);
+}
+.store-product-gold .store-product-visual::after{
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(217,166,55,.18),
+    rgba(255,196,56,.78),
+    rgba(255,240,194,.42),
+    rgba(255,196,56,.78),
+    rgba(217,166,55,.18),
+    transparent
+  );
+}
+.store-product-gold .store-product-glow{
+  background:rgba(217,166,55,.18);
+  filter:blur(27px);
+}
+.store-product-gold .store-product-visual img{
+  transform-origin:center;
+  filter:
+    drop-shadow(0 16px 13px rgba(0,0,0,.62))
+    drop-shadow(0 0 18px rgba(217,166,55,.22));
+  animation:
+    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
+    storeGoldWeaponGlow 2.8s ease-in-out infinite;
+}
+.store-product-gold .store-sparkle{
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,226,149,.88) 30%,rgba(217,166,55,0) 72%);
+  box-shadow:0 0 12px rgba(255,196,56,.58);
+}
+.store-product-gold .store-demo-badge{
+  border-color:rgba(217,166,55,.58);
+  color:#ffd466;
+  background:rgba(28,20,5,.88);
+  box-shadow:0 0 14px rgba(217,166,55,.18);
+}
+.store-product-gold .store-product-divider{
+  background:linear-gradient(90deg,transparent,rgba(217,166,55,.40),transparent);
+}
+.store-product-gold .store-price-primary{
+  border-color:rgba(255,196,56,.52);
+  background:linear-gradient(145deg,rgba(255,196,56,.13),rgba(9,13,17,.98));
+  box-shadow:inset 0 0 14px rgba(255,196,56,.06),0 0 10px rgba(255,196,56,.04);
+}
+.store-product-gold .store-price-secondary{
+  border-color:rgba(32,243,154,.40);
+  background:linear-gradient(145deg,rgba(32,243,154,.10),rgba(9,13,17,.98));
+}
+.store-product-gold .store-price-primary strong b{color:#ffc438;text-shadow:0 0 10px rgba(255,196,56,.22)}
+.store-product-gold .store-price-secondary strong b{color:#20f39a;text-shadow:0 0 10px rgba(32,243,154,.20)}
+.store-product-gold .store-redeem-btn{
+  border-color:rgba(217,166,55,.27);
+  background:linear-gradient(180deg,rgba(31,24,8,.60),#0a1216);
+}
+.store-condition-gold{color:#ffc438!important}
+
+@keyframes storeGoldWeaponGlow{
+  0%,100%{
+    filter:
+      drop-shadow(0 16px 13px rgba(0,0,0,.62))
+      drop-shadow(0 0 15px rgba(217,166,55,.20));
+  }
+  50%{
+    filter:
+      drop-shadow(0 19px 16px rgba(0,0,0,.66))
+      drop-shadow(0 0 26px rgba(255,196,56,.34));
+  }
+}
+@keyframes storeGoldPulse{
+  0%,100%{
+    border-color:rgba(217,166,55,.46);
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.30),
+      inset 0 0 28px rgba(217,166,55,.03),
+      0 0 7px rgba(217,166,55,.16);
+  }
+  50%{
+    border-color:rgba(255,205,78,.95);
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.30),
+      inset 0 0 34px rgba(217,166,55,.07),
+      0 0 14px rgba(255,196,56,.50),
+      0 0 28px rgba(217,166,55,.22);
+  }
+}
+
 @keyframes storeClassifiedWeaponFloat{
   0%,100%{transform:translate3d(-4px,3px,0) rotateZ(-.8deg) scale(.995)}
   50%{transform:translate3d(6px,-7px,0) rotateZ(.8deg) scale(1.018)}
