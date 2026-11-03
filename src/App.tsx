@@ -1404,7 +1404,7 @@ function StorePage(){
                 <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
                 <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
                 <img
-                  src={asset("Kukri FT.png")}
+                  src={asset("Kukri FT.webp")}
                   alt="Kukri Knife Crimson Web Field-Tested"
                 />
               </div>
