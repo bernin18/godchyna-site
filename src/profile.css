@@ -121,7 +121,7 @@
 .profile-redemption-condition.rarity-gold{color:#ffc438;text-shadow:0 0 10px rgba(255,196,56,.24)}
 .profile-redemption-condition.rarity-blue{color:#68b0ff;text-shadow:0 0 10px rgba(104,176,255,.24)}
 .profile-redemption-product small,.profile-redemption-value small{color:#657477;font-size:9px}
-.profile-redemption-date strong{display:block;margin-top:5px;color:#dce4e3;font:900 10px "Chakra Petch",sans-serif;white-space:nowrap}
+.profile-redemption-date strong{display:block;margin-top:5px;color:#dce4e3;font:900 11.5px "Chakra Petch",sans-serif;white-space:nowrap}
 .profile-redemption-date strong.delivered-date{color:#20f39a}
 .profile-redemption-value strong{display:block;margin-top:4px;color:#e3b441;font:900 15px "Chakra Petch",sans-serif}
 .profile-redemption-value small{display:block;margin-top:3px;color:#20f39a}
