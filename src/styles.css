@@ -1045,6 +1045,106 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   }
 }
 
+
+.store-product-blue{
+  border-color:rgba(76,153,255,.50);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(76,153,255,.07),transparent 32%),
+    linear-gradient(155deg,#08111c,#080b0e);
+  box-shadow:
+    0 20px 48px rgba(0,0,0,.30),
+    inset 0 0 28px rgba(76,153,255,.035),
+    0 0 10px rgba(76,153,255,.20);
+  animation:storeBluePulse 2.15s ease-in-out infinite;
+}
+.store-product-blue .store-product-visual{
+  background:
+    radial-gradient(circle at 50% 52%,rgba(76,153,255,.23),transparent 31%),
+    radial-gradient(circle at 50% 45%,rgba(45,94,168,.18),transparent 56%),
+    linear-gradient(180deg,#0b1421 0%,#0c1624 52%,#080b10 100%);
+}
+.store-product-blue .store-product-visual::after{
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(76,153,255,.18),
+    rgba(104,176,255,.78),
+    rgba(218,236,255,.42),
+    rgba(104,176,255,.78),
+    rgba(76,153,255,.18),
+    transparent
+  );
+}
+.store-product-blue .store-product-glow{background:rgba(76,153,255,.18);filter:blur(27px)}
+.store-product-blue .store-product-visual img{
+  transform-origin:center;
+  filter:
+    drop-shadow(0 16px 13px rgba(0,0,0,.62))
+    drop-shadow(0 0 18px rgba(76,153,255,.22));
+  animation:
+    storeClassifiedWeaponFloat 4.8s ease-in-out infinite,
+    storeBlueWeaponGlow 2.8s ease-in-out infinite;
+}
+.store-product-blue .store-sparkle{
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(188,220,255,.88) 30%,rgba(76,153,255,0) 72%);
+  box-shadow:0 0 12px rgba(104,176,255,.58);
+}
+.store-product-blue .store-demo-badge{
+  border-color:rgba(76,153,255,.58);
+  color:#8ec3ff;
+  background:rgba(8,18,31,.88);
+  box-shadow:0 0 14px rgba(76,153,255,.18);
+}
+.store-product-blue .store-product-divider{
+  background:linear-gradient(90deg,transparent,rgba(76,153,255,.40),transparent);
+}
+.store-product-blue .store-price-primary{
+  border-color:rgba(255,196,56,.52);
+  background:linear-gradient(145deg,rgba(255,196,56,.13),rgba(9,13,17,.98));
+}
+.store-product-blue .store-price-secondary{
+  border-color:rgba(32,243,154,.40);
+  background:linear-gradient(145deg,rgba(32,243,154,.10),rgba(9,13,17,.98));
+}
+.store-product-blue .store-price-secondary strong b{color:#20f39a}
+.store-product-blue .store-redeem-btn{
+  border-color:rgba(76,153,255,.27);
+  background:linear-gradient(180deg,rgba(8,18,31,.60),#0a1216);
+}
+.store-condition-blue{
+  color:#68b0ff!important;
+  text-shadow:0 0 10px rgba(104,176,255,.26);
+}
+@keyframes storeBlueWeaponGlow{
+  0%,100%{
+    filter:
+      drop-shadow(0 16px 13px rgba(0,0,0,.62))
+      drop-shadow(0 0 15px rgba(76,153,255,.20));
+  }
+  50%{
+    filter:
+      drop-shadow(0 19px 16px rgba(0,0,0,.66))
+      drop-shadow(0 0 26px rgba(104,176,255,.34));
+  }
+}
+@keyframes storeBluePulse{
+  0%,100%{
+    border-color:rgba(76,153,255,.46);
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.30),
+      inset 0 0 28px rgba(76,153,255,.03),
+      0 0 7px rgba(76,153,255,.16);
+  }
+  50%{
+    border-color:rgba(116,184,255,.95);
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.30),
+      inset 0 0 34px rgba(76,153,255,.07),
+      0 0 14px rgba(104,176,255,.50),
+      0 0 28px rgba(76,153,255,.22);
+  }
+}
+
 @keyframes storeClassifiedWeaponFloat{
   0%,100%{transform:translate3d(-4px,3px,0) rotateZ(-.8deg) scale(.995)}
   50%{transform:translate3d(6px,-7px,0) rotateZ(.8deg) scale(1.018)}
