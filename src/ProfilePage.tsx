@@ -464,8 +464,7 @@ export default function ProfilePage({
               </article>
             </section>
 
-            {redemptions.length > 0 && (
-              <section className="profile-redemptions-section">
+            <section className="profile-redemptions-section">
                 <header className="profile-redemptions-heading">
                   <div>
                     <h2>{pick("OS MEUS RESGATES", "MY REDEMPTIONS")}</h2>
@@ -477,16 +476,24 @@ export default function ProfilePage({
                         "If you have any problems or questions, contact me through Discord or Instagram."
                       )}
                     </p>
-                    <div className="profile-redemptions-help-links">
-                      <a href="https://discord.gg/mdXvwBj8rv" target="_blank" rel="noopener noreferrer">DISCORD</a>
-                      <a href="https://www.instagram.com/godchyna_/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
-                    </div>
                     <PackageCheck />
                   </div>
                 </header>
 
-                <div className="profile-redemptions-list">
-                  {redemptions.map(redemption => {
+                {redemptions.length === 0 ? (
+                  <div className="profile-redemptions-empty">
+                    <PackageCheck />
+                    <h3>{pick("AINDA NÃO TENS RESGATES", "NO REDEMPTIONS YET")}</h3>
+                    <p>
+                      {pick(
+                        "Quando resgatares uma skin, serviço ou código, o estado da entrega aparece aqui.",
+                        "When you redeem a skin, service or code, its delivery status will appear here."
+                      )}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="profile-redemptions-list">
+                    {redemptions.map(redemption => {
                     const delivered = redemption.status === "delivered";
 
                     return (
@@ -537,10 +544,10 @@ export default function ProfilePage({
                         </div>
                       </article>
                     );
-                  })}
-                </div>
+                    })}
+                  </div>
+                )}
               </section>
-            )}
 
             <section className="profile-grid">
               <article className="profile-panel">
