@@ -56,6 +56,7 @@ type RedemptionRow = {
   status: "pending" | "delivered" | "cancelled";
   created_at: string;
   delivered_at: string | null;
+  rarity_tone: string | null;
 };
 
 const profileAsset = (name: string) => `${import.meta.env.BASE_URL}${name.replace(/^\/+/, "")}`;
@@ -122,7 +123,7 @@ export default function ProfilePage({
     async function loadRedemptions() {
       const { data, error } = await supabase
         .from("store_redemptions")
-        .select("id,item_name,item_type,item_image_path,chy_used,wp_used,status,created_at,delivered_at")
+        .select("id,item_name,item_type,item_image_path,chy_used,wp_used,status,created_at,delivered_at,rarity_tone")
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });
 
@@ -271,6 +272,15 @@ export default function ProfilePage({
   const watchHours = useMemo(() => Math.floor((rewards.watch_minutes ?? 0) / 60), [rewards.watch_minutes]);
   const watchMinutes = (rewards.watch_minutes ?? 0) % 60;
   const chy = Number(rewards.chy_balance ?? 0);
+
+  function splitRedemptionName(itemName: string) {
+    const match = itemName.match(/\s+(FN|MW|FT|WW|BS)$/);
+    if (!match) return { name: itemName, condition: "" };
+    return {
+      name: itemName.slice(0, -match[0].length),
+      condition: match[1],
+    };
+  }
 
   function formatRedemptionDate(value: string | null) {
     if (!value) return "—";
@@ -495,11 +505,13 @@ export default function ProfilePage({
                   <div className="profile-redemptions-list">
                     {redemptions.map(redemption => {
                     const delivered = redemption.status === "delivered";
+                    const rarityTone = redemption.rarity_tone || "neutral";
+                    const itemLabel = splitRedemptionName(redemption.item_name);
 
                     return (
                       <article
                         key={redemption.id}
-                        className={`profile-redemption-card ${delivered ? "delivered" : "pending"}`}
+                        className={`profile-redemption-card rarity-${rarityTone} ${delivered ? "delivered" : "pending"}`}
                       >
                         <div className="profile-redemption-product">
                           <div className="profile-redemption-image">
@@ -511,7 +523,14 @@ export default function ProfilePage({
                           </div>
                           <div>
                             <span>{redemption.item_type.replace("_", " ").toUpperCase()}</span>
-                            <h3>{redemption.item_name}</h3>
+                            <h3>
+                              {itemLabel.name}
+                              {itemLabel.condition && (
+                                <span className={`profile-redemption-condition rarity-${rarityTone}`}>
+                                  {itemLabel.condition}
+                                </span>
+                              )}
+                            </h3>
                             <small>#{redemption.id}</small>
                           </div>
                         </div>
