@@ -50,6 +50,10 @@
 .profile-identity h1{margin:5px 0 5px;font-family:"Chakra Petch",sans-serif;font-size:34px;font-style:italic}
 .profile-twitch-name{display:flex;align-items:center;gap:7px;color:#a996c7;font-size:12px}
 .profile-twitch-name img{width:14px;height:14px}
+.profile-hero-actions{display:flex;align-items:center;gap:8px}
+.profile-admin-link{display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid rgba(32,243,154,.32);border-radius:7px;background:rgba(32,243,154,.07);color:#20f39a;font-family:"Chakra Petch",sans-serif;font-size:9px;font-weight:900;letter-spacing:.055em;text-decoration:none;transition:.2s ease}
+.profile-admin-link:hover{border-color:rgba(32,243,154,.58);background:rgba(32,243,154,.11);transform:translateY(-1px)}
+.profile-admin-link svg{width:15px;height:15px}
 .profile-logout{display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid #28383d;border-radius:7px;background:#091013;color:#8f9da0;font-size:10px;font-weight:800;cursor:pointer}
 .profile-logout svg{width:15px}
 
@@ -124,6 +128,8 @@
   .profile-hero-card{align-items:flex-start}
   .profile-avatar-wrap,.profile-avatar-wrap>img,.profile-avatar-wrap>span{width:60px;height:60px}
   .profile-identity h1{font-size:25px}
+  .profile-hero-actions{gap:5px}
+  .profile-admin-link{padding:8px;font-size:0}
   .profile-logout{padding:8px}
   .profile-logout{font-size:0}
   .profile-stat-grid{grid-template-columns:1fr 1fr}
