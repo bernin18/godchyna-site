@@ -7,6 +7,7 @@ import {
   Gamepad2,
   Link2,
   LogOut,
+  PackageCheck,
   ShieldCheck,
   WalletCards,
 } from "lucide-react";
@@ -33,6 +34,7 @@ type ProfileRow = {
   steam_display_name: string | null;
   steam_avatar_url: string | null;
   trade_url: string | null;
+  role: "user" | "admin";
 };
 
 type RewardsRow = {
@@ -59,6 +61,7 @@ function fallbackProfile(user: User): ProfileRow {
     steam_display_name: null,
     steam_avatar_url: null,
     trade_url: null,
+    role: "user",
   };
 }
 
@@ -131,7 +134,7 @@ export default function ProfilePage({
     Promise.all([
       supabase
         .from("profiles")
-        .select("id,display_name,avatar_url,twitch_user_id,twitch_login,steam_id,steam_display_name,steam_avatar_url,trade_url")
+        .select("id,display_name,avatar_url,twitch_user_id,twitch_login,steam_id,steam_display_name,steam_avatar_url,trade_url,role")
         .eq("id", user.id)
         .maybeSingle(),
       supabase
@@ -303,10 +306,18 @@ export default function ProfilePage({
                   </div>
                 </div>
               </div>
-              <button className="profile-logout" type="button" onClick={handleLogout}>
-                <LogOut />
-                {pick("SAIR", "LOG OUT")}
-              </button>
+              <div className="profile-hero-actions">
+                {profile?.role === "admin" && (
+                  <a className="profile-admin-link" href={`${import.meta.env.BASE_URL}admin/resgates`}>
+                    <PackageCheck />
+                    {pick("RESGATES", "REDEMPTIONS")}
+                  </a>
+                )}
+                <button className="profile-logout" type="button" onClick={handleLogout}>
+                  <LogOut />
+                  {pick("SAIR", "LOG OUT")}
+                </button>
+              </div>
             </section>
 
             <section className="profile-stat-grid" aria-busy={pageLoading}>
