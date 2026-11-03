@@ -285,7 +285,7 @@ export default function AdminRedemptionsPage({
                         <UserRound />
                         <div>
                           <span>{pick("RESGATADO POR", "REDEEMED BY")}</span>
-                          <strong>{person}</strong>
+                          <a className="admin-redemption-user-link" href={`${import.meta.env.BASE_URL}cliente?user=${encodeURIComponent(row.user_id)}`}>{person}</a>
                           {row.twitch_login && <small>@{row.twitch_login}</small>}
                         </div>
                       </div>
