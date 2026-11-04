@@ -1744,9 +1744,9 @@ function StorePage(){
 
                 <section className="store-grid" aria-label={pick("Resgates MB Way","MB Way rewards")}>
                   {[
-                    { id: "mbway-5", value: "5€", price: "8.000" },
-                    { id: "mbway-10", value: "10€", price: "17.000" },
-                    { id: "mbway-20", value: "20€", price: "34.000" },
+                    { id: "mbway-5", value: "5€", price: "10.000" },
+                    { id: "mbway-10", value: "10€", price: "20.000" },
+                    { id: "mbway-20", value: "20€", price: "35.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-mbway">
                       <div className="store-product-visual store-mbway-visual">
