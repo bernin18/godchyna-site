@@ -1741,10 +1741,46 @@ function StorePage(){
                     <h2>MB WAY</h2>
                   </div>
                 </header>
-                <div className="store-category-empty">
-                  <strong>MB WAY</strong>
-                  <span>{pick("Opções de resgate em breve.","Redemption options coming soon.")}</span>
-                </div>
+
+                <section className="store-grid" aria-label={pick("Resgates MB Way","MB Way rewards")}>
+                  {[
+                    { id: "mbway-5", value: "5€", price: "8.000" },
+                    { id: "mbway-10", value: "10€", price: "17.000" },
+                    { id: "mbway-20", value: "20€", price: "34.000" },
+                  ].map(({id, value, price})=>(
+                    <article key={id} className="store-product-card store-product-mbway">
+                      <div className="store-product-visual store-mbway-visual">
+                        <span className="store-demo-badge">DEMO</span>
+                        <div className="store-product-glow"/>
+                        <div className="store-mbway-card-art">
+                          <img src={asset("mbway.png")} alt="MB Way"/>
+                        </div>
+                      </div>
+
+                      <div className="store-product-body">
+                        <h2>MB WAY <span className="store-condition-inline store-condition-mbway">{value}</span></h2>
+
+                        <div className="store-stock-row" aria-label={pick("1 MB Way disponível","1 MB Way available")}>
+                          <span className="store-stock-dot" aria-hidden="true"/>
+                          <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                        </div>
+
+                        <div className="store-product-divider"/>
+
+                        <div className="store-price-row store-price-row-single">
+                          <div className="store-price-primary">
+                            <strong className="store-wp-only-value">{price} <b>WP</b></strong>
+                          </div>
+                        </div>
+
+                        <button className="store-redeem-btn" type="button" disabled>
+                          <ShoppingCart/>
+                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </section>
               </section>
 
               <section id="store-services" className="store-category-section">
