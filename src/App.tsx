@@ -1774,19 +1774,14 @@ function StorePage(){
                         <StoreServiceMotion kind={id} asset={asset} label={title}/>
                       </div>
                       <div className="store-product-body">
-                        <div className="store-product-meta">
-                          <span>{pick("SERVIÇO","SERVICE")}</span>
-                        </div>
                         <h2>{title}</h2>
                         <p className="store-service-description">{description}</p>
                         <div className="store-product-divider"/>
                         <div className={id === "demo-review" ? "store-price-row store-service-prices" : "store-price-row"}>
                           <div className="store-price-secondary">
-                            <span>{pick("PREÇO EM WP","PRICE IN WP")}</span>
                             <strong>{price} <b>WP</b></strong>
                           </div>
                           {id === "demo-review" && <div className="store-price-primary">
-                            <span>{pick("OU PAGAR EM CHY","OR PAY IN CHY")}</span>
                             <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>6 <b>CHY</b></strong>
                           </div>}
                         </div>
