@@ -1411,7 +1411,7 @@ function StorePage(){
       const { data, error } = await supabase
         .from("viewer_rewards")
         .select("watch_points,chy_balance")
-        .eq("user_id", user.id)
+        .eq("user_id", user!.id)
         .maybeSingle();
 
       if (cancelled) return;
