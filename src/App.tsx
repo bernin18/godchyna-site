@@ -1764,7 +1764,7 @@ function StorePage(){
                     {
                       id: "demo-review",
                       title: pick("Análise de demo","Demo review"),
-                      description: pick("Recebe o meu feedback sobre a tua demo de CS2..","Get my feedback on your CS2 demo.."),
+                      description: pick("Recebe o meu feedback sobre a tua demo de CS2 e descobre onde podes melhorar.","Get my feedback on your CS2 demo and discover where you can improve."),
                       price: "3.600",
                     },
                   ].map(({id, title, description, price})=>(

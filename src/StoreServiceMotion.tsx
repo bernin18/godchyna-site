@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./store-service-motion.css";
 
 type Point = [number, number];
@@ -33,7 +33,6 @@ return draw;
 export default function StoreServiceMotion({kind, asset, label}: {kind: string; asset: (name: string)=>string; label: string}) {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [paused, setPaused] = useState(()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   useEffect(()=>{
     const root = rootRef.current;
@@ -67,9 +66,9 @@ export default function StoreServiceMotion({kind, asset, label}: {kind: string; 
     const observer = new IntersectionObserver(([entry])=>{visible = entry.isIntersecting; previous = 0;});
     observer.observe(root);
     render(0);
-    if (!paused) frameId = requestAnimationFrame(frame);
+    frameId = requestAnimationFrame(frame);
     return ()=>{cancelAnimationFrame(frameId); observer.disconnect();};
-  }, [kind, paused]);
+  }, [kind]);
 
   return <div ref={rootRef} className="store-service-motion">
     {kind === "demo-review"
@@ -82,6 +81,5 @@ export default function StoreServiceMotion({kind, asset, label}: {kind: string; 
             <span className="ssm-weapon-name">StatTrak™ Desert Eagle<br/><strong>Serpent Strike</strong></span>
           </div>
         </div>}
-    <button className="ssm-pause" type="button" aria-label={paused ? "Play animation" : "Pause animation"} aria-pressed={paused} onClick={()=>setPaused(value=>!value)}>{paused ? "▶" : "Ⅱ"}</button>
   </div>;
 }
