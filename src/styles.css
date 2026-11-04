@@ -1241,7 +1241,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   max-width:82%;
   height:auto;
   object-fit:contain;
-  filter:grayscale(1) brightness(2.2) contrast(1.05) drop-shadow(0 0 8px rgba(255,255,255,.10));
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.10));
 }
 .store-product-mbway:hover .store-mbway-card-art{
   transform:perspective(500px) rotateX(3deg) rotateY(-5deg) translateY(-4px) scale(1.025);
