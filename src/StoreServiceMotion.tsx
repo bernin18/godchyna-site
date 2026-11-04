@@ -42,11 +42,9 @@ export default function StoreServiceMotion({kind, asset, label}: {kind: string; 
     const slots = root.querySelector<HTMLDivElement>(".ssm-slots");
     const inspect = root.querySelector<HTMLDivElement>(".ssm-inspect");
     const weapon = root.querySelector<HTMLImageElement>(".ssm-weapon");
-    const progress = root.querySelector<HTMLDivElement>(".ssm-progress");
     let frameId = 0, previous = 0, elapsed = 0, visible = true;
     function render(t: number) {
       draw?.(t);
-      if (progress) progress.style.width = (t % 8 / 8 * 100) + "%";
       if (slots && inspect && weapon) {
         const phase = t % 9, examining = phase > 3 && phase < 8;
         slots.style.opacity = examining ? "0" : "1";
@@ -72,7 +70,7 @@ export default function StoreServiceMotion({kind, asset, label}: {kind: string; 
 
   return <div ref={rootRef} className="store-service-motion">
     {kind === "demo-review"
-      ? <><canvas ref={canvasRef} width={640} height={400} role="img" aria-label={label}/><div className="ssm-timeline" aria-hidden="true"><div className="ssm-progress"/></div></>
+      ? <canvas ref={canvasRef} width={640} height={400} role="img" aria-label={label}/>
       : <div className="ssm-inventory" role="img" aria-label={label}>
           <div className="ssm-slots">{skins.map(([file,name])=><div key={file} className="ssm-slot"><img src={asset(file)} alt={name} loading="lazy"/></div>)}</div>
           <div className="ssm-inspect">
