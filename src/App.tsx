@@ -1753,7 +1753,7 @@ function StorePage(){
                         <span className="store-demo-badge">DEMO</span>
                         <div className="store-product-glow"/>
                         <div className="store-mbway-card-art">
-                          <img src={asset("mbway.png")} alt="MB Way"/>
+                          <img src={asset("mbway2.webp")} alt="MB Way"/>
                         </div>
                       </div>
 
