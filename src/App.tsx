@@ -1872,8 +1872,8 @@ function StorePage(){
                   ))}
 
                   {[
-                    { id: "csgoskins-5", value: "5€", price: "10.000" },
-                    { id: "csgoskins-10", value: "10€", price: "20.000" },
+                    { id: "csgoskins-5", value: "5€", price: "8.000" },
+                    { id: "csgoskins-10", value: "10€", price: "15.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-csgoskins">
                       <div className="store-product-visual store-csgoskins-visual">
