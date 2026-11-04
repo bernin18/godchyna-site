@@ -2671,3 +2671,10 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   .store-category-heading p{font-size:9.5px}
   .store-content{gap:36px}
 }
+
+/* Store services reuse the gold product cards and responsive store grid. */
+.store-service-card{display:flex;flex-direction:column}
+.store-service-card .store-product-body{display:flex;flex:1;flex-direction:column}
+.store-service-card .store-service-icon{position:relative;z-index:2;width:64px;height:64px;color:#ffd466;stroke-width:1.4;filter:drop-shadow(0 0 18px rgba(217,166,55,.28))}
+.store-service-description{margin:10px 0 0;color:#a6b0b1;font-size:11px;line-height:1.6;flex:1}
+.store-service-card .store-price-row{grid-template-columns:1fr}

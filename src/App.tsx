@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
   Check,
+  ClipboardList,
   Copy,
   Menu,
   ShoppingCart,
   Tag,
   TrendingUp,
+  Video,
   X,
 } from "lucide-react";
 import ReputationSection from "./ReputationSection";
@@ -1752,9 +1754,49 @@ function StorePage(){
                     <h2>{pick("SERVIÇOS","SERVICES")}</h2>
                   </div>
                 </header>
-                <div className="store-category-empty">
-                  <strong>{pick("SERVIÇOS","SERVICES")}</strong>
-                  <span>{pick("Novos serviços disponíveis em breve.","New services coming soon.")}</span>
+                <div className="store-grid" aria-label={pick("Serviços da loja","Shop services")}>
+                  {[
+                    {
+                      id: "inventory-review",
+                      icon: ClipboardList,
+                      title: pick("Avaliação de inventário","Inventory review"),
+                      description: pick("Mostra o teu inventário ao Chyna e recebe a sua opinião sobre as tuas skins.","Show Chyna your inventory and get his thoughts on your skins."),
+                      price: "500",
+                    },
+                    {
+                      id: "demo-review",
+                      icon: Video,
+                      title: pick("Análise de demo","Demo review"),
+                      description: pick("Recebe feedback do Chyna sobre a tua demo de CS2 e descobre onde podes melhorar.","Get Chyna's feedback on your CS2 demo and discover where you can improve."),
+                      price: "3.600",
+                    },
+                  ].map(({id, icon: Icon, title, description, price})=>(
+                    <article key={id} className="store-product-card store-product-gold store-service-card">
+                      <div className="store-product-visual">
+                        <span className="store-demo-badge">DEMO</span>
+                        <div className="store-product-glow"/>
+                        <Icon className="store-service-icon" aria-hidden="true"/>
+                      </div>
+                      <div className="store-product-body">
+                        <div className="store-product-meta">
+                          <span>{pick("SERVIÇO","SERVICE")}</span>
+                        </div>
+                        <h2>{title}</h2>
+                        <p className="store-service-description">{description}</p>
+                        <div className="store-product-divider"/>
+                        <div className="store-price-row">
+                          <div className="store-price-secondary">
+                            <span>{pick("PREÇO EM WP","PRICE IN WP")}</span>
+                            <strong>{price} <b>WP</b></strong>
+                          </div>
+                        </div>
+                        <button className="store-redeem-btn" type="button" disabled>
+                          <ShoppingCart/>
+                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
+                        </button>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               </section>
             </div>
