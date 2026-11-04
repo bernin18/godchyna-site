@@ -1814,12 +1814,12 @@ function StorePage(){
                         <p className="store-service-description">{description}</p>
                         <div className="store-product-divider"/>
                         <div className={id === "demo-review" ? "store-price-row store-service-prices" : "store-price-row"}>
-                          <div className="store-price-secondary">
-                            <strong>{price} <b>WP</b></strong>
-                          </div>
                           {id === "demo-review" && <div className="store-price-primary">
                             <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>6 <b>CHY</b></strong>
                           </div>}
+                          <div className="store-price-secondary">
+                            <strong>{price} <b>WP</b></strong>
+                          </div>
                         </div>
                         <button className="store-redeem-btn" type="button" disabled>
                           <ShoppingCart/>
