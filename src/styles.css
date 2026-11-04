@@ -3045,7 +3045,16 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   color:#63ffc0!important;
 }
 .store-action-locked{
-  opacity:.72!important;
+  opacity:.88!important;
+  min-height:42px!important;
+  padding:0 14px!important;
+  font-size:11px!important;
+  letter-spacing:.04em!important;
+}
+.store-action-locked svg{
+  width:16px;
+  height:16px;
+  flex:0 0 16px;
 }
 .store-action-loading{
   opacity:.58!important;
