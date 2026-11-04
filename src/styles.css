@@ -1255,7 +1255,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   text-shadow:0 0 10px rgba(84,168,255,.28);
 }
 .store-csgoskins-warning{
-  margin:9px 0 0;
+  margin:auto 0 0;
   padding:8px 9px;
   border:1px solid rgba(255,111,125,.58);
   border-radius:7px;
@@ -1267,7 +1267,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   text-shadow:0 0 8px rgba(255,111,125,.22);
 }
 .store-product-csgoskins .store-product-divider{
-  margin-top:auto;
+  margin-top:8px;
   background:#16334a;
 }
 .store-product-csgoskins .store-price-row{margin-top:0}
