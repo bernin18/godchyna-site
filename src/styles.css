@@ -3031,7 +3031,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 
 @media(max-width:1040px){
   .store-layout{grid-template-columns:1fr;gap:20px}
-  .store-sidebar{position:sticky;top:68px;z-index:12;padding:9px 10px}
+  .store-sidebar{position:sticky;left:auto;width:auto;top:68px;z-index:12;padding:9px 10px}
+  .store-content{grid-column:auto}
   .store-sidebar-title{display:none}
   .store-sidebar-nav{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
   .store-sidebar-nav::-webkit-scrollbar{display:none}
@@ -3231,10 +3232,15 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 
 @media(min-width:1041px){
   .store-sidebar{
-    position:sticky;
+    position:fixed;
     top:92px;
-    align-self:start;
+    left:max(50px,calc((100vw - 1320px)/2));
+    width:170px;
     height:max-content;
     max-height:calc(100vh - 116px);
+    z-index:54;
+  }
+  .store-content{
+    grid-column:2;
   }
 }
