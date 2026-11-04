@@ -1887,17 +1887,17 @@ function StorePage(){
                       <div className="store-product-body">
                         <h2>CSGOSKINS Gift Card <span className="store-condition-inline store-condition-csgoskins">{value}</span></h2>
 
+                        <div className="store-stock-row" aria-label={pick("1 gift card disponível","1 gift card available")}>
+                          <span className="store-stock-dot" aria-hidden="true"/>
+                          <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                        </div>
+
                         <p className="store-csgoskins-warning">
                           {pick(
                             "Só podes resgatar este gift card se já tiveres utilizado o meu código.",
                             "You can only redeem this gift card if you have already used my code.",
                           )}
                         </p>
-
-                        <div className="store-stock-row" aria-label={pick("1 gift card disponível","1 gift card available")}>
-                          <span className="store-stock-dot" aria-hidden="true"/>
-                          <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                        </div>
 
                         <div className="store-product-divider"/>
 
