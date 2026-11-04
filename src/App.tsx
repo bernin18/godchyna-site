@@ -1741,51 +1741,10 @@ function StorePage(){
                     <h2>MB WAY</h2>
                   </div>
                 </header>
-
-                <section className="store-grid" aria-label={pick("Resgates MB Way e gift cards","MB Way rewards and gift cards")}>
-                  <article className="store-product-card store-product-steam">
-                    <div className="store-product-visual store-steam-visual">
-                      <span className="store-demo-badge">DEMO</span>
-                      <div className="store-product-glow"/>
-                      <div className="store-steam-card-art">
-                        <img
-                          className="store-steam-logo"
-                          src="https://store.steampowered.com/public/shared/images/header/logo_steam.svg"
-                          alt="Steam"
-                        />
-                        <strong>10€</strong>
-                      </div>
-                    </div>
-
-                    <div className="store-product-body">
-                      <div className="store-product-meta">
-                        <span>GIFT CARD</span>
-                        <span className="store-steam-meta">STEAM</span>
-                      </div>
-
-                      <h2>Steam Gift Card <span className="store-condition-inline store-condition-steam">10€</span></h2>
-
-                      <div className="store-stock-row" aria-label={pick("Gift card disponível","Gift card available")}>
-                        <span className="store-stock-dot" aria-hidden="true"/>
-                        <span>{pick("DISPONÍVEL","AVAILABLE")}</span>
-                      </div>
-
-                      <div className="store-product-divider"/>
-
-                      <div className="store-price-row store-price-row-single">
-                        <div className="store-price-primary">
-                          <span>{pick("PREÇO","PRICE")}</span>
-                          <strong className="store-wp-only-value">17.000 <b>WP</b></strong>
-                        </div>
-                      </div>
-
-                      <button className="store-redeem-btn" type="button" disabled>
-                        <ShoppingCart/>
-                        {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                      </button>
-                    </div>
-                  </article>
-                </section>
+                <div className="store-category-empty">
+                  <strong>MB WAY</strong>
+                  <span>{pick("Opções de resgate em breve.","Redemption options coming soon.")}</span>
+                </div>
               </section>
 
               <section id="store-services" className="store-category-section">
@@ -1826,6 +1785,43 @@ function StorePage(){
                             <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>6 <b>CHY</b></strong>
                           </div>}
                         </div>
+                        <button className="store-redeem-btn" type="button" disabled>
+                          <ShoppingCart/>
+                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+
+                  {[
+                    { id: "steam-5", value: "5€", price: "8.000" },
+                    { id: "steam-10", value: "10€", price: "17.000" },
+                    { id: "steam-20", value: "20€", price: "34.000" },
+                  ].map(({id, value, price})=>(
+                    <article key={id} className="store-product-card store-product-steam">
+                      <div className="store-product-visual store-steam-visual">
+                        <span className="store-demo-badge">DEMO</span>
+                        <div className="store-product-glow"/>
+                        <div className="store-steam-card-art store-steam-card-art-clean">
+                          <img
+                            className="store-steam-logo"
+                            src="https://store.steampowered.com/public/shared/images/header/logo_steam.svg"
+                            alt="Steam"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="store-product-body">
+                        <h2>Steam Gift Card <span className="store-condition-inline store-condition-steam">{value}</span></h2>
+
+                        <div className="store-product-divider"/>
+
+                        <div className="store-price-row store-price-row-single">
+                          <div className="store-price-primary">
+                            <strong className="store-wp-only-value">{price} <b>WP</b></strong>
+                          </div>
+                        </div>
+
                         <button className="store-redeem-btn" type="button" disabled>
                           <ShoppingCart/>
                           {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
