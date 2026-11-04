@@ -1633,11 +1633,27 @@ function StorePage(){
 
             <div className="store-content">
               <section id="store-skins" className="store-category-section">
-                <header className="store-category-heading">
+                <header className="store-category-heading store-category-heading-wallet">
                   <div>
                     <h2>SKINS</h2>
                   </div>
-                  <p>{pick("Skins disponíveis para resgate.","Skins available to redeem.")}</p>
+
+                  <div className="store-category-heading-right">
+                    <p>{pick("Skins disponíveis para resgate.","Skins available to redeem.")}</p>
+
+                    <div className="store-wallet-mini" aria-label={pick("Saldo da loja","Store balance")}>
+                      <span className="store-wallet-mini-label">{pick("SALDO","BALANCE")}</span>
+                      <div className="store-wallet-mini-chy">
+                        <img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>
+                        <strong>{storeWalletLoading ? "—" : formatStoreChy(storeChy)}</strong>
+                        <b>CHY</b>
+                      </div>
+                      <div className="store-wallet-mini-wp">
+                        <strong>{storeWalletLoading ? "—" : formatStoreWp(storeWp)}</strong>
+                        <b>WP</b>
+                      </div>
+                    </div>
+                  </div>
                 </header>
 
                 <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
