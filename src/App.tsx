@@ -1814,6 +1814,11 @@ function StorePage(){
                       <div className="store-product-body">
                         <h2>Steam Gift Card <span className="store-condition-inline store-condition-steam">{value}</span></h2>
 
+                        <div className="store-stock-row" aria-label={pick("1 gift card disponível","1 gift card available")}>
+                          <span className="store-stock-dot" aria-hidden="true"/>
+                          <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                        </div>
+
                         <div className="store-product-divider"/>
 
                         <div className="store-price-row store-price-row-single">
