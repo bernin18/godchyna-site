@@ -1758,13 +1758,13 @@ function StorePage(){
                     {
                       id: "inventory-review",
                       title: pick("Avaliação de inventário","Inventory review"),
-                      description: pick("Mostra o teu inventário ao Chyna e recebe a sua opinião sobre as tuas skins.","Show Chyna your inventory and get his thoughts on your skins."),
+                      description: pick("Mostra-me o teu inventário e receberás a minha opinião sobre as tuas skins.","Show me your inventory and get my opinion on your skins."),
                       price: "500",
                     },
                     {
                       id: "demo-review",
                       title: pick("Análise de demo","Demo review"),
-                      description: pick("Recebe feedback do Chyna sobre a tua demo de CS2 e descobre onde podes melhorar.","Get Chyna's feedback on your CS2 demo and discover where you can improve."),
+                      description: pick("Recebe o meu feedback sobre a tua demo de CS2..","Get my feedback on your CS2 demo.."),
                       price: "3.600",
                     },
                   ].map(({id, title, description, price})=>(
@@ -1790,7 +1790,6 @@ function StorePage(){
                             <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>6 <b>CHY</b></strong>
                           </div>}
                         </div>
-                        {id === "demo-review" && <p className="store-service-price-option">{pick("6 CHY = 5 € · pagamento alternativo","6 CHY = €5 · alternative payment")}</p>}
                         <button className="store-redeem-btn" type="button" disabled>
                           <ShoppingCart/>
                           {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
