@@ -2765,7 +2765,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-product-steam{
   display:flex;
   flex-direction:column;
-  min-height:318px;
+  min-height:425px;
 }
 .store-product-steam .store-product-body{
   display:flex;
