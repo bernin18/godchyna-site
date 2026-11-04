@@ -1870,6 +1870,51 @@ function StorePage(){
                       </div>
                     </article>
                   ))}
+
+                  {[
+                    { id: "csgoskins-5", value: "5€", price: "10.000" },
+                    { id: "csgoskins-10", value: "10€", price: "20.000" },
+                    { id: "csgoskins-20", value: "20€", price: "35.000" },
+                  ].map(({id, value, price})=>(
+                    <article key={id} className="store-product-card store-product-csgoskins">
+                      <div className="store-product-visual store-csgoskins-visual">
+                        <span className="store-demo-badge">DEMO</span>
+                        <div className="store-product-glow"/>
+                        <div className="store-csgoskins-card-art">
+                          <img src={asset("csgoskins-logo.png")} alt="CSGOSKINS"/>
+                        </div>
+                      </div>
+
+                      <div className="store-product-body">
+                        <h2>CSGOSKINS Gift Card <span className="store-condition-inline store-condition-csgoskins">{value}</span></h2>
+
+                        <p className="store-csgoskins-warning">
+                          {pick(
+                            "Só podes resgatar este gift card se já tiveres utilizado o meu código.",
+                            "You can only redeem this gift card if you have already used my code.",
+                          )}
+                        </p>
+
+                        <div className="store-stock-row" aria-label={pick("1 gift card disponível","1 gift card available")}>
+                          <span className="store-stock-dot" aria-hidden="true"/>
+                          <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                        </div>
+
+                        <div className="store-product-divider"/>
+
+                        <div className="store-price-row store-price-row-single">
+                          <div className="store-price-primary">
+                            <strong className="store-wp-only-value">{price} <b>WP</b></strong>
+                          </div>
+                        </div>
+
+                        <button className="store-redeem-btn" type="button" disabled>
+                          <ShoppingCart/>
+                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
+                        </button>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               </section>
             </div>
