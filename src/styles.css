@@ -626,6 +626,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-page{
  min-height:72vh;
  padding:58px 50px 78px;
+ overflow:visible;
  background:
   radial-gradient(circle at 18% 14%,rgba(32,243,154,.055),transparent 28rem),
   radial-gradient(circle at 78% 18%,rgba(217,166,55,.045),transparent 30rem),
@@ -3228,9 +3229,12 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   .store-wallet-mini{right:10px;bottom:10px;width:174px;min-width:174px}
 }
 
-@media(min-width:761px){
+@media(min-width:1041px){
   .store-sidebar{
     position:sticky;
     top:92px;
+    align-self:start;
+    height:max-content;
+    max-height:calc(100vh - 116px);
   }
 }
