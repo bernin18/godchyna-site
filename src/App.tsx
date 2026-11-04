@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
   Check,
-  ClipboardList,
   Copy,
   Menu,
   ShoppingCart,
   Tag,
   TrendingUp,
-  Video,
   X,
 } from "lucide-react";
+import StoreServiceMotion from "./StoreServiceMotion";
 import ReputationSection from "./ReputationSection";
 import ConfigsPage from "./ConfigsPage";
 import WheelPage from "./WheelPage";
@@ -1758,24 +1757,21 @@ function StorePage(){
                   {[
                     {
                       id: "inventory-review",
-                      icon: ClipboardList,
                       title: pick("Avaliação de inventário","Inventory review"),
                       description: pick("Mostra o teu inventário ao Chyna e recebe a sua opinião sobre as tuas skins.","Show Chyna your inventory and get his thoughts on your skins."),
                       price: "500",
                     },
                     {
                       id: "demo-review",
-                      icon: Video,
                       title: pick("Análise de demo","Demo review"),
                       description: pick("Recebe feedback do Chyna sobre a tua demo de CS2 e descobre onde podes melhorar.","Get Chyna's feedback on your CS2 demo and discover where you can improve."),
                       price: "3.600",
                     },
-                  ].map(({id, icon: Icon, title, description, price})=>(
+                  ].map(({id, title, description, price})=>(
                     <article key={id} className="store-product-card store-product-gold store-service-card">
                       <div className="store-product-visual">
                         <span className="store-demo-badge">DEMO</span>
-                        <div className="store-product-glow"/>
-                        <Icon className="store-service-icon" aria-hidden="true"/>
+                        <StoreServiceMotion kind={id} asset={asset} label={title}/>
                       </div>
                       <div className="store-product-body">
                         <div className="store-product-meta">
@@ -1784,12 +1780,17 @@ function StorePage(){
                         <h2>{title}</h2>
                         <p className="store-service-description">{description}</p>
                         <div className="store-product-divider"/>
-                        <div className="store-price-row">
+                        <div className={id === "demo-review" ? "store-price-row store-service-prices" : "store-price-row"}>
                           <div className="store-price-secondary">
                             <span>{pick("PREÇO EM WP","PRICE IN WP")}</span>
                             <strong>{price} <b>WP</b></strong>
                           </div>
+                          {id === "demo-review" && <div className="store-price-primary">
+                            <span>{pick("OU PAGAR EM CHY","OR PAY IN CHY")}</span>
+                            <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>6 <b>CHY</b></strong>
+                          </div>}
                         </div>
+                        {id === "demo-review" && <p className="store-service-price-option">{pick("6 CHY = 5 € · pagamento alternativo","6 CHY = €5 · alternative payment")}</p>}
                         <button className="store-redeem-btn" type="button" disabled>
                           <ShoppingCart/>
                           {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
