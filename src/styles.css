@@ -2760,3 +2760,24 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-service-card .store-service-icon{position:relative;z-index:2;width:64px;height:64px;color:#ffd466;stroke-width:1.4;filter:drop-shadow(0 0 18px rgba(217,166,55,.28))}
 .store-service-description{margin:10px 0 0;color:#a6b0b1;font-size:11px;line-height:1.6;flex:1}
 .store-service-card .store-price-row{grid-template-columns:1fr}
+
+
+.store-product-steam{
+  display:flex;
+  flex-direction:column;
+  min-height:318px;
+}
+.store-product-steam .store-product-body{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+}
+.store-product-steam .store-product-divider{
+  margin-top:auto;
+}
+.store-product-steam .store-price-row{
+  margin-top:0;
+}
+.store-product-steam .store-redeem-btn{
+  margin-top:8px;
+}
