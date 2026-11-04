@@ -1431,6 +1431,14 @@ function StorePage(){
             </p>
           </header>
 
+          <div className="store-economy-reference" aria-label={pick("Conversão da moeda da loja","Store currency conversion")}>
+            <span className="store-economy-label">{pick("REFERÊNCIA","REFERENCE")}</span>
+            <div className="store-economy-values">
+              <strong>1 EUR <span>=</span> 1,20 CHY</strong>
+              <i aria-hidden="true"/>
+              <strong>1 CHY <span>=</span> 1.200 WP</strong>
+            </div>
+          </div>
 
           <div className="store-layout">
             <aside className="store-sidebar" aria-label={pick("Categorias da loja","Shop categories")}>
