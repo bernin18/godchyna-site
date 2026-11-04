@@ -1768,7 +1768,7 @@ function StorePage(){
                       price: "3.600",
                     },
                   ].map(({id, title, description, price})=>(
-                    <article key={id} className="store-product-card store-product-gold store-service-card">
+                    <article key={id} className="store-product-card store-service-card">
                       <div className="store-product-visual">
                         <span className="store-demo-badge">DEMO</span>
                         <StoreServiceMotion kind={id} asset={asset} label={title}/>

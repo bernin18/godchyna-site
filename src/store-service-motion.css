@@ -16,3 +16,24 @@
 .store-service-card .store-service-prices{grid-template-columns:1fr 1fr}
 .store-service-card .store-service-price-option{margin:7px 0 0;color:#a6b0b1;font-size:10px;line-height:1.5}
 @media(prefers-reduced-motion:reduce){.store-service-motion .ssm-slots,.store-service-motion .ssm-inspect{transition:none}}
+
+/* Copper identifies services independently from skin rarity colors. */
+.store-product-card.store-service-card{
+  border-color:rgba(232,125,62,.65);
+  background:radial-gradient(circle at 50% 0%,rgba(232,125,62,.07),transparent 40%),linear-gradient(155deg,#19100c,#080b0e);
+  box-shadow:0 20px 48px rgba(0,0,0,.3),inset 0 0 28px rgba(232,125,62,.035),0 0 12px rgba(232,125,62,.18);
+}
+.store-service-card .store-product-visual{
+  background:radial-gradient(circle at 50% 52%,rgba(232,125,62,.16),transparent 55%),linear-gradient(180deg,#19100c,#080b0e);
+}
+.store-service-card .store-product-visual::after{background:linear-gradient(90deg,transparent,rgba(232,125,62,.7),transparent)}
+.store-service-card .store-demo-badge{
+  border-color:rgba(232,125,62,.58);color:#ffad7a;background:rgba(31,16,9,.9);box-shadow:0 0 14px rgba(232,125,62,.12);
+}
+.store-service-card .store-product-divider{background:linear-gradient(90deg,transparent,rgba(232,125,62,.4),transparent)}
+.store-service-card .store-redeem-btn{border-color:rgba(232,125,62,.3);background:linear-gradient(180deg,rgba(39,21,12,.6),#0a1216)}
+.store-service-card .store-price-secondary{border-color:rgba(32,243,154,.4);background:linear-gradient(145deg,rgba(32,243,154,.1),#090d11)}
+.store-service-card .store-price-secondary strong b{color:#20f39a}
+.store-service-card .store-price-primary{border-color:rgba(255,196,56,.46);background:linear-gradient(145deg,rgba(255,196,56,.12),#090d11)}
+.store-service-card .store-price-primary strong b{color:#ffc438}
+.store-sidebar .store-sidebar-dot.services{color:#e87d3e;background:#e87d3e}
