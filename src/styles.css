@@ -729,7 +729,17 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   background:rgba(255,255,255,.14);
 }
 .store-layout{display:grid;grid-template-columns:170px minmax(0,1fr);gap:30px;align-items:start;margin-top:34px}
-.store-sidebar{position:sticky;top:92px;padding:14px;border:1px solid #1d3034;border-radius:12px;background:linear-gradient(160deg,#091114,#070b0d);box-shadow:0 18px 42px rgba(0,0,0,.22)}
+.store-sidebar{
+  position:sticky;
+  top:92px;
+  align-self:start;
+  padding:14px 12px;
+  border:1px solid #1d3035;
+  border-radius:12px;
+  background:linear-gradient(145deg,#081114,#070b0d);
+  box-shadow:0 14px 34px rgba(0,0,0,.26);
+  z-index:20;
+}
 .store-sidebar-title{display:block;padding:0 7px 10px;color:#607073;font:900 8px "Chakra Petch",sans-serif;letter-spacing:.15em}
 .store-sidebar-nav{display:grid;gap:5px}
 .store-sidebar-nav a{display:flex;align-items:center;gap:9px;min-height:38px;padding:0 9px;border:1px solid transparent;border-radius:8px;color:#a2adaf;font:900 9px "Chakra Petch",sans-serif;letter-spacing:.07em;text-decoration:none;transition:.18s ease}
@@ -3216,4 +3226,11 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 @media(max-width:520px){
   .store-category-heading-right{flex-direction:column}
   .store-wallet-mini{right:10px;bottom:10px;width:174px;min-width:174px}
+}
+
+@media(min-width:761px){
+  .store-sidebar{
+    position:sticky;
+    top:92px;
+  }
 }
