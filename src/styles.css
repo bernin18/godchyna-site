@@ -1254,8 +1254,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   box-shadow:0 18px 34px rgba(0,0,0,.42),inset 0 0 28px rgba(255,255,255,.055),0 0 24px rgba(195,235,255,.12);
 }
 .store-condition-csgoskins{
-  color:#dff5ff;
-  text-shadow:0 0 10px rgba(190,233,255,.22);
+  color:#37b8ff;
+  text-shadow:0 0 10px rgba(55,184,255,.30);
 }
 .store-csgoskins-warning{
   margin:auto 0 0;
@@ -2961,10 +2961,13 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   margin-top:8px;
 }
 
-/* Global store WP color: keep every WP amount consistently green. */
+/* Global store WP styling: white amount, green WP suffix. */
 .store-page .store-price-secondary strong,
+.store-page .store-wp-only-value{
+  color:#f4f7f6!important;
+  text-shadow:none;
+}
 .store-page .store-price-secondary strong b,
-.store-page .store-wp-only-value,
 .store-page .store-wp-only-value b{
   color:#20f39a!important;
   text-shadow:0 0 10px rgba(32,243,154,.20);
