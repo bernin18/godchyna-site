@@ -1354,10 +1354,110 @@ function GiveawaysPage(){
   );
 }
 
+function DepositPage(){
+  const { pick } = useLanguage();
+
+  return (
+    <>
+      <Header/>
+      <main className="store-page store-deposit-page">
+        <section className="store-shell">
+          <header className="store-hero">
+            <h1>{pick("DEPOSITAR CHY","DEPOSIT CHY")}</h1>
+            <p>
+              {pick(
+                "Adiciona CHY ao teu saldo para completares compras na loja.",
+                "Add CHY to your balance to complete purchases in the shop.",
+              )}
+            </p>
+          </header>
+
+          <section className="store-deposit-card">
+            <img src={asset("CHY coin.png")} alt="CHY"/>
+            <div>
+              <span>{pick("CONVERSÃO","CONVERSION")}</span>
+              <strong>1 EUR = 1,20 CHY</strong>
+              <p>{pick("O checkout de depósitos será ligado aqui.","The deposit checkout will be connected here.")}</p>
+            </div>
+            <a href={`${import.meta.env.BASE_URL}loja`}>{pick("VOLTAR À LOJA","BACK TO SHOP")}</a>
+          </section>
+        </section>
+      </main>
+      <Footer/>
+    </>
+  );
+}
+
 function StorePage(){
   const { pick } = useLanguage();
   const { user, loading: authLoading } = useAuthSession();
   const [storeAccess, setStoreAccess] = useState<"loading"|"admin"|"maintenance">("loading");
+  const [storeWallet, setStoreWallet] = useState<{watch_points:number;chy_balance:number|string}>({
+    watch_points: 0,
+    chy_balance: 0,
+  });
+  const [storeWalletLoading, setStoreWalletLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setStoreWallet({ watch_points: 0, chy_balance: 0 });
+      setStoreWalletLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadStoreWallet() {
+      const { data, error } = await supabase
+        .from("viewer_rewards")
+        .select("watch_points,chy_balance")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (cancelled) return;
+
+      if (error) {
+        console.warn("Unable to load store wallet", error);
+        setStoreWalletLoading(false);
+        return;
+      }
+
+      setStoreWallet({
+        watch_points: Number(data?.watch_points ?? 0),
+        chy_balance: data?.chy_balance ?? 0,
+      });
+      setStoreWalletLoading(false);
+    }
+
+    void loadStoreWallet();
+
+    const channel = supabase
+      .channel(`store-wallet-${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "viewer_rewards",
+          filter: `user_id=eq.${user.id}`,
+        },
+        payload => {
+          const next = payload.new as {watch_points?:number;chy_balance?:number|string} | undefined;
+          if (!next || typeof next !== "object") return;
+          setStoreWallet(current => ({
+            watch_points: Number(next.watch_points ?? current.watch_points ?? 0),
+            chy_balance: next.chy_balance ?? current.chy_balance ?? 0,
+          }));
+          setStoreWalletLoading(false);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      cancelled = true;
+      void supabase.removeChannel(channel);
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1393,6 +1493,78 @@ function StorePage(){
       cancelled = true;
     };
   }, [authLoading, user?.id]);
+
+  const storeWp = Number(storeWallet.watch_points ?? 0);
+  const storeChy = Number(storeWallet.chy_balance ?? 0);
+  const wpPerChy = 1200;
+  const maxWpShare = 0.25;
+
+  function formatStoreWp(value:number) {
+    return Math.max(0, Math.ceil(value)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function formatStoreChy(value:number) {
+    if (Number.isInteger(value)) return String(value);
+    return value.toFixed(2).replace(".", ",").replace(/0+$/, "").replace(/,$/, "");
+  }
+
+  function parseStoreWp(value:string) {
+    return Number(value.replace(/\./g, ""));
+  }
+
+  type StoreAction = { mode:"redeem"|"deposit"|"locked"|"loading"; label:string };
+
+  function getWpStoreAction(priceWp:number):StoreAction {
+    if (storeWalletLoading) return { mode:"loading", label:pick("A CARREGAR…","LOADING…") };
+    if (storeWp >= priceWp) return { mode:"redeem", label:pick("RESGATAR","REDEEM") };
+    return {
+      mode:"locked",
+      label:`${pick("FALTAM","NEED")} ${formatStoreWp(priceWp - storeWp)} WP`,
+    };
+  }
+
+  function getChyStoreAction(priceChy:number, fullWpPrice?:number):StoreAction {
+    if (storeWalletLoading) return { mode:"loading", label:pick("A CARREGAR…","LOADING…") };
+
+    if (storeChy >= priceChy || (fullWpPrice && storeWp >= fullWpPrice)) {
+      return { mode:"redeem", label:pick("RESGATAR","REDEEM") };
+    }
+
+    const missingChy = Math.max(0, priceChy - storeChy);
+    const wpNeeded = Math.ceil(missingChy * wpPerChy);
+    const maxWpAllowed = Math.floor(priceChy * wpPerChy * maxWpShare);
+
+    if (storeChy > 0 && wpNeeded > 0 && wpNeeded <= maxWpAllowed && storeWp >= wpNeeded) {
+      return {
+        mode:"redeem",
+        label:`${pick("RESGATAR","REDEEM")} · ${formatStoreChy(storeChy)} CHY + ${formatStoreWp(wpNeeded)} WP`,
+      };
+    }
+
+    return { mode:"deposit", label:pick("DEPOSITAR","DEPOSIT") };
+  }
+
+  function renderStoreAction(action:StoreAction) {
+    if (action.mode === "deposit") {
+      return (
+        <a className="store-redeem-btn store-action-deposit" href={`${import.meta.env.BASE_URL}depositar`}>
+          <ShoppingCart/>
+          {action.label}
+        </a>
+      );
+    }
+
+    return (
+      <button
+        className={`store-redeem-btn store-action-${action.mode}`}
+        type="button"
+        disabled
+      >
+        <ShoppingCart/>
+        {action.label}
+      </button>
+    );
+  }
 
   if (storeAccess !== "admin") {
     return (
@@ -1509,10 +1681,7 @@ function StorePage(){
                 </div>
 
 
-                <button className="store-redeem-btn" type="button" disabled>
-                  <ShoppingCart/>
-                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                </button>
+                {renderStoreAction(getChyStoreAction(5))}
               </div>
             </article>
 
@@ -1554,10 +1723,7 @@ function StorePage(){
                   </div>
                 </div>
 
-                <button className="store-redeem-btn" type="button" disabled>
-                  <ShoppingCart/>
-                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                </button>
+                {renderStoreAction(getChyStoreAction(84))}
               </div>
             </article>
 
@@ -1599,10 +1765,7 @@ function StorePage(){
                   </div>
                 </div>
 
-                <button className="store-redeem-btn" type="button" disabled>
-                  <ShoppingCart/>
-                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                </button>
+                {renderStoreAction(getChyStoreAction(30))}
               </div>
             </article>
 
@@ -1644,10 +1807,7 @@ function StorePage(){
                   </div>
                 </div>
 
-                <button className="store-redeem-btn" type="button" disabled>
-                  <ShoppingCart/>
-                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                </button>
+                {renderStoreAction(getChyStoreAction(84))}
               </div>
             </article>
 
@@ -1689,10 +1849,7 @@ function StorePage(){
                   </div>
                 </div>
 
-                <button className="store-redeem-btn" type="button" disabled>
-                  <ShoppingCart/>
-                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                </button>
+                {renderStoreAction(getChyStoreAction(7.8))}
               </div>
             </article>
 
@@ -1734,10 +1891,7 @@ function StorePage(){
                   </div>
                 </div>
 
-                <button className="store-redeem-btn" type="button" disabled>
-                  <ShoppingCart/>
-                  {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                </button>
+                {renderStoreAction(getChyStoreAction(4.2))}
               </div>
             </article>
                 </section>
@@ -1781,10 +1935,7 @@ function StorePage(){
                           </div>
                         </div>
 
-                        <button className="store-redeem-btn" type="button" disabled>
-                          <ShoppingCart/>
-                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                        </button>
+                        {renderStoreAction(getWpStoreAction(parseStoreWp(price)))}
                       </div>
                     </article>
                   ))}
@@ -1829,10 +1980,11 @@ function StorePage(){
                             <strong>{price} <b>WP</b></strong>
                           </div>
                         </div>
-                        <button className="store-redeem-btn" type="button" disabled>
-                          <ShoppingCart/>
-                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                        </button>
+                        {renderStoreAction(
+                          id === "demo-review"
+                            ? getChyStoreAction(6, parseStoreWp(price))
+                            : getWpStoreAction(parseStoreWp(price))
+                        )}
                       </div>
                     </article>
                   ))}
@@ -1871,10 +2023,7 @@ function StorePage(){
                           </div>
                         </div>
 
-                        <button className="store-redeem-btn" type="button" disabled>
-                          <ShoppingCart/>
-                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                        </button>
+                        {renderStoreAction(getWpStoreAction(parseStoreWp(price)))}
                       </div>
                     </article>
                   ))}
@@ -1915,10 +2064,7 @@ function StorePage(){
                           </div>
                         </div>
 
-                        <button className="store-redeem-btn" type="button" disabled>
-                          <ShoppingCart/>
-                          {pick("RESGATAR (DEMO)","REDEEM (DEMO)")}
-                        </button>
+                        {renderStoreAction(getWpStoreAction(parseStoreWp(price)))}
                       </div>
                     </article>
                   ))}
@@ -1951,6 +2097,7 @@ export default function App(){
   else if(path.endsWith("/parcerias")) page = <PartnersPage/>;
   else if(path.endsWith("/giveaways")) page = <GiveawaysPage/>;
   else if(path.endsWith("/loja")) page = <StorePage/>;
+  else if(path.endsWith("/depositar")) page = <DepositPage/>;
   else if(path.endsWith("/resgates")) page = <AdminRedemptionsPage Header={Header} Footer={Footer}/>;
   else if(path.endsWith("/cliente")) page = <AdminUserProfilePage Header={Header} Footer={Footer}/>;
   else if(path.endsWith("/perfil")) page = <ProfilePage Header={Header} Footer={Footer}/>;
