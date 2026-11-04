@@ -1185,6 +1185,96 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 
 
 
+
+.store-product-csgoskins{
+  display:flex;
+  flex-direction:column;
+  min-height:425px;
+  border-color:rgba(230,56,69,.72);
+  background:
+    radial-gradient(circle at 18% 18%,rgba(230,56,69,.12),transparent 34%),
+    linear-gradient(155deg,#12090a,#070506);
+  box-shadow:0 20px 48px rgba(0,0,0,.34),inset 0 0 30px rgba(230,56,69,.035);
+}
+.store-product-csgoskins .store-product-body{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+}
+.store-product-csgoskins .store-product-visual{
+  background:
+    radial-gradient(circle at 50% 42%,rgba(230,56,69,.16),transparent 38%),
+    linear-gradient(180deg,#170b0d,#080506);
+}
+.store-product-csgoskins .store-product-visual::after{
+  background:linear-gradient(90deg,transparent,rgba(230,56,69,.66),rgba(255,112,122,.42),transparent);
+}
+.store-product-csgoskins .store-product-glow{
+  background:rgba(230,56,69,.18);
+  filter:blur(28px);
+}
+.store-product-csgoskins .store-demo-badge{
+  border-color:rgba(230,56,69,.62);
+  color:#ff9da5;
+  background:rgba(24,6,8,.90);
+  box-shadow:0 0 14px rgba(230,56,69,.16);
+}
+.store-csgoskins-card-art{
+  position:relative;
+  z-index:2;
+  width:78%;
+  min-height:100px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 12px;
+  border:1px solid rgba(230,56,69,.42);
+  border-radius:11px;
+  background:linear-gradient(135deg,rgba(27,11,13,.96),rgba(9,5,6,.98));
+  box-shadow:0 14px 28px rgba(0,0,0,.38),inset 0 0 24px rgba(230,56,69,.04),0 0 20px rgba(230,56,69,.08);
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+}
+.store-csgoskins-card-art img{
+  position:relative;
+  z-index:2;
+  display:block;
+  width:150px;
+  max-width:84%;
+  max-height:72px;
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 0 10px rgba(255,255,255,.06));
+}
+.store-product-csgoskins:hover .store-csgoskins-card-art{
+  transform:perspective(500px) rotateX(3deg) rotateY(-5deg) translateY(-4px) scale(1.025);
+  border-color:rgba(255,112,122,.78);
+  box-shadow:0 18px 34px rgba(0,0,0,.42),inset 0 0 28px rgba(230,56,69,.06),0 0 24px rgba(230,56,69,.16);
+}
+.store-condition-csgoskins{
+  color:#ff6976;
+  text-shadow:0 0 10px rgba(230,56,69,.24);
+}
+.store-csgoskins-warning{
+  margin:8px 0 0;
+  color:#ff5362;
+  font:900 9px "Chakra Petch",sans-serif;
+  line-height:1.35;
+  text-transform:uppercase;
+}
+.store-product-csgoskins .store-product-divider{
+  margin-top:auto;
+  background:#3a171b;
+}
+.store-product-csgoskins .store-price-row{margin-top:0}
+.store-product-csgoskins .store-redeem-btn{
+  margin-top:8px;
+  border-color:rgba(230,56,69,.34);
+  background:linear-gradient(180deg,rgba(59,16,21,.82),rgba(25,7,10,.88));
+  color:#ff9da5;
+}
+.store-product-csgoskins .store-wp-only-value{color:#f4f4f4}
+.store-product-csgoskins .store-wp-only-value b{color:#ff6976}
+
 .store-product-mbway{
   display:flex;
   flex-direction:column;
