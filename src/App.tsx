@@ -1639,8 +1639,6 @@ function StorePage(){
                   </div>
 
                   <div className="store-category-heading-right">
-                    <p>{pick("Skins disponíveis para resgate.","Skins available to redeem.")}</p>
-
                     <div className="store-wallet-mini" aria-label={pick("Saldo da loja","Store balance")}>
                       <span className="store-wallet-mini-label">{pick("SALDO","BALANCE")}</span>
                       <div className="store-wallet-mini-chy">
