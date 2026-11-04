@@ -750,11 +750,11 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   margin-left:auto;
   display:flex;
   align-items:flex-end;
-  gap:16px;
+  justify-content:flex-end;
 }
 .store-wallet-mini{
-  min-width:158px;
-  padding:9px 11px 10px;
+  min-width:176px;
+  padding:10px 13px 11px;
   border:1px solid rgba(255,255,255,.16);
   border-radius:10px;
   background:
@@ -3189,12 +3189,10 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 
 @media(max-width:760px){
   .store-category-heading-wallet{align-items:flex-start;flex-direction:column}
-  .store-category-heading-right{width:100%;margin-left:0;align-items:stretch;justify-content:space-between}
-  .store-category-heading-right p{align-self:flex-end}
+  .store-category-heading-right{width:100%;margin-left:0;align-items:stretch;justify-content:flex-end}
   .store-wallet-mini{margin-left:auto}
 }
 @media(max-width:520px){
-  .store-category-heading-right{flex-direction:column;gap:10px}
-  .store-category-heading-right p{align-self:flex-start}
+  .store-category-heading-right{flex-direction:column}
   .store-wallet-mini{width:100%;margin-left:0}
 }
