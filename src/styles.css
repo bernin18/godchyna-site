@@ -744,6 +744,68 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-category-heading>div>span{display:block;color:#637275;font:900 8px "Chakra Petch",sans-serif;letter-spacing:.14em}
 .store-category-heading h2{margin:3px 0 0;color:#f2f5f4;font:italic 900 27px "Chakra Petch",sans-serif;line-height:1}
 .store-category-heading p{margin:0;color:#738184;font-size:10px}
+
+.store-category-heading-wallet{align-items:flex-end}
+.store-category-heading-right{
+  margin-left:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:16px;
+}
+.store-wallet-mini{
+  min-width:158px;
+  padding:9px 11px 10px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:10px;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(255,196,56,.08),transparent 36%),
+    radial-gradient(circle at 82% 82%,rgba(32,243,154,.07),transparent 38%),
+    linear-gradient(155deg,rgba(10,17,20,.98),rgba(5,9,11,.98));
+  box-shadow:0 12px 28px rgba(0,0,0,.24),inset 0 0 18px rgba(255,255,255,.02);
+}
+.store-wallet-mini-label{
+  display:block;
+  margin-bottom:5px;
+  color:#68777a;
+  font:900 7px "Chakra Petch",sans-serif;
+  letter-spacing:.14em;
+}
+.store-wallet-mini-chy,
+.store-wallet-mini-wp{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-family:"Chakra Petch",sans-serif;
+}
+.store-wallet-mini-chy img{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 6px rgba(255,196,56,.25));
+}
+.store-wallet-mini-chy strong,
+.store-wallet-mini-wp strong{
+  color:#f4f7f6;
+  font-size:14px;
+  line-height:1;
+}
+.store-wallet-mini-chy b{
+  color:#ffc438;
+  font-size:9px;
+  letter-spacing:.05em;
+}
+.store-wallet-mini-wp{
+  margin-top:7px;
+  padding-top:7px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.store-wallet-mini-wp b{
+  color:#20f39a;
+  font-size:9px;
+  letter-spacing:.05em;
+  text-shadow:0 0 8px rgba(32,243,154,.18);
+}
+
 .store-category-empty{min-height:150px;margin-top:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px dashed #22363b;border-radius:12px;background:linear-gradient(145deg,#081013,#070b0d);color:#657477}
 .store-category-empty strong{color:#aab5b4;font:italic 900 18px "Chakra Petch",sans-serif}
 .store-category-empty span{margin-top:6px;font-size:10px}
@@ -3123,4 +3185,16 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   .store-deposit-card>a{
     grid-column:1 / -1;
   }
+}
+
+@media(max-width:760px){
+  .store-category-heading-wallet{align-items:flex-start;flex-direction:column}
+  .store-category-heading-right{width:100%;margin-left:0;align-items:stretch;justify-content:space-between}
+  .store-category-heading-right p{align-self:flex-end}
+  .store-wallet-mini{margin-left:auto}
+}
+@media(max-width:520px){
+  .store-category-heading-right{flex-direction:column;gap:10px}
+  .store-category-heading-right p{align-self:flex-start}
+  .store-wallet-mini{width:100%;margin-left:0}
 }
