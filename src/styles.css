@@ -1401,14 +1401,14 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   display:flex;
   flex-direction:column;
   min-height:425px;
-  border-color:rgba(255,132,24,.84);
+  border-color:rgba(255,82,82,.84);
   background:
     radial-gradient(circle at 18% 18%,rgba(255,132,24,.13),transparent 34%),
     linear-gradient(155deg,#140d06,#070503);
   box-shadow:
     0 20px 48px rgba(0,0,0,.40),
     inset 0 0 30px rgba(255,132,24,.03),
-    0 0 18px rgba(255,132,24,.10);
+    0 0 18px rgba(255,82,82,.11);
 }
 .store-product-topskin .store-product-body{
   display:flex;
