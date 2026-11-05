@@ -2082,6 +2082,47 @@ function StorePage(){
                       </div>
                     </article>
                   ))}
+
+                  {[
+                    { id: "topskin-5", value: "5€", price: "8.000" },
+                    { id: "topskin-10", value: "10€", price: "15.000" },
+                  ].map(({id, value, price})=>(
+                    <article key={id} className="store-product-card store-product-topskin">
+                      <div className="store-product-visual store-topskin-visual">
+                        <span className="store-demo-badge">DEMO</span>
+                        <div className="store-product-glow"/>
+                        <div className="store-topskin-card-art">
+                          <img src={asset("topskin-logo.png")} alt="TOPSKIN"/>
+                        </div>
+                      </div>
+
+                      <div className="store-product-body">
+                        <h2>TOPSKIN Gift Card <span className="store-condition-inline store-condition-topskin">{value}</span></h2>
+
+                        <div className="store-stock-row" aria-label={pick("1 gift card disponível","1 gift card available")}>
+                          <span className="store-stock-dot" aria-hidden="true"/>
+                          <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                        </div>
+
+                        <p className="store-topskin-warning">
+                          {pick(
+                            "Só podes resgatar este gift card se já tiveres utilizado o meu código.",
+                            "You can only redeem this gift card if you have already used my code.",
+                          )}
+                        </p>
+
+                        <div className="store-product-divider"/>
+
+                        <div className="store-price-row store-price-row-single">
+                          <div className="store-price-primary">
+                            <strong className="store-wp-only-value">{price} <b>WP</b></strong>
+                          </div>
+                        </div>
+
+                        {renderStoreAction(getWpStoreAction(parseStoreWp(price)))}
+                      </div>
+                    </article>
+                  ))}
                 </div>
               </section>
             </div>
