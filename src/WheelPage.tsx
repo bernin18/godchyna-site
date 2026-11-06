@@ -437,12 +437,13 @@ const CASE_ROUNDS: CaseRound[] = [
 ];
 
 const CASE_RARE_CHANCE = 3;
+const CASE_ENTRY_BOOST_CAP = 3000;
 const CASE_BASE_WEIGHTS = [24.244713, 21.335347, 17.456193, 13.577039, 8.728097, 5.818731, 3.39426, 1.745619, 0.7];
 const CASE_MAX_WEIGHTS = [20.336842, 18.4, 15.494737, 12.589474, 9.684211, 7.747368, 4.842105, 2.905263, 5];
 
 function caseBoostProgress(entries: number) {
-  const cappedEntries = Math.max(1, Math.min(150, entries));
-  return Math.sqrt((cappedEntries - 1) / 149);
+  const cappedEntries = Math.max(1, Math.min(CASE_ENTRY_BOOST_CAP, entries));
+  return Math.sqrt((cappedEntries - 1) / (CASE_ENTRY_BOOST_CAP - 1));
 }
 
 function caseWeightsForEntries(entries: number) {
