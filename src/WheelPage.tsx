@@ -442,7 +442,11 @@ const CASE_MAX_WEIGHTS = [20.336842, 18.4, 15.494737, 12.589474, 9.684211, 7.747
 
 function caseBoostProgress(entries: number, maxEntries: number) {
   const safeMax = Math.max(1, maxEntries);
-  return Math.max(0, Math.min(1, entries / safeMax));
+  const relativeEntries = Math.max(0, Math.min(1, entries / safeMax));
+
+  // The top entrant is always the 5% reference. A softer curve keeps
+  // meaningful odds for the rest of the TOP 5 (e.g. 100 vs 300 ≈ 2.5%).
+  return Math.pow(relativeEntries, 0.8);
 }
 
 function caseWeightsForEntries(entries: number, maxEntries: number) {
