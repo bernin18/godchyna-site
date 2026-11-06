@@ -1922,7 +1922,7 @@ function StorePage(){
                   {[
                     { id: "mbway-5", value: "5€", price: "10.000" },
                     { id: "mbway-10", value: "10€", price: "20.000" },
-                    { id: "mbway-20", value: "20€", price: "35.000" },
+                    { id: "mbway-20", value: "20€", price: "50.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-mbway">
                       <div className="store-product-visual store-mbway-visual">
@@ -2006,7 +2006,6 @@ function StorePage(){
                   {[
                     { id: "steam-5", value: "5€", price: "10.000" },
                     { id: "steam-10", value: "10€", price: "20.000" },
-                    { id: "steam-20", value: "20€", price: "35.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-steam">
                       <div className="store-product-visual store-steam-visual">
