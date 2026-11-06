@@ -437,27 +437,26 @@ const CASE_ROUNDS: CaseRound[] = [
 ];
 
 const CASE_RARE_CHANCE = 3;
-const CASE_ENTRY_BOOST_CAP = 3000;
 const CASE_BASE_WEIGHTS = [24.244713, 21.335347, 17.456193, 13.577039, 8.728097, 5.818731, 3.39426, 1.745619, 0.7];
 const CASE_MAX_WEIGHTS = [20.336842, 18.4, 15.494737, 12.589474, 9.684211, 7.747368, 4.842105, 2.905263, 5];
 
-function caseBoostProgress(entries: number) {
-  const cappedEntries = Math.max(1, Math.min(CASE_ENTRY_BOOST_CAP, entries));
-  return Math.sqrt((cappedEntries - 1) / (CASE_ENTRY_BOOST_CAP - 1));
+function caseBoostProgress(entries: number, totalEntries: number) {
+  const safeTotal = Math.max(1, totalEntries);
+  return Math.max(0, Math.min(1, entries / safeTotal));
 }
 
-function caseWeightsForEntries(entries: number) {
-  const boost = caseBoostProgress(entries);
+function caseWeightsForEntries(entries: number, totalEntries: number) {
+  const boost = caseBoostProgress(entries, totalEntries);
   return CASE_BASE_WEIGHTS.map(
     (base, index) => base + (CASE_MAX_WEIGHTS[index] - base) * boost,
   );
 }
 
-function caseTopSkinChance(entries: number) {
-  return caseWeightsForEntries(entries)[CASE_BASE_WEIGHTS.length - 1];
+function caseTopSkinChance(entries: number, totalEntries: number) {
+  return caseWeightsForEntries(entries, totalEntries)[CASE_BASE_WEIGHTS.length - 1];
 }
 
-function pickCaseDrop(round: CaseRound, entries: number, forceRare = false) {
+function pickCaseDrop(round: CaseRound, entries: number, totalEntries: number, forceRare = false) {
   const rareRoll = randomParticipantIndex(1_000_000) / 10_000;
 
   if (forceRare || rareRoll < CASE_RARE_CHANCE) {
@@ -470,7 +469,7 @@ function pickCaseDrop(round: CaseRound, entries: number, forceRare = false) {
   }
 
   const sorted = [...round.skins].sort((a, b) => a.valueEur - b.valueEur);
-  const weights = caseWeightsForEntries(entries);
+  const weights = caseWeightsForEntries(entries, totalEntries);
   const normalRoll = randomParticipantIndex(970_000) / 10_000;
   let cursor = 0;
 
@@ -2684,6 +2683,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return qualifiedEntryCounts[playerName.trim().toLocaleLowerCase()] ?? 1;
   }
 
+  function caseTotalEntryCount() {
+    return participants.length + Object.values(qualifiedEntryCounts)
+      .reduce((total, count) => total + count, 0);
+  }
+
   function casePlayerTotal(playerName: string) {
     return caseOpenings
       .filter((opening) => opening.playerName === playerName)
@@ -2724,7 +2728,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
-    const drop = pickCaseDrop(round, entries);
+    const totalEntries = caseTotalEntryCount();
+    const drop = pickCaseDrop(round, entries, totalEntries);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
@@ -4306,6 +4311,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         : leaderboardOrder;
     const currentPlayer = activePlayers[casePlayerIndex] ?? activePlayers[0];
     const currentEntries = currentPlayer ? caseEntryCount(currentPlayer) : 1;
+    const totalCaseEntries = caseTotalEntryCount();
     const leaderboard = leaderboardOrder.map((name) => ({
       name,
       entries: caseEntryCount(name),
@@ -4420,8 +4426,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <span>{pick("BOOST DE ENTRADAS", "ENTRY BOOST")}</span>
                   <p>
                     {pick(
-                      "Mais entradas melhoram progressivamente as odds das skins mais valiosas. A melhor skin vai de 0,70% até um máximo de 5,00%.",
-                      "More entries progressively improve the odds of higher-value skins. The top skin ranges from 0.70% up to a 5.00% cap.",
+                      "As odds dependem da percentagem das tuas entradas face ao total da roda. Quanto maior a tua fatia, melhores as odds das skins mais valiosas.",
+                      "Odds depend on your share of entries compared with the total entries on the wheel. The larger your share, the better the odds of higher-value skins.",
                     )}
                   </p>
                 </div>
@@ -4449,7 +4455,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     </span>
                     <span>
                       {pick("MELHOR DROP", "TOP DROP")}
-                      <b>{caseTopSkinChance(currentEntries).toFixed(2)}%</b>
+                      <b>{caseTopSkinChance(currentEntries, totalCaseEntries).toFixed(2)}%</b>
                     </span>
                   </div>
                 </div>
