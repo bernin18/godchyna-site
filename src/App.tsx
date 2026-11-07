@@ -1657,6 +1657,7 @@ function StorePage(){
                 <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
                   {[
                     { id:"falchion-slaughter-ft", weapon:"FALCHION KNIFE", name:"★ Slaughter", wear:"FT", image:"falchion slau.png", eur:170, rarity:"gold" },
+                    { id:"classic-slaughter-mw", weapon:"CLASSIC KNIFE", name:"★ Slaughter", wear:"MW", image:"classic slaug.png", eur:160, rarity:"gold" },
                     { id:"m4a1s-printstream-bs", weapon:"M4A1-S", name:"Printstream", wear:"BS", image:"m4a1 printstream.webp", eur:115, rarity:"covert" },
                     { id:"sport-gloves-big-game-ft", weapon:"SPORT GLOVES", name:"★ Big Game", wear:"FT", image:"big game.png", eur:105, rarity:"gold" },
                     { id:"ak-bloodsport-ft", weapon:"AK-47", name:"Bloodsport", wear:"FT", image:"ak blood.png", eur:100, rarity:"covert" },
@@ -1665,15 +1666,29 @@ function StorePage(){
                     { id:"kukri-crimson-web-ft", weapon:"KUKRI KNIFE", name:"★ Crimson Web", wear:"FT", image:"Kukri FT.png", eur:75, rarity:"gold" },
                     { id:"kukri-blue-steel-ft", weapon:"KUKRI KNIFE", name:"★ Blue Steel", wear:"FT", image:"kukri blue.webp", eur:65, rarity:"gold" },
                     { id:"awp-queens-gambit-ft", weapon:"AWP", name:"Queen's Gambit", wear:"FT", image:"awp queen.png", eur:50, rarity:"covert" },
-                    { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png", eur:40, rarity:"covert" },
+                    { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png?v=2", eur:40, rarity:"covert" },
                     { id:"awp-redline-ft", weapon:"AWP", name:"Redline", wear:"FT", image:"awp redline.png", eur:35, rarity:"pink" },
                     { id:"usps-printstream-ft", weapon:"USP-S", name:"Printstream", wear:"FT", image:"usp print.webp", eur:35, rarity:"covert" },
+                    { id:"glock-water-elemental-st-mw", weapon:"GLOCK-18", name:"Water Elemental", wear:"MW", image:"glock water.png", eur:32, rarity:"pink", stattrak:true },
                     { id:"ak-inheritance-ft", weapon:"AK-47", name:"Inheritance", wear:"FT", image:"Ak inheri.png", eur:30, rarity:"covert" },
                     { id:"hydra-gloves-emerald-ft", weapon:"HYDRA GLOVES", name:"★ Emerald", wear:"FT", image:"gloves hydra emerald.png", eur:30, rarity:"gold" },
+                    { id:"deagle-printstream-ft", weapon:"DESERT EAGLE", name:"Printstream", wear:"FT", image:"deagle print.png", eur:30, rarity:"covert" },
+                    { id:"glock-gold-toof-mw", weapon:"GLOCK-18", name:"Gold Toof", wear:"MW", image:"glock gold.png", eur:28, rarity:"covert" },
+                    { id:"m4a4-falak-ft", weapon:"M4A4", name:"Falak", wear:"FT", image:"m4a4 falak.png", eur:25, rarity:"pink" },
+                    { id:"glock-vogue-st-fn", weapon:"GLOCK-18", name:"Vogue", wear:"FN", image:"weapon_glock_cu_glock_eyecontact_light_large.fb7988d1d3d9ff159f81d3c0d9a2eacb976e2842.png", eur:22, rarity:"pink", stattrak:true },
                     { id:"awp-crakow-ft", weapon:"AWP", name:"Crakow!", wear:"FT", image:"awp crakow.png", eur:18, rarity:"pink" },
+                    { id:"glock-shinobu-st-mw", weapon:"GLOCK-18", name:"Shinobu", wear:"MW", image:"glock shinobu.png", eur:16, rarity:"pink", stattrak:true },
+                    { id:"deagle-kumicho-dragon-ft", weapon:"DESERT EAGLE", name:"Kumicho Dragon", wear:"FT", image:"deagle kumicho.png", eur:16, rarity:"pink" },
+                    { id:"usps-cyrex-st-fn", weapon:"USP-S", name:"Cyrex", wear:"FN", image:"usp cyrex.png", eur:15, rarity:"classified", stattrak:true },
+                    { id:"usps-cortex-st-mw", weapon:"USP-S", name:"Cortex", wear:"MW", image:"usp cortex.png", eur:15, rarity:"pink", stattrak:true },
+                    { id:"ak-crane-flight-ft", weapon:"AK-47", name:"Crane Flight", wear:"FT", image:"ak crane.png", eur:15, rarity:"pink" },
+                    { id:"m4a1s-party-animal-mw", weapon:"M4A1-S", name:"Party Animal", wear:"MW", image:"m4a1 party.png", eur:15, rarity:"pink" },
+                    { id:"m4a4-hellish-ft", weapon:"M4A4", name:"Hellish", wear:"FT", image:"m4a4 hellish.png", eur:15, rarity:"pink" },
                     { id:"awp-black-nile-fn", weapon:"AWP", name:"Black Nile", wear:"FN", image:"Black Nile.png", eur:12, rarity:"blue" },
+                    { id:"m4a4-desolate-space-ft", weapon:"M4A4", name:"Desolate Space", wear:"FT", image:"m4a4 desolate.png", eur:12, rarity:"pink" },
                     { id:"ak-outsiders-mw", weapon:"AK-47", name:"The Outsiders", wear:"MW", image:"ak outsiders.png", eur:10, rarity:"pink" },
                     { id:"m4a1s-black-lotus-fn", weapon:"M4A1-S", name:"Black Lotus", wear:"FN", image:"M4a1 black lotus.png", eur:10, rarity:"pink" },
+                    { id:"ak-nouveau-rouge-ft", weapon:"AK-47", name:"Nouveau Rouge", wear:"FT", image:"ak nouveau.png", eur:10, rarity:"pink" },
                   ].map((skin)=>{
                     const priceChy = skin.eur * 1.2;
                     const priceWp = priceChy * wpPerChy;
@@ -1694,6 +1709,7 @@ function StorePage(){
                         <div className="store-product-body">
                           <div className="store-product-meta">
                             <span>{skin.weapon}</span>
+                            {skin.stattrak && <span className="store-stattrak">STATTRAK™</span>}
                           </div>
 
                           <h2>
