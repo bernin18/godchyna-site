@@ -1655,259 +1655,74 @@ function StorePage(){
                 </header>
 
                 <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
-            <article className="store-product-card store-product-demo store-product-classified">
-              <div className="store-product-visual">
-                <span className="store-demo-badge">DEMO</span>
-                <div className="store-product-glow"/>
-                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
-                <img
-                  src={asset("deagle serpent.png")}
-                  alt="StatTrak Desert Eagle Serpent Strike"
-                />
-              </div>
+                  {[
+                    { id:"ak-inheritance-ft", weapon:"AK-47", name:"Inheritance", wear:"FT", image:"Ak inheri.png", eur:30, rarity:"covert" },
+                    { id:"awp-asiimov-ft", weapon:"AWP", name:"Asiimov", wear:"FT", image:"awp asiimov.png", eur:90, rarity:"covert" },
+                    { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png", eur:40, rarity:"covert" },
+                    { id:"sport-gloves-big-game-ft", weapon:"SPORT GLOVES", name:"★ Big Game", wear:"FT", image:"big game.png", eur:105, rarity:"gold" },
+                    { id:"awp-black-nile-fn", weapon:"AWP", name:"Black Nile", wear:"FN", image:"Black Nile.png", eur:12, rarity:"blue" },
+                    { id:"falchion-slaughter-ft", weapon:"FALCHION KNIFE", name:"★ Slaughter", wear:"FT", image:"falchion slau.png", eur:170, rarity:"gold" },
+                    { id:"specialist-gloves-fade-bs", weapon:"SPECIALIST GLOVES", name:"★ Fade", wear:"BS", image:"gloves fade.png", eur:95, rarity:"gold" },
+                    { id:"hydra-gloves-emerald-ft", weapon:"HYDRA GLOVES", name:"★ Emerald", wear:"FT", image:"gloves hydra emerald.png", eur:30, rarity:"gold" },
+                    { id:"kukri-blue-steel-ft", weapon:"KUKRI KNIFE", name:"★ Blue Steel", wear:"FT", image:"kukri blue.webp", eur:65, rarity:"gold" },
+                    { id:"kukri-crimson-web-ft", weapon:"KUKRI KNIFE", name:"★ Crimson Web", wear:"FT", image:"Kukri FT.png", eur:75, rarity:"gold" },
+                    { id:"m4a1s-black-lotus-fn", weapon:"M4A1-S", name:"Black Lotus", wear:"FN", image:"M4a1 black lotus.png", eur:10, rarity:"pink" },
+                    { id:"m4a1s-printstream-bs", weapon:"M4A1-S", name:"Printstream", wear:"BS", image:"m4a1 printstream.webp", eur:115, rarity:"covert" },
+                    { id:"usps-printstream-ft", weapon:"USP-S", name:"Printstream", wear:"FT", image:"usp print.webp", eur:35, rarity:"covert" },
+                  ].map((skin)=>{
+                    const priceChy = skin.eur * 1.2;
+                    const priceWp = priceChy * wpPerChy;
 
-              <div className="store-product-body">
-                <div className="store-product-meta">
-                  <span>DESERT EAGLE</span>
-                  <span className="store-stattrak">STATTRAK™</span>
-                </div>
+                    return (
+                      <article key={skin.id} className={`store-product-card store-product-${skin.rarity}`}>
+                        <div className="store-product-visual">
+                          <div className="store-product-glow"/>
+                          <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
+                          <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
+                          <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
+                          <img
+                            src={asset(skin.image)}
+                            alt={`${skin.weapon} ${skin.name} ${skin.wear}`}
+                          />
+                        </div>
 
-                <h2>Serpent Strike <span className="store-condition-inline store-condition-classified">FN</span></h2>
+                        <div className="store-product-body">
+                          <div className="store-product-meta">
+                            <span>{skin.weapon}</span>
+                          </div>
 
-                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
-                  <span className="store-stock-dot" aria-hidden="true"/>
-                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                </div>
+                          <h2>
+                            {skin.name}
+                            <span className={`store-condition-inline store-condition-${skin.rarity}`}>{skin.wear}</span>
+                          </h2>
 
-                <div className="store-product-divider"/>
+                          <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
+                            <span className="store-stock-dot" aria-hidden="true"/>
+                            <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
+                          </div>
 
-                <div className="store-price-row">
-                  <div className="store-price-primary">
-                    <span>{pick("PREÇO","PRICE")}</span>
-                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>5</strong>
-                  </div>
-                  <div className="store-price-secondary">
-                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
-                    <strong>6.000 <b>WP</b></strong>
-                  </div>
-                </div>
+                          <div className="store-product-divider"/>
 
+                          <div className="store-price-row">
+                            <div className="store-price-primary">
+                              <span>{pick("PREÇO","PRICE")}</span>
+                              <strong className="store-chy-value">
+                                <img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>
+                                {formatStoreChy(priceChy)}
+                              </strong>
+                            </div>
+                            <div className="store-price-secondary">
+                              <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
+                              <strong>{formatStoreWp(priceWp)} <b>WP</b></strong>
+                            </div>
+                          </div>
 
-                {renderStoreAction(getChyStoreAction(5))}
-              </div>
-            </article>
+                          {renderStoreAction(getChyStoreAction(priceChy))}
+                        </div>
+                      </article>
+                    );
+                  })}
 
-            <article className="store-product-card store-product-gold">
-              <div className="store-product-visual">
-                <span className="store-demo-badge">DEMO</span>
-                <div className="store-product-glow"/>
-                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
-                <img
-                  src={asset("Kukri FT.png")}
-                  alt="Kukri Knife Crimson Web Field-Tested"
-                />
-              </div>
-
-              <div className="store-product-body">
-                <div className="store-product-meta">
-                  <span>KUKRI KNIFE</span>
-                </div>
-
-                <h2>★ Crimson Web <span className="store-condition-inline store-condition-gold">FT</span></h2>
-
-                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
-                  <span className="store-stock-dot" aria-hidden="true"/>
-                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                </div>
-
-                <div className="store-product-divider"/>
-
-                <div className="store-price-row">
-                  <div className="store-price-primary">
-                    <span>{pick("PREÇO","PRICE")}</span>
-                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>84</strong>
-                  </div>
-                  <div className="store-price-secondary">
-                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
-                    <strong>100.800 <b>WP</b></strong>
-                  </div>
-                </div>
-
-                {renderStoreAction(getChyStoreAction(84))}
-              </div>
-            </article>
-
-            <article className="store-product-card store-product-classified">
-              <div className="store-product-visual">
-                <span className="store-demo-badge">DEMO</span>
-                <div className="store-product-glow"/>
-                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
-                <img
-                  src={asset("Ak redline.png")}
-                  alt="AK-47 Redline Field-Tested"
-                />
-              </div>
-
-              <div className="store-product-body">
-                <div className="store-product-meta">
-                  <span>AK-47</span>
-                </div>
-
-                <h2>Redline <span className="store-condition-inline store-condition-classified">FT</span></h2>
-
-                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
-                  <span className="store-stock-dot" aria-hidden="true"/>
-                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                </div>
-
-                <div className="store-product-divider"/>
-
-                <div className="store-price-row">
-                  <div className="store-price-primary">
-                    <span>{pick("PREÇO","PRICE")}</span>
-                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>30</strong>
-                  </div>
-                  <div className="store-price-secondary">
-                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
-                    <strong>36.000 <b>WP</b></strong>
-                  </div>
-                </div>
-
-                {renderStoreAction(getChyStoreAction(30))}
-              </div>
-            </article>
-
-            <article className="store-product-card store-product-gold">
-              <div className="store-product-visual">
-                <span className="store-demo-badge">DEMO</span>
-                <div className="store-product-glow"/>
-                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
-                <img
-                  src={asset("Mogul.png")}
-                  alt="Specialist Gloves Mogul"
-                />
-              </div>
-
-              <div className="store-product-body">
-                <div className="store-product-meta">
-                  <span>SPECIALIST GLOVES</span>
-                </div>
-
-                <h2>★ Mogul <span className="store-condition-inline store-condition-gold">FT</span></h2>
-
-                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
-                  <span className="store-stock-dot" aria-hidden="true"/>
-                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                </div>
-
-                <div className="store-product-divider"/>
-
-                <div className="store-price-row">
-                  <div className="store-price-primary">
-                    <span>{pick("PREÇO","PRICE")}</span>
-                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>84</strong>
-                  </div>
-                  <div className="store-price-secondary">
-                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
-                    <strong>100.800 <b>WP</b></strong>
-                  </div>
-                </div>
-
-                {renderStoreAction(getChyStoreAction(84))}
-              </div>
-            </article>
-
-            <article className="store-product-card store-product-pink">
-              <div className="store-product-visual">
-                <span className="store-demo-badge">DEMO</span>
-                <div className="store-product-glow"/>
-                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
-                <img
-                  src={asset("Party Animal.png")}
-                  alt="M4A1-S Party Animal"
-                />
-              </div>
-
-              <div className="store-product-body">
-                <div className="store-product-meta">
-                  <span>M4A1-S</span>
-                </div>
-
-                <h2>Party Animal <span className="store-condition-inline store-condition-pink">FT</span></h2>
-
-                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
-                  <span className="store-stock-dot" aria-hidden="true"/>
-                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                </div>
-
-                <div className="store-product-divider"/>
-
-                <div className="store-price-row">
-                  <div className="store-price-primary">
-                    <span>{pick("PREÇO","PRICE")}</span>
-                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>7,8</strong>
-                  </div>
-                  <div className="store-price-secondary">
-                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
-                    <strong>9.360 <b>WP</b></strong>
-                  </div>
-                </div>
-
-                {renderStoreAction(getChyStoreAction(7.8))}
-              </div>
-            </article>
-
-            <article className="store-product-card store-product-blue">
-              <div className="store-product-visual">
-                <span className="store-demo-badge">DEMO</span>
-                <div className="store-product-glow"/>
-                <span className="store-sparkle store-sparkle-1" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-2" aria-hidden="true"/>
-                <span className="store-sparkle store-sparkle-3" aria-hidden="true"/>
-                <img
-                  src={asset("Black Nile.png")}
-                  alt="AWP Black Nile Minimal Wear"
-                />
-              </div>
-
-              <div className="store-product-body">
-                <div className="store-product-meta">
-                  <span>AWP</span>
-                </div>
-
-                <h2>Black Nile <span className="store-condition-inline store-condition-blue">MW</span></h2>
-
-                <div className="store-stock-row" aria-label={pick("1 skin disponível","1 skin available")}>
-                  <span className="store-stock-dot" aria-hidden="true"/>
-                  <span>{pick("1 DISPONÍVEL","1 AVAILABLE")}</span>
-                </div>
-
-                <div className="store-product-divider"/>
-
-                <div className="store-price-row">
-                  <div className="store-price-primary">
-                    <span>{pick("PREÇO","PRICE")}</span>
-                    <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>4,2</strong>
-                  </div>
-                  <div className="store-price-secondary">
-                    <span>{pick("VALOR EQUIVALENTE","EQUIVALENT VALUE")}</span>
-                    <strong>5.040 <b>WP</b></strong>
-                  </div>
-                </div>
-
-                {renderStoreAction(getChyStoreAction(4.2))}
-              </div>
-            </article>
                 </section>
               </section>
 
