@@ -3347,3 +3347,94 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     grid-column:auto;
   }
 }
+
+
+/* Store rarity: Covert (red) */
+.store-product-covert{
+  border-color:rgba(235,70,70,.58);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(235,70,70,.08),transparent 32%),
+    linear-gradient(155deg,#190909,#080b0e);
+  box-shadow:
+    0 20px 48px rgba(0,0,0,.30),
+    inset 0 0 28px rgba(235,70,70,.04),
+    0 0 10px rgba(235,70,70,.22);
+  animation:storeCovertPulse 2.15s ease-in-out infinite;
+}
+.store-product-covert .store-product-visual{
+  background:
+    radial-gradient(circle at 50% 52%,rgba(235,70,70,.24),transparent 31%),
+    radial-gradient(circle at 50% 45%,rgba(155,34,34,.18),transparent 56%),
+    linear-gradient(180deg,#190909 0%,#1b0b0b 52%,#080b10 100%);
+}
+.store-product-covert .store-product-visual::after{
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(235,70,70,.18),
+    rgba(255,92,92,.80),
+    rgba(255,224,224,.42),
+    rgba(255,92,92,.80),
+    rgba(235,70,70,.18),
+    transparent
+  );
+}
+.store-product-covert .store-product-glow{
+  background:rgba(235,70,70,.19);
+  filter:blur(27px);
+}
+.store-product-covert .store-product-visual img{
+  transform-origin:center;
+  filter:
+    drop-shadow(0 16px 13px rgba(0,0,0,.62))
+    drop-shadow(0 0 18px rgba(235,70,70,.23));
+  animation:none;
+}
+.store-product-covert .store-price-primary{
+  border-color:rgba(235,70,70,.30);
+  background:linear-gradient(145deg,rgba(235,70,70,.08),#071015);
+}
+.store-product-covert .store-price-primary strong b{color:#ffc438}
+.store-product-covert .store-price-secondary strong b{color:#20f39a}
+.store-product-covert .store-redeem-btn{
+  border-color:rgba(235,70,70,.28);
+  background:linear-gradient(180deg,rgba(35,9,9,.62),#0a1216);
+}
+.store-condition-covert{
+  color:#ff5c5c!important;
+  text-shadow:0 0 10px rgba(255,92,92,.28);
+}
+.store-product-covert:hover .store-product-visual img{
+  animation:
+    storeClassifiedWeaponFloat 3.8s ease-in-out infinite,
+    storeCovertWeaponGlow 2.2s ease-in-out infinite;
+}
+@keyframes storeCovertWeaponGlow{
+  0%,100%{
+    filter:
+      drop-shadow(0 16px 13px rgba(0,0,0,.62))
+      drop-shadow(0 0 15px rgba(235,70,70,.20));
+  }
+  50%{
+    filter:
+      drop-shadow(0 19px 16px rgba(0,0,0,.66))
+      drop-shadow(0 0 26px rgba(255,92,92,.36));
+  }
+}
+@keyframes storeCovertPulse{
+  0%,100%{
+    border-color:rgba(235,70,70,.48);
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.30),
+      inset 0 0 28px rgba(235,70,70,.035),
+      0 0 7px rgba(235,70,70,.17);
+  }
+  50%{
+    border-color:rgba(255,105,105,.96);
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.30),
+      inset 0 0 34px rgba(235,70,70,.08),
+      0 0 14px rgba(255,92,92,.52),
+      0 0 28px rgba(235,70,70,.24);
+  }
+}
