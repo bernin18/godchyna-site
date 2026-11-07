@@ -1664,11 +1664,15 @@ function StorePage(){
                     { id:"awp-asiimov-ft", weapon:"AWP", name:"Asiimov", wear:"FT", image:"awp asiimov.png", eur:90, rarity:"covert" },
                     { id:"kukri-crimson-web-ft", weapon:"KUKRI KNIFE", name:"★ Crimson Web", wear:"FT", image:"Kukri FT.png", eur:75, rarity:"gold" },
                     { id:"kukri-blue-steel-ft", weapon:"KUKRI KNIFE", name:"★ Blue Steel", wear:"FT", image:"kukri blue.webp", eur:65, rarity:"gold" },
+                    { id:"awp-queens-gambit-ft", weapon:"AWP", name:"Queen's Gambit", wear:"FT", image:"awp queen.png", eur:50, rarity:"covert" },
                     { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png", eur:40, rarity:"covert" },
+                    { id:"awp-redline-ft", weapon:"AWP", name:"Redline", wear:"FT", image:"awp redline.png", eur:35, rarity:"pink" },
                     { id:"usps-printstream-ft", weapon:"USP-S", name:"Printstream", wear:"FT", image:"usp print.webp", eur:35, rarity:"covert" },
                     { id:"ak-inheritance-ft", weapon:"AK-47", name:"Inheritance", wear:"FT", image:"Ak inheri.png", eur:30, rarity:"covert" },
                     { id:"hydra-gloves-emerald-ft", weapon:"HYDRA GLOVES", name:"★ Emerald", wear:"FT", image:"gloves hydra emerald.png", eur:30, rarity:"gold" },
+                    { id:"awp-crakow-ft", weapon:"AWP", name:"Crakow!", wear:"FT", image:"awp crakow.png", eur:18, rarity:"pink" },
                     { id:"awp-black-nile-fn", weapon:"AWP", name:"Black Nile", wear:"FN", image:"Black Nile.png", eur:12, rarity:"blue" },
+                    { id:"ak-outsiders-mw", weapon:"AK-47", name:"The Outsiders", wear:"MW", image:"ak outsiders.png", eur:10, rarity:"pink" },
                     { id:"m4a1s-black-lotus-fn", weapon:"M4A1-S", name:"Black Lotus", wear:"FN", image:"M4a1 black lotus.png", eur:10, rarity:"pink" },
                   ].map((skin)=>{
                     const priceChy = skin.eur * 1.2;
