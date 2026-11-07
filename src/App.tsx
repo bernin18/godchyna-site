@@ -1656,20 +1656,20 @@ function StorePage(){
 
                 <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
                   {[
-                    { id:"ak-inheritance-ft", weapon:"AK-47", name:"Inheritance", wear:"FT", image:"Ak inheri.png", eur:30, rarity:"covert" },
-                    { id:"ak-bloodsport-ft", weapon:"AK-47", name:"Bloodsport", wear:"FT", image:"ak blood.png", eur:100, rarity:"covert" },
-                    { id:"awp-asiimov-ft", weapon:"AWP", name:"Asiimov", wear:"FT", image:"awp asiimov.png", eur:90, rarity:"covert" },
-                    { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png", eur:40, rarity:"covert" },
-                    { id:"sport-gloves-big-game-ft", weapon:"SPORT GLOVES", name:"★ Big Game", wear:"FT", image:"big game.png", eur:105, rarity:"gold" },
-                    { id:"awp-black-nile-fn", weapon:"AWP", name:"Black Nile", wear:"FN", image:"Black Nile.png", eur:12, rarity:"blue" },
                     { id:"falchion-slaughter-ft", weapon:"FALCHION KNIFE", name:"★ Slaughter", wear:"FT", image:"falchion slau.png", eur:170, rarity:"gold" },
-                    { id:"specialist-gloves-fade-bs", weapon:"SPECIALIST GLOVES", name:"★ Fade", wear:"BS", image:"gloves fade.png", eur:95, rarity:"gold" },
-                    { id:"hydra-gloves-emerald-ft", weapon:"HYDRA GLOVES", name:"★ Emerald", wear:"FT", image:"gloves hydra emerald.png", eur:30, rarity:"gold" },
-                    { id:"kukri-blue-steel-ft", weapon:"KUKRI KNIFE", name:"★ Blue Steel", wear:"FT", image:"kukri blue.webp", eur:65, rarity:"gold" },
-                    { id:"kukri-crimson-web-ft", weapon:"KUKRI KNIFE", name:"★ Crimson Web", wear:"FT", image:"Kukri FT.png", eur:75, rarity:"gold" },
-                    { id:"m4a1s-black-lotus-fn", weapon:"M4A1-S", name:"Black Lotus", wear:"FN", image:"M4a1 black lotus.png", eur:10, rarity:"pink" },
                     { id:"m4a1s-printstream-bs", weapon:"M4A1-S", name:"Printstream", wear:"BS", image:"m4a1 printstream.webp", eur:115, rarity:"covert" },
+                    { id:"sport-gloves-big-game-ft", weapon:"SPORT GLOVES", name:"★ Big Game", wear:"FT", image:"big game.png", eur:105, rarity:"gold" },
+                    { id:"ak-bloodsport-ft", weapon:"AK-47", name:"Bloodsport", wear:"FT", image:"ak blood.png", eur:100, rarity:"covert" },
+                    { id:"specialist-gloves-fade-bs", weapon:"SPECIALIST GLOVES", name:"★ Fade", wear:"BS", image:"gloves fade.png", eur:95, rarity:"gold" },
+                    { id:"awp-asiimov-ft", weapon:"AWP", name:"Asiimov", wear:"FT", image:"awp asiimov.png", eur:90, rarity:"covert" },
+                    { id:"kukri-crimson-web-ft", weapon:"KUKRI KNIFE", name:"★ Crimson Web", wear:"FT", image:"Kukri FT.png", eur:75, rarity:"gold" },
+                    { id:"kukri-blue-steel-ft", weapon:"KUKRI KNIFE", name:"★ Blue Steel", wear:"FT", image:"kukri blue.webp", eur:65, rarity:"gold" },
+                    { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png", eur:40, rarity:"covert" },
                     { id:"usps-printstream-ft", weapon:"USP-S", name:"Printstream", wear:"FT", image:"usp print.webp", eur:35, rarity:"covert" },
+                    { id:"ak-inheritance-ft", weapon:"AK-47", name:"Inheritance", wear:"FT", image:"Ak inheri.png", eur:30, rarity:"covert" },
+                    { id:"hydra-gloves-emerald-ft", weapon:"HYDRA GLOVES", name:"★ Emerald", wear:"FT", image:"gloves hydra emerald.png", eur:30, rarity:"gold" },
+                    { id:"awp-black-nile-fn", weapon:"AWP", name:"Black Nile", wear:"FN", image:"Black Nile.png", eur:12, rarity:"blue" },
+                    { id:"m4a1s-black-lotus-fn", weapon:"M4A1-S", name:"Black Lotus", wear:"FN", image:"M4a1 black lotus.png", eur:10, rarity:"pink" },
                   ].map((skin)=>{
                     const priceChy = skin.eur * 1.2;
                     const priceWp = priceChy * wpPerChy;
