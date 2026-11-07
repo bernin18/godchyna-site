@@ -1657,6 +1657,7 @@ function StorePage(){
                 <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
                   {[
                     { id:"ak-inheritance-ft", weapon:"AK-47", name:"Inheritance", wear:"FT", image:"Ak inheri.png", eur:30, rarity:"covert" },
+                    { id:"ak-bloodsport-ft", weapon:"AK-47", name:"Bloodsport", wear:"FT", image:"ak blood.png", eur:100, rarity:"covert" },
                     { id:"awp-asiimov-ft", weapon:"AWP", name:"Asiimov", wear:"FT", image:"awp asiimov.png", eur:90, rarity:"covert" },
                     { id:"awp-printstream-ft", weapon:"AWP", name:"Printstream", wear:"FT", image:"awp print.png", eur:40, rarity:"covert" },
                     { id:"sport-gloves-big-game-ft", weapon:"SPORT GLOVES", name:"★ Big Game", wear:"FT", image:"big game.png", eur:105, rarity:"gold" },
