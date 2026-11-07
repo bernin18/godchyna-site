@@ -3442,7 +3442,11 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 
 /* Store CHY price box: always gold, regardless of item rarity */
 .store-page .store-product-card .store-price-row:not(.store-price-row-single) .store-price-primary{
-  border-color:rgba(255,196,56,.58)!important;
-  background:linear-gradient(145deg,rgba(255,196,56,.13),rgba(9,13,17,.98))!important;
-  box-shadow:inset 0 0 14px rgba(255,196,56,.06),0 0 10px rgba(255,196,56,.06)!important;
+  border:1px solid #d9a637!important;
+  outline:1px solid rgba(255,196,56,.12);
+  outline-offset:-2px;
+  background:linear-gradient(145deg,rgba(217,166,55,.14),rgba(9,13,17,.98))!important;
+  box-shadow:
+    inset 0 0 14px rgba(255,196,56,.08),
+    0 0 8px rgba(217,166,55,.18)!important;
 }
