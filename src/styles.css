@@ -3450,3 +3450,20 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     inset 0 0 14px rgba(255,196,56,.08),
     0 0 8px rgba(217,166,55,.18)!important;
 }
+
+
+/* Keep equivalent WP amount and suffix on one line for every skin card. */
+.store-page .store-price-secondary strong{
+  display:inline-flex!important;
+  align-items:baseline;
+  gap:4px;
+  flex-wrap:nowrap;
+  white-space:nowrap;
+  font-size:13px!important;
+  letter-spacing:-.03em;
+}
+.store-page .store-price-secondary strong b{
+  display:inline!important;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
