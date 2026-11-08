@@ -1827,7 +1827,7 @@ function StorePage(){
                             <strong className="store-chy-value"><img src={asset("CHY coin.png")} alt="" aria-hidden="true"/>6 <b>CHY</b></strong>
                           </div>}
                           <div className="store-price-secondary">
-                            <strong>{price} <b>WP</b></strong>
+                            <strong className="store-wp-only-value">{price} <b>WP</b></strong>
                           </div>
                         </div>
                         {renderStoreAction(
