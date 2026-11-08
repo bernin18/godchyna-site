@@ -1756,9 +1756,9 @@ function StorePage(){
 
                 <section className="store-grid" aria-label={pick("Resgates MB Way","MB Way rewards")}>
                   {[
-                    { id: "mbway-5", value: "5€", price: "15.000" },
-                    { id: "mbway-10", value: "10€", price: "25.000" },
-                    { id: "mbway-20", value: "20€", price: "50.000" },
+                    { id: "mbway-5", value: "5€", price: "36.000" },
+                    { id: "mbway-10", value: "10€", price: "72.000" },
+                    { id: "mbway-20", value: "20€", price: "144.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-mbway">
                       <div className="store-product-visual store-mbway-visual">
@@ -1810,7 +1810,7 @@ function StorePage(){
                       id: "demo-review",
                       title: pick("Análise de demo","Demo review"),
                       description: pick("Recebe o meu feedback sobre a tua demo de CS2 e descobre onde podes melhorar.","Get my feedback on your CS2 demo and discover where you can improve."),
-                      price: "3.600",
+                      price: "36.000",
                     },
                   ].map(({id, title, description, price})=>(
                     <article key={id} className="store-product-card store-service-card">
@@ -1840,8 +1840,8 @@ function StorePage(){
                   ))}
 
                   {[
-                    { id: "steam-5", value: "5€", price: "10.000" },
-                    { id: "steam-10", value: "10€", price: "20.000" },
+                    { id: "steam-5", value: "5€", price: "36.000" },
+                    { id: "steam-10", value: "10€", price: "72.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-steam">
                       <div className="store-product-visual store-steam-visual">
@@ -1878,8 +1878,8 @@ function StorePage(){
                   ))}
 
                   {[
-                    { id: "csgoskins-5", value: "5€", price: "8.000" },
-                    { id: "csgoskins-10", value: "10€", price: "15.000" },
+                    { id: "csgoskins-5", value: "5€", price: "36.000" },
+                    { id: "csgoskins-10", value: "10€", price: "72.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-csgoskins">
                       <div className="store-product-visual store-csgoskins-visual">
@@ -1919,8 +1919,8 @@ function StorePage(){
                   ))}
 
                   {[
-                    { id: "topskin-5", value: "5€", price: "8.000" },
-                    { id: "topskin-10", value: "10€", price: "15.000" },
+                    { id: "topskin-5", value: "5€", price: "36.000" },
+                    { id: "topskin-10", value: "10€", price: "72.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-topskin">
                       <div className="store-product-visual store-topskin-visual">
