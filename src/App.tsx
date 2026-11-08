@@ -1496,7 +1496,7 @@ function StorePage(){
 
   const storeWp = Number(storeWallet.watch_points ?? 0);
   const storeChy = Number(storeWallet.chy_balance ?? 0);
-  const wpPerChy = 5000;
+  const wpPerChy = 6000;
   const maxWpShare = 0.25;
 
   function formatStoreWp(value:number) {
@@ -1608,7 +1608,7 @@ function StorePage(){
             <div className="store-economy-values">
               <strong>1 EUR <span>=</span> 1,20 CHY</strong>
               <i aria-hidden="true"/>
-              <strong>1 CHY <span>=</span> 1.200 WP</strong>
+              <strong>1 CHY <span>=</span> 6.000 WP</strong>
             </div>
           </div>
 
