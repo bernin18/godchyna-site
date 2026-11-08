@@ -1496,7 +1496,7 @@ function StorePage(){
 
   const storeWp = Number(storeWallet.watch_points ?? 0);
   const storeChy = Number(storeWallet.chy_balance ?? 0);
-  const wpPerChy = 1200;
+  const wpPerChy = 5000;
   const maxWpShare = 0.25;
 
   function formatStoreWp(value:number) {
