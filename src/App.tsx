@@ -1757,8 +1757,8 @@ function StorePage(){
                 <section className="store-grid" aria-label={pick("Resgates MB Way","MB Way rewards")}>
                   {[
                     { id: "mbway-5", value: "5€", price: "36.000" },
-                    { id: "mbway-10", value: "10€", price: "72.000" },
-                    { id: "mbway-20", value: "20€", price: "144.000" },
+                    { id: "mbway-10", value: "10€", price: "75.000" },
+                    { id: "mbway-20", value: "20€", price: "150.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-mbway">
                       <div className="store-product-visual store-mbway-visual">
@@ -1841,7 +1841,7 @@ function StorePage(){
 
                   {[
                     { id: "steam-5", value: "5€", price: "36.000" },
-                    { id: "steam-10", value: "10€", price: "72.000" },
+                    { id: "steam-10", value: "10€", price: "75.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-steam">
                       <div className="store-product-visual store-steam-visual">
@@ -1879,7 +1879,7 @@ function StorePage(){
 
                   {[
                     { id: "csgoskins-5", value: "5€", price: "36.000" },
-                    { id: "csgoskins-10", value: "10€", price: "72.000" },
+                    { id: "csgoskins-10", value: "10€", price: "75.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-csgoskins">
                       <div className="store-product-visual store-csgoskins-visual">
@@ -1920,7 +1920,7 @@ function StorePage(){
 
                   {[
                     { id: "topskin-5", value: "5€", price: "36.000" },
-                    { id: "topskin-10", value: "10€", price: "72.000" },
+                    { id: "topskin-10", value: "10€", price: "75.000" },
                   ].map(({id, value, price})=>(
                     <article key={id} className="store-product-card store-product-topskin">
                       <div className="store-product-visual store-topskin-visual">
