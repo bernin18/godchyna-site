@@ -1653,13 +1653,19 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .store-condition-steam{color:#62c3ff;text-shadow:0 0 10px rgba(43,144,217,.25)}
 .store-price-row-single{grid-template-columns:1fr}
 .store-wp-only-value{
-  display:block;
-  margin-top:3px;
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  margin-top:0;
   color:#f0f6f8;
-  font:900 17px "Chakra Petch",sans-serif;
+  font:900 23px "Chakra Petch",sans-serif;
+  line-height:1;
   white-space:nowrap;
 }
-.store-wp-only-value b{color:#20f39a}
+.store-wp-only-value b{
+  color:#20f39a;
+  font-size:.72em;
+}
 
 @keyframes storeClassifiedWeaponFloat{
   0%,100%{transform:translate3d(0,0,0) rotateZ(0) scale(1)}
@@ -3466,4 +3472,11 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   display:inline!important;
   flex:0 0 auto;
   white-space:nowrap;
+}
+
+
+/* Make WP-only reward prices use the available price-box space. */
+.store-page .store-price-row-single .store-price-primary{
+  min-height:66px;
+  padding:10px 12px;
 }
