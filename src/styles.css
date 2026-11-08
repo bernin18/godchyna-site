@@ -3474,22 +3474,6 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   white-space:nowrap;
 }
 
-/* Service WP prices should fill the price box like the WP-only reward cards. */
-.store-page .store-service-card .store-price-secondary strong{
-  display:flex!important;
-  align-items:baseline;
-  gap:5px;
-  flex-wrap:nowrap;
-  white-space:nowrap;
-  font-size:23px!important;
-  line-height:1;
-  letter-spacing:-.02em;
-}
-.store-page .store-service-card .store-price-secondary strong b{
-  font-size:.72em;
-  white-space:nowrap;
-}
-
 
 /* Make WP-only reward prices use the available price-box space. */
 .store-page .store-price-row-single .store-price-primary{
