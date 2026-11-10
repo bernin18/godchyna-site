@@ -3835,11 +3835,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </div>
 
         <div className="monthly-event-branding monthly-csgoskins-branding" aria-hidden="true">
-          <img
-            className="monthly-chyna-logo"
-            src={wheelAsset("chynao.png")}
-            alt=""
-          />
+          <div className="monthly-chyna-crop">
+            <img
+              src={wheelAsset("Logótipo CHYNA × TOPSKIN em Transparência.png")}
+              alt=""
+            />
+          </div>
           <span className="monthly-brand-x">×</span>
           <img
             className="monthly-csgoskins-logo"
