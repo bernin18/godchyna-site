@@ -1526,19 +1526,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlyAudioMuted(false);
     monthlyAudioRef.current = track;
 
-    void track.play().then(() => {
-      // The clip begins at 00:21 of the original song.
-      // Stop at 01:00 of the original song => 39 seconds of playback.
-      monthlyAudioStopTimeoutRef.current = window.setTimeout(() => {
-        if (monthlyAudioRef.current === track) {
-          track.pause();
-          track.currentTime = 0;
-          monthlyAudioRef.current = null;
-        }
-        monthlyAudioStopTimeoutRef.current = null;
-        setMonthlyAudioMuted(false);
-      }, 39_000);
-    }).catch(() => {
+    track.addEventListener("ended", () => {
+      if (monthlyAudioRef.current === track) {
+        monthlyAudioRef.current = null;
+      }
+      setMonthlyAudioMuted(false);
+    }, { once: true });
+
+    void track.play().catch(() => {
       if (monthlyAudioRef.current === track) {
         monthlyAudioRef.current = null;
       }
@@ -3700,7 +3695,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         });
       });
 
-      const centerSpinDuration = 31000;
+      const centerSpinDuration = 39000;
       window.setTimeout(() => {
         setMonthlySpinning(false);
         setMonthlyWinner(selectedName);
