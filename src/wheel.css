@@ -3943,7 +3943,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   transform:scaleY(-1) rotate(12deg)!important;
 }
 
-/* Monthly event final polish: logo sparkle, CHYNAO pulse, 26s wheel + 31s knife */
+/* Monthly event final polish: CHYNAO pulse + 39s synchronized wheel/knife */
 @keyframes monthlyChynaoPulse{
   0%,100%{
     color:#d9a637;
@@ -3971,10 +3971,10 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 
 /* Exact cinematic timing requested. */
 .monthly-wheel-rotor.is-spinning{
-  transition:transform 26s cubic-bezier(.08,.72,.035,1)!important
+  transition:transform 39s cubic-bezier(.08,.72,.035,1)!important
 }
 .monthly-wheel-center.has-knife img{
-  transition:transform 31s cubic-bezier(.055,.74,.02,1)!important
+  transition:transform 39s cubic-bezier(.055,.74,.02,1)!important
 }
 
 /* Monthly knife emphasis glow */
