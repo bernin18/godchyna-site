@@ -5942,10 +5942,10 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 /* Crop only the original CHYNA lettering from the old CHYNA × TOPSKIN artwork. */
 .monthly-giveaway-page .monthly-chyna-crop{
   position:relative;
-  width:152px!important;
+  width:142px!important;
   height:78px!important;
   overflow:hidden!important;
-  flex:0 0 152px!important;
+  flex:0 0 142px!important;
 }
 .monthly-giveaway-page .monthly-chyna-crop img{
   position:absolute!important;
@@ -6000,9 +6000,9 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 
 @media(min-width:1001px) and (max-width:1550px){
   .monthly-giveaway-page .monthly-chyna-crop{
-    width:138px!important;
+    width:128px!important;
     height:70px!important;
-    flex-basis:138px!important;
+    flex-basis:128px!important;
   }
   .monthly-giveaway-page .monthly-chyna-crop img{
     width:328px!important;
@@ -6014,9 +6014,9 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 }
 @media(min-width:1001px) and (max-height:780px){
   .monthly-giveaway-page .monthly-chyna-crop{
-    width:126px!important;
+    width:116px!important;
     height:64px!important;
-    flex-basis:126px!important;
+    flex-basis:116px!important;
   }
   .monthly-giveaway-page .monthly-chyna-crop img{
     width:300px!important;
