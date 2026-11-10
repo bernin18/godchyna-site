@@ -815,6 +815,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const monthlyPrizeUploadInputRef = useRef<HTMLInputElement | null>(null);
   const monthlyPrizeImageRef = useRef<HTMLImageElement | null>(null);
   const monthlyAudioRef = useRef<HTMLAudioElement | null>(null);
+  const monthlyAudioStopTimeoutRef = useRef<number | null>(null);
   const [monthlyAudioMuted, setMonthlyAudioMuted] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
@@ -1488,6 +1489,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function stopMonthlyGiveawayAudio() {
+    if (monthlyAudioStopTimeoutRef.current !== null) {
+      window.clearTimeout(monthlyAudioStopTimeoutRef.current);
+      monthlyAudioStopTimeoutRef.current = null;
+    }
+
     const track = monthlyAudioRef.current;
     if (track) {
       track.pause();
@@ -1511,14 +1517,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     stopMonthlyGiveawayAudio();
 
-    const track = new Audio(wheelAsset("audio/monthly-giveaway.mp3"));
+    const track = new Audio(
+      wheelAsset("audio/Ravyn_Lenae_Love_Me_Not_00m21s-01m10s (1).mp3"),
+    );
     track.preload = "auto";
     track.volume = 0.38;
     track.muted = false;
     setMonthlyAudioMuted(false);
     monthlyAudioRef.current = track;
 
-    void track.play().catch(() => {
+    void track.play().then(() => {
+      // The clip begins at 00:21 of the original song.
+      // Stop at 01:00 of the original song => 39 seconds of playback.
+      monthlyAudioStopTimeoutRef.current = window.setTimeout(() => {
+        if (monthlyAudioRef.current === track) {
+          track.pause();
+          track.currentTime = 0;
+          monthlyAudioRef.current = null;
+        }
+        monthlyAudioStopTimeoutRef.current = null;
+        setMonthlyAudioMuted(false);
+      }, 39_000);
+    }).catch(() => {
       if (monthlyAudioRef.current === track) {
         monthlyAudioRef.current = null;
       }
@@ -3637,7 +3657,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setMonthlyKnifeDocked(false);
     setMonthlyKnifeRotation(45);
     setMonthlyWheelRotation(0);
-    startMonthlyGiveawayAudio();
     playWheelPlim();
 
     if (sourceRect) {
@@ -3672,6 +3691,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       setMonthlyKnifeFlightStyle(null);
       setMonthlyLaunching(false);
       setMonthlySpinning(true);
+      startMonthlyGiveawayAudio();
 
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
