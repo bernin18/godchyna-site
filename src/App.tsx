@@ -90,6 +90,7 @@ type Giveaway = {
   warningEn?:string;
   startDate?:string;
   drawDate?:string;
+  drawEndOfDay?:boolean;
   partnerNotePt?:string;
   partnerNoteEn?:string;
   galleryImages?:Array<{src:string;alt:string}>;
@@ -206,6 +207,7 @@ const giveaways:Giveaway[] = [
     requiresProof:true,
     startDate:"07/10/26",
     drawDate:"11/11/26",
+    drawEndOfDay:true,
     notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
     warningPt:"ATENÇÃO: SEM PROVA DO DEPÓSITO, A PARTICIPAÇÃO NÃO SERÁ ACEITE NO GIVEAWAY.",
@@ -242,8 +244,19 @@ function getZurichMidnightTimestamp(date?:string){
   return utcGuess-zurichOffset;
 }
 
+function getGiveawayDrawTimestamp(giveaway:Giveaway){
+  if(!giveaway.drawDate) return null;
+  if(!giveaway.drawEndOfDay) return getZurichMidnightTimestamp(giveaway.drawDate);
+
+  const parsed=parseGiveawayDate(giveaway.drawDate);
+  if(!parsed) return null;
+  const nextDay=new Date(Date.UTC(parsed.year,parsed.month-1,parsed.day+1));
+  const nextDate=`${String(nextDay.getUTCDate()).padStart(2,"0")}/${String(nextDay.getUTCMonth()+1).padStart(2,"0")}/${nextDay.getUTCFullYear()}`;
+  return getZurichMidnightTimestamp(nextDate);
+}
+
 function isGiveawayDrawReached(giveaway:Giveaway,now=Date.now()){
-  const target=getZurichMidnightTimestamp(giveaway.drawDate);
+  const target=getGiveawayDrawTimestamp(giveaway);
   return target!==null && now>=target;
 }
 
@@ -256,10 +269,10 @@ function useNowTick(){
   return now;
 }
 
-function GiveawayCountdown({drawDate}:{drawDate:string}){
+function GiveawayCountdown({giveaway}:{giveaway:Giveaway}){
   const { pick }=useLanguage();
   const now=useNowTick();
-  const target=getZurichMidnightTimestamp(drawDate);
+  const target=getGiveawayDrawTimestamp(giveaway);
   if(target===null) return null;
   const remaining=Math.max(0,target-now);
   const totalSeconds=Math.floor(remaining/1000);
@@ -655,7 +668,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         {(giveaway.startDate || giveaway.drawDate) && (
           <div className="giveaway-dates">
             {giveaway.startDate && <span><b>{pick("INICIADO","STARTED")}</b> {giveaway.startDate}</span>}
-            {giveaway.drawDate && <GiveawayCountdown drawDate={giveaway.drawDate}/>}
+            {giveaway.drawDate && <GiveawayCountdown giveaway={giveaway}/>}
           </div>
         )}
         {(giveaway.notePt || giveaway.noteEn) && <p className="giveaway-copy">{pick(giveaway.notePt ?? "",giveaway.noteEn ?? "")}</p>}
@@ -854,7 +867,7 @@ function ActiveGiveawayPopup(){
           <span className="combo-popup-eye-glow" aria-hidden="true" />
           {giveaway.drawDate && (
             <div className="combo-popup-countdown">
-              <GiveawayCountdown drawDate={giveaway.drawDate}/>
+              <GiveawayCountdown giveaway={giveaway}/>
             </div>
           )}
 
@@ -928,7 +941,7 @@ function ActiveGiveawayPopup(){
           {(giveaway.startDate || giveaway.drawDate) && (
             <div className="active-giveaway-popup-dates">
               {giveaway.startDate && <span>{pick("Iniciado","Started")}: <b>{giveaway.startDate}</b></span>}
-              {giveaway.drawDate && <GiveawayCountdown drawDate={giveaway.drawDate}/>} 
+              {giveaway.drawDate && <GiveawayCountdown giveaway={giveaway}/>} 
             </div>
           )}
 
