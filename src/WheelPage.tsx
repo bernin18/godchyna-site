@@ -1528,7 +1528,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function openMonthlyGiveaway() {
     if (!account || loadingAccount || account.role !== "admin") return;
 
-    setIsTestGiveaway(false);
+    // Temporary monthly test mode: lets admins preview the full draw without archiving it.
+    setIsTestGiveaway(true);
     setConfiguring(false);
     setMonthlyKnifeRotation(45);
     setMonthlyWheelRotation(0);
@@ -3752,6 +3753,25 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       const prizeValue = monthlyPrizeValue;
       const prizeImageUrl = monthlyPrizeImageUrl;
 
+      if (isTestGiveaway) {
+        stopMonthlyGiveawayAudio();
+        setMonthlyPrizeDraftSaving(false);
+        setMonthlyWinner(null);
+        setMonthlyKnifeRotation(45);
+        setMonthlyWheelRotation(0);
+        setMonthlyLaunching(false);
+        setMonthlySpinning(false);
+        setMonthlyKnifeDocked(false);
+        setMonthlyKnifeFlightStyle(null);
+        setMonthlyPrizeDraftMessage(
+          pick(
+            "Modo teste: nada foi guardado no histórico.",
+            "Test mode: nothing was saved to history.",
+          ),
+        );
+        return;
+      }
+
       const { data, error } = await supabase.rpc("finalize_monthly_giveaway", {
         p_winner_name: winnerName,
       });
@@ -3815,9 +3835,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         </div>
 
         <div className="monthly-event-branding" aria-hidden="true">
+          <div className="monthly-chyna-brand">
+            <i>♛</i>
+            <strong>CHYNA</strong>
+          </div>
+          <span>×</span>
           <img
             className="monthly-event-branding-image"
-            src={wheelAsset("Logótipo CHYNA × TOPSKIN em Transparência.png")}
+            src={wheelAsset("csgoskins-logo.png")}
             alt=""
           />
         </div>
@@ -3898,6 +3923,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <div>
               <span className="monthly-panel-kicker">SPECIAL EVENT</span>
               <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
+              {isTestGiveaway && (
+                <span className="participants-test-mode monthly-test-mode">
+                  {pick("MODO TESTE · NÃO ENTRA NO HISTÓRICO", "TEST MODE · NOT SAVED TO HISTORY")}
+                </span>
+              )}
             </div>
             <button
               type="button"
@@ -4292,7 +4322,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 >
                   {monthlyPrizeDraftSaving
                     ? pick("A GUARDAR...", "SAVING...")
-                    : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!monthlyPrizeDraftSaving && <ArrowRight />}
+                    : isTestGiveaway
+                      ? pick("REPETIR TESTE", "REPEAT TEST")
+                      : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!monthlyPrizeDraftSaving && <ArrowRight />}
                 </button>
               </div>
               {monthlyPrizeDraftMessage && (
