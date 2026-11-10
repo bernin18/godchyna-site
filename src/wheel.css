@@ -5956,7 +5956,7 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   height:auto!important;
   transform:translateY(-50%)!important;
   object-fit:contain!important;
-  filter:drop-shadow(0 0 10px rgba(255,210,30,.16))!important;
+  filter:none!important;
 }
 
 .monthly-giveaway-page .monthly-csgoskins-branding .monthly-brand-x{
