@@ -5828,3 +5828,44 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
       drop-shadow(0 0 44px rgba(255,190,38,.24))
   }
 }
+
+
+/* Monthly CSGOSKINS test theme */
+.monthly-giveaway-page .monthly-brand strong{
+  color:#35d9ff!important;
+  text-shadow:0 0 14px rgba(53,217,255,.28);
+}
+.monthly-giveaway-page .monthly-page-watermark span{
+  color:#35d9ff!important;
+  text-shadow:0 0 18px rgba(53,217,255,.12);
+}
+.monthly-giveaway-page .monthly-wheel-stage{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(53,217,255,.105),transparent 32%),
+    #000!important;
+}
+.monthly-giveaway-page .monthly-wheel-glow{
+  background:rgba(53,217,255,.09)!important;
+}
+.monthly-giveaway-page .monthly-wheel-shell{
+  box-shadow:
+    0 0 0 2px rgba(53,217,255,.46),
+    0 0 78px rgba(53,217,255,.20),
+    inset 0 0 42px rgba(0,0,0,.48)!important;
+}
+.monthly-giveaway-page .monthly-event-branding>img{
+  width:185px;
+  max-height:52px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 10px rgba(53,217,255,.18));
+}
+.monthly-giveaway-page .monthly-event-branding>span{
+  color:#f4f7f8;
+}
+.monthly-giveaway-page .monthly-panel-kicker,
+.monthly-giveaway-page .monthly-test-mode{
+  color:#35d9ff!important;
+}
+.monthly-giveaway-page .monthly-test-mode{
+  text-shadow:0 0 10px rgba(53,217,255,.18);
+}
