@@ -3722,7 +3722,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const monthlyPrizeImageUrl = monthlyPrizeDraftImageUrl;
     const monthlyWheelPointerImageUrl = wheelAsset("Punho de Couro com Serpentes Verdes.png");
     const monthlyPrizeName = monthlyPrizeDraftName.trim()
-      ? formatFactoryNewSkinName(monthlyPrizeDraftName.trim())
+      ? monthlyPrizeDraftName.trim()
       : pick("SEM SKIN CONFIGURADA", "NO SKIN CONFIGURED");
     const monthlyPrizeValue = monthlyPrizeNumericValue();
     const monthlyPrizeReady = Boolean(
@@ -6073,7 +6073,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                                   <b>{item.winnerName}</b>
                                 </strong>
                                 <span className="monthly-history-skin">
-                                  {item.skinName ? formatFactoryNewSkinName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
+                                  {item.skinName || pick("Prémio não indicado", "Prize not specified")}
                                 </span>
                               </div>
                               {item.skinValue !== null && (
