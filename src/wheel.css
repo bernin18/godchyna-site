@@ -5992,3 +5992,12 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
     max-height:44px!important;
   }
 }
+
+
+/* Monthly pointing-glove selector alignment */
+.monthly-giveaway-page .monthly-flying-knife img{
+  transform:rotate(-90deg)!important;
+}
+.monthly-giveaway-page .monthly-wheel-center.has-knife img{
+  transform:rotate(var(--monthly-knife-angle,-90deg))!important;
+}
