@@ -189,6 +189,28 @@ const giveaways:Giveaway[] = [
     partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
   },
   {
+    id:"kukri-slaughter-ft",
+    enabled:true,
+    title:"★ Kukri Knife | Slaughter",
+    condition:"Field-Tested / FT",
+    price:"$140",
+    minDeposit:"",
+    image:"Kukri slaug.webp",
+    imageAlt:"Kukri Knife Slaughter Field-Tested",
+    galleryImages:[
+      {src:"Kukri slaug.webp",alt:"Kukri Knife Slaughter Field-Tested"},
+      {src:"braços kukri.webp",alt:"Kukri Knife Slaughter Field-Tested with arms"},
+    ],
+    provider:"csgoskins",
+    providerName:"CSGO-SKINS",
+    providerLogo:"csgoskins-logo.png?v=3",
+    url:"https://csgo-skins.com/?ref=GODCHYNA",
+    requiresProof:false,
+    startDate:"11/11/26",
+    partnerNotePt:"O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor.",
+    partnerNoteEn:"The giveaway will be sent automatically by CSGO-SKINS to the winner.",
+  },
+  {
     id:"hydra-gloves-emerald",
     title:"Hydra Gloves | Emerald",
     condition:"Field-Tested / FT",
@@ -564,6 +586,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const isTiger=giveaway.id==="survival-tiger-tooth";
   const isLotus=giveaway.id==="m4a1s-black-lotus";
   const isEmerald=giveaway.id==="hydra-gloves-emerald";
+  const isKukriSlaughter=giveaway.id==="kukri-slaughter-ft";
   const galleryImages=giveaway.galleryImages?.length
     ? giveaway.galleryImages
     : [{src:giveaway.image,alt:giveaway.imageAlt}];
@@ -598,7 +621,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider} giveaway-${giveaway.id}`}>
-      <div className={`knife-stage${isWildfire?" wildfire-stage":""}${isTiger?" tiger-stage":""}${isLotus?" lotus-stage":""}${isEmerald?" emerald-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
+      <div className={`knife-stage${isWildfire?" wildfire-stage":""}${isTiger?" tiger-stage":""}${isLotus?" lotus-stage":""}${isEmerald?" emerald-stage":""}${isKukriSlaughter?" kukri-slaughter-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
@@ -615,7 +638,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKukriSlaughter && galleryIndex===0?" kukri-single-image stage-image-floating":""}${isKukriSlaughter && galleryIndex>0?" kukri-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -664,7 +687,9 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </div>
         </div>
         <div className="divider"/>
-        <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
+        {giveaway.minDeposit && (
+          <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
+        )}
         {(giveaway.startDate || giveaway.drawDate) && (
           <div className="giveaway-dates">
             {giveaway.startDate && <span><b>{pick("INICIADO","STARTED")}</b> {giveaway.startDate}</span>}
@@ -961,11 +986,13 @@ function ActiveGiveawayPopup(){
             </button>
           </div>
 
-          <p className="active-giveaway-popup-deposit">
-            {pick("Faz um depósito mínimo de ","Make a minimum deposit of ")}
-            <strong>{giveaway.minDeposit}</strong>
-            {pick(" e participa no giveaway."," and enter the giveaway.")}
-          </p>
+          {giveaway.minDeposit && (
+            <p className="active-giveaway-popup-deposit">
+              {pick("Faz um depósito mínimo de ","Make a minimum deposit of ")}
+              <strong>{giveaway.minDeposit}</strong>
+              {pick(" e participa no giveaway."," and enter the giveaway.")}
+            </p>
+          )}
 
           {(giveaway.warningPt || giveaway.warningEn) && (
             <p className="active-giveaway-popup-warning">
