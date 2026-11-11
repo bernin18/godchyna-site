@@ -3547,3 +3547,31 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     drop-shadow(0 20px 20px rgba(0,0,0,.78))
     drop-shadow(0 0 24px rgba(229,62,72,.20))!important;
 }
+
+
+/* Kukri Slaughter popup red accent */
+.active-giveaway-popup.popup-kukri-slaughter-ft{
+  border-color:rgba(229,62,72,.42)!important;
+}
+.active-giveaway-popup.popup-kukri-slaughter-ft::before{
+  background:conic-gradient(
+    from var(--snake-angle),
+    transparent 0deg 305deg,
+    rgba(229,62,72,.10) 312deg,
+    rgba(229,62,72,.64) 322deg,
+    rgba(255,218,221,1) 334deg,
+    rgba(229,62,72,1) 344deg,
+    rgba(229,62,72,.50) 352deg,
+    transparent 360deg
+  )!important;
+  filter:
+    drop-shadow(0 0 8px rgba(229,62,72,.95))
+    drop-shadow(0 0 18px rgba(229,62,72,.70))
+    drop-shadow(0 0 30px rgba(229,62,72,.36))!important;
+}
+.active-giveaway-popup.popup-kukri-slaughter-ft .active-giveaway-popup-copy{
+  border-left:5px solid rgba(229,62,72,.95);
+  box-shadow:
+    inset 7px 0 18px rgba(229,62,72,.05),
+    -3px 0 12px rgba(229,62,72,.20);
+}
