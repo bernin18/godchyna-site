@@ -3482,25 +3482,64 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 
 
-/* Kukri Slaughter giveaway gallery sizing */
+/* Kukri Slaughter giveaway: red theme + safer image framing */
+.giveaway-kukri-slaughter-ft{
+  border-color:rgba(229,62,72,.42)!important;
+  background:
+    radial-gradient(circle at 16% 50%,rgba(229,62,72,.18),transparent 36%),
+    radial-gradient(circle at 82% 38%,rgba(125,20,32,.15),transparent 44%),
+    linear-gradient(120deg,#160809 0%,#180b0d 56%,#0d0d12 100%)!important;
+  box-shadow:
+    inset 0 0 36px rgba(229,62,72,.05),
+    0 0 22px rgba(229,62,72,.08)!important;
+}
+.giveaway-kukri-slaughter-ft .price{
+  color:#ff5b66!important;
+}
+.giveaway-kukri-slaughter-ft .participate{
+  background:linear-gradient(90deg,#d92332,#ff5b66)!important;
+  color:#fff!important;
+  box-shadow:0 0 18px rgba(229,62,72,.20)!important;
+}
+.kukri-slaughter-stage{
+  border-color:rgba(229,62,72,.40)!important;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(229,62,72,.22),transparent 30%),
+    radial-gradient(circle at 50% 35%,#2a0b0f,#07080d 72%)!important;
+  box-shadow:
+    inset 0 0 34px rgba(229,62,72,.06),
+    0 0 24px rgba(229,62,72,.11)!important;
+}
+.kukri-slaughter-stage::before{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(229,62,72,.12),transparent 44%),
+    linear-gradient(115deg,transparent 10%,rgba(255,166,174,.035) 45%,transparent 70%)!important;
+}
+.kukri-slaughter-stage .knife-ambient-glow{
+  background:radial-gradient(circle,rgba(229,62,72,.24) 0%,rgba(154,33,45,.08) 44%,transparent 74%)!important;
+}
+.kukri-slaughter-stage .knife-sparkle{
+  background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,186,193,.82) 28%,rgba(229,62,72,0) 72%)!important;
+  box-shadow:0 0 14px rgba(229,62,72,.46)!important;
+}
 .kukri-slaughter-stage .kukri-single-image{
-  width:94%;
-  height:84%;
+  width:80%;
+  height:74%;
   object-fit:contain;
   filter:
     drop-shadow(0 22px 20px rgba(0,0,0,.78))
-    drop-shadow(0 0 28px rgba(213,62,72,.24))!important;
+    drop-shadow(0 0 28px rgba(229,62,72,.24))!important;
 }
 .kukri-slaughter-stage .kukri-arms-image{
-  width:132%;
-  height:124%;
+  width:116%;
+  height:110%;
   max-width:none;
-  left:-9%;
+  left:-3%;
   object-fit:contain;
-  object-position:center 48%;
+  object-position:center 49%;
   transform-origin:center;
   animation:none!important;
   filter:
     drop-shadow(0 20px 20px rgba(0,0,0,.78))
-    drop-shadow(0 0 24px rgba(213,62,72,.20))!important;
+    drop-shadow(0 0 24px rgba(229,62,72,.20))!important;
 }
