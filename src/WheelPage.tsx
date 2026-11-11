@@ -763,7 +763,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [configuring, setConfiguring] = useState(false);
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
-  const [monthlyKnifeRotation, setMonthlyKnifeRotation] = useState(45);
+  const [monthlyKnifeRotation, setMonthlyKnifeRotation] = useState(-90);
   const [monthlyWheelRotation, setMonthlyWheelRotation] = useState(0);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
@@ -1545,7 +1545,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     setIsTestGiveaway(false);
     setConfiguring(false);
-    setMonthlyKnifeRotation(45);
+    setMonthlyKnifeRotation(-90);
     setMonthlyWheelRotation(0);
     setMonthlySpinning(false);
     setMonthlyWinner(null);
@@ -1562,7 +1562,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     stopMonthlyGiveawayAudio();
     setMonthlyGiveawayMode(false);
     setMonthlyWinner(null);
-    setMonthlyKnifeRotation(45);
+    setMonthlyKnifeRotation(-90);
     setMonthlyWheelRotation(0);
     setMonthlyLaunching(false);
     setMonthlyKnifeDocked(false);
@@ -3644,12 +3644,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const selectedCenter = selectedSegment?.centerAngle ?? 0;
     const wheelFinalOffset = randomParticipantIndex(3600) / 10;
     const finalWheelRotation = 4 * 360 + wheelFinalOffset;
-    const finalKnifeAngle = 45 + selectedCenter + wheelFinalOffset;
+    const finalKnifeAngle = -90 + selectedCenter + wheelFinalOffset;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
     setMonthlyLaunching(true);
     setMonthlyKnifeDocked(false);
-    setMonthlyKnifeRotation(45);
+    setMonthlyKnifeRotation(-90);
     setMonthlyWheelRotation(0);
     playWheelPlim();
 
@@ -3720,6 +3720,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   if (monthlyGiveawayMode && session && account?.role === "admin") {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
     const monthlyPrizeImageUrl = monthlyPrizeDraftImageUrl;
+    const monthlyWheelPointerImageUrl = wheelAsset("Punho de Couro com Serpentes Verdes.png");
     const monthlyPrizeName = monthlyPrizeDraftName.trim()
       ? formatFactoryNewSkinName(monthlyPrizeDraftName.trim())
       : pick("SEM SKIN CONFIGURADA", "NO SKIN CONFIGURED");
@@ -3813,7 +3814,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       setMonthlyGiveawayMode(false);
       setMonthlyWinner(null);
-      setMonthlyKnifeRotation(45);
+      setMonthlyKnifeRotation(-90);
       setMonthlyWheelRotation(0);
       setMonthlyLaunching(false);
       setMonthlySpinning(false);
@@ -3850,7 +3851,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-hidden="true"
             style={monthlyKnifeFlightStyle}
           >
-            <img src={monthlyPrizeImageUrl} alt="" />
+            <img src={monthlyWheelPointerImageUrl} alt="" />
           </div>
         )}
 
@@ -3892,8 +3893,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             >
               {monthlyKnifeDocked ? (
                 <img
-                  src={monthlyPrizeImageUrl}
-                  alt={monthlyPrizeName}
+                  src={monthlyWheelPointerImageUrl}
+                  alt=""
                   style={{
                     "--monthly-knife-angle": `${monthlyKnifeRotation}deg`,
                   } as CSSProperties}
