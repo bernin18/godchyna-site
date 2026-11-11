@@ -3480,3 +3480,27 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   min-height:66px;
   padding:10px 12px;
 }
+
+
+/* Kukri Slaughter giveaway gallery sizing */
+.kukri-slaughter-stage .kukri-single-image{
+  width:94%;
+  height:84%;
+  object-fit:contain;
+  filter:
+    drop-shadow(0 22px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 28px rgba(213,62,72,.24))!important;
+}
+.kukri-slaughter-stage .kukri-arms-image{
+  width:132%;
+  height:124%;
+  max-width:none;
+  left:-9%;
+  object-fit:contain;
+  object-position:center 48%;
+  transform-origin:center;
+  animation:none!important;
+  filter:
+    drop-shadow(0 20px 20px rgba(0,0,0,.78))
+    drop-shadow(0 0 24px rgba(213,62,72,.20))!important;
+}
