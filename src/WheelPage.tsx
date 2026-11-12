@@ -3642,9 +3642,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       (segment) => segment.name.trim().toLocaleLowerCase() === selectedKey,
     );
     const selectedCenter = selectedSegment?.centerAngle ?? 0;
-    const wheelFinalOffset = randomParticipantIndex(3600) / 10;
-    const finalWheelRotation = 4 * 360 + wheelFinalOffset;
-    const finalKnifeAngle = -90 + selectedCenter + wheelFinalOffset;
+    // Keep the pointing glove fixed at 12 o'clock and rotate only the wheel.
+    // This guarantees the selected segment's center lands directly under the finger.
+    const finalWheelRotation = 6 * 360 - selectedCenter;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
 
     setMonthlyLaunching(true);
@@ -3690,11 +3690,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
           setMonthlyWheelRotation(finalWheelRotation);
-          setMonthlyKnifeRotation(finalKnifeAngle + 18 * 360);
+          setMonthlyKnifeRotation(-90);
         });
       });
 
-      const centerSpinDuration = 39000;
+      const centerSpinDuration = 39200;
       window.setTimeout(() => {
         setMonthlySpinning(false);
         setMonthlyWinner(selectedName);
