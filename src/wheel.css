@@ -5999,5 +5999,6 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   transform:rotate(-90deg) scale(.70)!important;
 }
 .monthly-giveaway-page .monthly-wheel-center.has-knife img{
-  transform:rotate(var(--monthly-knife-angle,-90deg)) scale(.70)!important;
+  transform:rotate(-90deg) scale(.70)!important;
+  transition:none!important;
 }
