@@ -216,3 +216,29 @@
   .profile-steam-open{font-size:0;padding:8px}
 }
 
+
+
+/* Streak flame milestone colors */
+.profile-progress-panel>header>.profile-streak-flame{
+  width:19px;
+  height:19px;
+  color:#536166;
+  filter:none;
+  transition:color .2s ease,filter .2s ease,transform .2s ease;
+}
+.profile-progress-panel>header>.profile-streak-flame.streak-yellow{
+  color:#ffd84a;
+  filter:drop-shadow(0 0 7px rgba(255,216,74,.38));
+}
+.profile-progress-panel>header>.profile-streak-flame.streak-orange{
+  color:#ff9d2e;
+  filter:drop-shadow(0 0 8px rgba(255,157,46,.42));
+}
+.profile-progress-panel>header>.profile-streak-flame.streak-red{
+  color:#ff4e5b;
+  filter:drop-shadow(0 0 9px rgba(255,78,91,.46));
+}
+.profile-progress-panel>header>.profile-streak-flame.streak-purple{
+  color:#b56cff;
+  filter:drop-shadow(0 0 10px rgba(181,108,255,.50));
+}
