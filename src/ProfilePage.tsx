@@ -470,7 +470,22 @@ export default function ProfilePage({
               <article className="profile-stat-card">
                 <span>STREAK</span>
                 <strong>{rewards.current_streak ?? 0}</strong>
-                <small><Flame /> {pick("streams consecutivas", "consecutive streams")}</small>
+                <small>
+                  <Flame
+                    className={
+                      (rewards.current_streak ?? 0) >= 60
+                        ? "profile-streak-flame streak-purple"
+                        : (rewards.current_streak ?? 0) >= 40
+                          ? "profile-streak-flame streak-red"
+                          : (rewards.current_streak ?? 0) >= 20
+                            ? "profile-streak-flame streak-orange"
+                            : (rewards.current_streak ?? 0) >= 10
+                              ? "profile-streak-flame streak-yellow"
+                              : "profile-streak-flame"
+                    }
+                  />
+                  {pick("streams consecutivas", "consecutive streams")}
+                </small>
               </article>
             </section>
 
