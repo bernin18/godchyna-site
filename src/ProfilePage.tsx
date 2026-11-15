@@ -653,7 +653,19 @@ export default function ProfilePage({
                     <span className="profile-eyebrow">{pick("FIDELIDADE", "LOYALTY")}</span>
                     <h2>{pick("PROGRESSO", "PROGRESS")}</h2>
                   </div>
-                  <Flame />
+                  <Flame
+                    className={
+                      (rewards.current_streak ?? 0) >= 60
+                        ? "profile-streak-flame streak-purple"
+                        : (rewards.current_streak ?? 0) >= 40
+                          ? "profile-streak-flame streak-red"
+                          : (rewards.current_streak ?? 0) >= 20
+                            ? "profile-streak-flame streak-orange"
+                            : (rewards.current_streak ?? 0) >= 10
+                              ? "profile-streak-flame streak-yellow"
+                              : "profile-streak-flame"
+                    }
+                  />
                 </header>
                 <div className="profile-progress-row">
                   <span>{pick("Streak atual", "Current streak")}</span>
