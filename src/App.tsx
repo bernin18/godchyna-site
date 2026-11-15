@@ -1373,6 +1373,9 @@ function DeliveredGiveaways({now}:{now:number}){
               <div className={"delivered-prize-panel delivered-"+giveaway.id}>
                 <img className="delivered-prize-provider-logo" src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
                 <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
+                {isEmeraldDelivered && (
+                  <div className="delivered-prize-delivered-date">12/11/2026</div>
+                )}
                 <div className="delivered-prize-visual">
                   <div className="delivered-prize-glow" />
                   <img src={asset(deliveredImage)} alt={giveaway.imageAlt} />
