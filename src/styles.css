@@ -1998,7 +1998,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-giveaways-heading{
   display:flex;
   align-items:center;
-  margin-bottom:18px;
+  width:100%;
+  max-width:360px;
+  margin:0 auto 18px;
 }
 .delivered-giveaways-heading h2{
   margin:0;
@@ -2017,7 +2019,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   gap:18px;
   overflow:hidden;
   width:100%;
-  max-width:420px;
+  max-width:360px;
   margin-inline:auto;
   padding:18px;
   border:1px solid #1b353c;
@@ -2044,7 +2046,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-clip-frame{
   position:relative;
   overflow:hidden;
-  width:min(100%,330px);
+  width:min(100%,300px);
   aspect-ratio:16/9;
   margin:0 auto;
   border:1px solid #1a3238;
@@ -2106,7 +2108,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:125px;
+  min-height:100px;
   margin:8px 0 2px;
 }
 .delivered-prize-glow{
@@ -2121,14 +2123,14 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   position:relative;
   z-index:1;
   width:auto;
-  max-width:155px;
-  max-height:92px;
+  max-width:145px;
+  max-height:84px;
   object-fit:contain;
   filter:drop-shadow(0 14px 16px rgba(0,0,0,.72)) drop-shadow(0 0 12px rgba(224,173,43,.11));
   transform:rotate(-3deg);
 }
 .delivered-prize-copy{
-  margin-top:18px;
+  margin-top:12px;
 }
 .delivered-prize-copy h3{
   margin:0 0 3px;
@@ -2169,9 +2171,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   font-weight:900;
 }
 @media(max-width:1000px){
-  .delivered-giveaway-card{gap:14px;padding:14px;max-width:760px}
+  .delivered-giveaway-card{gap:14px;padding:14px;max-width:360px}
   .delivered-clip-wrap{border:0;padding:0}
-  .delivered-clip-frame{width:min(100%,330px)}
+  .delivered-clip-frame{width:min(100%,300px)}
   .delivered-prize-panel{width:100%;min-height:220px;margin:0 auto}
   .delivered-prize-visual{min-height:105px}
   .delivered-prize-copy{margin-top:16px}
