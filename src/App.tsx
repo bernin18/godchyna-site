@@ -90,6 +90,7 @@ type Giveaway = {
   warningEn?:string;
   startDate?:string;
   drawDate?:string;
+  deliveredDate?:string;
   drawEndOfDay?:boolean;
   partnerNotePt?:string;
   partnerNoteEn?:string;
@@ -231,6 +232,7 @@ const giveaways:Giveaway[] = [
     requiresProof:true,
     startDate:"07/10/26",
     drawDate:"11/11/26",
+    deliveredDate:"12/11/2026",
     drawEndOfDay:true,
     notePt:"Faz um depósito mínimo de €4 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €4 deposit and send proof of the deposit through Discord or Instagram.",
@@ -254,6 +256,13 @@ function parseGiveawayDate(date:string){
   const yearRaw=Number(match[3]);
   const year=yearRaw<100?2000+yearRaw:yearRaw;
   return {day,month,year};
+}
+
+function formatDeliveredDate(date?:string){
+  if(!date) return "";
+  const parsed=parseGiveawayDate(date);
+  if(!parsed) return date;
+  return `${String(parsed.day).padStart(2,"0")}/${String(parsed.month).padStart(2,"0")}/${parsed.year}`;
 }
 
 function getZurichMidnightTimestamp(date?:string){
@@ -1326,6 +1335,7 @@ function DeliveredGiveaways({now}:{now:number}){
           <div className="delivered-prize-panel">
             <img className="delivered-prize-provider-logo" src={asset("topskin-logo.png?v=3")} alt="TOPSKIN" />
             <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
+            <div className="delivered-prize-delivered-date">06/10/2026</div>
             <div className="delivered-prize-visual">
               <div className="delivered-prize-glow" />
               <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade Factory New" />
@@ -1373,8 +1383,10 @@ function DeliveredGiveaways({now}:{now:number}){
               <div className={"delivered-prize-panel delivered-"+giveaway.id}>
                 <img className="delivered-prize-provider-logo" src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
                 <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
-                {isEmeraldDelivered && (
-                  <div className="delivered-prize-delivered-date">12/11/2026</div>
+                {(giveaway.deliveredDate || giveaway.drawDate) && (
+                  <div className="delivered-prize-delivered-date">
+                    {formatDeliveredDate(giveaway.deliveredDate || giveaway.drawDate)}
+                  </div>
                 )}
                 <div className="delivered-prize-visual">
                   <div className="delivered-prize-glow" />
