@@ -219,26 +219,28 @@
 
 
 /* Streak flame milestone colors */
-.profile-progress-panel>header>.profile-streak-flame{
-  width:19px;
-  height:19px;
+.profile-streak-flame{
   color:#536166;
   filter:none;
   transition:color .2s ease,filter .2s ease,transform .2s ease;
 }
-.profile-progress-panel>header>.profile-streak-flame.streak-yellow{
-  color:#ffd84a;
+.profile-progress-panel>header>.profile-streak-flame{
+  width:19px;
+  height:19px;
+}
+.profile-streak-flame.streak-yellow{
+  color:#ffd84a!important;
   filter:drop-shadow(0 0 7px rgba(255,216,74,.38));
 }
-.profile-progress-panel>header>.profile-streak-flame.streak-orange{
-  color:#ff9d2e;
+.profile-streak-flame.streak-orange{
+  color:#ff9d2e!important;
   filter:drop-shadow(0 0 8px rgba(255,157,46,.42));
 }
-.profile-progress-panel>header>.profile-streak-flame.streak-red{
-  color:#ff4e5b;
+.profile-streak-flame.streak-red{
+  color:#ff4e5b!important;
   filter:drop-shadow(0 0 9px rgba(255,78,91,.46));
 }
-.profile-progress-panel>header>.profile-streak-flame.streak-purple{
-  color:#b56cff;
+.profile-streak-flame.streak-purple{
+  color:#b56cff!important;
   filter:drop-shadow(0 0 10px rgba(181,108,255,.50));
 }
