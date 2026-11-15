@@ -135,7 +135,7 @@ pointer-events:none}
 .skins-copy h3{font-family:"Chakra Petch";font-size:20px;letter-spacing:.08em;margin:8px 0 22px}
 .skins-copy p,.section-title p{color:#c0c8c8;line-height:1.65;margin:0}
 .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.service-card{min-height:125px;border:1px solid #1c3439;border-radius:10px;background:linear-gradient(145deg,#081218,#050a0e);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;color:#edf4f1;box-shadow:inset 0 0 28px rgba(0,255,179,.02)}
+.service-card{min-height:105px;border:1px solid #1c3439;border-radius:10px;background:linear-gradient(145deg,#081218,#050a0e);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;color:#edf4f1;box-shadow:inset 0 0 28px rgba(0,255,179,.02)}
 .service-card svg{width:31px;height:31px;color:var(--green);margin-bottom:12px}
 .service-card strong{font-size:12px;line-height:1.2}
 .contact-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
@@ -548,7 +548,7 @@ pointer-events:none}
 .active-pill{border:1px solid #09d987;color:#18f3a1;padding:8px 18px;border-radius:6px;font-weight:800;font-size:11px}
 .divider{height:1px;background:#15292e;margin:10px 0 20px}
 .minimum{color:var(--green)}
-.giveaway-copy{color:#d0d6d5;line-height:1.45;font-size:12px;max-width:760px;margin-top:7px;margin-bottom:6px}
+.giveaway-copy{color:#d0d6d5;line-height:1.45;font-size:12px;max-width:420px;margin-top:7px;margin-bottom:6px}
 .giveaway-dates{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:9px}
 .giveaway-dates span{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #203238;border-radius:6px;background:#081116;color:#bdc7c5;font-size:10.5px}
 .giveaway-dates b{color:#f4bf2f;font-size:9px;letter-spacing:.08em}
@@ -571,7 +571,7 @@ pointer-events:none}
 .active-giveaway-popup-price{display:block;margin-top:7px;color:var(--green);font-size:22px}
 .active-giveaway-popup-dates{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:14px;color:#aeb9b8;font-size:11px}
 .active-giveaway-popup-dates b{color:#f4bf2f}
-.active-giveaway-popup-code{margin-top:18px;padding:11px 13px;border:1px solid rgba(244,191,47,.28);border-radius:8px;background:rgba(244,191,47,.055)}
+.active-giveaway-popup-code{margin-top:12px;padding:11px 13px;border:1px solid rgba(244,191,47,.28);border-radius:8px;background:rgba(244,191,47,.055)}
 .active-giveaway-popup-code span{display:block;color:#899698;font-size:8.5px;font-weight:800;letter-spacing:.14em}
 .active-giveaway-popup-code b{display:block;margin-top:2px;color:#f4bf2f;font-family:"Chakra Petch",sans-serif;font-size:22px;letter-spacing:.05em}
 .active-giveaway-popup-copy>p:not(.active-giveaway-popup-condition){margin:13px 0 0;color:#bec8c7;font-size:12px;line-height:1.5}
@@ -2017,7 +2017,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   gap:18px;
   overflow:hidden;
   width:100%;
-  max-width:860px;
+  max-width:420px;
   margin-inline:auto;
   padding:18px;
   border:1px solid #1b353c;
@@ -2044,7 +2044,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-clip-frame{
   position:relative;
   overflow:hidden;
-  width:min(100%,560px);
+  width:min(100%,330px);
   aspect-ratio:16/9;
   margin:0 auto;
   border:1px solid #1a3238;
@@ -2065,9 +2065,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   align-self:center;
   display:flex;
   flex-direction:column;
-  width:min(100%,680px);
+  width:100%;
   min-width:0;
-  min-height:280px;
+  min-height:220px;
   margin:0 auto;
   padding:18px 20px 16px;
   border:1px solid #183037;
@@ -2121,8 +2121,8 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   position:relative;
   z-index:1;
   width:auto;
-  max-width:190px;
-  max-height:112px;
+  max-width:155px;
+  max-height:92px;
   object-fit:contain;
   filter:drop-shadow(0 14px 16px rgba(0,0,0,.72)) drop-shadow(0 0 12px rgba(224,173,43,.11));
   transform:rotate(-3deg);
@@ -2171,9 +2171,9 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 @media(max-width:1000px){
   .delivered-giveaway-card{gap:14px;padding:14px;max-width:760px}
   .delivered-clip-wrap{border:0;padding:0}
-  .delivered-clip-frame{width:min(100%,520px)}
-  .delivered-prize-panel{width:min(100%,640px);min-height:250px;margin:0 auto}
-  .delivered-prize-visual{min-height:120px}
+  .delivered-clip-frame{width:min(100%,330px)}
+  .delivered-prize-panel{width:100%;min-height:220px;margin:0 auto}
+  .delivered-prize-visual{min-height:105px}
   .delivered-prize-copy{margin-top:16px}
 }
 @media(max-width:560px){
