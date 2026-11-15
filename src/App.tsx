@@ -1343,13 +1343,32 @@ function DeliveredGiveaways({now}:{now:number}){
         </article>
 
         {autoDelivered.map(giveaway=>{
-          const deliveredImage=giveaway.galleryImages?.[1]?.src ?? giveaway.image;
+          const isEmeraldDelivered=giveaway.id==="hydra-gloves-emerald";
+          const deliveredImage=isEmeraldDelivered
+            ? "gloves hydra emerald.png"
+            : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
           return (
             <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
               <div className="delivered-clip-wrap">
-                <div className="delivered-clip-frame delivered-clip-pending">
-                  <span>{pick("CLIP EM BREVE","CLIP COMING SOON")}</span>
-                </div>
+                {isEmeraldDelivered ? (
+                  <div className="delivered-history-preview" aria-label={pick("Resumo do giveaway mensal","Monthly giveaway summary")}>
+                    <div className="delivered-history-smoke" aria-hidden="true" />
+                    <div className="delivered-history-art" aria-hidden="true">
+                      <img src={asset("gloves hydra emerald.png")} alt="" />
+                    </div>
+                    <span className="delivered-history-badge">{pick("GIVEAWAY MENSAL","MONTHLY GIVEAWAY")}</span>
+                    <div className="delivered-history-copy">
+                      <em>{pick("OFERECIDO POR","OFFERED BY")} · <b>Chyna</b></em>
+                      <strong><span>{pick("VENCEDOR","WINNER")}: </span><b>Roman</b></strong>
+                      <span>Luvas Hydra ★ | Emerald FT</span>
+                    </div>
+                    <b className="delivered-history-value">$ 40.00</b>
+                  </div>
+                ) : (
+                  <div className="delivered-clip-frame delivered-clip-pending">
+                    <span>{pick("CLIP EM BREVE","CLIP COMING SOON")}</span>
+                  </div>
+                )}
               </div>
               <div className={"delivered-prize-panel delivered-"+giveaway.id}>
                 <img className="delivered-prize-provider-logo" src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
@@ -1363,12 +1382,17 @@ function DeliveredGiveaways({now}:{now:number}){
                   {giveaway.condition && <p>{giveaway.condition}</p>}
                   <strong>{giveaway.price}</strong>
                 </div>
-                {giveaway.drawDate && (
+                {isEmeraldDelivered ? (
+                  <div className="delivered-winner">
+                    <span>{pick("VENCEDOR","WINNER")}</span>
+                    <b>Roman</b>
+                  </div>
+                ) : giveaway.drawDate ? (
                   <div className="delivered-winner delivered-date-row">
                     <span>{pick("ENCERRADO EM","ENDED ON")}</span>
                     <b>{giveaway.drawDate}</b>
                   </div>
-                )}
+                ) : null}
               </div>
             </article>
           );
