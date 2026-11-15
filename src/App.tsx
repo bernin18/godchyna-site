@@ -1300,7 +1300,9 @@ function DeliveredGiveaways({now}:{now:number}){
   const { pick } = useLanguage();
   const clipId="AggressiveAthleticCobblerDancingBanana-6fbd-lIcvCYjzRU6";
   const clipSrc="https://clips.twitch.tv/embed?clip="+clipId+"&parent=godchyna.com&parent=www.godchyna.com&autoplay=false";
-  const autoDelivered=giveaways.filter(giveaway=>giveaway.enabled!==false && isGiveawayDrawReached(giveaway,now));
+  const autoDelivered=giveaways
+    .filter(giveaway=>giveaway.enabled!==false && isGiveawayDrawReached(giveaway,now))
+    .sort((a,b)=>(getGiveawayDrawTimestamp(a) ?? 0)-(getGiveawayDrawTimestamp(b) ?? 0));
 
   return (
     <section className="delivered-giveaways" aria-labelledby="delivered-giveaways-title">
@@ -1308,68 +1310,70 @@ function DeliveredGiveaways({now}:{now:number}){
         <h2 id="delivered-giveaways-title">{pick("ENTREGUES","DELIVERED")}</h2>
       </header>
 
-      {autoDelivered.map(giveaway=>{
-        const deliveredImage=giveaway.galleryImages?.[1]?.src ?? giveaway.image;
-        return (
-          <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
-            <div className="delivered-clip-wrap">
-              <div className="delivered-clip-frame delivered-clip-pending">
-                <span>{pick("CLIP EM BREVE","CLIP COMING SOON")}</span>
-              </div>
+      <div className="delivered-giveaways-grid">
+        <article className="delivered-giveaway-card">
+          <div className="delivered-clip-wrap">
+            <div className="delivered-clip-frame">
+              <iframe
+                src={clipSrc}
+                title={pick("Clip do giveaway mensal entregue","Delivered monthly giveaway clip")}
+                allowFullScreen
+                loading="lazy"
+                scrolling="no"
+              />
             </div>
-            <div className={"delivered-prize-panel delivered-"+giveaway.id}>
-              <img className="delivered-prize-provider-logo" src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
-              <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
-              <div className="delivered-prize-visual">
-                <div className="delivered-prize-glow" />
-                <img src={asset(deliveredImage)} alt={giveaway.imageAlt} />
-              </div>
-              <div className="delivered-prize-copy">
-                <h3>{giveaway.title}</h3>
-                {giveaway.condition && <p>{giveaway.condition}</p>}
-                <strong>{giveaway.price}</strong>
-              </div>
-              {giveaway.drawDate && (
-                <div className="delivered-winner delivered-date-row">
-                  <span>{pick("ENCERRADO EM","ENDED ON")}</span>
-                  <b>{giveaway.drawDate}</b>
-                </div>
-              )}
+          </div>
+          <div className="delivered-prize-panel">
+            <img className="delivered-prize-provider-logo" src={asset("topskin-logo.png?v=3")} alt="TOPSKIN" />
+            <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
+            <div className="delivered-prize-visual">
+              <div className="delivered-prize-glow" />
+              <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade Factory New" />
             </div>
-          </article>
-        );
-      })}
+            <div className="delivered-prize-copy">
+              <h3>Ursus Knife | Marble Fade</h3>
+              <p>Factory New</p>
+              <strong>$150</strong>
+            </div>
+            <div className="delivered-winner">
+              <span>{pick("VENCEDOR","WINNER")}</span>
+              <b>Bush</b>
+            </div>
+          </div>
+        </article>
 
-      <article className="delivered-giveaway-card">
-        <div className="delivered-clip-wrap">
-          <div className="delivered-clip-frame">
-            <iframe
-              src={clipSrc}
-              title={pick("Clip do giveaway mensal entregue","Delivered monthly giveaway clip")}
-              allowFullScreen
-              loading="lazy"
-              scrolling="no"
-            />
-          </div>
-        </div>
-        <div className="delivered-prize-panel">
-          <img className="delivered-prize-provider-logo" src={asset("topskin-logo.png?v=3")} alt="TOPSKIN" />
-          <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
-          <div className="delivered-prize-visual">
-            <div className="delivered-prize-glow" />
-            <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade Factory New" />
-          </div>
-          <div className="delivered-prize-copy">
-            <h3>Ursus Knife | Marble Fade</h3>
-            <p>Factory New</p>
-            <strong>$150</strong>
-          </div>
-          <div className="delivered-winner">
-            <span>{pick("VENCEDOR","WINNER")}</span>
-            <b>Bush</b>
-          </div>
-        </div>
-      </article>
+        {autoDelivered.map(giveaway=>{
+          const deliveredImage=giveaway.galleryImages?.[1]?.src ?? giveaway.image;
+          return (
+            <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
+              <div className="delivered-clip-wrap">
+                <div className="delivered-clip-frame delivered-clip-pending">
+                  <span>{pick("CLIP EM BREVE","CLIP COMING SOON")}</span>
+                </div>
+              </div>
+              <div className={"delivered-prize-panel delivered-"+giveaway.id}>
+                <img className="delivered-prize-provider-logo" src={asset(giveaway.providerLogo)} alt={giveaway.providerName} />
+                <div className="delivered-prize-badge">{pick("ENTREGUE","DELIVERED")}</div>
+                <div className="delivered-prize-visual">
+                  <div className="delivered-prize-glow" />
+                  <img src={asset(deliveredImage)} alt={giveaway.imageAlt} />
+                </div>
+                <div className="delivered-prize-copy">
+                  <h3>{giveaway.title}</h3>
+                  {giveaway.condition && <p>{giveaway.condition}</p>}
+                  <strong>{giveaway.price}</strong>
+                </div>
+                {giveaway.drawDate && (
+                  <div className="delivered-winner delivered-date-row">
+                    <span>{pick("ENCERRADO EM","ENDED ON")}</span>
+                    <b>{giveaway.drawDate}</b>
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }
