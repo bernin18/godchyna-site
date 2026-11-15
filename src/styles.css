@@ -3589,3 +3589,26 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     inset 7px 0 18px rgba(229,62,72,.05),
     -3px 0 12px rgba(229,62,72,.20);
 }
+
+
+/* Delivered giveaways horizontal grid */
+.delivered-giveaways-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,360px));
+  gap:20px;
+  align-items:start;
+  justify-content:start;
+}
+.delivered-giveaways-grid .delivered-giveaway-card{
+  width:100%;
+  max-width:360px;
+  margin:0!important;
+}
+.delivered-giveaways-grid .delivered-giveaway-card+.delivered-giveaway-card{
+  margin-top:0!important;
+}
+@media(max-width:760px){
+  .delivered-giveaways-grid{
+    grid-template-columns:minmax(0,360px);
+  }
+}
