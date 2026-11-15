@@ -2000,7 +2000,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   align-items:center;
   width:100%;
   max-width:360px;
-  margin:0 auto 18px;
+  margin:0 0 18px;
 }
 .delivered-giveaways-heading h2{
   margin:0;
@@ -2020,7 +2020,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   overflow:hidden;
   width:100%;
   max-width:360px;
-  margin-inline:auto;
+  margin:0;
   padding:18px;
   border:1px solid #1b353c;
   border-radius:16px;
@@ -2035,10 +2035,10 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   margin-top:20px;
 }
 .delivered-clip-wrap{
-  order:2;
+  order:1;
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-start;
   width:100%;
   padding:0;
   border:0;
@@ -2048,7 +2048,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   overflow:hidden;
   width:min(100%,300px);
   aspect-ratio:16/9;
-  margin:0 auto;
+  margin:0;
   border:1px solid #1a3238;
   border-radius:10px;
   background:#020405;
@@ -2062,15 +2062,15 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   border:0;
 }
 .delivered-prize-panel{
-  order:1;
+  order:2;
   position:relative;
-  align-self:center;
+  align-self:stretch;
   display:flex;
   flex-direction:column;
   width:100%;
   min-width:0;
   min-height:220px;
-  margin:0 auto;
+  margin:0;
   padding:18px 20px 16px;
   border:1px solid #183037;
   border-radius:12px;
@@ -2109,7 +2109,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   align-items:center;
   justify-content:center;
   min-height:100px;
-  margin:8px 0 2px;
+  margin:30px 0 2px;
 }
 .delivered-prize-glow{
   position:absolute;
@@ -2123,11 +2123,11 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   position:relative;
   z-index:1;
   width:auto;
-  max-width:145px;
-  max-height:84px;
+  max-width:138px;
+  max-height:78px;
   object-fit:contain;
   filter:drop-shadow(0 14px 16px rgba(0,0,0,.72)) drop-shadow(0 0 12px rgba(224,173,43,.11));
-  transform:rotate(-3deg);
+  transform:rotate(-3deg) translateY(6px);
 }
 .delivered-prize-copy{
   margin-top:12px;
@@ -2174,7 +2174,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   .delivered-giveaway-card{gap:14px;padding:14px;max-width:360px}
   .delivered-clip-wrap{border:0;padding:0}
   .delivered-clip-frame{width:min(100%,300px)}
-  .delivered-prize-panel{width:100%;min-height:220px;margin:0 auto}
+  .delivered-prize-panel{width:100%;min-height:220px;margin:0}
   .delivered-prize-visual{min-height:105px}
   .delivered-prize-copy{margin-top:16px}
 }
@@ -2186,7 +2186,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   .delivered-clip-frame{width:100%}
   .delivered-prize-panel{width:100%;padding:16px;min-height:230px}
   .delivered-prize-visual{min-height:110px}
-  .delivered-prize-visual img{max-width:170px;max-height:100px}
+  .delivered-prize-visual img{max-width:138px;max-height:78px}
   .delivered-prize-copy{margin-top:14px}
   .delivered-winner span{font-size:10px}
   .delivered-winner b{font-size:17px}
