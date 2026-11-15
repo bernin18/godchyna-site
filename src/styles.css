@@ -2038,7 +2038,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   order:1;
   display:flex;
   align-items:center;
-  justify-content:flex-start;
+  justify-content:center;
   width:100%;
   padding:0;
   border:0;
@@ -2048,7 +2048,7 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   overflow:hidden;
   width:min(100%,300px);
   aspect-ratio:16/9;
-  margin:0;
+  margin:0 auto;
   border:1px solid #1a3238;
   border-radius:10px;
   background:#020405;
@@ -3740,4 +3740,11 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   font-family:"Chakra Petch",sans-serif;
   font-size:17px;
   font-weight:900;
+}
+
+
+/* Keep every delivered top block centered with its prize panel */
+.delivered-giveaway-card .delivered-clip-wrap > *{
+  margin-left:auto;
+  margin-right:auto;
 }
