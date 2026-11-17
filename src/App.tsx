@@ -120,6 +120,7 @@ const giveaways:Giveaway[] = [
     requiresProof:true,
     startDate:"07/10/26",
     drawDate:"17/11/26",
+    drawEndOfDay:true,
     notePt:"Faz um depósito mínimo de €10 e envia a prova do depósito por Discord ou Instagram.",
     noteEn:"Make a minimum €10 deposit and send proof of the deposit through Discord or Instagram.",
     warningPt:"ATENÇÃO: SEM PROVA DO DEPÓSITO, A PARTICIPAÇÃO NÃO SERÁ ACEITE NO GIVEAWAY.",
