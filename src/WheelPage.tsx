@@ -3830,17 +3830,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           ))}
         </div>
 
-        <div className="monthly-event-branding monthly-csgoskins-branding" aria-hidden="true">
-          <div className="monthly-chyna-crop">
-            <img
-              src={wheelAsset("Logótipo CHYNA × TOPSKIN em Transparência.png")}
-              alt=""
-            />
-          </div>
-          <span className="monthly-brand-x">×</span>
+        <div className="monthly-event-branding monthly-topskin-branding" aria-hidden="true">
           <img
-            className="monthly-csgoskins-logo"
-            src={wheelAsset("csgoskins-logo.png")}
+            className="monthly-event-branding-image"
+            src={wheelAsset("Logótipo CHYNA × TOPSKIN em Transparência.png")}
             alt=""
           />
         </div>
@@ -3859,7 +3852,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <div className="monthly-wheel-glow" />
 
           <div className="monthly-brand">
-            <span>CHYNA . SPECIAL EVENT</span>
+            <span>TOPSKIN . SPECIAL EVENT</span>
             <strong>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</strong>
           </div>
 
@@ -3901,8 +3894,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 />
               ) : !monthlyLocked ? (
                 <>
-                  <span>{pick("GIVEAWAY DO", "CHYNA'S")}</span>
-                  <strong>CHYNAO</strong>
+                  <span>GIVEAWAY</span>
+                  <strong>TOPSKIN</strong>
                 </>
               ) : null}
             </button>
