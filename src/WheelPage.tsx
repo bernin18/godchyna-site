@@ -1538,7 +1538,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function openMonthlyGiveaway() {
     if (!account || loadingAccount || account.role !== "admin") return;
 
-    setIsTestGiveaway(true);
+    setIsTestGiveaway(false);
     setConfiguring(false);
 
     setMonthlyWheelRotation(0);
