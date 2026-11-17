@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { buildMonthlySegments, monthlyTargetRotation, monthlySegmentAtPointer, verifiedMonthlyLanding, pointerAngleFromPoints, MONTHLY_POINTER_TIP, MONTHLY_POINTER_WIDTH_RATIO, MONTHLY_POINTER_FINAL_ROTATION } from '../src/monthlyWheel.ts';
 import { parseParticipantInput, MAX_MONTHLY_PARTICIPANT_MULTIPLIER } from '../src/participantEntries.ts';
 
-test('monthly input preserves x2000 and exactly 4000 weighted entries without the daily 500 cap', () => {
+test('both wheel inputs preserve x2000 and exactly 4000 weighted entries', () => {
   const input = 'rodrigo x2000\nRui 1000x\nAna x500\nBruno x495\nCarla x5';
   const monthly = parseParticipantInput(input, MAX_MONTHLY_PARTICIPANT_MULTIPLIER);
   assert.equal(monthly.entries.length, 4000);
@@ -16,7 +16,7 @@ test('monthly input preserves x2000 and exactly 4000 weighted entries without th
   assert.equal(segments[0].percentage, 50);
   assert.equal(segments.at(-1).percentage, .125);
   assert.ok(Math.abs(segments.at(-1).endAngle - segments.at(-1).startAngle - .45) < 1e-10);
-  assert.equal(parseParticipantInput('rodrigo x2000').entries.length, 500);
+  assert.equal(parseParticipantInput('rodrigo x2000').entries.length, 2000);
 });
 
 test('4000-entry scenarios survive browser-like matrix rounding and subpixel pointer coordinates', () => {
@@ -121,6 +121,21 @@ test('compact pointer rotations select the same sector as the physically rotated
         const rotation = monthlyTargetRotation(segment, angle);
         assert.equal(verifiedMonthlyLanding(segments, rotation, measuredAngle, segment.name)?.name, segment.name);
       }
+    }
+  }
+});
+
+test('both xN and Nx inputs accept 5000 and cap 5001 at the displayed limit', () => {
+  for (const maximum of [undefined, MAX_MONTHLY_PARTICIPANT_MULTIPLIER]) {
+    for (const input of ['Rui 2000x', 'Rui x2000', 'Rui 5000x', 'Rui x5000']) {
+      const result = parseParticipantInput(input, maximum);
+      assert.equal(result.entries.length, input.includes('5000') ? 5000 : 2000);
+      assert.equal(result.cappedLines, 0);
+    }
+    for (const input of ['Rui 5001x', 'Rui x5001']) {
+      const result = parseParticipantInput(input, maximum);
+      assert.equal(result.entries.length, 5000);
+      assert.equal(result.cappedLines, 1);
     }
   }
 });

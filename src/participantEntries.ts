@@ -1,5 +1,5 @@
-export const MAX_PARTICIPANT_MULTIPLIER = 500;
-export const MAX_MONTHLY_PARTICIPANT_MULTIPLIER = 100_000;
+export const MAX_PARTICIPANT_MULTIPLIER = 5_000;
+export const MAX_MONTHLY_PARTICIPANT_MULTIPLIER = MAX_PARTICIPANT_MULTIPLIER;
 
 export function parseParticipantInput(input: string, maximum = MAX_PARTICIPANT_MULTIPLIER) {
   const entries: string[] = [];

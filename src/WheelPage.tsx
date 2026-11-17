@@ -3933,8 +3933,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               setParticipantMessage("");
             }}
             placeholder={pick(
-              "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 100000x por nome",
-              "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 100000x per name",
+              "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 5000x por nome",
+              "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 5000x per name",
             )}
             spellCheck={false}
             disabled={monthlyLocked}
@@ -5502,8 +5502,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   setParticipantMessage("");
                 }}
                 placeholder={pick(
-                  "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 500x por nome",
-                  "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 500x per name",
+                  "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 5000x por nome",
+                  "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 5000x per name",
                 )}
                 spellCheck={false}
                 disabled={spinning || Boolean(eliminationNotice) || Boolean(topFive) || Boolean(wheelWinnerNotice)}
