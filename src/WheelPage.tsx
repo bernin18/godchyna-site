@@ -1543,7 +1543,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function openMonthlyGiveaway() {
     if (!account || loadingAccount || account.role !== "admin") return;
 
-    setIsTestGiveaway(false);
+    setIsTestGiveaway(true);
     setConfiguring(false);
     setMonthlyKnifeRotation(-90);
     setMonthlyWheelRotation(0);
@@ -3768,6 +3768,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       const prizeValue = monthlyPrizeValue;
       const prizeImageUrl = monthlyPrizeImageUrl;
 
+      // Test draws never finalize, archive, or consume the configured monthly prize.
+      if (isTestGiveaway) {
+        stopMonthlyGiveawayAudio();
+        setMonthlyPrizeDraftSaving(false);
+        setMonthlyWinner(null);
+        setMonthlyKnifeRotation(-90);
+        setMonthlyWheelRotation(0);
+        setMonthlyLaunching(false);
+        setMonthlySpinning(false);
+        setMonthlyKnifeDocked(false);
+        setMonthlyKnifeFlightStyle(null);
+        setMonthlyPrizeDraftMessage("");
+        return;
+      }
+
       const { data, error } = await supabase.rpc("finalize_monthly_giveaway", {
         p_winner_name: winnerName,
       });
@@ -3913,6 +3928,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <div className="participants-panel-head monthly-panel-head">
             <div>
               <span className="monthly-panel-kicker">SPECIAL EVENT</span>
+              {isTestGiveaway && (
+                <span className="participants-test-mode monthly-test-mode">
+                  {pick("MODO TESTE · NÃO ENTRA NO HISTÓRICO", "TEST MODE · NOT SAVED TO HISTORY")}
+                </span>
+              )}
               <h2><Users /> {pick("PARTICIPANTES", "PARTICIPANTS")}</h2>
 
             </div>
@@ -4309,7 +4329,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 >
                   {monthlyPrizeDraftSaving
                     ? pick("A GUARDAR...", "SAVING...")
-                    : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!monthlyPrizeDraftSaving && <ArrowRight />}
+                    : isTestGiveaway
+                      ? pick("REPETIR TESTE", "REPEAT TEST")
+                      : pick("VER NO HISTÓRICO", "VIEW IN HISTORY")} {!monthlyPrizeDraftSaving && <ArrowRight />}
                 </button>
               </div>
               {monthlyPrizeDraftMessage && (
