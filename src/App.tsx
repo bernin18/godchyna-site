@@ -1357,7 +1357,9 @@ function DeliveredGiveaways({now}:{now:number}){
           const isEmeraldDelivered=giveaway.id==="hydra-gloves-emerald";
           const deliveredImage=isEmeraldDelivered
             ? "gloves hydra emerald.png"
-            : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
+            : giveaway.id==="bayonet-lore-gloves-omega"
+              ? giveaway.image
+              : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
           return (
             <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
               <div className="delivered-clip-wrap">
