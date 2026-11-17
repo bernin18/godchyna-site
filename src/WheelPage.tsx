@@ -5,6 +5,10 @@ import { ArrowLeft, ArrowRight, Pencil, Save, Ticket, Trash2, Upload, UserRound,
 import { getUserDisplayName, signInWithTwitch } from "./auth";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
+import { MonthlyDrawWheel, MonthlyPointerArtwork } from "./MonthlyDrawWheel";
+import { buildMonthlySegments, monthlyTargetRotation, MONTHLY_POINTER_IMAGE, MONTHLY_POINTER_TIP, MONTHLY_SPIN_DURATION_MS } from "./monthlyWheel";
+import { readMonthlyLanding } from "./monthlyWheelDom";
+import type { MonthlySegment } from "./monthlyWheel";
 import "./wheel.css";
 
 type WheelPageProps = {
@@ -763,7 +767,6 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [configuring, setConfiguring] = useState(false);
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
-  const [monthlyKnifeRotation, setMonthlyKnifeRotation] = useState(-90);
   const [monthlyWheelRotation, setMonthlyWheelRotation] = useState(0);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
@@ -814,6 +817,28 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const prizeImageInputRef = useRef<HTMLInputElement | null>(null);
   const monthlyPrizeUploadInputRef = useRef<HTMLInputElement | null>(null);
   const monthlyPrizeImageRef = useRef<HTMLImageElement | null>(null);
+  const monthlyPointerTipRef = useRef<HTMLSpanElement | null>(null);
+  const [monthlyPointerReady, setMonthlyPointerReady] = useState(false);
+  useEffect(() => {
+    const image = new Image();
+    image.onload = () => setMonthlyPointerReady(true);
+    image.src = wheelAsset(MONTHLY_POINTER_IMAGE);
+    return () => { image.onload = null; };
+  }, []);
+  const monthlyDrawRef = useRef<{ segments: MonthlySegment[]; expectedName: string; finalRotation: number } | null>(null);
+  const monthlyDrawTimersRef = useRef<number[]>([]);
+  const monthlyDrawFinishRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    if (monthlyGiveawayMode) return;
+    monthlyDrawRef.current = null;
+    monthlyDrawTimersRef.current.forEach(timer => window.clearTimeout(timer));
+    monthlyDrawTimersRef.current = [];
+  }, [monthlyGiveawayMode]);
+  useEffect(() => () => {
+    monthlyDrawRef.current = null;
+    monthlyDrawTimersRef.current.forEach(timer => window.clearTimeout(timer));
+  }, []);
   const monthlyAudioRef = useRef<HTMLAudioElement | null>(null);
   const monthlyAudioStopTimeoutRef = useRef<number | null>(null);
   const [monthlyAudioMuted, setMonthlyAudioMuted] = useState(false);
@@ -1545,7 +1570,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     setIsTestGiveaway(true);
     setConfiguring(false);
-    setMonthlyKnifeRotation(-90);
+
     setMonthlyWheelRotation(0);
     setMonthlySpinning(false);
     setMonthlyWinner(null);
@@ -1562,7 +1587,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     stopMonthlyGiveawayAudio();
     setMonthlyGiveawayMode(false);
     setMonthlyWinner(null);
-    setMonthlyKnifeRotation(-90);
+
     setMonthlyWheelRotation(0);
     setMonthlyLaunching(false);
     setMonthlyKnifeDocked(false);
@@ -3485,48 +3510,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       }));
   }, [largeWheelVisual, participants, pendingWinnerIndex]);
 
-  const monthlyWheelSegments = useMemo(() => {
-    if (participants.length === 0) return [];
-
-    let cursor = 0;
-
-    return groupedParticipants.map((participant, index) => {
-      const startEntry = cursor;
-      const endEntry = cursor + participant.count;
-      cursor = endEntry;
-
-      const startAngle = (startEntry / participants.length) * 360;
-      const endAngle = (endEntry / participants.length) * 360;
-      const centerAngle = (startAngle + endAngle) / 2;
-      const percentage = (participant.count / participants.length) * 100;
-      const hue = (38 + index * 137.508) % 360;
-      const lightness = index % 3 === 0 ? 42 : index % 3 === 1 ? 34 : 38;
-
-      return {
-        ...participant,
-        index,
-        startAngle,
-        endAngle,
-        centerAngle,
-        percentage,
-        color: `hsl(${hue.toFixed(1)} 62% ${lightness}%)`,
-      };
-    });
-  }, [groupedParticipants, participants.length]);
-
-  const monthlyWheelGradient = useMemo(() => {
-    if (monthlyWheelSegments.length === 0) {
-      return "conic-gradient(#111a20 0deg 360deg)";
-    }
-
-    const stops = monthlyWheelSegments.map(
-      (segment) =>
-        `${segment.color} ${segment.startAngle.toFixed(4)}deg ${segment.endAngle.toFixed(4)}deg`,
-    );
-
-    return `conic-gradient(${stops.join(",")})`;
-  }, [monthlyWheelSegments]);
-
+  const monthlyWheelSegments = useMemo(() => buildMonthlySegments(groupedParticipants), [groupedParticipants]);
 
   const fastWheelSpin = participants.length >= 10;
 
@@ -3588,119 +3572,88 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
   });
 
-  const renderMonthlyWheelNames = () => {
-    if (monthlyWheelSegments.length === 0) return null;
+  function finishMonthlyDraw() {
+    const draw = monthlyDrawRef.current;
+    const rotor = wheelRotorRef.current;
+    const tip = monthlyPointerTipRef.current;
+    if (!draw || !rotor || !tip) return;
 
-    return monthlyWheelSegments.map((segment) => {
-      const span = segment.endAngle - segment.startAngle;
-      const fontSize =
-        span >= 45 ? 13 :
-        span >= 20 ? 11 :
-        span >= 8 ? 9 :
-        span >= 3 ? 7 :
-        6;
-      const winnerSegment =
-        Boolean(monthlyWinner) &&
-        segment.name.trim().toLocaleLowerCase() === monthlyWinner!.trim().toLocaleLowerCase();
+    const landing = readMonthlyLanding(rotor, tip, draw.segments, draw.expectedName);
+    if (!landing) return; // Never announce a result while still moving or misaligned.
 
-      const style = {
-        "--wheel-name-angle": `${segment.centerAngle}deg`,
-        "--wheel-name-size": `${fontSize}px`,
-      } as CSSProperties;
-
-      return (
-        <span
-          key={`monthly-${segment.name.trim().toLocaleLowerCase()}`}
-          className={`monthly-wheel-name${winnerSegment ? " is-selected" : ""}`}
-          style={style}
-          title={`${segment.name} · ${segment.count} entradas · ${segment.percentage.toFixed(2)}%`}
-        >
-          <b>{segment.name}</b>
-          {span >= 7 && <small>{segment.percentage.toFixed(span >= 20 ? 1 : 0)}%</small>}
-        </span>
-      );
-    });
-  };
+    monthlyDrawRef.current = null;
+    monthlyDrawTimersRef.current.forEach(timer => window.clearTimeout(timer));
+    monthlyDrawTimersRef.current = [];
+    setMonthlySpinning(false);
+    setMonthlyWinner(landing.name);
+    playApplauseBurst();
+  }
+  monthlyDrawFinishRef.current = finishMonthlyDraw;
 
   function spinMonthlyGiveaway() {
     if (
-      monthlyLaunching ||
-      monthlySpinning ||
-      monthlyWinner ||
-      participants.length < 1 ||
-      monthlyPrizeDraftSaving ||
-      monthlyPrizeDraftEditing ||
-      !monthlyPrizeDraftName.trim() ||
-      !monthlyPrizeDraftImageUrl ||
-      monthlyPrizeNumericValue() === null
+      !monthlyPointerReady || monthlyDrawRef.current || monthlyLaunching || monthlySpinning || monthlyWinner ||
+      participants.length < 1 || monthlyPrizeDraftSaving || monthlyPrizeDraftEditing ||
+      !monthlyPrizeDraftName.trim() || !monthlyPrizeDraftImageUrl || monthlyPrizeNumericValue() === null
     ) return;
 
-    const winnerIndex = randomParticipantIndex(participants.length);
-    const selectedName = participants[winnerIndex];
-    const selectedKey = selectedName.trim().toLocaleLowerCase();
+    const selectedName = participants[randomParticipantIndex(participants.length)];
     const selectedSegment = monthlyWheelSegments.find(
-      (segment) => segment.name.trim().toLocaleLowerCase() === selectedKey,
+      segment => segment.name.trim().toLocaleLowerCase() === selectedName.trim().toLocaleLowerCase(),
     );
-    const selectedCenter = selectedSegment?.centerAngle ?? 0;
-    // Keep the pointing glove fixed at 12 o'clock and rotate only the wheel.
-    // This guarantees the selected segment's center lands directly under the finger.
-    const finalWheelRotation = 6 * 360 - selectedCenter;
+    if (!selectedSegment) return;
+    const draw = {
+      segments: monthlyWheelSegments.map(segment => ({ ...segment })),
+      expectedName: selectedSegment.name,
+      finalRotation: monthlyTargetRotation(selectedSegment),
+    };
+    monthlyDrawRef.current = draw;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
-
     setMonthlyLaunching(true);
     setMonthlyKnifeDocked(false);
-    setMonthlyKnifeRotation(-90);
     setMonthlyWheelRotation(0);
+    setParticipantMessage("");
     playWheelPlim();
 
     if (sourceRect) {
-      const targetWidth = Math.min(250, Math.max(205, window.innerWidth * 0.13));
-      const targetHeight = targetWidth * 0.62;
-      const targetLeft = window.innerWidth / 2 - targetWidth / 2;
-      const targetTop = window.innerHeight / 2 - targetHeight / 2;
-
-      setMonthlyKnifeFlightStyle({
-        left: sourceRect.left,
-        top: sourceRect.top,
-        width: sourceRect.width,
-        height: sourceRect.height,
-      });
-
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          setMonthlyKnifeFlightStyle({
-            left: targetLeft,
-            top: targetTop,
-            width: targetWidth,
-            height: targetHeight,
-          });
-        });
-      });
+      setMonthlyKnifeFlightStyle({ left: sourceRect.left, top: sourceRect.top, width: sourceRect.width, height: sourceRect.height });
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        if (monthlyDrawRef.current !== draw) return;
+        const size = Math.min(window.innerHeight * 0.88, window.innerWidth * 0.88, 940) - 24;
+        const width = size * 0.55;
+        const height = width * 1.5;
+        setMonthlyKnifeFlightStyle({ left: window.innerWidth / 2 - width * MONTHLY_POINTER_TIP.x / MONTHLY_POINTER_TIP.width, top: window.innerHeight / 2 - height * 0.58, width, height });
+      }));
     }
 
-    const flightDuration = sourceRect ? 1000 : 250;
-
-    window.setTimeout(() => {
+    monthlyDrawTimersRef.current.push(window.setTimeout(() => {
+      if (monthlyDrawRef.current !== draw) return;
       setMonthlyKnifeDocked(true);
       setMonthlyKnifeFlightStyle(null);
       setMonthlyLaunching(false);
       setMonthlySpinning(true);
       startMonthlyGiveawayAudio();
-
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          setMonthlyWheelRotation(finalWheelRotation);
-          setMonthlyKnifeRotation(-90);
-        });
-      });
-
-      const centerSpinDuration = 39200;
-      window.setTimeout(() => {
-        setMonthlySpinning(false);
-        setMonthlyWinner(selectedName);
-        playApplauseBurst();
-      }, centerSpinDuration);
-    }, flightDuration);
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        if (monthlyDrawRef.current !== draw) return;
+        setMonthlyWheelRotation(draw.finalRotation);
+        // Fallback for browsers/background tabs that do not deliver transitionend.
+        // The same geometry check still gates the winner announcement.
+        monthlyDrawTimersRef.current.push(window.setTimeout(() => {
+          monthlyDrawFinishRef.current();
+          if (monthlyDrawRef.current !== draw) return;
+          setMonthlySpinning(false);
+          setMonthlyLaunching(false);
+          monthlyDrawRef.current = null;
+          monthlyDrawTimersRef.current.forEach(timer => window.clearTimeout(timer));
+          monthlyDrawTimersRef.current = [];
+          stopMonthlyGiveawayAudio();
+          setParticipantMessage(pick(
+            "O alinhamento da ponta não foi confirmado. Nenhum vencedor foi anunciado. Repete o teste.",
+            "The blade tip alignment could not be confirmed. No winner was announced. Please retry.",
+          ));
+        }, MONTHLY_SPIN_DURATION_MS + 500));
+      }));
+    }, sourceRect ? 1000 : 250));
   }
 
   const soundToggle = (
@@ -3720,7 +3673,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   if (monthlyGiveawayMode && session && account?.role === "admin") {
     const uniqueMonthlyParticipants = uniqueParticipantNames(participants).length;
     const monthlyPrizeImageUrl = monthlyPrizeDraftImageUrl;
-    const monthlyWheelPointerImageUrl = wheelAsset("Punho de Couro com Serpentes Verdes.png");
+    const monthlyWheelPointerImageUrl = wheelAsset(MONTHLY_POINTER_IMAGE);
     const monthlyPrizeName = monthlyPrizeDraftName.trim()
       ? monthlyPrizeDraftName.trim()
       : pick("SEM SKIN CONFIGURADA", "NO SKIN CONFIGURED");
@@ -3773,7 +3726,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         stopMonthlyGiveawayAudio();
         setMonthlyPrizeDraftSaving(false);
         setMonthlyWinner(null);
-        setMonthlyKnifeRotation(-90);
+
         setMonthlyWheelRotation(0);
         setMonthlyLaunching(false);
         setMonthlySpinning(false);
@@ -3829,7 +3782,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       setMonthlyGiveawayMode(false);
       setMonthlyWinner(null);
-      setMonthlyKnifeRotation(-90);
+
       setMonthlyWheelRotation(0);
       setMonthlyLaunching(false);
       setMonthlySpinning(false);
@@ -3859,7 +3812,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             aria-hidden="true"
             style={monthlyKnifeFlightStyle}
           >
-            <img src={monthlyWheelPointerImageUrl} alt="" />
+            <MonthlyPointerArtwork imageUrl={monthlyWheelPointerImageUrl} />
           </div>
         )}
 
@@ -3871,50 +3824,21 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
             <strong>{pick("GIVEAWAY MENSAL", "MONTHLY GIVEAWAY")}</strong>
           </div>
 
-          <div className="monthly-wheel-shell">
-            <div
-              ref={wheelRotorRef}
-              className={`monthly-wheel-rotor${monthlySpinning ? " is-spinning" : ""}`}
-              style={{
-                background: monthlyWheelGradient,
-                "--monthly-wheel-angle": `${monthlyWheelRotation}deg`,
-              } as CSSProperties}
-            >
-              {monthlyWheelSegments.map((segment, index) => (
-                <span
-                  key={`monthly-divider-${segment.name.trim().toLocaleLowerCase()}-${index}`}
-                  className="monthly-wheel-divider"
-                  style={{
-                    "--divider-angle": `${segment.startAngle}deg`,
-                  } as CSSProperties}
-                />
-              ))}
-              {renderMonthlyWheelNames()}
-            </div>
-
-            <button
-              type="button"
-              className={`monthly-wheel-center${monthlyKnifeDocked ? " has-knife" : ""}${monthlySpinning ? " is-spinning" : ""}${monthlyLocked ? " is-draw-active" : ""}`}
-              onClick={spinMonthlyGiveaway}
-              disabled={monthlyLocked || !monthlyPrizeReady || participants.length < 1}
-              aria-label={pick("Sortear vencedor", "Draw winner")}
-            >
-              {monthlyKnifeDocked ? (
-                <img
-                  src={monthlyWheelPointerImageUrl}
-                  alt=""
-                  style={{
-                    "--monthly-knife-angle": `${monthlyKnifeRotation}deg`,
-                  } as CSSProperties}
-                />
-              ) : !monthlyLocked ? (
-                <>
-                  <span>{pick("GIVEAWAY DO", "GIVEAWAY BY")}</span>
-                  <strong>CHYNAO</strong>
-                </>
-              ) : null}
-            </button>
-          </div>
+          <MonthlyDrawWheel
+            segments={monthlyWheelSegments}
+            rotation={monthlyWheelRotation}
+            spinning={monthlySpinning}
+            docked={monthlyKnifeDocked}
+            locked={monthlyLocked}
+            winner={monthlyWinner}
+            imageUrl={monthlyWheelPointerImageUrl}
+            disabled={!monthlyPointerReady || monthlyLocked || !monthlyPrizeReady || participants.length < 1}
+            onSpin={spinMonthlyGiveaway}
+            onSettled={finishMonthlyDraw}
+            rotorRef={wheelRotorRef}
+            tipRef={monthlyPointerTipRef}
+            drawLabel={pick("Sortear vencedor", "Draw winner")}
+          />
         </section>
 
         <aside className="participants-panel monthly-participants-panel">

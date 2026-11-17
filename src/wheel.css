@@ -5871,11 +5871,38 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 }
 
 
-/* Monthly pointing-glove selector alignment */
-.monthly-giveaway-page .monthly-flying-knife img{
-  transform:rotate(-90deg) scale(.70)!important;
+/* The unrotated combo sprite is calibrated by its actual blade-tip pixel.
+   Both the rotor and pointer share the same inner wheel coordinate system. */
+.monthly-giveaway-page .monthly-combo-pointer{
+  position:absolute;
+  z-index:7;
+  left:50%;
+  top:50%;
+  width:55%;
+  aspect-ratio:2 / 3;
+  pointer-events:none;
 }
-.monthly-giveaway-page .monthly-wheel-center.has-knife img{
-  transform:rotate(-90deg) scale(.70)!important;
+.monthly-combo-artwork{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+.monthly-combo-tip{
+  position:absolute;
+  display:block;
+  width:0;
+  height:0;
+  pointer-events:none;
+}
+.monthly-giveaway-page .monthly-wheel-rotor{
+  transform:rotate(var(--monthly-wheel-angle,0deg))!important;
   transition:none!important;
+}
+.monthly-giveaway-page .monthly-wheel-rotor.is-spinning{
+  transition:transform var(--monthly-spin-duration,39000ms) cubic-bezier(.08,.72,.035,1)!important;
+}
+.monthly-giveaway-page .monthly-wheel-name{
+  margin:0!important;
+  transform:translate(-50%,-50%) rotate(var(--wheel-name-angle)) translateY(calc(-1 * var(--monthly-label-radius))) rotate(-90deg);
 }
