@@ -3909,8 +3909,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 />
               ) : !monthlyLocked ? (
                 <>
-                  <span>GIVEAWAY</span>
-                  <strong>TOPSKIN</strong>
+                  <span>{pick("GIVEAWAY DO", "GIVEAWAY BY")}</span>
+                  <strong>CHYNAO</strong>
                 </>
               ) : null}
             </button>
