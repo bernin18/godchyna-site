@@ -9,6 +9,7 @@ import { MonthlyDrawWheel, MonthlyPointerArtwork } from "./MonthlyDrawWheel";
 import { buildMonthlySegments, monthlyTargetRotation, MONTHLY_POINTER_IMAGE, MONTHLY_POINTER_TIP, MONTHLY_POINTER_WIDTH_RATIO, MONTHLY_POINTER_FINAL_ROTATION, MONTHLY_SPIN_DURATION_MS } from "./monthlyWheel";
 import { readMonthlyLanding } from "./monthlyWheelDom";
 import type { MonthlySegment } from "./monthlyWheel";
+import { parseParticipantInput, MAX_PARTICIPANT_MULTIPLIER, MAX_MONTHLY_PARTICIPANT_MULTIPLIER } from "./participantEntries";
 import "./wheel.css";
 
 type WheelPageProps = {
@@ -569,39 +570,6 @@ const DIRECT_TOP_FIVE_THRESHOLD = 200;
 const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_VISIBLE_NAMES = 100;
 const LARGE_WHEEL_LIST_LIMIT = 160;
-const MAX_PARTICIPANT_MULTIPLIER = 500;
-
-function parseParticipantInput(input: string) {
-  const entries: string[] = [];
-  let cappedLines = 0;
-
-  input
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .forEach((line) => {
-      const multiplierMatch = line.match(/^(.*?)\s+(?:(\d+)\s*x|x\s*(\d+))$/i);
-
-      if (!multiplierMatch) {
-        entries.push(line);
-        return;
-      }
-
-      const name = multiplierMatch[1].trim();
-      if (!name) return;
-
-      const requestedCount = Number(multiplierMatch[2] ?? multiplierMatch[3] ?? 1);
-      const safeCount = Number.isFinite(requestedCount)
-        ? Math.max(1, Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(requestedCount)))
-        : 1;
-
-      if (requestedCount > MAX_PARTICIPANT_MULTIPLIER) cappedLines += 1;
-
-      entries.push(...Array.from({ length: safeCount }, () => name));
-    });
-
-  return { entries, cappedLines };
-}
 const LARGE_WHEEL_GRADIENT =
   "repeating-conic-gradient(#b9851f 0deg 5.625deg,#111a20 5.625deg 11.25deg,#754b1a 11.25deg 16.875deg,#263238 16.875deg 22.5deg)";
 
@@ -767,6 +735,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [configuring, setConfiguring] = useState(false);
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
+  const participantMultiplierLimit = monthlyGiveawayMode ? MAX_MONTHLY_PARTICIPANT_MULTIPLIER : MAX_PARTICIPANT_MULTIPLIER;
   const [monthlyWheelRotation, setMonthlyWheelRotation] = useState(0);
   const [monthlyPointerRotation, setMonthlyPointerRotation] = useState(0);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
@@ -2031,7 +2000,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   }
 
   function loadParticipants() {
-    const { entries, cappedLines } = parseParticipantInput(participantInput);
+    const { entries, cappedLines } = parseParticipantInput(participantInput, participantMultiplierLimit);
 
     if (entries.length < 1) {
       setParticipantMessage(pick(
@@ -2055,8 +2024,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setShowPlinko(false);
     setShowPlinkoTransition(false);
     setParticipantMessage(pick(
-      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}.${cappedLines > 0 ? ` ${cappedLines} multiplicador${cappedLines === 1 ? "" : "es"} limitado${cappedLines === 1 ? "" : "s"} ao máximo de ${MAX_PARTICIPANT_MULTIPLIER}x.` : ""} As entradas foram misturadas automaticamente na roda.`,
-      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}.${cappedLines > 0 ? ` ${cappedLines} multiplier${cappedLines === 1 ? "" : "s"} capped at ${MAX_PARTICIPANT_MULTIPLIER}x.` : ""} Entries were automatically spread around the wheel.`,
+      `${entries.length} ${entries.length === 1 ? "entrada adicionada" : "entradas adicionadas"}.${cappedLines > 0 ? ` ${cappedLines} multiplicador${cappedLines === 1 ? "" : "es"} limitado${cappedLines === 1 ? "" : "s"} ao máximo de ${participantMultiplierLimit}x.` : ""} As entradas foram misturadas automaticamente na roda.`,
+      `${entries.length} ${entries.length === 1 ? "entry added" : "entries added"}.${cappedLines > 0 ? ` ${cappedLines} multiplier${cappedLines === 1 ? "" : "s"} capped at ${participantMultiplierLimit}x.` : ""} Entries were automatically spread around the wheel.`,
     ));
   }
 
@@ -2066,7 +2035,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const name = quickParticipantName.trim();
     const count = Math.max(
       1,
-      Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(quickParticipantCount || 1)),
+      Math.min(participantMultiplierLimit, Math.floor(quickParticipantCount || 1)),
     );
 
     if (!name) {
@@ -3431,8 +3400,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   ]);
 
   const draftCount = useMemo(
-    () => parseParticipantInput(participantInput).entries.length,
-    [participantInput],
+    () => parseParticipantInput(participantInput, participantMultiplierLimit).entries.length,
+    [participantInput, participantMultiplierLimit],
   );
 
   const groupedParticipants = useMemo(() => {
@@ -3924,13 +3893,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <input
                   type="number"
                   min={1}
-                  max={MAX_PARTICIPANT_MULTIPLIER}
+                  max={participantMultiplierLimit}
                   value={quickParticipantCount}
                   onChange={(event) => {
                     const value = Number(event.target.value);
                     setQuickParticipantCount(
                       Number.isFinite(value)
-                        ? Math.max(1, Math.min(MAX_PARTICIPANT_MULTIPLIER, Math.floor(value)))
+                        ? Math.max(1, Math.min(participantMultiplierLimit, Math.floor(value)))
                         : 1,
                     );
                   }}
@@ -3938,8 +3907,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 />
                 <button
                   type="button"
-                  onClick={() => setQuickParticipantCount((count) => Math.min(MAX_PARTICIPANT_MULTIPLIER, count + 1))}
-                  disabled={monthlyLocked || quickParticipantCount >= MAX_PARTICIPANT_MULTIPLIER}
+                  onClick={() => setQuickParticipantCount((count) => Math.min(participantMultiplierLimit, count + 1))}
+                  disabled={monthlyLocked || quickParticipantCount >= participantMultiplierLimit}
                 >
                   +
                 </button>
@@ -3964,8 +3933,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               setParticipantMessage("");
             }}
             placeholder={pick(
-              "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 500x por nome",
-              "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 500x per name",
+              "Um nome por linha...\nChyna 100x\nRui 25x\nMiguel\nMáximo: 100000x por nome",
+              "One name per line...\nChyna 100x\nRui 25x\nMiguel\nMaximum: 100000x per name",
             )}
             spellCheck={false}
             disabled={monthlyLocked}
