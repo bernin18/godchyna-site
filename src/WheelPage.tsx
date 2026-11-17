@@ -6,7 +6,7 @@ import { getUserDisplayName, signInWithTwitch } from "./auth";
 import { supabase } from "./supabase";
 import { useLanguage } from "./i18n";
 import { MonthlyDrawWheel, MonthlyPointerArtwork } from "./MonthlyDrawWheel";
-import { buildMonthlySegments, monthlyTargetRotation, MONTHLY_POINTER_IMAGE, MONTHLY_POINTER_TIP, MONTHLY_SPIN_DURATION_MS } from "./monthlyWheel";
+import { buildMonthlySegments, monthlyTargetRotation, MONTHLY_POINTER_IMAGE, MONTHLY_POINTER_TIP, MONTHLY_POINTER_WIDTH_RATIO, MONTHLY_POINTER_FINAL_ROTATION, MONTHLY_SPIN_DURATION_MS } from "./monthlyWheel";
 import { readMonthlyLanding } from "./monthlyWheelDom";
 import type { MonthlySegment } from "./monthlyWheel";
 import "./wheel.css";
@@ -768,6 +768,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const [isTestGiveaway, setIsTestGiveaway] = useState(false);
   const [monthlyGiveawayMode, setMonthlyGiveawayMode] = useState(false);
   const [monthlyWheelRotation, setMonthlyWheelRotation] = useState(0);
+  const [monthlyPointerRotation, setMonthlyPointerRotation] = useState(0);
   const [monthlySpinning, setMonthlySpinning] = useState(false);
   const [monthlyWinner, setMonthlyWinner] = useState<string | null>(null);
   const [monthlyLaunching, setMonthlyLaunching] = useState(false);
@@ -3605,13 +3606,14 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const draw = {
       segments: monthlyWheelSegments.map(segment => ({ ...segment })),
       expectedName: selectedSegment.name,
-      finalRotation: monthlyTargetRotation(selectedSegment),
+      finalRotation: monthlyTargetRotation(selectedSegment, MONTHLY_POINTER_FINAL_ROTATION),
     };
     monthlyDrawRef.current = draw;
     const sourceRect = monthlyPrizeImageRef.current?.getBoundingClientRect();
     setMonthlyLaunching(true);
     setMonthlyKnifeDocked(false);
     setMonthlyWheelRotation(0);
+    setMonthlyPointerRotation(0);
     setParticipantMessage("");
     playWheelPlim();
 
@@ -3620,7 +3622,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
         if (monthlyDrawRef.current !== draw) return;
         const size = Math.min(window.innerHeight * 0.88, window.innerWidth * 0.88, 940) - 24;
-        const width = size * 0.55;
+        const width = size * MONTHLY_POINTER_WIDTH_RATIO;
         const height = width * 1.5;
         setMonthlyKnifeFlightStyle({ left: window.innerWidth / 2 - width * MONTHLY_POINTER_TIP.x / MONTHLY_POINTER_TIP.width, top: window.innerHeight / 2 - height * 0.58, width, height });
       }));
@@ -3636,6 +3638,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
         if (monthlyDrawRef.current !== draw) return;
         setMonthlyWheelRotation(draw.finalRotation);
+        setMonthlyPointerRotation(MONTHLY_POINTER_FINAL_ROTATION);
         // Fallback for browsers/background tabs that do not deliver transitionend.
         // The same geometry check still gates the winner announcement.
         monthlyDrawTimersRef.current.push(window.setTimeout(() => {
@@ -3827,6 +3830,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           <MonthlyDrawWheel
             segments={monthlyWheelSegments}
             rotation={monthlyWheelRotation}
+            pointerRotation={monthlyPointerRotation}
             spinning={monthlySpinning}
             docked={monthlyKnifeDocked}
             locked={monthlyLocked}

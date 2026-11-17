@@ -1,5 +1,7 @@
 export const MONTHLY_SPIN_DURATION_MS = 39_000;
 export const MONTHLY_POINTER_IMAGE = "monthly-omega-lore-pointer.png";
+export const MONTHLY_POINTER_WIDTH_RATIO = 0.20;
+export const MONTHLY_POINTER_FINAL_ROTATION = -8 * 360;
 // Pixel position of the blade tip in the original, unmodified 1024 × 1536 PNG.
 export const MONTHLY_POINTER_TIP = { x: 567.5, y: 108.5, width: 1024, height: 1536 };
 
@@ -38,7 +40,7 @@ export function buildMonthlySegments(grouped: { name: string; count: number }[])
 
 // Conic gradients and labels both start at 12 o'clock, clockwise.
 export function monthlyTargetRotation(segment: MonthlySegment, pointerAngle = 0) {
-  return 6 * 360 + pointerAngle - segment.centerAngle;
+  return 6 * 360 + normalizeAngle(pointerAngle) - segment.centerAngle;
 }
 
 export function pointerAngleFromPoints(center: { x: number; y: number }, tip: { x: number; y: number }) {

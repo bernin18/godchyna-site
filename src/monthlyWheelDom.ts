@@ -2,6 +2,9 @@ import { pointerAngleFromPoints, verifiedMonthlyLanding } from "./monthlyWheel";
 import type { MonthlySegment } from "./monthlyWheel";
 
 export function readMonthlyLanding(rotor: HTMLElement, tip: HTMLElement, segments: MonthlySegment[], expectedName: string) {
+  const pointerOrbit = tip.closest<HTMLElement>(".monthly-combo-orbit");
+  // Both independently rotating elements must settle before revealing the name.
+  if ([rotor, pointerOrbit].some(element => element?.getAnimations().some(animation => animation.playState === "running"))) return null;
   const rect = rotor.getBoundingClientRect();
   const tipRect = tip.getBoundingClientRect();
   const transform = window.getComputedStyle(rotor).transform;

@@ -1,5 +1,5 @@
 import type { CSSProperties, Ref, TransitionEvent } from "react";
-import { MONTHLY_POINTER_TIP, MONTHLY_SPIN_DURATION_MS, monthlyNameKey } from "./monthlyWheel";
+import { MONTHLY_POINTER_TIP, MONTHLY_POINTER_WIDTH_RATIO, MONTHLY_SPIN_DURATION_MS, monthlyNameKey } from "./monthlyWheel";
 import type { MonthlySegment } from "./monthlyWheel";
 
 export function MonthlyPointerArtwork({ imageUrl }: { imageUrl: string }) {
@@ -11,11 +11,12 @@ export function MonthlyPointerArtwork({ imageUrl }: { imageUrl: string }) {
 }
 
 export function MonthlyDrawWheel({
-  segments, rotation, spinning, docked, locked, winner, imageUrl,
+  segments, rotation, pointerRotation = 0, spinning, docked, locked, winner, imageUrl,
   disabled, onSpin, onSettled, rotorRef, tipRef, drawLabel,
 }: {
   segments: MonthlySegment[];
   rotation: number;
+  pointerRotation?: number;
   spinning: boolean;
   docked: boolean;
   locked: boolean;
@@ -61,9 +62,11 @@ export function MonthlyDrawWheel({
         })}
       </div>
       {docked ? (
-        <div className="monthly-combo-pointer" aria-hidden="true" style={{ transform: `translate(-${MONTHLY_POINTER_TIP.x / MONTHLY_POINTER_TIP.width * 100}%,-58%)` }}>
-          <MonthlyPointerArtwork imageUrl={imageUrl} />
-          <span ref={tipRef} className="monthly-combo-tip" style={{ left: `${MONTHLY_POINTER_TIP.x / MONTHLY_POINTER_TIP.width * 100}%`, top: `${MONTHLY_POINTER_TIP.y / MONTHLY_POINTER_TIP.height * 100}%` }} />
+        <div className={`monthly-combo-orbit${spinning ? " is-spinning" : ""}`} aria-hidden="true" style={{ "--monthly-pointer-angle": `${pointerRotation}deg`, "--monthly-spin-duration": `${MONTHLY_SPIN_DURATION_MS}ms` } as CSSProperties} onTransitionEnd={handleTransitionEnd}>
+          <div className="monthly-combo-pointer" style={{ width: `${MONTHLY_POINTER_WIDTH_RATIO * 100}%`, transform: `translate(-${MONTHLY_POINTER_TIP.x / MONTHLY_POINTER_TIP.width * 100}%,-58%)` }}>
+            <MonthlyPointerArtwork imageUrl={imageUrl} />
+            <span ref={tipRef} className="monthly-combo-tip" style={{ left: `${MONTHLY_POINTER_TIP.x / MONTHLY_POINTER_TIP.width * 100}%`, top: `${MONTHLY_POINTER_TIP.y / MONTHLY_POINTER_TIP.height * 100}%` }} />
+          </div>
         </div>
       ) : (
         <button type="button" className={`monthly-wheel-center${locked ? " is-draw-active" : ""}`} onClick={onSpin} disabled={disabled} aria-label={drawLabel}>

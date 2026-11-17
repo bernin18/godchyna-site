@@ -5871,14 +5871,26 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 }
 
 
-/* The unrotated combo sprite is calibrated by its actual blade-tip pixel.
+/* The compact combo sprite is calibrated by its actual blade-tip pixel.
    Both the rotor and pointer share the same inner wheel coordinate system. */
+.monthly-giveaway-page .monthly-combo-orbit{
+  position:absolute;
+  inset:0;
+  z-index:7;
+  pointer-events:none;
+  transform:rotate(var(--monthly-pointer-angle,0deg));
+  transform-origin:50% 50%;
+  transition:none;
+}
+.monthly-giveaway-page .monthly-combo-orbit.is-spinning{
+  transition:transform var(--monthly-spin-duration,39000ms) cubic-bezier(.08,.72,.035,1);
+}
 .monthly-giveaway-page .monthly-combo-pointer{
   position:absolute;
   z-index:7;
   left:50%;
   top:50%;
-  width:55%;
+  width:20%;
   aspect-ratio:2 / 3;
   pointer-events:none;
 }
