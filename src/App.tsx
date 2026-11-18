@@ -1355,10 +1355,11 @@ function DeliveredGiveaways({now}:{now:number}){
 
         {autoDelivered.map(giveaway=>{
           const isEmeraldDelivered=giveaway.id==="hydra-gloves-emerald";
+          const isComboDelivered=giveaway.id==="bayonet-lore-gloves-omega";
           const deliveredImage=isEmeraldDelivered
             ? "gloves hydra emerald.png"
-            : giveaway.id==="bayonet-lore-gloves-omega"
-              ? giveaway.image
+            : isComboDelivered
+              ? "omega lore pop up.png"
               : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
           return (
             <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
@@ -1400,10 +1401,10 @@ function DeliveredGiveaways({now}:{now:number}){
                   {giveaway.condition && <p>{giveaway.condition}</p>}
                   <strong>{giveaway.price}</strong>
                 </div>
-                {isEmeraldDelivered ? (
+                {isEmeraldDelivered || isComboDelivered ? (
                   <div className="delivered-winner">
                     <span>{pick("VENCEDOR","WINNER")}</span>
-                    <b>Roman</b>
+                    <b>{isComboDelivered ? "Bush" : "Roman"}</b>
                   </div>
                 ) : giveaway.drawDate ? (
                   <div className="delivered-winner delivered-date-row">
