@@ -102,7 +102,7 @@ const giveaways:Giveaway[] = [
   {
     id:"bayonet-lore-gloves-omega",
     enabled:true,
-    title:"Bayonet Lore FT & Sport Gloves ★ Omega FT",
+    title:"Bayonet ★ Lore FT & Sport Gloves ★ Omega FT",
     condition:"",
     price:"$400",
     minDeposit:"€10",
@@ -1359,7 +1359,7 @@ function DeliveredGiveaways({now}:{now:number}){
           const deliveredImage=isEmeraldDelivered
             ? "gloves hydra emerald.png"
             : isComboDelivered
-              ? "omega lore pop up.png"
+              ? "combo.png"
               : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
           return (
             <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
