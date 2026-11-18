@@ -102,7 +102,7 @@ const giveaways:Giveaway[] = [
   {
     id:"bayonet-lore-gloves-omega",
     enabled:true,
-    title:"Bayonet ★ Lore FT & Sport Gloves ★ Omega FT",
+    title:"Sport Gloves ★ Omega FT & Bayonet ★ Lore FT",
     condition:"",
     price:"$400",
     minDeposit:"€10",
