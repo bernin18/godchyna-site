@@ -1397,7 +1397,7 @@ function DeliveredGiveaways({now}:{now:number}){
                   <img src={asset(deliveredImage)} alt={giveaway.imageAlt} />
                 </div>
                 <div className="delivered-prize-copy">
-                  <h3>{giveaway.title}</h3>
+                  <h3>{isComboDelivered ? <>Sport Gloves ★ <span style={{color:"#f4bf2f"}}>Omega FT</span> &amp; Bayonet ★ <span style={{color:"#f4bf2f"}}>Lore FT</span></> : giveaway.title}</h3>
                   {giveaway.condition && <p>{giveaway.condition}</p>}
                   <strong>{giveaway.price}</strong>
                 </div>
