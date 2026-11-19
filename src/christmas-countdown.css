@@ -437,9 +437,8 @@
   100% {transform:rotateX(145deg);opacity:0}
 }
 
-/* The overlay is anchored to the card BORDER, not inside the artwork.
-   The banner itself still clips the weapon image, while these decorations
-   sit across the top/right gold outline and remain visible outside its clip. */
+/* The red tinsel forms a thick L centred directly on the gold card border.
+   Unlike the previous offset, half the ribbon is on each side of the line. */
 .xmas-banner-frame{
   position:relative;
   isolation:isolate;
@@ -453,27 +452,26 @@
   max-width:none;
   margin:0;
 }
-/* Two generous pieces of the original red tinsel meet in one corner. */
 .xmas-frame-ribbon-top,
 .xmas-frame-ribbon-side{
   position:absolute;
   z-index:15;
   display:block;
-  pointer-events:none;
   overflow:visible;
-  filter:drop-shadow(0 4px 5px rgba(0,0,0,.42));
+  pointer-events:none;
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.42));
 }
 .xmas-frame-ribbon-top{
-  top:-13px;            /* centered over the gold top border */
-  right:-13px;
-  width:225px;
-  height:44px;
+  top:-29px;
+  right:-29px;
+  width:250px;
+  height:58px;
 }
 .xmas-frame-ribbon-side{
-  top:-13px;
-  right:-13px;          /* centered over the gold right border */
-  width:44px;
-  height:224px;
+  top:-29px;
+  right:-29px;
+  width:58px;
+  height:250px;
 }
 .xmas-frame-ribbon-top img{
   display:block;
@@ -483,12 +481,12 @@
 }
 .xmas-frame-ribbon-side img{
   display:block;
-  width:224px;
-  height:44px;
+  width:250px;
+  height:58px;
   max-width:none;
   object-fit:fill;
   transform-origin:top left;
-  transform:translateX(44px) rotate(90deg);
+  transform:translateX(58px) rotate(90deg);
 }
 @media(max-width:650px){
   .xmas-banner-frame{
@@ -496,20 +494,20 @@
     margin:16px auto 28px;
   }
   .xmas-frame-ribbon-top{
-    top:-9px;
-    right:-9px;
-    width:145px;
-    height:30px;
+    top:-20px;
+    right:-20px;
+    width:165px;
+    height:40px;
   }
   .xmas-frame-ribbon-side{
-    top:-9px;
-    right:-9px;
-    width:30px;
-    height:145px;
+    top:-20px;
+    right:-20px;
+    width:40px;
+    height:165px;
   }
   .xmas-frame-ribbon-side img{
-    width:145px;
-    height:30px;
-    transform:translateX(30px) rotate(90deg);
+    width:165px;
+    height:40px;
+    transform:translateX(40px) rotate(90deg);
   }
 }
