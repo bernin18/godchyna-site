@@ -55,8 +55,7 @@ export default function ChristmasCountdown() {
   const parts = countdownParts(now);
   const labels = pick(["DIAS", "HORAS", "MINUTOS", "SEGUNDOS"], ["DAYS", "HOURS", "MINUTES", "SECONDS"]);
   const ended = now >= CHRISTMAS_DEADLINE;
-  return <div className="xmas-banner-frame">
-    <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
+  return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
     <div className="xmas-lights" aria-hidden="true">
       <img src={asset("Fita com luzes.png")} alt="" />
       <img src={asset("Fita com luzes.png")} alt="" />
@@ -106,14 +105,5 @@ export default function ChristmasCountdown() {
     <div className="xmas-art">
       <img src={asset("imagem-giveaway-natal-final.webp")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" />
     </div>
-    </section>
-    <div className="xmas-frame-ribbon-corner" aria-hidden="true">
-      <div className="xmas-frame-ribbon-top">
-        <img src={asset("fita vermelha.png")} alt="" loading="eager" />
-      </div>
-      <div className="xmas-frame-ribbon-side">
-        <img src={asset("fita vermelha.png")} alt="" loading="eager" />
-      </div>
-    </div>
-  </div>;
+  </section>;
 }
