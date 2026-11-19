@@ -1,5 +1,5 @@
 .xmas-banner{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);max-width:1440px;margin:26px auto 42px;overflow:hidden;border:1px solid #bda06566;border-radius:20px;background:radial-gradient(ellipse at 15% 0%,#234b35 0,transparent 65%),#081c16;box-shadow:0 24px 65px #0005;color:#fff6df}
-.xmas-copy{position:relative;z-index:2;padding:65px 20px 35px 44px;align-self:center}
+.xmas-copy{position:relative;z-index:2;padding:65px 20px 35px 44px;align-self:stretch}
 .xmas-eyebrow{font-size:11px!important;font-weight:800;letter-spacing:.24em;color:#e5c581;margin:0 0 18px}
 .xmas-copy h2{font-family:Georgia,serif;font-size:clamp(30px,3.5vw,50px);font-weight:500;line-height:1.13;letter-spacing:-.04em;margin:0 0 18px}
 .xmas-copy h2 em{color:#eaca88;font-weight:500}
@@ -20,7 +20,7 @@
 @media(prefers-reduced-motion:reduce){.xmas-snow{display:none}.xmas-turning-leaf{display:none}}
 .xmas-participate{display:inline-flex;align-items:center;justify-content:center;gap:28px;margin-top:28px;padding:14px 24px;min-height:48px;border:1px solid #ffad58;border-radius:8px;background:linear-gradient(135deg,#ff9b37,#f07325);color:#201007;font:800 14px Inter,system-ui,sans-serif;box-shadow:0 6px 22px #ef7b2633;transition:background .2s,box-shadow .2s}.xmas-participate:hover{background:#ffad58;box-shadow:0 8px 25px #ef7b2655}.xmas-participate:focus-visible{outline:3px solid #fff4d8;outline-offset:4px}.xmas-participate span{font-size:20px}
 .xmas-art .xmas-partner-logo{position:absolute;z-index:3;right:18px;bottom:18px;width:138px;height:auto;aspect-ratio:auto;object-fit:contain;padding:12px 15px;background:#07170feb;border:1px solid #d1b47666;border-radius:9px;box-shadow:0 4px 20px #0005}
-.xmas-snowcap{position:absolute;z-index:3;top:0;left:0;width:100%;height:30px;background-repeat:repeat-x;background-size:640px auto;background-position:center 48%;pointer-events:none}
+.xmas-snowcap{position:absolute;z-index:3;bottom:0;left:0;width:100%;height:30px;background-repeat:repeat-x;background-size:640px auto;background-position:center 48%;pointer-events:none}
 .site-christmas-snow{position:fixed;inset:0;z-index:60;overflow:hidden;pointer-events:none}.site-christmas-snow i{position:absolute;top:-12px;left:var(--x);width:var(--size);height:var(--size);border-radius:50%;background:#fff;opacity:var(--opacity);animation:site-christmas-fall var(--duration) var(--delay) linear infinite;pointer-events:none}
 @keyframes site-christmas-fall{to{transform:translate(var(--drift),calc(100vh + 24px))}}
 @media(max-width:650px){.xmas-art .xmas-partner-logo{right:10px;bottom:10px;width:105px;padding:9px 11px}.site-christmas-snow i:nth-child(n+33){display:none}.xmas-snowcap{height:22px;background-size:440px auto}}

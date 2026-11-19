@@ -49,12 +49,12 @@ export default function ChristmasCountdown() {
   const labels = pick(["DIAS", "HORAS", "MINUTOS", "SEGUNDOS"], ["DAYS", "HOURS", "MINUTES", "SECONDS"]);
   const ended = now >= CHRISTMAS_DEADLINE;
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
-    <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `url("${asset("Neve.png")}")` }} />
     <div className="xmas-lights" aria-hidden="true">
       <img src={asset("Fita com luzes.png")} alt="" />
       <img src={asset("Fita com luzes.png")} alt="" />
     </div>
     <div className="xmas-copy">
+      <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `url("${asset("Neve.png")}")` }} />
       <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("as prendas são skins.", "the gifts are skins.")}</em></h2>
       <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
       <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("A CONTAGEM JÁ COMEÇOU", "THE COUNTDOWN IS ON")}</p>
