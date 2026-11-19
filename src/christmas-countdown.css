@@ -56,5 +56,5 @@
 .xmas-proof{white-space:nowrap;font-size:11px;max-width:none}
 @media(max-width:650px){.xmas-actions{flex-wrap:wrap;row-gap:14px}.xmas-proof{flex-basis:100%;font-size:11px;margin-bottom:0}.xmas-entry{margin-left:auto}}
 
-.xmas-proof{white-space:normal;font-size:12px;line-height:1.6}.xmas-proof span{display:block}.xmas-proof span+span{margin-top:5px}
+.xmas-proof{white-space:normal;font-size:11px;line-height:1.6}
 @media(max-width:650px){.xmas-proof{font-size:11px}}
