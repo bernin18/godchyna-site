@@ -64,10 +64,13 @@ export default function ChristmasCountdown() {
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
       <div className="xmas-actions">
-      <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já!", "Enter now!")} <img className="xmas-button-gnome" src={asset("gnomo.png")} alt="" aria-hidden="true" /></a>
-        <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
+        <p className="xmas-proof">{pick("Para participar, tens de enviar a prova do depósito pelo Discord.", "To participate, you must send your deposit proof through Discord.")}</p>
+        <div className="xmas-entry">
+          <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
+          <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já!", "Enter now!")} <img className="xmas-button-gnome" src={asset("gnomo.png")} alt="" aria-hidden="true" /></a>
+        </div>
       </div>
     </div>
-    <div className="xmas-art"><img src={asset("imagem-giveaway-800.webp")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
+    <div className="xmas-art"><img src={asset("imagem-giveaway-requisitos.webp")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
   </section>;
 }

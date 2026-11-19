@@ -49,3 +49,6 @@
 @keyframes xmas-button-halo{0%,100%{opacity:.18;transform:scale(.98);filter:blur(2px)}50%{opacity:1;transform:scale(1.05,1.12);filter:blur(4px)}}
 
 .xmas-copy{container-type:inline-size}.xmas-copy h2{font-size:clamp(24px,10.8cqw,76px)}.xmas-heading-line{display:block;white-space:nowrap}
+
+.xmas-actions{align-items:flex-end}.xmas-proof{flex:1;min-width:0;margin:0 0 8px;color:#ff8080;font-size:12px;font-weight:700;line-height:1.65;text-align:left;max-width:320px}.xmas-entry{display:flex;flex-direction:column;align-items:center;gap:14px;flex:0 0 auto}.xmas-actions .xmas-entry .xmas-partner-logo{width:110px;max-width:none;transform:none}.xmas-copy{padding-bottom:48px}
+@media(max-width:650px){.xmas-copy{padding-bottom:40px}.xmas-proof{font-size:11px;line-height:1.6}.xmas-entry{gap:12px}.xmas-actions .xmas-entry .xmas-partner-logo{width:96px}}
