@@ -403,37 +403,7 @@
 }
 
 
-/* Red ribbon hanging from the top-right corner of the Christmas card */
-.xmas-corner-ribbon{
-  position:absolute;
-  z-index:6;
-  top:-7px;
-  right:-13px;
-  display:block;
-  width:clamp(130px,23%,218px);
-  height:48%;
-  transform:rotate(-10deg);
-  transform-origin:top right;
-  pointer-events:none;
-  filter:drop-shadow(-6px 9px 7px rgba(0,0,0,.34));
-}
-.xmas-corner-ribbon img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:top right;
-}
-@media(max-width:650px){
-  .xmas-corner-ribbon{
-    top:-5px;
-    right:-8px;
-    width:27%;
-    height:46%;
-    transform:rotate(-8deg);
-  }
-}
-
+/* Previous in-image ribbon positioning removed; decoration now lives outside the card. */
 
 /* Give the desktop calendar the same obvious page-turn feedback seen on mobile.
    Keep reduced-motion visitors on the static, accessible countdown. */
@@ -465,4 +435,50 @@
   40% {transform:rotateX(54deg);opacity:1}
   72% {transform:rotateX(101deg);opacity:.96}
   100% {transform:rotateX(145deg);opacity:0}
+}
+
+/* The ribbon is attached to the card frame, rather than painted on its artwork. */
+.xmas-banner-frame{
+  position:relative;
+  isolation:isolate;
+  width:calc(100% - 48px);
+  max-width:1440px;
+  margin:26px auto 42px;
+  overflow:visible;
+}
+.xmas-banner-frame > .xmas-banner{
+  width:100%;
+  max-width:none;
+  margin:0;
+}
+/* The visible tinsel hangs down the OUTSIDE of the right frame edge. */
+.xmas-frame-ribbon{
+  position:absolute;
+  z-index:8;
+  top:-18px;
+  right:-50px;
+  display:block;
+  width:190px;
+  height:85px;
+  transform:rotate(-70deg);
+  transform-origin:top right;
+  pointer-events:none;
+  filter:drop-shadow(0 4px 7px rgba(0,0,0,.4));
+}
+.xmas-frame-ribbon img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+}
+@media(max-width:650px){
+  .xmas-banner-frame{width:calc(100% - 28px);margin:16px auto 28px}
+  .xmas-frame-ribbon{
+    top:-13px;
+    right:-20px;
+    width:126px;
+    height:58px;
+    transform:rotate(-70deg);
+  }
 }
