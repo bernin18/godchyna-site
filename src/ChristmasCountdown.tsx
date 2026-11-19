@@ -68,6 +68,6 @@ export default function ChristmasCountdown() {
         <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
       </div>
     </div>
-    <div className="xmas-art"><img src={asset("imagem giveaway.png")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
+    <div className="xmas-art"><img src={asset("imagem-giveaway-800.webp")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
   </section>;
 }
