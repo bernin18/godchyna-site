@@ -61,8 +61,11 @@ export default function ChristmasCountdown() {
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
+      <div className="xmas-actions">
       <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já", "Enter now")} <span aria-hidden="true">↗</span></a>
+        <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
+      </div>
     </div>
-    <div className="xmas-art"><img src={asset("imagem giveaway.png")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /><img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" /></div>
+    <div className="xmas-art"><img src={asset("imagem giveaway.png")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
   </section>;
 }
