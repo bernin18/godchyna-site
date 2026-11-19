@@ -64,15 +64,27 @@ export default function ChristmasCountdown() {
       <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `linear-gradient(to bottom,transparent 65%,#edf7ff 90%),url("${asset("Neve.png")}")` }}>
         {Array.from({ length: 12 }, (_, i) => <i key={i} style={{ left: `${3 + i * 8.3}%`, top: `${12 + (i * 7) % 18}px`, animationDelay: `${-i * .43}s` }} />)}
       </div>
-      <h2 id="xmas-title"><span className="xmas-heading-line">{pick("Este Natal,", "This Christmas,")} <em>{pick("todas estas", "all these")}</em></span><span className="xmas-heading-line"><em>{pick("skins podem ser tuas!", "skins could be yours!")}</em></span></h2>
-      <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
-      <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("O vencedor receberá todo este Loadout em:", "The winner will receive this entire Loadout in:")}</p>
+      <h2 id="xmas-title">
+        <span className="xmas-heading-line">{pick("Este Natal,", "This Christmas,")}</span>
+        <span className="xmas-heading-line xmas-heading-gold"><em>{pick("todas estas skins", "all these skins")}</em></span>
+        <span className="xmas-heading-line">{pick("podem ser tuas!", "could be yours!")}</span>
+      </h2>
+      <div className="xmas-heading-divider" aria-hidden="true"><span>✦</span></div>
+      <p className="xmas-intro">{pick("Celebra o Natal connosco e ganha este loadout incrível.", "Celebrate Christmas with us and win this incredible loadout.")}</p>
+      <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("O vencedor recebe este loadout em:", "The winner receives this loadout in:")}</p>
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
       <div className="xmas-actions">
-        <p className="xmas-proof">{pick("Para participares, precisas de me enviar a prova de depósito pelo Discord. Caso contrário, não estarás elegível para o giveaway!", "To participate, you need to send me your deposit proof through Discord. Otherwise, you will not be eligible for the giveaway!")}</p>
+        <div className="xmas-proof" role="note">
+          <span className="xmas-proof-icon" aria-hidden="true">!</span>
+          <p>
+            {pick("Para participares, envia a prova de depósito pelo Discord. ", "To enter, send proof of your deposit via Discord. ")}
+            <strong>{pick("Sem essa prova, não estarás elegível para o giveaway!", "Without that proof, you won't be eligible for the giveaway!")}</strong>
+          </p>
+        </div>
         <div className="xmas-entry">
+          <span className="xmas-partner-label">{pick("Parceiro oficial", "Official partner")}</span>
           <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
           <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já!", "Enter now!")} <img className="xmas-button-gnome" src={asset("gnomo.png")} alt="" aria-hidden="true" /></a>
         </div>
