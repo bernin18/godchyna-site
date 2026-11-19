@@ -67,3 +67,217 @@
 @media(max-width:1200px){.site-ornament{width:32px}.site-ornament-left{left:-8px}.site-ornament-right{right:-8px}}
 @media(max-width:650px){.site-ornament{width:24px}.site-ornament-left{left:-7px}.site-ornament-right{right:-7px}}
 @media(prefers-reduced-motion:reduce){.site-ornament{animation:none;transform:scaleX(var(--mirror))}}
+
+
+/* Christmas banner polish - November 2026 */
+.xmas-banner{
+  border-color:rgba(223,184,104,.58);
+  background:radial-gradient(ellipse at 12% 0%,#22523a 0,transparent 67%),#071c15;
+  box-shadow:0 28px 72px rgba(0,0,0,.48),inset 0 0 0 1px rgba(255,216,134,.08);
+}
+.xmas-copy{
+  padding:56px 28px 42px 43px;
+  background:radial-gradient(ellipse at 22% 2%,rgba(49,116,78,.30),transparent 59%),linear-gradient(115deg,rgba(5,33,23,.25),rgba(3,25,18,.70));
+}
+.xmas-copy h2{
+  margin:0;
+  color:#fff4dc;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(31px,8.7cqw,55px);
+  font-weight:600;
+  line-height:1.03;
+  letter-spacing:-.044em;
+  text-wrap:balance;
+  text-shadow:0 3px 14px rgba(0,0,0,.12);
+}
+.xmas-heading-line{display:block;white-space:normal}
+.xmas-heading-gold em{
+  color:#eac77d;
+  font-weight:500;
+  font-style:italic;
+  text-shadow:0 0 16px rgba(255,183,79,.17);
+}
+.xmas-heading-divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:66%;
+  max-width:340px;
+  height:12px;
+  margin:16px auto 15px;
+  color:#dbaa59;
+}
+.xmas-heading-divider:before,.xmas-heading-divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,#cba257)}
+.xmas-heading-divider:after{transform:scaleX(-1)}
+.xmas-heading-divider span{font-size:17px;line-height:1;text-shadow:0 0 10px #ffc87888}
+.xmas-intro{font-size:15px;font-weight:500;line-height:1.45;color:#eee9d8;margin:0 0 17px}
+.xmas-countdown-heading{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 0 13px;
+  padding:8px 17px;
+  border:1px solid rgba(234,183,91,.72);
+  border-radius:999px;
+  background:rgba(12,41,28,.73);
+  box-shadow:inset 0 1px 0 rgba(255,226,156,.10),0 0 14px rgba(241,192,94,.10);
+  color:#f6d99b;
+  font:700 12px/1.4 Inter,system-ui,sans-serif;
+  letter-spacing:.015em;
+  text-transform:none;
+}
+.xmas-countdown{gap:12px;align-items:flex-start}
+.xmas-unit{min-width:0}
+.xmas-calendar{
+  width:80px;
+  height:80px;
+  border:1px solid #dcc294;
+  border-radius:9px 9px 7px 7px;
+  background:linear-gradient(145deg,#fff9ed,#f8ecd4);
+  box-shadow:0 4px 0 #d1bf91,0 7px 0 #897653,0 12px 17px rgba(0,0,0,.35),0 0 10px rgba(252,192,90,.16);
+}
+.xmas-number,.xmas-turning-leaf{font-size:42px;padding-top:12px}
+.xmas-unit-label{
+  display:block;
+  min-height:26px;
+  margin:8px 3px 0;
+  padding:6px 5px;
+  border:1px solid rgba(213,175,104,.6);
+  border-radius:7px;
+  background:linear-gradient(180deg,rgba(11,65,42,.85),rgba(6,43,28,.9));
+  color:#ffebc1;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.045em;
+  line-height:1.2;
+}
+.xmas-actions{
+  display:grid;
+  grid-template-columns:minmax(0,1.75fr) minmax(170px,.9fr);
+  align-items:end;
+  justify-content:normal;
+  gap:19px;
+  margin-top:25px;
+}
+.xmas-proof{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+  max-width:none;
+  min-height:90px;
+  margin:0;
+  padding:13px 13px;
+  border:1px solid rgba(244,107,95,.72);
+  border-radius:14px;
+  background:linear-gradient(115deg,rgba(45,17,16,.90),rgba(12,30,22,.92));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 14px rgba(252,81,70,.11);
+  color:#fff0df;
+  font-size:12px;
+  font-weight:500;
+  line-height:1.47;
+  white-space:normal;
+  text-align:left;
+}
+.xmas-proof p{margin:0;color:#fff0df;font:500 12px/1.47 Inter,system-ui,sans-serif}
+.xmas-proof strong{font-weight:800;color:#ff8985}
+.xmas-proof-icon{
+  display:grid;
+  place-items:center;
+  flex:0 0 24px;
+  width:24px;
+  height:24px;
+  border-radius:8px;
+  background:#b82d35;
+  color:#fff7ec;
+  font-size:16px;
+  font-weight:900;
+  box-shadow:0 0 13px rgba(237,63,77,.26);
+}
+.xmas-entry{display:flex;align-items:center;justify-content:end;gap:6px;min-width:0}
+.xmas-partner-label{
+  color:#f0cc87;
+  font:700 10px/1.25 Inter,system-ui,sans-serif;
+  letter-spacing:.07em;
+  text-align:center;
+}
+.xmas-actions .xmas-entry .xmas-partner-logo{
+  display:block;
+  width:114px;
+  max-width:100%;
+  height:auto;
+  transform:none;
+  animation:none;
+  opacity:1;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.30));
+}
+.xmas-participate{
+  width:100%;
+  min-height:52px;
+  padding:12px 13px;
+  gap:12px;
+  border:1px solid #ffe09c;
+  border-radius:12px;
+  background:linear-gradient(160deg,#ffbe63 0%,#ff9536 55%,#f27a21 100%);
+  color:#211509;
+  font:800 15px Inter,system-ui,sans-serif;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.40),0 5px 18px rgba(238,126,36,.32);
+  animation:none;
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+}
+.xmas-participate:after{
+  inset:-3px;
+  border:1px solid rgba(255,191,100,.62);
+  border-radius:14px;
+  box-shadow:0 0 17px rgba(255,155,64,.35);
+  animation:none;
+  opacity:1;
+  filter:none;
+}
+.xmas-participate:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 8px 24px rgba(245,137,43,.5)}
+.xmas-participate .xmas-button-gnome{width:26px;height:30px;flex:0 0 auto}
+@media(max-width:1150px) and (min-width:981px){
+  .xmas-copy{padding:48px 19px 40px 26px}
+  .xmas-copy h2{font-size:clamp(28px,8.2cqw,46px)}
+  .xmas-intro{font-size:13px}
+  .xmas-countdown{gap:8px}
+  .xmas-calendar{width:64px;height:75px}
+  .xmas-number,.xmas-turning-leaf{font-size:35px}
+  .xmas-rings{left:12px;box-shadow:32px 0 #c4a56b}
+  .xmas-unit-label{font-size:9px}
+  .xmas-actions{grid-template-columns:1fr;gap:17px}
+  .xmas-proof{min-height:0}
+  .xmas-entry{justify-self:end;min-width:180px}
+}
+@media(max-width:980px){
+  .xmas-banner{grid-template-columns:1fr}
+  .xmas-copy{padding:60px clamp(22px,7vw,70px) 42px}
+  .xmas-copy h2{font-size:clamp(34px,7.4cqw,58px)}
+  .xmas-countdown{justify-content:flex-start}
+  .xmas-actions{grid-template-columns:minmax(0,1.75fr) minmax(170px,.9fr)}
+  .xmas-art{grid-row:2;aspect-ratio:1.4}
+  .xmas-art > img{object-fit:contain}
+  .xmas-art:after{background:linear-gradient(180deg,#081c16,transparent 10%)}
+}
+@media(max-width:650px){
+  .xmas-banner{margin:16px 14px 28px;border-radius:15px}
+  .xmas-copy{padding:53px 18px 38px;text-align:center}
+  .xmas-copy h2{font-size:clamp(31px,9.7cqw,45px);line-height:1.07}
+  .xmas-heading-divider{margin:15px auto}
+  .xmas-intro{font-size:13px;line-height:1.5}
+  .xmas-countdown-heading{font-size:10px;padding:8px 11px;max-width:100%}
+  .xmas-countdown{gap:8px;justify-content:center}
+  .xmas-calendar{width:clamp(55px,18.5vw,77px);height:75px}
+  .xmas-number,.xmas-turning-leaf{font-size:35px}
+  .xmas-rings{left:12px;box-shadow:32px 0 #c4a56b}
+  .xmas-unit-label{margin:8px 0 0;font-size:8px;padding:6px 2px;letter-spacing:0}
+  .xmas-actions{display:flex;flex-direction:column;align-items:stretch;gap:19px;margin-top:25px}
+  .xmas-proof{width:100%;min-height:0;padding:12px 13px}
+  .xmas-proof p{font-size:11px;line-height:1.5}
+  .xmas-entry{margin:0 auto;width:min(225px,100%);gap:7px}
+  .xmas-actions .xmas-entry .xmas-partner-logo{width:108px}
+  .xmas-participate{width:100%;min-height:49px}
+  .xmas-art{aspect-ratio:1.34}
+  .xmas-art > img{object-fit:contain}
+}
+@media(prefers-reduced-motion:reduce){.xmas-participate{transition:none}}
