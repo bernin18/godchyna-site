@@ -17,7 +17,7 @@
 @media(min-width:1500px){.xmas-banner{margin-left:auto;margin-right:auto}}@media(max-width:1499px){.xmas-banner{margin-left:24px;margin-right:24px}}
 @media(max-width:900px){.xmas-banner{grid-template-columns:1fr 1fr}.xmas-copy{padding:55px 12px 30px 25px}.xmas-countdown{gap:8px}.xmas-calendar{width:62px;height:75px}.xmas-number,.xmas-turning-leaf{font-size:35px}.xmas-rings{left:12px;box-shadow:32px 0 #c4a56b}}
 @media(max-width:650px){.xmas-banner{grid-template-columns:1fr;margin:16px 14px 28px;border-radius:14px}.xmas-copy{text-align:center;padding:55px 16px 27px}.xmas-copy h2{font-size:36px}.xmas-intro{margin-bottom:22px}.xmas-countdown{justify-content:center;gap:12px}.xmas-deadline{justify-content:center}.xmas-art{grid-row:2}.xmas-art img{height:auto;aspect-ratio:3/2;object-fit:contain}.xmas-art:after{background:linear-gradient(#081c16,transparent 12%)}.xmas-snow i{animation-name:xmas-snowfall-mobile}@keyframes xmas-snowfall-mobile{to{transform:translate(var(--drift),1050px)}}}
-@media(prefers-reduced-motion:reduce){.xmas-snow{display:none}.xmas-turning-leaf{display:none}}
+@media(prefers-reduced-motion:reduce){.xmas-snow{display:none}}
 .xmas-participate{display:inline-flex;align-items:center;justify-content:center;gap:28px;margin-top:0;padding:14px 24px;min-height:48px;border:1px solid #ffad58;border-radius:8px;background:linear-gradient(135deg,#ff9b37,#f07325);color:#201007;font:800 14px Inter,system-ui,sans-serif;box-shadow:0 6px 22px #ef7b2633;transition:background .2s,box-shadow .2s}.xmas-participate:hover{background:#ffad58;box-shadow:0 8px 25px #ef7b2655}.xmas-participate:focus-visible{outline:3px solid #fff4d8;outline-offset:4px}.xmas-participate span{font-size:20px}
 
 .xmas-snowcap{position:absolute;z-index:3;bottom:-1px;left:0;width:100%;height:36px;background-repeat:no-repeat;background-size:100% 100%,calc(100% + 96px) auto;background-position:center,center 40%;pointer-events:none;filter:drop-shadow(0 -1px 3px #c3edff55)}
@@ -405,34 +405,75 @@
 
 /* Previous in-image ribbon positioning removed; decoration now lives outside the card. */
 
-/* Give the desktop calendar the same obvious page-turn feedback seen on mobile.
-   Keep reduced-motion visitors on the static, accessible countdown. */
-@media (min-width:651px) and (prefers-reduced-motion:no-preference) {
-  .xmas-calendar {
-    perspective:650px;
-  }
-  .xmas-turning-leaf {
-    transform-origin:50% 0;
-    -webkit-backface-visibility:hidden;
-    backface-visibility:hidden;
-    will-change:transform,opacity;
-    overflow:hidden;
-    border:1px solid rgba(215,186,132,.85);
-    background:linear-gradient(175deg,#fff9eb 0%,#f4e7ce 100%);
-    box-shadow:0 8px 15px rgba(0,0,0,.24),inset 0 2px 0 rgba(255,255,255,.5);
-    animation:xmas-desktop-page-turn .65s cubic-bezier(.32,.08,.23,1) both;
-  }
-  .xmas-turning-leaf::after {
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:linear-gradient(180deg,transparent 35%,rgba(120,89,45,.16) 100%);
-  }
+/* Real front/back calendar leaf. The old CSS only rotated the old number
+   and limited the desktop effect to a media query; this version flips a full
+   paper sheet visibly on both desktop and mobile when any value changes. */
+.xmas-calendar{
+  perspective:720px;
+  -webkit-perspective:720px;
+  transform-style:flat;
 }
-@keyframes xmas-desktop-page-turn {
-  0%,10% {transform:rotateX(0deg);opacity:1}
-  40% {transform:rotateX(54deg);opacity:1}
-  72% {transform:rotateX(101deg);opacity:.96}
-  100% {transform:rotateX(145deg);opacity:0}
+.xmas-calendar > .xmas-number{z-index:1}
+.xmas-page-flip{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  display:block;
+  pointer-events:none;
+  border-radius:8px;
+  transform-origin:50% 4px;
+  transform-style:preserve-3d;
+  -webkit-transform-style:preserve-3d;
+  will-change:transform,opacity;
+  animation:xmas-calendar-paper-turn .78s cubic-bezier(.27,.19,.22,1) both;
 }
+.xmas-page-flip-front,
+.xmas-page-flip-back{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-top:12px;
+  box-sizing:border-box;
+  font-family:Georgia,serif;
+  font-size:42px;
+  font-weight:700;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  color:#13392d;
+  border:1px solid rgba(220,194,148,.85);
+  border-radius:8px;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+.xmas-page-flip-front{
+  background:linear-gradient(155deg,#fff9ee 0%,#f8ecd6 76%,#ead5b3 100%);
+  box-shadow:0 9px 13px rgba(42,27,6,.28),inset 0 1px 1px #fff;
+}
+.xmas-page-flip-front:after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:20%;
+  border-radius:0 0 7px 7px;
+  background:linear-gradient(0deg,rgba(84,55,20,.21),transparent);
+  pointer-events:none;
+}
+.xmas-page-flip-back{
+  transform:rotateX(180deg);
+  background:linear-gradient(10deg,#eee0c5,#fff8e9);
+  box-shadow:0 4px 12px rgba(40,20,8,.27);
+}
+@keyframes xmas-calendar-paper-turn{
+  0%,7%{transform:rotateX(0deg);opacity:1}
+  35%{transform:rotateX(53deg);opacity:1}
+  56%{transform:rotateX(98deg);opacity:1}
+  78%{transform:rotateX(155deg);opacity:.94}
+  100%{transform:rotateX(179deg);opacity:0}
+}
+@media (max-width:900px), (min-width:981px) and (max-width:1150px){
+  .xmas-page-flip-front,.xmas-page-flip-back{font-size:35px}
+}
+/* The calendar flip itself remains visible even on systems which reduce
+   decorative motion; the snowfall still follows the reduced-motion setting. */
