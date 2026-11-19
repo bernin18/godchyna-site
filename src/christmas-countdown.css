@@ -58,3 +58,6 @@
 
 .xmas-proof{white-space:normal;font-size:11px;line-height:1.6}
 @media(max-width:650px){.xmas-proof{font-size:11px}}
+
+.xmas-art{overflow:hidden;min-height:0}.xmas-art > img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;object-position:center}
+@media(max-width:650px){.xmas-art{aspect-ratio:3/2}}
