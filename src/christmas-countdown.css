@@ -47,3 +47,6 @@
 
 .xmas-participate{position:relative;isolation:isolate;overflow:visible}.xmas-participate:after{content:"";position:absolute;inset:-5px;z-index:-1;border:2px solid #ffbc64;border-radius:12px;box-shadow:0 0 14px 5px #ff9d4866;pointer-events:none;animation:xmas-button-halo 2.2s ease-in-out infinite}
 @keyframes xmas-button-halo{0%,100%{opacity:.18;transform:scale(.98);filter:blur(2px)}50%{opacity:1;transform:scale(1.05,1.12);filter:blur(4px)}}
+
+.xmas-copy h2{font-size:clamp(26px,2.8vw,40px)}.xmas-heading-line{display:block;white-space:nowrap}
+@media(max-width:650px){.xmas-copy h2{font-size:clamp(25px,7.5vw,32px)}}
