@@ -3767,55 +3767,76 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   margin-right:auto;
 }
 
-/* Christmas 2026 — braided red, gold and green page separators */
-.topbar-christmas{
-  border-bottom:0;
-}
+/* Christmas 2026: full-height, textured tinsel segments in interwoven strands. */
+.topbar-christmas{border-bottom:0}
 .christmas-home > .hero,
-.christmas-home > .section{
-  border-bottom:0;
-}
-/* The decoration occupies the same visual line as the old 1px separators
-   without adding extra gaps between existing homepage sections. */
+.christmas-home > .section{border-bottom:0}
+
+/* Center each festive garland on the original section boundary. The strands
+   overlap like real fluffy tinsel instead of being squeezed into SVG strokes. */
 .christmas-garland-divider{
   position:relative;
   z-index:9;
   display:block;
   width:calc(100% - 48px);
   max-width:1500px;
-  height:44px;
-  margin:-22px auto;
+  height:102px;
+  margin:-51px auto;
+  overflow:hidden;
   pointer-events:none;
-  filter:drop-shadow(0 3px 3px rgba(0,0,0,.48));
+  isolation:isolate;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.44));
 }
-.christmas-garland-divider svg{
+.christmas-garland-piece{
+  position:absolute;
   display:block;
-  width:100%;
-  height:100%;
-  overflow:visible;
+  width:clamp(110px,12.8%,202px);
+  height:56px;
+  max-width:none;
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+  image-rendering:auto;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.22));
 }
-/* Keep the header separation decorative but do not cover the menu items. */
+
+/* A slightly smaller garland hangs just under the homepage menu. */
 .christmas-garland-header{
   position:absolute;
-  bottom:-16px;
+  bottom:-50px;
   left:0;
   right:0;
   z-index:5;
   width:100%;
   max-width:none;
-  height:34px;
+  height:66px;
   margin:0;
+}
+.christmas-garland-header .christmas-garland-piece{
+  width:clamp(98px,12.5%,175px);
+  height:42px;
 }
 @media(max-width:720px){
   .christmas-garland-divider{
-    width:calc(100% - 24px);
-    height:31px;
-    margin:-15.5px auto;
+    width:calc(100% - 20px);
+    height:76px;
+    margin:-38px auto;
   }
+  .christmas-garland-piece{
+    width:clamp(76px,20%,110px);
+    height:38px;
+  }
+  /* Half as many segments on narrow screens; retain overlap and thickness. */
+  .christmas-garland-piece-odd{display:none}
   .christmas-garland-header{
     width:100%;
-    height:28px;
-    bottom:-13px;
+    height:60px;
+    bottom:-47px;
     margin:0;
+  }
+  .christmas-garland-header .christmas-garland-piece{
+    width:clamp(76px,20%,105px);
+    height:34px;
   }
 }
