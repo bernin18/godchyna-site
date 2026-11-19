@@ -57,7 +57,7 @@ export default function ChristmasCountdown() {
       <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `linear-gradient(to bottom,transparent 65%,#edf7ff 90%),url("${asset("Neve.png")}")` }}>
         {Array.from({ length: 12 }, (_, i) => <i key={i} style={{ left: `${3 + i * 8.3}%`, top: `${12 + (i * 7) % 18}px`, animationDelay: `${-i * .43}s` }} />)}
       </div>
-      <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("as prendas são skins.", "the gifts are skins.")}</em></h2>
+      <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("todas as skins podem ser tuas !", "all these skins could be yours!")}</em></h2>
       <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
       <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("O vencedor receberá todo este Loadout em:", "The winner will receive this entire Loadout in:")}</p>
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
