@@ -45,7 +45,10 @@ export default function ChristmasCountdown() {
   const labels = pick(["DIAS", "HORAS", "MINUTOS", "SEGUNDOS"], ["DAYS", "HOURS", "MINUTES", "SECONDS"]);
   const ended = now >= CHRISTMAS_DEADLINE;
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
-    <img className="xmas-lights" src={asset("Fita com luzes.png")} alt="" aria-hidden="true" />
+    <div className="xmas-lights" aria-hidden="true">
+      <img src={asset("Fita com luzes.png")} alt="" />
+      <img src={asset("Fita com luzes.png")} alt="" />
+    </div>
     <div className="xmas-copy">
       <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("as prendas são skins.", "the gifts are skins.")}</em></h2>
       <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
