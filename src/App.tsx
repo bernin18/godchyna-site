@@ -1,4 +1,5 @@
 import MaintenanceGate from "./MaintenanceGate";
+import ChristmasCountdown from "./ChristmasCountdown";
 import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
@@ -1228,8 +1229,8 @@ function Home(){
     <>
       <Header/>
       <main>
+        <ChristmasCountdown/>
         <section
-          id="inicio"
           className="hero"
           style={{
             backgroundImage: `linear-gradient(90deg,rgba(4,11,13,.98) 0%,rgba(4,12,14,.92) 31%,rgba(4,12,14,.62) 49%,rgba(3,8,10,.20) 72%,rgba(3,8,10,.44) 100%), url("${asset("hero-green-bg.png?v=3")}")`,
