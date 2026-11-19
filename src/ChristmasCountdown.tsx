@@ -24,12 +24,16 @@ export function ChristmasOrnaments() {
 
 function CalendarLeaf({ value, label }: { value: number; label: string }) {
   const previous = useRef(value);
+  const flipId = useRef(0);
   const [transition, setTransition] = useState<{ from: number; to: number; id: number } | null>(null);
   useEffect(() => {
     if (previous.current === value) return;
-    setTransition({ from: previous.current, to: value, id: Date.now() });
+    const id = ++flipId.current;
+    setTransition({ from: previous.current, to: value, id });
     previous.current = value;
-    const timer = window.setTimeout(() => setTransition(null), 680);
+    const timer = window.setTimeout(() => {
+      setTransition(current => current?.id === id ? null : current);
+    }, 820);
     return () => window.clearTimeout(timer);
   }, [value]);
   const format = (number: number) => String(number).padStart(2, "0");
@@ -37,7 +41,12 @@ function CalendarLeaf({ value, label }: { value: number; label: string }) {
     <div className="xmas-calendar" aria-hidden="true">
       <span className="xmas-rings" />
       <span className="xmas-number">{format(value)}</span>
-      {transition && <span key={transition.id} className="xmas-turning-leaf"><span>{format(transition.from)}</span></span>}
+      {transition && (
+        <span key={transition.id} className="xmas-page-flip">
+          <span className="xmas-page-flip-front">{format(transition.from)}</span>
+          <span className="xmas-page-flip-back">{format(transition.to)}</span>
+        </span>
+      )}
     </div>
     <span className="xmas-unit-label">{label}</span>
   </div>;
