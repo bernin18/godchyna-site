@@ -59,7 +59,7 @@ export default function ChristmasCountdown() {
       </div>
       <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("as prendas são skins.", "the gifts are skins.")}</em></h2>
       <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
-      <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("A CONTAGEM JÁ COMEÇOU", "THE COUNTDOWN IS ON")}</p>
+      <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("O vencedor receberá todo este Loadout em:", "The winner will receive this entire Loadout in:")}</p>
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
