@@ -26,8 +26,8 @@
 @media(max-width:650px){.site-christmas-snow i:nth-child(n+33){display:none}.xmas-snowcap{height:30px}}
 @media(prefers-reduced-motion:reduce){.site-christmas-snow{display:none}}
 
-.xmas-actions{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px}.xmas-actions .xmas-partner-logo{display:block;width:160px;max-width:40%;height:auto;object-fit:contain;transform:translateY(16px);animation:xmas-logo-fade 5s ease-in-out infinite}
-@media(max-width:650px){.xmas-actions{justify-content:space-between;gap:14px}.xmas-actions .xmas-partner-logo{width:124px}.xmas-actions .xmas-participate{padding:14px 16px;gap:18px}}
+.xmas-actions{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px}.xmas-actions .xmas-partner-logo{display:block;width:120px;max-width:34%;height:auto;object-fit:contain;transform:translateY(16px);animation:xmas-logo-fade 5s ease-in-out infinite}
+@media(max-width:650px){.xmas-actions{justify-content:space-between;gap:14px}.xmas-actions .xmas-partner-logo{width:96px}.xmas-actions .xmas-participate{padding:14px 16px;gap:18px}}
 
 .xmas-snowcap i{position:absolute;width:7px;height:7px;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 3px #a8e6ff);animation:xmas-crystal-shine 3s ease-in-out infinite}.xmas-snowcap:after{content:"";position:absolute;inset:14px 0 0;background:radial-gradient(circle,#fff 0 1px,transparent 1.5px) 0 0/23px 13px;opacity:.6;pointer-events:none}
 @keyframes xmas-crystal-shine{0%,100%{opacity:.25;transform:scale(.55)}50%{opacity:1;transform:scale(1.35)}}
@@ -40,7 +40,10 @@
 @keyframes xmas-snow-glow{0%,100%{filter:drop-shadow(0 -1px 3px #c3edff55)}50%{filter:drop-shadow(0 -2px 7px #e6f8ffcc)}}
 .xmas-banner:hover .xmas-snowcap:before{animation-duration:4s}
 @media(max-width:650px){.xmas-actions .xmas-participate{gap:10px;padding:12px}.xmas-participate .xmas-button-gnome{width:25px;height:30px}}
-@media(prefers-reduced-motion:reduce){.xmas-participate,.xmas-snowcap,.xmas-snowcap:before{animation:none}.xmas-snowcap:before{opacity:0}}
+@media(prefers-reduced-motion:reduce){.xmas-snowcap,.xmas-snowcap:before{animation:none}.xmas-snowcap:before{opacity:0}}
 
 @keyframes xmas-logo-fade{0%,100%{opacity:0}30%,65%{opacity:1}}
-@media(prefers-reduced-motion:reduce){.xmas-actions .xmas-partner-logo{animation:none;opacity:1}}
+
+
+.xmas-participate{position:relative;isolation:isolate;overflow:visible}.xmas-participate:after{content:"";position:absolute;inset:-5px;z-index:-1;border:2px solid #ffbc64;border-radius:12px;box-shadow:0 0 14px 5px #ff9d4866;pointer-events:none;animation:xmas-button-halo 2.2s ease-in-out infinite}
+@keyframes xmas-button-halo{0%,100%{opacity:.18;transform:scale(.98);filter:blur(2px)}50%{opacity:1;transform:scale(1.05,1.12);filter:blur(4px)}}
