@@ -1,6 +1,6 @@
 import MaintenanceGate from "./MaintenanceGate";
 import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments } from "./ChristmasCountdown";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import {
   ArrowLeftRight,
   Check,
@@ -25,6 +25,46 @@ import "./about.css";
 import "./extra-pages.css";
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
+
+
+// Christmas garland section separators use the three existing tinsel assets.
+// Phase-shifted waves make the red, gold and green strands cross like a braid.
+const christmasStrands = [
+  { name:"red", image:"fita vermelha.png", base:"#ad2332", phase:0 },
+  { name:"gold", image:"fita amarela.png", base:"#cba12b", phase:(2*Math.PI)/3 },
+  { name:"green", image:"fita verde.png", base:"#177b4b", phase:(4*Math.PI)/3 },
+] as const;
+
+const christmasBraidPaths = christmasStrands.map(strand =>
+  Array.from({length:181}, (_,index) => {
+    const x = index * (1200/180);
+    const y = 28 + 11 * Math.sin(x*Math.PI/90 + strand.phase);
+    return `${index === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join(" ")
+);
+
+function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
+  const uid = useId().replace(/:/g,"");
+  return (
+    <div className={`christmas-garland-divider${header?" christmas-garland-header":""}`} aria-hidden="true">
+      <svg viewBox="0 0 1200 56" preserveAspectRatio="none" focusable="false">
+        <defs>
+          {christmasStrands.map(strand => (
+            <pattern key={strand.name} id={`${uid}-${strand.name}`} patternUnits="userSpaceOnUse" width="220" height="56">
+              <image href={asset(strand.image)} x="0" y="0" width="220" height="56" preserveAspectRatio="none" />
+            </pattern>
+          ))}
+        </defs>
+        {christmasStrands.map((strand,index) => (
+          <g key={strand.name}>
+            <path d={christmasBraidPaths[index]} stroke={strand.base} strokeWidth="15" strokeLinecap="round" fill="none" />
+            <path d={christmasBraidPaths[index]} stroke={`url(#${uid}-${strand.name})`} strokeWidth="18" strokeLinecap="round" fill="none" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
 
 const socials = {
   twitch: "https://www.twitch.tv/godchyna",
@@ -487,7 +527,7 @@ function Header() {
     }
   }
   return (
-    <header className="topbar">
+    <header className={isHome?"topbar topbar-christmas":"topbar"}>
       <div className="topbar-inner">
         <div
           className="brand-lockup"
@@ -556,6 +596,7 @@ function Header() {
           {open ? <X/> : <Menu/>}
         </button>
       </div>
+      {isHome && <ChristmasGarlandDivider header />}
     </header>
   );
 }
@@ -1228,7 +1269,7 @@ function Home(){
   return (
     <>
       <Header/>
-      <main>
+      <main className="christmas-home">
         <ChristmasCountdown/>
         <section
           className="hero"
@@ -1265,6 +1306,7 @@ function Home(){
             <StreamStatus />
           </div>
         </section>
+        <ChristmasGarlandDivider />
 
         <section className="section skins-section">
           <div className="skins-copy">
@@ -1285,18 +1327,22 @@ function Home(){
             </div>
           </div>
         </section>
+        <ChristmasGarlandDivider />
 
         <ReputationSection />
+        <ChristmasGarlandDivider />
 
         <section id="parcerias" className="section">
           <header className="section-title"><h2>{pick("PARCERIAS","PARTNERS")}</h2><p>{pick("Usa os meus códigos e apoia o canal!","Use my codes and support the channel!")}</p></header>
           <div className="partners-grid">{partners.map(p=><PartnerCard key={p.name} partner={p}/>)}</div>
         </section>
+        <ChristmasGarlandDivider />
 
         <section id="giveaway" className="section">
           <header className="section-title"><h2>{pick("GIVEAWAYS EM CURSO","ACTIVE GIVEAWAYS")}</h2><p>{pick("Participa e tem a oportunidade de ganhar!","Enter for a chance to win!")}</p></header>
           <HomeGiveawayRotator/>
         </section>
+        <ChristmasGarlandDivider />
       </main>
       <Footer/>
     </>
