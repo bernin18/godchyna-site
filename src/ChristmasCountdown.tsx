@@ -54,7 +54,9 @@ export default function ChristmasCountdown() {
       <img src={asset("Fita com luzes.png")} alt="" />
     </div>
     <div className="xmas-copy">
-      <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `url("${asset("Neve.png")}")` }} />
+      <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `linear-gradient(to bottom,transparent 65%,#edf7ff 90%),url("${asset("Neve.png")}")` }}>
+        {Array.from({ length: 12 }, (_, i) => <i key={i} style={{ left: `${3 + i * 8.3}%`, top: `${12 + (i * 7) % 18}px`, animationDelay: `${-i * .43}s` }} />)}
+      </div>
       <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("as prendas são skins.", "the gifts are skins.")}</em></h2>
       <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
       <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("A CONTAGEM JÁ COMEÇOU", "THE COUNTDOWN IS ON")}</p>

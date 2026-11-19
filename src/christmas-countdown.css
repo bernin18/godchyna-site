@@ -20,11 +20,15 @@
 @media(prefers-reduced-motion:reduce){.xmas-snow{display:none}.xmas-turning-leaf{display:none}}
 .xmas-participate{display:inline-flex;align-items:center;justify-content:center;gap:28px;margin-top:0;padding:14px 24px;min-height:48px;border:1px solid #ffad58;border-radius:8px;background:linear-gradient(135deg,#ff9b37,#f07325);color:#201007;font:800 14px Inter,system-ui,sans-serif;box-shadow:0 6px 22px #ef7b2633;transition:background .2s,box-shadow .2s}.xmas-participate:hover{background:#ffad58;box-shadow:0 8px 25px #ef7b2655}.xmas-participate:focus-visible{outline:3px solid #fff4d8;outline-offset:4px}.xmas-participate span{font-size:20px}
 
-.xmas-snowcap{position:absolute;z-index:3;bottom:0;left:0;width:100%;height:30px;background-repeat:repeat-x;background-size:640px auto;background-position:center 48%;pointer-events:none}
+.xmas-snowcap{position:absolute;z-index:3;bottom:-1px;left:0;width:100%;height:36px;background-repeat:no-repeat;background-size:100% 100%,calc(100% + 96px) auto;background-position:center,center 40%;pointer-events:none;filter:drop-shadow(0 -1px 3px #c3edff55)}
 .site-christmas-snow{position:fixed;inset:0;z-index:60;overflow:hidden;pointer-events:none}.site-christmas-snow i{position:absolute;top:-12px;left:var(--x);width:var(--size);height:var(--size);border-radius:50%;background:#fff;opacity:var(--opacity);animation:site-christmas-fall var(--duration) var(--delay) linear infinite;pointer-events:none}
 @keyframes site-christmas-fall{to{transform:translate(var(--drift),calc(100vh + 24px))}}
-@media(max-width:650px){.site-christmas-snow i:nth-child(n+33){display:none}.xmas-snowcap{height:22px;background-size:440px auto}}
+@media(max-width:650px){.site-christmas-snow i:nth-child(n+33){display:none}.xmas-snowcap{height:30px}}
 @media(prefers-reduced-motion:reduce){.site-christmas-snow{display:none}}
 
-.xmas-actions{display:flex;align-items:center;gap:24px;margin-top:28px}.xmas-actions .xmas-partner-logo{display:block;width:138px;max-width:35%;height:auto;object-fit:contain}
-@media(max-width:650px){.xmas-actions{justify-content:center;gap:18px}.xmas-actions .xmas-partner-logo{width:110px}.xmas-actions .xmas-participate{padding:14px 16px;gap:18px}}
+.xmas-actions{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px}.xmas-actions .xmas-partner-logo{display:block;width:160px;max-width:40%;height:auto;object-fit:contain;padding:12px 15px;background:#07170f66;border:1px solid #d1b47666;border-radius:9px;box-shadow:0 4px 20px #0003;backdrop-filter:blur(8px)}
+@media(max-width:650px){.xmas-actions{justify-content:space-between;gap:14px}.xmas-actions .xmas-partner-logo{width:124px;padding:10px}.xmas-actions .xmas-participate{padding:14px 16px;gap:18px}}
+
+.xmas-snowcap i{position:absolute;width:7px;height:7px;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 3px #a8e6ff);animation:xmas-crystal-shine 3s ease-in-out infinite}.xmas-snowcap:after{content:"";position:absolute;inset:14px 0 0;background:radial-gradient(circle,#fff 0 1px,transparent 1.5px) 0 0/23px 13px;opacity:.6;pointer-events:none}
+@keyframes xmas-crystal-shine{0%,100%{opacity:.25;transform:scale(.55)}50%{opacity:1;transform:scale(1.35)}}
+@media(prefers-reduced-motion:reduce){.xmas-snowcap i{animation:none;opacity:.7}}
