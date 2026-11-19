@@ -24,7 +24,7 @@
 .site-christmas-snow{position:fixed;inset:0;z-index:60;overflow:hidden;pointer-events:none}.site-christmas-snow i{position:absolute;top:-12px;left:var(--x);width:var(--size);height:var(--size);border-radius:50%;background:#fff;opacity:var(--opacity);animation:site-christmas-fall var(--duration) var(--delay) linear infinite;pointer-events:none}
 @keyframes site-christmas-fall{to{transform:translate(var(--drift),calc(100vh + 24px))}}
 @media(max-width:650px){.site-christmas-snow i:nth-child(n+33){display:none}.xmas-snowcap{height:30px}}
-@media(prefers-reduced-motion:reduce){.site-christmas-snow{display:none}}
+
 
 .xmas-actions{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px}.xmas-actions .xmas-partner-logo{display:block;width:120px;max-width:34%;height:auto;object-fit:contain;transform:translateY(16px);animation:xmas-logo-fade 5s ease-in-out infinite}
 @media(max-width:650px){.xmas-actions{justify-content:space-between;gap:14px}.xmas-actions .xmas-partner-logo{width:96px}.xmas-actions .xmas-participate{padding:14px 16px;gap:18px}}
