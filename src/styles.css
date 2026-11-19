@@ -3767,76 +3767,67 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   margin-right:auto;
 }
 
-/* Christmas 2026: full-height, textured tinsel segments in interwoven strands. */
+/* Christmas 2026: one wavy Christmas-tinsel line with alternating colours. */
 .topbar-christmas{border-bottom:0}
 .christmas-home > .hero,
 .christmas-home > .section{border-bottom:0}
-
-/* Center each festive garland on the original section boundary. The strands
-   overlap like real fluffy tinsel instead of being squeezed into SVG strokes. */
 .christmas-garland-divider{
   position:relative;
   z-index:9;
   display:block;
   width:calc(100% - 48px);
   max-width:1500px;
-  height:102px;
-  margin:-51px auto;
+  height:62px;
+  margin:-31px auto;
   overflow:hidden;
   pointer-events:none;
   isolation:isolate;
-  filter:drop-shadow(0 3px 4px rgba(0,0,0,.44));
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.40));
 }
-.christmas-garland-piece{
+.christmas-garland-track{
+  position:absolute;
+  inset:0;
+}
+.christmas-garland-track-mobile{display:none}
+.christmas-garland-segment{
   position:absolute;
   display:block;
-  width:clamp(110px,12.8%,202px);
-  height:56px;
+  height:29px;
   max-width:none;
   object-fit:fill;
   pointer-events:none;
   user-select:none;
   -webkit-user-drag:none;
   image-rendering:auto;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.22));
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.18));
 }
-
-/* A slightly smaller garland hangs just under the homepage menu. */
+/* The menu garland is slimmer and also remains a single undulating row. */
 .christmas-garland-header{
   position:absolute;
-  bottom:-50px;
+  bottom:-30px;
   left:0;
   right:0;
   z-index:5;
   width:100%;
   max-width:none;
-  height:66px;
+  height:51px;
   margin:0;
 }
-.christmas-garland-header .christmas-garland-piece{
-  width:clamp(98px,12.5%,175px);
-  height:42px;
-}
+.christmas-garland-header .christmas-garland-segment{height:25px}
 @media(max-width:720px){
   .christmas-garland-divider{
     width:calc(100% - 20px);
-    height:76px;
-    margin:-38px auto;
+    height:48px;
+    margin:-24px auto;
   }
-  .christmas-garland-piece{
-    width:clamp(76px,20%,110px);
-    height:38px;
-  }
-  /* Half as many segments on narrow screens; retain overlap and thickness. */
-  .christmas-garland-piece-odd{display:none}
+  .christmas-garland-track-desktop{display:none}
+  .christmas-garland-track-mobile{display:block}
+  .christmas-garland-segment{height:23px}
   .christmas-garland-header{
     width:100%;
-    height:60px;
-    bottom:-47px;
+    height:40px;
+    bottom:-24px;
     margin:0;
   }
-  .christmas-garland-header .christmas-garland-piece{
-    width:clamp(76px,20%,105px);
-    height:34px;
-  }
+  .christmas-garland-header .christmas-garland-segment{height:20px}
 }

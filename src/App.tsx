@@ -29,42 +29,47 @@ const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
 // Christmas garland section separators use the three existing tinsel assets.
 // Phase-shifted waves make the red, gold and green strands cross like a braid.
-const christmasStrands = [
-  { name:"red", image:"fita vermelha.png", phase:0 },
-  { name:"gold", image:"fita amarela.png", phase:(Math.PI * 2)/3 },
-  { name:"green", image:"fita verde.png", phase:(Math.PI * 4)/3 },
+const christmasGarlandColors = [
+  { name:"red", image:"fita vermelha.png" },
+  { name:"gold", image:"fita amarela.png" },
+  { name:"green", image:"fita verde.png" },
 ] as const;
-const christmasGarlandSteps = Array.from({length:16}, (_,i)=>i);
 
-// Real, overlapping image segments retain the fluffy/metallic edges that
-// were lost when the garlands were reduced to thin SVG strokes.
+// A single, gently waving row: each fluffy segment is followed by the next
+// Christmas colour, rather than drawing three overlapping colour tracks.
 function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
+  const renderPieces = (count:number, mobile:boolean) =>
+    Array.from({length:count}, (_,index)=>{
+      const strand=christmasGarlandColors[index%christmasGarlandColors.length];
+      const progress=(index+.5)/count;
+      const angle=progress*Math.PI*4.5;
+      const wave=Math.sin(angle)*(header?4:7);
+      const tilt=Math.cos(angle)*6;
+      return (
+        <img
+          key={`${strand.name}-${index}`}
+          className="christmas-garland-segment"
+          src={asset(strand.image)}
+          alt=""
+          loading={header?"eager":"lazy"}
+          decoding="async"
+          style={{
+            left:`${(progress*100).toFixed(3)}%`,
+            top:`calc(50% + ${wave.toFixed(1)}px)`,
+            width:`calc(${(100/count).toFixed(4)}% + ${mobile?10:14}px)`,
+            transform:`translate(-50%,-50%) rotate(${tilt.toFixed(1)}deg)`,
+          }}
+        />
+      );
+    });
   return (
     <div className={`christmas-garland-divider${header?" christmas-garland-header":""}`} aria-hidden="true">
-      {christmasStrands.map((strand,strandIndex) =>
-        christmasGarlandSteps.map(index=>{
-          const progress = index / (christmasGarlandSteps.length-1);
-          const phase = index * 0.95 + strand.phase;
-          const wave = Math.sin(phase);
-          const rotation = Math.cos(phase) * 8;
-          return (
-            <img
-              key={`${strand.name}-${index}`}
-              className={`christmas-garland-piece${index%2?" christmas-garland-piece-odd":""}`}
-              src={asset(strand.image)}
-              alt=""
-              loading={header?"eager":"lazy"}
-              decoding="async"
-              style={{
-                left:`${progress*100}%`,
-                top:`calc(50% + ${(wave*9).toFixed(1)}px)`,
-                transform:`translate(-50%,-50%) rotate(${rotation.toFixed(1)}deg)`,
-                zIndex:((index+strandIndex)%3)+1,
-              }}
-            />
-          );
-        })
-      )}
+      <div className="christmas-garland-track christmas-garland-track-desktop">
+        {renderPieces(header?21:21,false)}
+      </div>
+      <div className="christmas-garland-track christmas-garland-track-mobile">
+        {renderPieces(9,true)}
+      </div>
     </div>
   );
 }
