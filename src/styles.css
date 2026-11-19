@@ -3766,3 +3766,56 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   margin-left:auto;
   margin-right:auto;
 }
+
+/* Christmas 2026 — braided red, gold and green page separators */
+.topbar-christmas{
+  border-bottom:0;
+}
+.christmas-home > .hero,
+.christmas-home > .section{
+  border-bottom:0;
+}
+/* The decoration occupies the same visual line as the old 1px separators
+   without adding extra gaps between existing homepage sections. */
+.christmas-garland-divider{
+  position:relative;
+  z-index:9;
+  display:block;
+  width:calc(100% - 48px);
+  max-width:1500px;
+  height:44px;
+  margin:-22px auto;
+  pointer-events:none;
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.48));
+}
+.christmas-garland-divider svg{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+/* Keep the header separation decorative but do not cover the menu items. */
+.christmas-garland-header{
+  position:absolute;
+  bottom:-16px;
+  left:0;
+  right:0;
+  z-index:5;
+  width:100%;
+  max-width:none;
+  height:34px;
+  margin:0;
+}
+@media(max-width:720px){
+  .christmas-garland-divider{
+    width:calc(100% - 24px);
+    height:31px;
+    margin:-15.5px auto;
+  }
+  .christmas-garland-header{
+    width:100%;
+    height:28px;
+    bottom:-13px;
+    margin:0;
+  }
+}
