@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="hatRed" x1="28" y1="17" x2="99" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF5047"/>
+      <stop offset=".33" stop-color="#DF1625"/>
+      <stop offset=".68" stop-color="#AC071B"/>
+      <stop offset="1" stop-color="#720313"/>
+    </linearGradient>
+    <linearGradient id="hatShade" x1="35" y1="18" x2="82" y2="57" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF7165"/>
+      <stop offset="1" stop-color="#B4001A"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="25" y1="49" x2="50" y2="77" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".54" stop-color="#F7F6F2"/>
+      <stop offset="1" stop-color="#BFC5CD"/>
+    </linearGradient>
+    <radialGradient id="pom" cx="0" cy="0" r="1" gradientTransform="translate(95 61) rotate(70) scale(24)">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".64" stop-color="#F8F8F5"/>
+      <stop offset="1" stop-color="#BFC6CD"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-25%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity=".47"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M18 55C24 32 37 18 59 11C75 7 87 17 89 33C91 47 103 55 103 66C101 75 89 79 81 71C75 60 67 49 56 44C44 41 30 49 18 60Z" fill="url(#hatRed)"/>
+    <path d="M22 51C31 28 46 17 61 15C47 27 48 32 56 44C43 41 32 46 22 55Z" fill="url(#hatShade)" opacity=".72"/>
+    <path d="M59 12C73 10 81 17 86 28C81 25 76 26 69 30C72 22 67 16 59 12Z" fill="#FF8178" opacity=".48"/>
+    <path d="M78 44C83 56 91 63 101 65C97 69 92 69 87 65C83 60 80 53 78 44Z" fill="#800414" opacity=".7"/>
+    <path d="M17 53C34 44 53 40 68 46C77 49 81 53 79 61C78 67 74 70 67 69C49 64 35 68 21 73C13 77 6 72 7 64C8 59 11 56 17 53Z" fill="url(#fur)"/>
+    <path d="M11 61C30 51 52 48 75 57" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".82"/>
+    <path d="M13 69L10 74M20 71L17 77M28 70L25 76M37 67L35 73M46 66L44 72M54 66L53 72M63 67L63 73M70 66L73 72" stroke="#F3F5F5" stroke-width="2.8" stroke-linecap="round" opacity=".78"/>
+    <circle cx="103" cy="73" r="13.5" fill="url(#pom)"/>
+    <path d="M103 56V59M96 59L98 62M111 60L109 63M89 69L93 70M117 70L113 71M95 84L97 81M110 85L108 81" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="98" cy="67" r="4" fill="#FFFFFF" opacity=".75"/>
+  </g>
+</svg>

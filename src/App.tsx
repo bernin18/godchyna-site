@@ -376,8 +376,13 @@ function GiveawayCountdown({giveaway}:{giveaway:Giveaway}){
   return <span className="giveaway-countdown"><b>{pick("TERMINA EM","ENDS IN")}</b><strong>{days>0?days+"d "+clock:clock}</strong></span>;
 }
 
-function Brand() {
-  return <a className="brand" href="./">CHYNA</a>;
+function Brand({ festive=false }: { festive?:boolean } = {}) {
+  return (
+    <a className={festive?"brand brand-christmas":"brand"} href="./">
+      CHYNA
+      {festive && <img className="brand-santa-hat" src={asset("chyna-santa-hat.svg")} alt="" aria-hidden="true" />}
+    </a>
+  );
 }
 
 function BrandGlyph({network,className=""}:{network:SocialName;className?:string}) {
@@ -555,7 +560,7 @@ function Header() {
             paddingTop:"8px",
           }}
         >
-          <Brand />
+          <Brand festive />
           <span
             className="brand-beta"
             style={{
