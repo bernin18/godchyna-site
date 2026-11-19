@@ -31,10 +31,10 @@ button{font:inherit}
 }
 .brand-christmas .brand-santa-hat{
   position:absolute;
-  top:-.78em;
-  right:-.47em;
-  width:2.04em;
-  height:1.72em;
+  top:-.72em;
+  right:-.41em;
+  width:1.32em;
+  height:1.20em;
   max-width:none;
   display:block;
   z-index:4;
@@ -48,10 +48,10 @@ button{font:inherit}
 }
 @media(max-width:720px){
   .brand-christmas .brand-santa-hat{
-    top:-.76em;
-    right:-.48em;
-    width:1.94em;
-    height:1.68em;
+    top:-.72em;
+    right:-.41em;
+    width:1.32em;
+    height:1.20em;
   }
 }
 .brand-beta{margin-top:5px;margin-left:2px;color:var(--green);font-family:"Chakra Petch",sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;line-height:1;text-transform:uppercase;opacity:.92;text-shadow:0 0 8px rgba(32,243,154,.58),0 0 18px rgba(32,243,154,.18)}
