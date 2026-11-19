@@ -1,6 +1,6 @@
 import MaintenanceGate from "./MaintenanceGate";
 import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments } from "./ChristmasCountdown";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
   Check,
@@ -30,38 +30,41 @@ const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 // Christmas garland section separators use the three existing tinsel assets.
 // Phase-shifted waves make the red, gold and green strands cross like a braid.
 const christmasStrands = [
-  { name:"red", image:"fita vermelha.png", base:"#ad2332", phase:0 },
-  { name:"gold", image:"fita amarela.png", base:"#cba12b", phase:(2*Math.PI)/3 },
-  { name:"green", image:"fita verde.png", base:"#177b4b", phase:(4*Math.PI)/3 },
+  { name:"red", image:"fita vermelha.png", phase:0 },
+  { name:"gold", image:"fita amarela.png", phase:(Math.PI * 2)/3 },
+  { name:"green", image:"fita verde.png", phase:(Math.PI * 4)/3 },
 ] as const;
+const christmasGarlandSteps = Array.from({length:16}, (_,i)=>i);
 
-const christmasBraidPaths = christmasStrands.map(strand =>
-  Array.from({length:181}, (_,index) => {
-    const x = index * (1200/180);
-    const y = 28 + 11 * Math.sin(x*Math.PI/90 + strand.phase);
-    return `${index === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
-  }).join(" ")
-);
-
+// Real, overlapping image segments retain the fluffy/metallic edges that
+// were lost when the garlands were reduced to thin SVG strokes.
 function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
-  const uid = useId().replace(/:/g,"");
   return (
     <div className={`christmas-garland-divider${header?" christmas-garland-header":""}`} aria-hidden="true">
-      <svg viewBox="0 0 1200 56" preserveAspectRatio="none" focusable="false">
-        <defs>
-          {christmasStrands.map(strand => (
-            <pattern key={strand.name} id={`${uid}-${strand.name}`} patternUnits="userSpaceOnUse" width="220" height="56">
-              <image href={asset(strand.image)} x="0" y="0" width="220" height="56" preserveAspectRatio="none" />
-            </pattern>
-          ))}
-        </defs>
-        {christmasStrands.map((strand,index) => (
-          <g key={strand.name}>
-            <path d={christmasBraidPaths[index]} stroke={strand.base} strokeWidth="15" strokeLinecap="round" fill="none" />
-            <path d={christmasBraidPaths[index]} stroke={`url(#${uid}-${strand.name})`} strokeWidth="18" strokeLinecap="round" fill="none" />
-          </g>
-        ))}
-      </svg>
+      {christmasStrands.map((strand,strandIndex) =>
+        christmasGarlandSteps.map(index=>{
+          const progress = index / (christmasGarlandSteps.length-1);
+          const phase = index * 0.95 + strand.phase;
+          const wave = Math.sin(phase);
+          const rotation = Math.cos(phase) * 8;
+          return (
+            <img
+              key={`${strand.name}-${index}`}
+              className={`christmas-garland-piece${index%2?" christmas-garland-piece-odd":""}`}
+              src={asset(strand.image)}
+              alt=""
+              loading={header?"eager":"lazy"}
+              decoding="async"
+              style={{
+                left:`${progress*100}%`,
+                top:`calc(50% + ${(wave*9).toFixed(1)}px)`,
+                transform:`translate(-50%,-50%) rotate(${rotation.toFixed(1)}deg)`,
+                zIndex:((index+strandIndex)%3)+1,
+              }}
+            />
+          );
+        })
+      )}
     </div>
   );
 }
