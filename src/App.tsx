@@ -1,3 +1,4 @@
+import MaintenanceGate from "./MaintenanceGate";
 import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
@@ -2058,7 +2059,7 @@ function StorePage(){
   );
 }
 
-export default function App(){
+function RoutedSite(){
   const path = window.location.pathname.replace(/\/$/, "");
 
   if(path.endsWith("/wheel")) {
@@ -2087,4 +2088,8 @@ export default function App(){
       <ActiveGiveawayPopup/>
     </>
   );
+}
+
+export default function App(){
+  return <MaintenanceGate><RoutedSite/></MaintenanceGate>;
 }

@@ -1,0 +1,17 @@
+.site-maintenance{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:28px 18px;background:radial-gradient(ellipse at 50% 20%,rgba(244,191,47,.08),transparent 58%),#050a0d;color:#f2f5f4}
+.site-maintenance-card{width:100%;max-width:560px;padding:48px 32px;text-align:center;border:1px solid rgba(244,191,47,.24);border-radius:20px;background:linear-gradient(145deg,rgba(13,24,29,.96),rgba(5,12,16,.98));box-shadow:0 24px 80px rgba(0,0,0,.35)}
+.maintenance-brand{font-family:"Exo 2",sans-serif;font-size:48px;font-weight:900;font-style:italic;letter-spacing:-.04em;color:#f4bf2f}
+.maintenance-status{display:flex;align-items:center;justify-content:center;gap:8px;margin:24px 0 16px;color:#d5b75f;font-size:10px;font-weight:800;letter-spacing:.16em}
+.maintenance-status>span{width:6px;height:6px;background:#f4bf2f;border-radius:50%;box-shadow:0 0 10px rgba(244,191,47,.3)}
+.site-maintenance h1{margin:0;font-family:"Chakra Petch",sans-serif;font-size:clamp(25px,5vw,34px);line-height:1.2}
+.maintenance-description{max-width:370px;margin:18px auto 0;color:#a9b7ba;font-size:15px;line-height:1.7}
+.maintenance-divider{height:1px;margin:30px 0;background:linear-gradient(90deg,transparent,#293a40,transparent)}
+.maintenance-login{min-height:46px;padding:12px 20px;border:1px solid rgba(244,191,47,.45);border-radius:9px;background:rgba(244,191,47,.08);color:#f4d47b;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.maintenance-login:hover:not(:disabled){background:rgba(244,191,47,.15)}
+.maintenance-login:disabled{opacity:.6;cursor:wait}
+.maintenance-login:focus-visible,.maintenance-retry:focus-visible{outline:2px solid #f4bf2f;outline-offset:4px}
+.maintenance-access-note{margin:15px 0 0;color:#7f9298;font-size:12px;line-height:1.6}
+.maintenance-retry{margin-top:12px;border:0;background:none;color:#bdc9cc;font:inherit;font-size:12px;text-decoration:underline;cursor:pointer}
+.maintenance-error{margin-top:14px;color:#ff9e96;font-size:13px}
+.maintenance-admin-indicator{position:fixed;z-index:1000;bottom:12px;left:12px;padding:7px 11px;border:1px solid rgba(244,191,47,.35);border-radius:7px;background:rgba(5,10,13,.92);color:#f4bf2f;font-size:9px;font-weight:800;letter-spacing:.08em;pointer-events:none}
+@media(max-width:480px){.site-maintenance-card{padding:34px 22px}.maintenance-brand{font-size:42px}}
