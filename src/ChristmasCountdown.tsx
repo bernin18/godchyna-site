@@ -102,6 +102,11 @@ export default function ChristmasCountdown() {
         </div>
       </div>
     </div>
-    <div className="xmas-art"><img src={asset("imagem-giveaway-natal-final.webp")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
+    <div className="xmas-art">
+      <img src={asset("imagem-giveaway-natal-final.webp")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" />
+      <span className="xmas-corner-ribbon" aria-hidden="true">
+        <img src={asset("fita vermelha.png")} alt="" loading="eager" />
+      </span>
+    </div>
   </section>;
 }
