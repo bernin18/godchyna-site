@@ -3801,6 +3801,12 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   image-rendering:auto;
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.18));
 }
+/* Only the outer ends of the COMPLETE garland are rounded. Leave the
+   intermediate pieces untouched, so the coloured sections stay connected. */
+.christmas-garland-start,
+.christmas-garland-end{
+  border-radius:999px;
+}
 /* The menu garland is slimmer and also remains a single undulating row. */
 .christmas-garland-header{
   position:absolute;
