@@ -69,7 +69,16 @@ export default function ChristmasCountdown() {
         <span className="xmas-heading-line xmas-heading-gold"><em>{pick("todas estas skins", "all these skins")}</em></span>
         <span className="xmas-heading-line">{pick("podem ser tuas!", "could be yours!")}</span>
       </h2>
-      <div className="xmas-heading-divider" aria-hidden="true"><span>✦</span></div>
+      <div className="xmas-heading-divider" aria-hidden="true">
+        <svg className="xmas-divider-bow" viewBox="0 0 44 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 18L10 33L18 29L22 34L24 19Z" fill="#9D2227" stroke="#D8A758" strokeWidth="1"/>
+          <path d="M23 18L32 33L25 29L22 34L21 19Z" fill="#B72D30" stroke="#D8A758" strokeWidth="1"/>
+          <path d="M20 14C14 8 6 5 4 10C1 16 8 22 20 18Z" fill="#B82B32" stroke="#F1C576" strokeWidth="1.2"/>
+          <path d="M24 14C30 8 38 5 40 10C43 16 36 22 24 18Z" fill="#B82B32" stroke="#F1C576" strokeWidth="1.2"/>
+          <path d="M7 12C11 13 15 15 19 17M37 12C33 13 29 15 25 17" stroke="#E87566" strokeWidth="1.2" strokeLinecap="round"/>
+          <rect x="18" y="13" width="8" height="8" rx="3" fill="#D64139" stroke="#F1C576" strokeWidth="1.3"/>
+        </svg>
+      </div>
       <p className="xmas-intro">{pick("Celebra o Natal connosco e ganha este loadout incrível.", "Celebrate Christmas with us and win this incredible loadout.")}</p>
       <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("O vencedor recebe este loadout em:", "The winner receives this loadout in:")}</p>
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
@@ -83,9 +92,12 @@ export default function ChristmasCountdown() {
             <strong>{pick("Sem essa prova, não estarás elegível para o giveaway!", "Without that proof, you won't be eligible for the giveaway!")}</strong>
           </p>
         </div>
+        <span className="xmas-actions-separator" aria-hidden="true" />
         <div className="xmas-entry">
-          <span className="xmas-partner-label">{pick("Parceiro oficial", "Official partner")}</span>
-          <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
+          <div className="xmas-partner">
+            <span className="xmas-partner-label">{pick("Parceiro oficial", "Official partner")}</span>
+            <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
+          </div>
           <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já!", "Enter now!")} <img className="xmas-button-gnome" src={asset("gnomo.png")} alt="" aria-hidden="true" /></a>
         </div>
       </div>
