@@ -80,7 +80,7 @@ export default function ChristmasCountdown() {
         </svg>
       </div>
       <p className="xmas-intro">{pick("Celebra o Natal connosco e ganha este loadout incrível.", "Celebrate Christmas with us and win this incredible loadout.")}</p>
-      <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("O vencedor recebe este loadout em:", "The winner receives this loadout in:")}</p>
+      <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("Não percas esta oportunidade! Faltam:", "Don't miss this opportunity! Time left:")}</p>
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
