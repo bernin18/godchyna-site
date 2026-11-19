@@ -437,48 +437,64 @@
   100% {transform:rotateX(145deg);opacity:0}
 }
 
-/* The ribbon is attached to the card frame, rather than painted on its artwork. */
-.xmas-banner-frame{
-  position:relative;
-  isolation:isolate;
-  width:calc(100% - 48px);
-  max-width:1440px;
-  margin:26px auto 42px;
-  overflow:visible;
-}
-.xmas-banner-frame > .xmas-banner{
-  width:100%;
-  max-width:none;
-  margin:0;
-}
-/* The visible tinsel hangs down the OUTSIDE of the right frame edge. */
-.xmas-frame-ribbon{
+/* Red Christmas garland is fitted INSIDE the top-right rounded card frame in an L. */
+.xmas-frame-ribbon-top,
+.xmas-frame-ribbon-side {
   position:absolute;
-  z-index:8;
-  top:-18px;
-  right:-50px;
+  z-index:9;
   display:block;
-  width:190px;
-  height:85px;
-  transform:rotate(-70deg);
-  transform-origin:top right;
   pointer-events:none;
-  filter:drop-shadow(0 4px 7px rgba(0,0,0,.4));
+  overflow:hidden;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));
 }
-.xmas-frame-ribbon img{
+.xmas-frame-ribbon-top {
+  top:2px;
+  right:3px;
+  width:142px;
+  height:24px;
+  border-top-right-radius:16px;
+}
+.xmas-frame-ribbon-side {
+  top:2px;
+  right:3px;
+  width:24px;
+  height:152px;
+  border-top-right-radius:16px;
+  border-bottom-left-radius:9px;
+}
+.xmas-frame-ribbon-top img {
   display:block;
   width:100%;
   height:100%;
-  object-fit:contain;
-  object-position:center;
+  object-fit:fill;
+}
+.xmas-frame-ribbon-side img {
+  display:block;
+  width:152px;
+  height:24px;
+  max-width:none;
+  object-fit:fill;
+  transform-origin:top left;
+  transform:translateX(24px) rotate(90deg);
 }
 @media(max-width:650px){
-  .xmas-banner-frame{width:calc(100% - 28px);margin:16px auto 28px}
-  .xmas-frame-ribbon{
-    top:-13px;
-    right:-20px;
-    width:126px;
-    height:58px;
-    transform:rotate(-70deg);
+  .xmas-frame-ribbon-top {
+    top:2px;
+    right:2px;
+    width:95px;
+    height:18px;
+    border-top-right-radius:12px;
+  }
+  .xmas-frame-ribbon-side {
+    top:2px;
+    right:2px;
+    width:18px;
+    height:104px;
+    border-top-right-radius:12px;
+  }
+  .xmas-frame-ribbon-side img {
+    width:104px;
+    height:18px;
+    transform:translateX(18px) rotate(90deg);
   }
 }
