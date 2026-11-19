@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { useLanguage } from "./i18n";
 import "./christmas-countdown.css";
@@ -26,14 +26,16 @@ function CalendarLeaf({ value, label }: { value: number; label: string }) {
   const previous = useRef(value);
   const flipId = useRef(0);
   const [transition, setTransition] = useState<{ from: number; to: number; id: number } | null>(null);
-  useEffect(() => {
+  // Commit the flip before the browser paints the new number: useEffect
+  // previously showed one frame of the new value before adding the old leaf.
+  useLayoutEffect(() => {
     if (previous.current === value) return;
     const id = ++flipId.current;
     setTransition({ from: previous.current, to: value, id });
     previous.current = value;
     const timer = window.setTimeout(() => {
       setTransition(current => current?.id === id ? null : current);
-    }, 820);
+    }, 700);
     return () => window.clearTimeout(timer);
   }, [value]);
   const format = (number: number) => String(number).padStart(2, "0");
