@@ -32,3 +32,12 @@
 .xmas-snowcap i{position:absolute;width:7px;height:7px;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 3px #a8e6ff);animation:xmas-crystal-shine 3s ease-in-out infinite}.xmas-snowcap:after{content:"";position:absolute;inset:14px 0 0;background:radial-gradient(circle,#fff 0 1px,transparent 1.5px) 0 0/23px 13px;opacity:.6;pointer-events:none}
 @keyframes xmas-crystal-shine{0%,100%{opacity:.25;transform:scale(.55)}50%{opacity:1;transform:scale(1.35)}}
 @media(prefers-reduced-motion:reduce){.xmas-snowcap i{animation:none;opacity:.7}}
+
+.xmas-participate{gap:18px;animation:xmas-button-pulse 2.8s ease-in-out infinite}.xmas-participate .xmas-button-gnome{display:block;width:27px;height:32px;object-fit:contain;filter:drop-shadow(0 2px 3px #3c180c66)}
+@keyframes xmas-button-pulse{0%,100%{background-color:#f78127;box-shadow:0 0 0 0 #ffa13b00,0 6px 22px #ef7b2633;filter:brightness(1)}50%{background-color:#ffb04f;box-shadow:0 0 0 5px #ffa13b15,0 0 28px #ff9d4866;filter:brightness(1.16)}}
+.xmas-snowcap{animation:xmas-snow-glow 4s ease-in-out infinite}.xmas-snowcap:before{content:"";position:absolute;z-index:1;left:0;top:9px;width:26%;height:34px;background:radial-gradient(ellipse,#fff 0,#effcffcc 24%,#bceaff55 48%,transparent 72%);filter:blur(2px);mix-blend-mode:screen;animation:xmas-snow-light 6s ease-in-out infinite;pointer-events:none}.xmas-snowcap i{z-index:2;width:9px;height:9px;filter:drop-shadow(0 0 5px #fff)}
+@keyframes xmas-snow-light{0%{transform:translateX(-110%);opacity:0}15%,85%{opacity:1}100%{transform:translateX(410%);opacity:0}}
+@keyframes xmas-snow-glow{0%,100%{filter:drop-shadow(0 -1px 3px #c3edff55)}50%{filter:drop-shadow(0 -2px 7px #e6f8ffcc)}}
+.xmas-banner:hover .xmas-snowcap:before{animation-duration:4s}
+@media(max-width:650px){.xmas-actions .xmas-participate{gap:10px;padding:12px}.xmas-participate .xmas-button-gnome{width:25px;height:30px}}
+@media(prefers-reduced-motion:reduce){.xmas-participate,.xmas-snowcap,.xmas-snowcap:before{animation:none}.xmas-snowcap:before{opacity:0}}

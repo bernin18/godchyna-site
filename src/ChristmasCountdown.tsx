@@ -64,7 +64,7 @@ export default function ChristmasCountdown() {
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
       <div className="xmas-actions">
-      <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já", "Enter now")} <span aria-hidden="true">↗</span></a>
+      <a className="xmas-participate" href="https://topskin.net/utm/godchyna" target="_blank" rel="noopener noreferrer sponsored">{pick("Participa já", "Enter now")} <img className="xmas-button-gnome" src={asset("gnomo.png")} alt="" aria-hidden="true" /></a>
         <img className="xmas-partner-logo" src={asset("topskin-logo.png")} alt="TOPSKIN" />
       </div>
     </div>
