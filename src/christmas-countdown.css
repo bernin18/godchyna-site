@@ -390,3 +390,14 @@
   .xmas-entry{gap:13px}
   .xmas-partner{gap:7px}
 }
+
+/* Micro ajustes de alinhamento pedidos para o banner natalício. */
+.xmas-partner{
+  transform:translateY(-8px);
+}
+.xmas-proof{
+  transform:translateX(-11px);
+}
+@media(max-width:650px){
+  .xmas-proof{transform:none}
+}
