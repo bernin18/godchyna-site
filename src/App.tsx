@@ -44,17 +44,24 @@ function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
       const progress=(index+.5)/count;
       const angle=progress*Math.PI*4.5;
       const wave=Math.sin(angle)*(header?4:7);
-      const tilt=Math.cos(angle)*6;
+      const isStart=index===0;
+      const isEnd=index===count-1;
+      // Inset the two end pieces by half their overlap, so their rounded tips
+      // remain fully visible instead of being cut by the separator container.
+      const inset=mobile?5:7;
+      const left=`${(progress*100).toFixed(3)}%`;
+      const position=isStart?`calc(${left} + ${inset}px)`:isEnd?`calc(${left} - ${inset}px)`:left;
+      const tilt=isStart||isEnd?0:Math.cos(angle)*6;
       return (
         <img
           key={`${strand.name}-${index}`}
-          className="christmas-garland-segment"
+          className={`christmas-garland-segment${isStart?" christmas-garland-start":isEnd?" christmas-garland-end":""}`}
           src={asset(strand.image)}
           alt=""
           loading={header?"eager":"lazy"}
           decoding="async"
           style={{
-            left:`${(progress*100).toFixed(3)}%`,
+            left:position,
             top:`calc(50% + ${wave.toFixed(1)}px)`,
             width:`calc(${(100/count).toFixed(4)}% + ${mobile?10:14}px)`,
             transform:`translate(-50%,-50%) rotate(${tilt.toFixed(1)}deg)`,
