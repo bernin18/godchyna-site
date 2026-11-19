@@ -437,8 +437,8 @@
   100% {transform:rotateX(145deg);opacity:0}
 }
 
-/* The red tinsel forms a thick L centred directly on the gold card border.
-   Unlike the previous offset, half the ribbon is on each side of the line. */
+/* One visually continuous red garland corner: the two textures meet along
+   a 45-degree mitre instead of overlapping and forming a bulky red knot. */
 .xmas-banner-frame{
   position:relative;
   isolation:isolate;
@@ -452,26 +452,47 @@
   max-width:none;
   margin:0;
 }
-.xmas-frame-ribbon-top,
-.xmas-frame-ribbon-side{
+.xmas-frame-ribbon-corner{
+  --ribbon-length:250px;
+  --ribbon-thickness:58px;
+  --ribbon-offset:-29px;
   position:absolute;
   z-index:15;
-  display:block;
-  overflow:visible;
+  top:var(--ribbon-offset);
+  right:var(--ribbon-offset);
+  width:var(--ribbon-length);
+  height:var(--ribbon-length);
   pointer-events:none;
   filter:drop-shadow(0 4px 6px rgba(0,0,0,.42));
 }
+.xmas-frame-ribbon-top,
+.xmas-frame-ribbon-side{
+  position:absolute;
+  top:0;
+  right:0;
+  display:block;
+  pointer-events:none;
+}
 .xmas-frame-ribbon-top{
-  top:-29px;
-  right:-29px;
-  width:250px;
-  height:58px;
+  width:var(--ribbon-length);
+  height:var(--ribbon-thickness);
+  /* Make a 45deg diagonal joining the side; no doubled-up texture. */
+  clip-path:polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--ribbon-thickness) + 1px) 100%,
+    0 100%
+  );
 }
 .xmas-frame-ribbon-side{
-  top:-29px;
-  right:-29px;
-  width:58px;
-  height:250px;
+  width:var(--ribbon-thickness);
+  height:var(--ribbon-length);
+  clip-path:polygon(
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 calc(var(--ribbon-thickness) - 1px)
+  );
 }
 .xmas-frame-ribbon-top img{
   display:block;
@@ -481,33 +502,21 @@
 }
 .xmas-frame-ribbon-side img{
   display:block;
-  width:250px;
-  height:58px;
+  width:var(--ribbon-length);
+  height:var(--ribbon-thickness);
   max-width:none;
   object-fit:fill;
   transform-origin:top left;
-  transform:translateX(58px) rotate(90deg);
+  transform:translateX(var(--ribbon-thickness)) rotate(90deg);
 }
 @media(max-width:650px){
   .xmas-banner-frame{
     width:calc(100% - 28px);
     margin:16px auto 28px;
   }
-  .xmas-frame-ribbon-top{
-    top:-20px;
-    right:-20px;
-    width:165px;
-    height:40px;
-  }
-  .xmas-frame-ribbon-side{
-    top:-20px;
-    right:-20px;
-    width:40px;
-    height:165px;
-  }
-  .xmas-frame-ribbon-side img{
-    width:165px;
-    height:40px;
-    transform:translateX(40px) rotate(90deg);
+  .xmas-frame-ribbon-corner{
+    --ribbon-length:165px;
+    --ribbon-thickness:40px;
+    --ribbon-offset:-20px;
   }
 }
