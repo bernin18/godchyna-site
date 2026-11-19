@@ -433,3 +433,36 @@
     transform:rotate(-8deg);
   }
 }
+
+
+/* Give the desktop calendar the same obvious page-turn feedback seen on mobile.
+   Keep reduced-motion visitors on the static, accessible countdown. */
+@media (min-width:651px) and (prefers-reduced-motion:no-preference) {
+  .xmas-calendar {
+    perspective:650px;
+  }
+  .xmas-turning-leaf {
+    transform-origin:50% 0;
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
+    will-change:transform,opacity;
+    overflow:hidden;
+    border:1px solid rgba(215,186,132,.85);
+    background:linear-gradient(175deg,#fff9eb 0%,#f4e7ce 100%);
+    box-shadow:0 8px 15px rgba(0,0,0,.24),inset 0 2px 0 rgba(255,255,255,.5);
+    animation:xmas-desktop-page-turn .65s cubic-bezier(.32,.08,.23,1) both;
+  }
+  .xmas-turning-leaf::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:linear-gradient(180deg,transparent 35%,rgba(120,89,45,.16) 100%);
+  }
+}
+@keyframes xmas-desktop-page-turn {
+  0%,10% {transform:rotateX(0deg);opacity:1}
+  40% {transform:rotateX(54deg);opacity:1}
+  72% {transform:rotateX(101deg);opacity:.96}
+  100% {transform:rotateX(145deg);opacity:0}
+}
