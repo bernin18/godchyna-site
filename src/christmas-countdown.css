@@ -437,64 +437,79 @@
   100% {transform:rotateX(145deg);opacity:0}
 }
 
-/* Red Christmas garland is fitted INSIDE the top-right rounded card frame in an L. */
+/* The overlay is anchored to the card BORDER, not inside the artwork.
+   The banner itself still clips the weapon image, while these decorations
+   sit across the top/right gold outline and remain visible outside its clip. */
+.xmas-banner-frame{
+  position:relative;
+  isolation:isolate;
+  width:calc(100% - 48px);
+  max-width:1440px;
+  margin:26px auto 42px;
+  overflow:visible;
+}
+.xmas-banner-frame > .xmas-banner{
+  width:100%;
+  max-width:none;
+  margin:0;
+}
+/* Two generous pieces of the original red tinsel meet in one corner. */
 .xmas-frame-ribbon-top,
-.xmas-frame-ribbon-side {
+.xmas-frame-ribbon-side{
   position:absolute;
-  z-index:9;
+  z-index:15;
   display:block;
   pointer-events:none;
-  overflow:hidden;
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));
+  overflow:visible;
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.42));
 }
-.xmas-frame-ribbon-top {
-  top:2px;
-  right:3px;
-  width:142px;
-  height:24px;
-  border-top-right-radius:16px;
+.xmas-frame-ribbon-top{
+  top:-13px;            /* centered over the gold top border */
+  right:-13px;
+  width:225px;
+  height:44px;
 }
-.xmas-frame-ribbon-side {
-  top:2px;
-  right:3px;
-  width:24px;
-  height:152px;
-  border-top-right-radius:16px;
-  border-bottom-left-radius:9px;
+.xmas-frame-ribbon-side{
+  top:-13px;
+  right:-13px;          /* centered over the gold right border */
+  width:44px;
+  height:224px;
 }
-.xmas-frame-ribbon-top img {
+.xmas-frame-ribbon-top img{
   display:block;
   width:100%;
   height:100%;
   object-fit:fill;
 }
-.xmas-frame-ribbon-side img {
+.xmas-frame-ribbon-side img{
   display:block;
-  width:152px;
-  height:24px;
+  width:224px;
+  height:44px;
   max-width:none;
   object-fit:fill;
   transform-origin:top left;
-  transform:translateX(24px) rotate(90deg);
+  transform:translateX(44px) rotate(90deg);
 }
 @media(max-width:650px){
-  .xmas-frame-ribbon-top {
-    top:2px;
-    right:2px;
-    width:95px;
-    height:18px;
-    border-top-right-radius:12px;
+  .xmas-banner-frame{
+    width:calc(100% - 28px);
+    margin:16px auto 28px;
   }
-  .xmas-frame-ribbon-side {
-    top:2px;
-    right:2px;
-    width:18px;
-    height:104px;
-    border-top-right-radius:12px;
+  .xmas-frame-ribbon-top{
+    top:-9px;
+    right:-9px;
+    width:145px;
+    height:30px;
   }
-  .xmas-frame-ribbon-side img {
-    width:104px;
-    height:18px;
-    transform:translateX(18px) rotate(90deg);
+  .xmas-frame-ribbon-side{
+    top:-9px;
+    right:-9px;
+    width:30px;
+    height:145px;
+  }
+  .xmas-frame-ribbon-side img{
+    width:145px;
+    height:30px;
+    transform:translateX(30px) rotate(90deg);
   }
 }
