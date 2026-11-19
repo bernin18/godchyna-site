@@ -47,7 +47,6 @@ export default function ChristmasCountdown() {
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
     <img className="xmas-lights" src={asset("Fita com luzes.png")} alt="" aria-hidden="true" />
     <div className="xmas-copy">
-      <p className="xmas-eyebrow">CHYNA · CHRISTMAS 2026</p>
       <h2 id="xmas-title">{pick("Este Natal,", "This Christmas,")}<br /><em>{pick("as prendas são skins.", "the gifts are skins.")}</em></h2>
       <p className="xmas-intro">{pick("O espírito de Natal chegou à nossa comunidade.", "Christmas spirit has arrived in our community.")}</p>
       <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("A CONTAGEM JÁ COMEÇOU", "THE COUNTDOWN IS ON")}</p>
