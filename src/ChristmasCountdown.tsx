@@ -15,6 +15,13 @@ export function ChristmasSnow() {
   return <div className="site-christmas-snow" aria-hidden="true">{Array.from({ length: 48 }, (_, i) => <i key={i} style={{ "--x": `${(i * 37 + 9) % 100}%`, "--size": `${3 + i % 7}px`, "--duration": `${11 + i % 13}s`, "--delay": `${-i * 2.3}s`, "--drift": `${(i % 2 ? 1 : -1) * (20 + i % 45)}px`, "--opacity": .3 + (i % 6) * .1 } as CSSProperties} />)}</div>;
 }
 
+export function ChristmasOrnaments() {
+  return <div className="site-christmas-ornaments" aria-hidden="true">
+    <img className="site-ornament site-ornament-left" src={asset("bolas de neve.png")} alt="" />
+    <img className="site-ornament site-ornament-right" src={asset("bolas de neve.png")} alt="" />
+  </div>;
+}
+
 function CalendarLeaf({ value, label }: { value: number; label: string }) {
   const previous = useRef(value);
   const [transition, setTransition] = useState<{ from: number; to: number; id: number } | null>(null);
