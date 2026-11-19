@@ -1,5 +1,5 @@
 import MaintenanceGate from "./MaintenanceGate";
-import ChristmasCountdown from "./ChristmasCountdown";
+import ChristmasCountdown, { ChristmasSnow } from "./ChristmasCountdown";
 import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
@@ -2092,5 +2092,5 @@ function RoutedSite(){
 }
 
 export default function App(){
-  return <MaintenanceGate><RoutedSite/></MaintenanceGate>;
+  return <MaintenanceGate><RoutedSite/><ChristmasSnow/></MaintenanceGate>;
 }
