@@ -54,7 +54,6 @@ export default function ChristmasCountdown() {
       <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
         {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
       </div>
-      <p className="xmas-deadline"><time dateTime="2026-12-30T23:59:00+00:00">30.12.2026 · 23:59</time><span>{pick("Hora de Portugal", "Portugal time")}</span></p>
     </div>
     <div className="xmas-art"><img src={asset("imagem giveaway.png")} alt={pick("As nove skins de Natal CHYNA sobre prendas com neve e luzes douradas", "The nine CHYNA Christmas skins on snowy gifts with golden lights")} fetchPriority="high" /></div>
     <div className="xmas-snow" aria-hidden="true">{Array.from({ length: 28 }, (_, i) => <i key={i} style={{ "--x": `${(i * 37 + 9) % 100}%`, "--size": `${3 + i % 5}px`, "--duration": `${9 + i % 9}s`, "--delay": `${-i * 1.7}s`, "--drift": `${(i % 2 ? 1 : -1) * (15 + i % 30)}px` } as CSSProperties} />)}</div>
