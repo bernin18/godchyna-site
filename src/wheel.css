@@ -5918,3 +5918,34 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
   margin:0!important;
   transform:translate(-50%,-50%) rotate(var(--wheel-name-angle)) translateY(calc(-1 * var(--monthly-label-radius))) rotate(-90deg);
 }
+
+
+/* Christmas: reindeer perched directly above the giveaway-winners history.
+   Keep it outside the panel without changing history height or rolling cards. */
+.wheel-page .giveaway-history{
+  position:relative;
+  overflow:visible;
+}
+.wheel-page .giveaway-history-reindeer{
+  position:absolute;
+  z-index:6;
+  left:50%;
+  bottom:calc(100% - 3px);
+  display:block;
+  width:min(250px,86%);
+  height:clamp(104px,9vw,145px);
+  max-width:100%;
+  object-fit:contain;
+  object-position:center bottom;
+  transform:translateX(-50%);
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.5));
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+@media(max-width:1500px){
+  .wheel-page .giveaway-history-reindeer{
+    width:min(212px,84%);
+    height:120px;
+  }
+}

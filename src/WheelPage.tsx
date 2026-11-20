@@ -5905,6 +5905,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
         <section className="wheel-showcase">
           <aside className="giveaway-history" aria-label={pick("Vencedores dos giveaways", "Giveaway winners")}>
+            <img
+              className="giveaway-history-reindeer"
+              src={wheelAsset("Rena.png")}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+            />
             <div className="giveaway-history-head">
               <h2>{pick("VENCEDORES DOS GIVEAWAYS", "GIVEAWAY WINNERS")}</h2>
             </div>
