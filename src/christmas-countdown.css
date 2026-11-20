@@ -487,3 +487,15 @@
     top:14px;
   }
 }
+
+
+/* Give the Christmas garland more breathing room: move ONLY the giveaway card
+   down in the document flow, without shifting garlands, lights or ornaments. */
+.christmas-home > .xmas-banner{
+  margin-top:92px;
+}
+@media(max-width:650px){
+  .christmas-home > .xmas-banner{
+    margin-top:52px;
+  }
+}
