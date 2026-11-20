@@ -409,9 +409,8 @@
    and limited the desktop effect to a media query; this version flips a full
    paper sheet visibly on both desktop and mobile when any value changes. */
 .xmas-calendar{
-  perspective:720px;
-  -webkit-perspective:720px;
-  transform-style:flat;
+  perspective:900px;
+  -webkit-perspective:900px;
 }
 .xmas-calendar > .xmas-number{z-index:1}
 .xmas-page-flip{
@@ -424,8 +423,9 @@
   transform-origin:50% 4px;
   transform-style:preserve-3d;
   -webkit-transform-style:preserve-3d;
-  will-change:transform,opacity;
-  animation:xmas-calendar-paper-turn .78s cubic-bezier(.27,.19,.22,1) both;
+  transform:translate3d(0,0,0) rotateX(0deg);
+  will-change:transform;
+  animation:xmas-calendar-paper-turn .64s cubic-bezier(.32,.05,.20,1) both;
 }
 .xmas-page-flip-front,
 .xmas-page-flip-back{
@@ -466,11 +466,8 @@
   box-shadow:0 4px 12px rgba(40,20,8,.27);
 }
 @keyframes xmas-calendar-paper-turn{
-  0%,7%{transform:rotateX(0deg);opacity:1}
-  35%{transform:rotateX(53deg);opacity:1}
-  56%{transform:rotateX(98deg);opacity:1}
-  78%{transform:rotateX(155deg);opacity:.94}
-  100%{transform:rotateX(179deg);opacity:0}
+  from{transform:translate3d(0,0,0) rotateX(0deg)}
+  to{transform:translate3d(0,0,0) rotateX(-180deg)}
 }
 @media (max-width:900px), (min-width:981px) and (max-width:1150px){
   .xmas-page-flip-front,.xmas-page-flip-back{font-size:35px}

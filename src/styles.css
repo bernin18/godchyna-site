@@ -31,7 +31,7 @@ button{font:inherit}
 }
 .brand-christmas .brand-santa-hat{
   position:absolute;
-  top:-.72em;
+  top:-.57em;
   right:-.41em;
   width:1.32em;
   height:1.20em;
@@ -48,7 +48,7 @@ button{font:inherit}
 }
 @media(max-width:720px){
   .brand-christmas .brand-santa-hat{
-    top:-.72em;
+    top:-.57em;
     right:-.41em;
     width:1.32em;
     height:1.20em;
