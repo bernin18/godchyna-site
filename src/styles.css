@@ -3877,3 +3877,21 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   }
   .christmas-garland-header .christmas-garland-strip{width:calc(100% - 12px)}
 }
+
+
+/* Christmas lights visually suspended from the garland */
+/* The header is its own stacking context. Keep its garland in front of the
+   lights belonging to the Christmas giveaway below it. */
+.topbar-christmas .christmas-garland-header{
+  bottom:-76px;
+  z-index:30;
+}
+.topbar-christmas .christmas-garland-header .christmas-garland-strip{
+  position:relative;
+  z-index:2;
+}
+@media(max-width:720px){
+  .topbar-christmas .christmas-garland-header{
+    bottom:-56px;
+  }
+}
