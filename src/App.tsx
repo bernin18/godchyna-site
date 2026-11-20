@@ -1516,8 +1516,7 @@ function DepositPage(){
 
 function StorePage(){
   const { pick } = useLanguage();
-  const { user, loading: authLoading } = useAuthSession();
-  const [storeAccess, setStoreAccess] = useState<"loading"|"admin"|"maintenance">("loading");
+  const { user } = useAuthSession();
   const [storeWallet, setStoreWallet] = useState<{watch_points:number;chy_balance:number|string}>({
     watch_points: 0,
     chy_balance: 0,
@@ -1584,41 +1583,6 @@ function StorePage(){
       void supabase.removeChannel(channel);
     };
   }, [user?.id]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function resolveStoreAccess() {
-      if (authLoading) return;
-
-      if (!user?.id) {
-        if (!cancelled) setStoreAccess("maintenance");
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .maybeSingle();
-
-      if (cancelled) return;
-
-      if (error) {
-        console.warn("Unable to resolve store access", error);
-        setStoreAccess("maintenance");
-        return;
-      }
-
-      setStoreAccess(data?.role === "admin" ? "admin" : "maintenance");
-    }
-
-    void resolveStoreAccess();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [authLoading, user?.id]);
 
   const storeWp = Number(storeWallet.watch_points ?? 0);
   const storeChy = Number(storeWallet.chy_balance ?? 0);
@@ -1689,28 +1653,6 @@ function StorePage(){
         <ShoppingCart/>
         {action.label}
       </button>
-    );
-  }
-
-  if (storeAccess !== "admin") {
-    return (
-      <>
-        <Header/>
-        <main className="store-page store-maintenance-page">
-          <section className="store-maintenance-card">
-            <span className="store-maintenance-dot" aria-hidden="true"/>
-            <span className="store-maintenance-kicker">{pick("LOJA","SHOP")}</span>
-            <h1>{pick("EM MANUTENÇÃO","UNDER MAINTENANCE")}</h1>
-            <p>
-              {pick(
-                "Estamos a preparar a loja. Volta em breve.",
-                "We're preparing the shop. Check back soon.",
-              )}
-            </p>
-          </section>
-        </main>
-        <Footer/>
-      </>
     );
   }
 
