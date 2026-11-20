@@ -1,5 +1,5 @@
 import MaintenanceGate from "./MaintenanceGate";
-import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments, ChristmasFlipCountdown, CHRISTMAS_DEADLINE } from "./ChristmasCountdown";
+import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments, CHRISTMAS_DEADLINE } from "./ChristmasCountdown";
 import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
@@ -144,15 +144,15 @@ const giveaways:Giveaway[] = [
       {src:"tec white.png",alt:"Tec-9 Whiteout Minimal Wear",name:"Tec-9 | Whiteout",condition:"Minimal Wear (MW)"},
       {src:"deagle print.png",alt:"Desert Eagle Printstream Field-Tested",name:"Desert Eagle | Printstream",condition:"Field-Tested (FT)"},
       {src:"Ak inheri.png",alt:"AK-47 Inheritance Field-Tested",name:"AK-47 | Inheritance",condition:"Field-Tested (FT)"},
-      {src:"gloves snow.png",alt:"Driver Gloves Snow Leopard Field-Tested",name:"★ Driver Gloves | Snow Leopard",condition:"Field-Tested (FT)"},
-      {src:"talon damas.png",alt:"Talon Knife Damascus Steel Factory New",name:"★ Talon Knife | Damascus Steel",condition:"Factory New (FN)"},
+      {src:"gloves snow.png",alt:"Driver Gloves Snow Leopard Field-Tested",name:"Driver Gloves ★ Snow Leopard",condition:"Field-Tested (FT)"},
+      {src:"talon damas.png",alt:"Talon Knife Damascus Steel Factory New",name:"Talon Knife ★ Damascus Steel",condition:"Factory New (FN)"},
     ],
     provider:"topskin",
     providerName:"TOPSKIN",
     providerLogo:"topskin-logo.png?v=3",
     url:"https://topskin.net/utm/godchyna",
     requiresProof:true,
-    startDate:"18/11/2026",
+    startDate:"18/11/26",
     drawDate:"30/12/2026",
     // Use the exact same 23:59 clock and timezone as the Christmas hero.
     deadlineTimestamp:CHRISTMAS_DEADLINE,
@@ -657,19 +657,6 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
   );
 }
 
-/** Calendar identical to the homepage Christmas giveaway, including its page-flip effect. */
-function LoadoutGiveawayCountdown() {
-  const { pick } = useLanguage();
-  const now = useNowTick();
-  return (
-    <div className="loadout-giveaway-clock">
-      <strong className="loadout-clock-title">{pick("TERMINA EM:", "ENDS IN:")}</strong>
-      <ChristmasFlipCountdown now={now} className="loadout-flip-clock" />
-      <span className="loadout-clock-date">30/12/2026 · 23:59 (PT)</span>
-    </div>
-  );
-}
-
 function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const { pick } = useLanguage();
   const isTopskin=giveaway.provider==="topskin";
@@ -722,6 +709,13 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider} giveaway-${giveaway.id}`}>
       <div className={`knife-stage${isChristmasLoadout?" loadout-stage":""}${isChristmasLoadout && galleryIndex===0?" loadout-stage-all":""}${isChristmasLoadout && galleryIndex>0?" loadout-stage-single":""}${isWildfire?" wildfire-stage":""}${isTiger?" tiger-stage":""}${isLotus?" lotus-stage":""}${isEmerald?" emerald-stage":""}${isKukriSlaughter?" kukri-slaughter-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
+        {isChristmasLoadout && galleryIndex===0 && (
+          <div
+            className="loadout-stage-backdrop"
+            style={{ backgroundImage: `url("${asset(activeGalleryImage.src)}")` }}
+            aria-hidden="true"
+          />
+        )}
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
@@ -790,12 +784,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         {giveaway.minDeposit && (
           <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
         )}
-        {isChristmasLoadout ? (
-          <div className="loadout-giveaway-dates">
-            <span className="loadout-start-date"><b>{pick("INÍCIO","START")}</b> {giveaway.startDate}</span>
-            <LoadoutGiveawayCountdown />
-          </div>
-        ) : (giveaway.startDate || giveaway.drawDate) && (
+        {(giveaway.startDate || giveaway.drawDate) && (
           <div className="giveaway-dates">
             {giveaway.startDate && <span><b>{pick("INICIADO","STARTED")}</b> {giveaway.startDate}</span>}
             {giveaway.drawDate && <GiveawayCountdown giveaway={giveaway}/>}
