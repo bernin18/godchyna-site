@@ -474,3 +474,16 @@
 }
 /* The calendar flip itself remains visible even on systems which reduce
    decorative motion; the snowfall still follows the reduced-motion setting. */
+
+
+/* Attach the colored light string to the garland rather than to empty space:
+   the top plugs/wire tuck behind the header foliage; bulbs remain below. */
+.christmas-home > .xmas-banner .xmas-lights{
+  top:24px;
+  z-index:4;
+}
+@media(max-width:650px){
+  .christmas-home > .xmas-banner .xmas-lights{
+    top:14px;
+  }
+}
