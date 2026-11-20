@@ -69,7 +69,7 @@ export default function ChristmasCountdown() {
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
     <div className="xmas-lights" aria-hidden="true">
       <svg className="xmas-light-joining-wire" viewBox="0 0 1000 30" preserveAspectRatio="none" focusable="false">
-        <path d="M0 9 C16 7 30 8 45 10 M455 10 C476 12 486 21 500 21 S528 12 545 10 M955 10 C972 8 985 7 1000 9" />
+        <path d="M0 9 C19 7 39 9 55 10 M445 10 C471 12 486 21 500 21 S532 12 555 10 M945 10 C968 9 985 7 1000 9" />
       </svg>
       <img src={asset("Fita com luzes.png")} alt="" />
       <img src={asset("Fita com luzes.png")} alt="" />
