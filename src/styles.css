@@ -3895,3 +3895,44 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
     bottom:-56px;
   }
 }
+
+
+/* Christmas header: foliage extends from the left green bauble wire to the right one. */
+/* The earlier 10% fade left visible sky-mounted cords at both ends.
+   A near-full-viewport strip reaches the green-bauble attachment points. */
+.topbar-christmas .christmas-garland-header{
+  left:50%;
+  right:auto;
+  width:calc(100vw - 32px);
+  max-width:none;
+  margin:0;
+  transform:translateX(-50%);
+}
+.topbar-christmas .christmas-garland-header .christmas-garland-strip{
+  width:100%;
+  max-width:none;
+  /* Fully opaque by 1.5% = roughly the left/right green-bauble cords. */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 1.5%,#000 98.5%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 1.5%,#000 98.5%,transparent 100%);
+}
+/* Four proportional PNG tiles, not one stretched image; their branches overlap. */
+.topbar-christmas .christmas-garland-header .christmas-garland-image{
+  width:calc(25% + 9px);
+  flex:0 0 calc(25% + 9px);
+}
+/* Start the hanging-ball strings behind the greenery, not above it.
+   This only applies on the homepage where the big header garland exists. */
+body:has(.topbar-christmas) .site-ornament{
+  top:10px;
+}
+@media(max-width:720px){
+  .topbar-christmas .christmas-garland-header{
+    width:calc(100vw - 14px);
+  }
+  /* Mobile keeps its existing single full-width image. */
+  .topbar-christmas .christmas-garland-header .christmas-garland-image{
+    width:100%;
+    flex-basis:100%;
+  }
+  body:has(.topbar-christmas) .site-ornament{top:2px}
+}
