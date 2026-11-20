@@ -35,7 +35,7 @@ function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
   return (
     <div className={`christmas-garland-divider${header?" christmas-garland-header":""}`} aria-hidden="true">
       <div className="christmas-garland-strip">
-        {Array.from({length:3}, (_,index) => (
+        {Array.from({length:header ? 4 : 3}, (_,index) => (
           <img
             key={index}
             className="christmas-garland-image"
