@@ -29,54 +29,18 @@ const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
 // Christmas garland section separators use the three existing tinsel assets.
 // Phase-shifted waves make the red, gold and green strands cross like a braid.
-const christmasGarlandColors = [
-  { name:"red", image:"fita vermelha.png" },
-  { name:"gold", image:"fita amarela.png" },
-  { name:"green", image:"fita verde.png" },
-] as const;
-
-// A single, gently waving row: each fluffy segment is followed by the next
-// Christmas colour, rather than drawing three overlapping colour tracks.
+// A single Christmas garland PNG per separator preserves the pine needles,
+// warm lights and ornaments instead of flattening them into colored segments.
 function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
-  const renderPieces = (count:number, mobile:boolean) =>
-    Array.from({length:count}, (_,index)=>{
-      const strand=christmasGarlandColors[index%christmasGarlandColors.length];
-      const progress=(index+.5)/count;
-      const angle=progress*Math.PI*4.5;
-      const wave=Math.sin(angle)*(header?4:7);
-      const isStart=index===0;
-      const isEnd=index===count-1;
-      // Inset the two end pieces by half their overlap, so their rounded tips
-      // remain fully visible instead of being cut by the separator container.
-      const inset=mobile?5:7;
-      const left=`${(progress*100).toFixed(3)}%`;
-      const position=isStart?`calc(${left} + ${inset}px)`:isEnd?`calc(${left} - ${inset}px)`:left;
-      const tilt=isStart||isEnd?0:Math.cos(angle)*6;
-      return (
-        <img
-          key={`${strand.name}-${index}`}
-          className={`christmas-garland-segment${isStart?" christmas-garland-start":isEnd?" christmas-garland-end":""}`}
-          src={asset(strand.image)}
-          alt=""
-          loading={header?"eager":"lazy"}
-          decoding="async"
-          style={{
-            left:position,
-            top:`calc(50% + ${wave.toFixed(1)}px)`,
-            width:`calc(${(100/count).toFixed(4)}% + ${mobile?10:14}px)`,
-            transform:`translate(-50%,-50%) rotate(${tilt.toFixed(1)}deg)`,
-          }}
-        />
-      );
-    });
   return (
     <div className={`christmas-garland-divider${header?" christmas-garland-header":""}`} aria-hidden="true">
-      <div className="christmas-garland-track christmas-garland-track-desktop">
-        {renderPieces(header?21:21,false)}
-      </div>
-      <div className="christmas-garland-track christmas-garland-track-mobile">
-        {renderPieces(9,true)}
-      </div>
+      <img
+        className="christmas-garland-image"
+        src={asset("godchyna_grinalda_natal_transparente.png")}
+        alt=""
+        loading={header?"eager":"lazy"}
+        decoding="async"
+      />
     </div>
   );
 }
