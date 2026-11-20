@@ -54,6 +54,71 @@ const CalendarLeaf = memo(function CalendarLeaf({ value, label }: { value: numbe
   </div>;
 });
 
+// One unbroken festive wire with complete bulbs: no PNG end plugs, crops,
+// connector patches or missing segments. Each viewport has its own spacing.
+function ChristmasLightStrand({ mobile }: { mobile: boolean }) {
+  const width = mobile ? 360 : 1200;
+  const count = mobile ? 9 : 29;
+  const prefix = mobile ? "xmas-light-mobile" : "xmas-light-desktop";
+  const cableY = (x: number) =>
+    9 + 8 * (1 - Math.cos((x / width) * Math.PI * 6)) / 2;
+  const wire = Array.from({ length: 121 }, (_, i) => {
+    const x = (width * i) / 120;
+    return `${i ? "L" : "M"}${x.toFixed(1)} ${cableY(x).toFixed(1)}`;
+  }).join(" ");
+  const lights = ["red", "gold", "green"] as const;
+  return (
+    <svg
+      className={`xmas-light-strand ${mobile ? "xmas-light-strand-mobile" : "xmas-light-strand-desktop"}`}
+      viewBox={`0 0 ${width} 68`}
+      preserveAspectRatio="none"
+      focusable="false"
+    >
+      <defs>
+        <radialGradient id={`${prefix}-red`} cx="35%" cy="27%" r="76%">
+          <stop offset="0%" stopColor="#fff3dd" />
+          <stop offset="27%" stopColor="#ff8072" />
+          <stop offset="67%" stopColor="#e42425" />
+          <stop offset="100%" stopColor="#921214" />
+        </radialGradient>
+        <radialGradient id={`${prefix}-gold`} cx="35%" cy="27%" r="76%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="31%" stopColor="#fff4cd" />
+          <stop offset="72%" stopColor="#edcb78" />
+          <stop offset="100%" stopColor="#9e782e" />
+        </radialGradient>
+        <radialGradient id={`${prefix}-green`} cx="35%" cy="27%" r="76%">
+          <stop offset="0%" stopColor="#edffe4" />
+          <stop offset="29%" stopColor="#70ee68" />
+          <stop offset="70%" stopColor="#1fa643" />
+          <stop offset="100%" stopColor="#0a5e2c" />
+        </radialGradient>
+        <filter id={`${prefix}-glow`} x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="4.5" />
+        </filter>
+      </defs>
+      <path d={wire} fill="none" stroke="#112d1b" strokeWidth="4.3" strokeLinecap="round" />
+      <path d={wire} fill="none" stroke="#3a6241" strokeWidth="2.1" strokeLinecap="round" />
+      {Array.from({ length: count }, (_, index) => {
+        const x = (width * (index + .5)) / count;
+        const y = cableY(x);
+        const color = lights[index % lights.length];
+        return (
+          <g key={index} transform={`translate(${x.toFixed(2)} ${y.toFixed(2)})`}>
+            <path d="M0 0 V9" stroke="#1d4429" strokeWidth="2.6" strokeLinecap="round" />
+            <ellipse cx="0" cy="23" rx="10" ry="13" fill={`url(#${prefix}-${color})`} opacity=".42" filter={`url(#${prefix}-glow)`} />
+            <path d="M-5 12 C-7.5 15 -8.4 20 -6.3 25 C-4.7 29 -1.4 34 0 35 C1.4 34 4.7 29 6.3 25 C8.4 20 7.5 15 5 12 C2.5 9 -2.5 9 -5 12Z"
+              fill={`url(#${prefix}-${color})`} stroke="#ffe3a0" strokeWidth=".55" />
+            <path d="M-3.5 15 Q-5.5 19 -4 23" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" opacity=".76" />
+            <rect x="-4.5" y="7" width="9" height="7" rx="1.7" fill="#27543a" stroke="#102b20" strokeWidth=".9" />
+            <path d="M-3 9 H3" stroke="#65916a" strokeWidth=".8" strokeLinecap="round" />
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export default function ChristmasCountdown() {
   const { pick } = useLanguage();
   const [now, setNow] = useState(Date.now);
@@ -68,21 +133,8 @@ export default function ChristmasCountdown() {
   const ended = now >= CHRISTMAS_DEADLINE;
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
     <div className="xmas-lights" aria-hidden="true">
-      <svg className="xmas-light-joining-wire" viewBox="0 0 4344 724" preserveAspectRatio="none" focusable="false">
-        <defs>
-          <clipPath id="xmas-light-cable-gaps">
-            <rect x="0" y="0" width="261" height="724" />
-            <rect x="1911" y="0" width="522" height="724" />
-            <rect x="4083" y="0" width="261" height="724" />
-          </clipPath>
-        </defs>
-        <path
-          clipPath="url(#xmas-light-cable-gaps)"
-          d="M0 255 C100 258 175 326 239 340 C500 354 640 250 720 270 C1020 377 1310 243 1680 330 C1800 342 1880 325 1933 325 C2030 305 2092 240 2172 240 C2255 240 2320 324 2411 340 C2700 354 2840 250 2892 270 C3200 377 3482 243 3852 330 C3972 342 4050 325 4105 325 C4170 324 4240 259 4344 255"
-        />
-      </svg>
-      <img src={asset("Fita com luzes.png")} alt="" />
-      <img src={asset("Fita com luzes.png")} alt="" />
+      <ChristmasLightStrand mobile={false} />
+      <ChristmasLightStrand mobile />
     </div>
     <div className="xmas-copy">
       <div className="xmas-snowcap" aria-hidden="true" style={{ backgroundImage: `linear-gradient(to bottom,transparent 65%,#edf7ff 90%),url("${asset("Neve.png")}")` }}>
