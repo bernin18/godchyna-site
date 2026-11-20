@@ -6,7 +6,7 @@ import { supabase } from "./supabase";
 import { verifyMaintenanceAdmin } from "./maintenanceAccess";
 import "./maintenance.css";
 
-export const SITE_MAINTENANCE_ENABLED = true;
+export const SITE_MAINTENANCE_ENABLED = false;
 
 export default function MaintenanceGate({ children }: { children: ReactNode }) {
   const { user, loading } = useAuthSession();
