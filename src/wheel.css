@@ -5920,6 +5920,28 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 }
 
 
+
+/* Snow resting on the upper border, under the reindeer's hooves.
+   The 2172x724 PNG includes generous transparent margins, so scaling it by
+   width and translating ~55% aligns the real snowbank with the card rim. */
+.wheel-page .giveaway-history-snowcap{
+  position:absolute;
+  z-index:5;
+  left:-8px;
+  top:0;
+  display:block;
+  width:calc(100% + 16px);
+  max-width:none;
+  height:auto;
+  object-fit:contain;
+  object-position:center top;
+  transform:translateY(-55%);
+  filter:drop-shadow(0 3px 4px rgba(175,207,234,.20));
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
 /* Christmas: reindeer perched directly above the giveaway-winners history.
    Keep it outside the panel without changing history height or rolling cards. */
 .wheel-page .giveaway-history{
