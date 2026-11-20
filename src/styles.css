@@ -3977,7 +3977,7 @@ body:has(.topbar-christmas) .site-ornament{
   position:absolute;
   z-index:2;
   left:auto;
-  right:12px;
+  right:-10px;
   bottom:-7px;
   display:block;
   width:min(440px,100%);
@@ -3996,7 +3996,7 @@ body:has(.topbar-christmas) .site-ornament{
   position:absolute;
   z-index:4;
   left:auto;
-  right:calc(12px + (min(440px,100%) - 215px)/2);
+  right:calc(-10px + (min(440px,100%) - 215px)/2);
   bottom:8px;
   display:block;
   width:215px;
@@ -4013,14 +4013,14 @@ body:has(.topbar-christmas) .site-ornament{
 @media(max-width:720px){
   .store-page #store-skins .store-christmas-snow{
     left:auto;
-    right:8px;
+    right:-6px;
     width:min(320px,100%);
     bottom:-5px;
     height:30px;
   }
   .store-page #store-skins .store-christmas-santa{
     left:auto;
-    right:calc(8px + (min(320px,100%) - 145px)/2);
+    right:calc(-6px + (min(320px,100%) - 145px)/2);
     width:145px;
     max-height:158px;
     bottom:6px;
