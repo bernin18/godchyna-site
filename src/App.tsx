@@ -1,5 +1,5 @@
 import MaintenanceGate from "./MaintenanceGate";
-import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments } from "./ChristmasCountdown";
+import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments, ChristmasFlipCountdown, CHRISTMAS_DEADLINE } from "./ChristmasCountdown";
 import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
@@ -120,11 +120,45 @@ type Giveaway = {
   drawEndOfDay?:boolean;
   partnerNotePt?:string;
   partnerNoteEn?:string;
-  galleryImages?:Array<{src:string;alt:string}>;
+  galleryImages?:Array<{src:string;alt:string;name?:string;condition?:string}>;
+  deadlineTimestamp?:number;
   enabled?:boolean;
 };
 
 const giveaways:Giveaway[] = [
+  {
+    id:"christmas-loadout-2026",
+    enabled:true,
+    title:"Giveaway ★ Loadout Completo CS2",
+    condition:"",
+    price:"$800",
+    minDeposit:"€10",
+    image:"godchyna_arsenal_natal_png_real.png",
+    imageAlt:"Loadout completo de Natal GODCHYNA com nove skins CS2",
+    galleryImages:[
+      {src:"godchyna_arsenal_natal_png_real.png",alt:"Conjunto completo com as nove skins CS2 do giveaway"},
+      {src:"glock trace.png",alt:"Glock Trace Lock Factory New",name:"Glock | Trace Lock",condition:"Factory New (FN)"},
+      {src:"usp print.webp",alt:"USP-S Printstream Field-Tested",name:"USP-S | Printstream",condition:"Field-Tested (FT)"},
+      {src:"m4a1 printstream.webp",alt:"M4A1-S Printstream Field-Tested",name:"M4A1-S | Printstream",condition:"Field-Tested (FT)"},
+      {src:"awp print.png",alt:"AWP Printstream Field-Tested",name:"AWP | Printstream",condition:"Field-Tested (FT)"},
+      {src:"tec white.png",alt:"Tec-9 Whiteout Minimal Wear",name:"Tec-9 | Whiteout",condition:"Minimal Wear (MW)"},
+      {src:"deagle print.png",alt:"Desert Eagle Printstream Field-Tested",name:"Desert Eagle | Printstream",condition:"Field-Tested (FT)"},
+      {src:"Ak inheri.png",alt:"AK-47 Inheritance Field-Tested",name:"AK-47 | Inheritance",condition:"Field-Tested (FT)"},
+      {src:"gloves snow.png",alt:"Driver Gloves Snow Leopard Field-Tested",name:"★ Driver Gloves | Snow Leopard",condition:"Field-Tested (FT)"},
+      {src:"talon damas.png",alt:"Talon Knife Damascus Steel Factory New",name:"★ Talon Knife | Damascus Steel",condition:"Factory New (FN)"},
+    ],
+    provider:"topskin",
+    providerName:"TOPSKIN",
+    providerLogo:"topskin-logo.png?v=3",
+    url:"https://topskin.net/utm/godchyna",
+    requiresProof:true,
+    startDate:"18/11/2026",
+    drawDate:"30/12/2026",
+    // Use the exact same 23:59 clock and timezone as the Christmas hero.
+    deadlineTimestamp:CHRISTMAS_DEADLINE,
+    warningPt:"Para participares, envia a prova de depósito pelo Discord. Sem essa prova, não estarás elegível para o giveaway!",
+    warningEn:"To enter, send proof of your deposit via Discord. Without that proof, you won't be eligible for the giveaway!",
+  },
   {
     id:"bayonet-lore-gloves-omega",
     enabled:true,
@@ -305,6 +339,7 @@ function getZurichMidnightTimestamp(date?:string){
 }
 
 function getGiveawayDrawTimestamp(giveaway:Giveaway){
+  if(giveaway.deadlineTimestamp !== undefined) return giveaway.deadlineTimestamp;
   if(!giveaway.drawDate) return null;
   if(!giveaway.drawEndOfDay) return getZurichMidnightTimestamp(giveaway.drawDate);
 
@@ -622,16 +657,30 @@ function PartnerCard({partner}:{partner:typeof partners[number]}) {
   );
 }
 
+/** Calendar identical to the homepage Christmas giveaway, including its page-flip effect. */
+function LoadoutGiveawayCountdown() {
+  const { pick } = useLanguage();
+  const now = useNowTick();
+  return (
+    <div className="loadout-giveaway-clock">
+      <strong className="loadout-clock-title">{pick("TERMINA EM:", "ENDS IN:")}</strong>
+      <ChristmasFlipCountdown now={now} className="loadout-flip-clock" />
+      <span className="loadout-clock-date">30/12/2026 · 23:59 (PT)</span>
+    </div>
+  );
+}
+
 function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const { pick } = useLanguage();
   const isTopskin=giveaway.provider==="topskin";
+  const isChristmasLoadout=giveaway.id==="christmas-loadout-2026";
   const isKitGiveaway=giveaway.id==="bayonet-lore-gloves-omega";
   const isWildfire=giveaway.id==="awp-wildfire";
   const isTiger=giveaway.id==="survival-tiger-tooth";
   const isLotus=giveaway.id==="m4a1s-black-lotus";
   const isEmerald=giveaway.id==="hydra-gloves-emerald";
   const isKukriSlaughter=giveaway.id==="kukri-slaughter-ft";
-  const galleryImages=giveaway.galleryImages?.length
+  const galleryImages:NonNullable<Giveaway["galleryImages"]>=giveaway.galleryImages?.length
     ? giveaway.galleryImages
     : [{src:giveaway.image,alt:giveaway.imageAlt}];
   const [galleryIndex,setGalleryIndex]=useState(0);
@@ -658,6 +707,13 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 
   const hasGallery=galleryImages.length>1;
   const activeGalleryImage=galleryImages[galleryIndex] ?? galleryImages[0];
+  const galleryName=isChristmasLoadout && galleryIndex>0
+    ? activeGalleryImage.name ?? giveaway.title
+    : giveaway.title;
+  const galleryCondition=isChristmasLoadout && galleryIndex>0
+    ? activeGalleryImage.condition ?? ""
+    : giveaway.condition;
+  const galleryPrice=isChristmasLoadout && galleryIndex>0 ? "" : giveaway.price;
 
   const changeGallery=(direction:number)=>{
     setGalleryIndex(current=>(current+direction+galleryImages.length)%galleryImages.length);
@@ -665,7 +721,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
 
   return (
     <article className={`giveaway-card giveaway-${giveaway.provider} giveaway-${giveaway.id}`}>
-      <div className={`knife-stage${isWildfire?" wildfire-stage":""}${isTiger?" tiger-stage":""}${isLotus?" lotus-stage":""}${isEmerald?" emerald-stage":""}${isKukriSlaughter?" kukri-slaughter-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
+      <div className={`knife-stage${isChristmasLoadout?" loadout-stage":""}${isChristmasLoadout && galleryIndex===0?" loadout-stage-all":""}${isChristmasLoadout && galleryIndex>0?" loadout-stage-single":""}${isWildfire?" wildfire-stage":""}${isTiger?" tiger-stage":""}${isLotus?" lotus-stage":""}${isEmerald?" emerald-stage":""}${isKukriSlaughter?" kukri-slaughter-stage":""}${isKitGiveaway?" kit-stage rare-stage":""}`}>
         <div className="knife-ambient-glow" />
         <div className="knife-shine" />
         <div className="knife-sparkle sparkle-1" />
@@ -682,7 +738,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKukriSlaughter && galleryIndex===0?" kukri-single-image stage-image-floating":""}${isKukriSlaughter && galleryIndex>0?" kukri-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isChristmasLoadout?" loadout-gallery-image":""}${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKukriSlaughter && galleryIndex===0?" kukri-single-image stage-image-floating":""}${isKukriSlaughter && galleryIndex>0?" kukri-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
@@ -722,9 +778,9 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
       <div className="giveaway-info">
         <div className="giveaway-head">
           <div>
-            <h3>{giveaway.title}</h3>
-            {giveaway.condition && <p>{giveaway.condition}</p>}
-            {giveaway.price && <strong className="price">{giveaway.price}</strong>}
+            <h3>{galleryName}</h3>
+            {galleryCondition && <p>{galleryCondition}</p>}
+            {galleryPrice && <strong className="price">{galleryPrice}</strong>}
           </div>
           <div className="giveaway-provider-status">
             <span className="active-pill">{pick("ATIVO","ACTIVE")}</span>
@@ -734,7 +790,12 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
         {giveaway.minDeposit && (
           <strong className="minimum">{pick("Depósito mínimo","Minimum deposit")}: {giveaway.minDeposit}</strong>
         )}
-        {(giveaway.startDate || giveaway.drawDate) && (
+        {isChristmasLoadout ? (
+          <div className="loadout-giveaway-dates">
+            <span className="loadout-start-date"><b>{pick("INÍCIO","START")}</b> {giveaway.startDate}</span>
+            <LoadoutGiveawayCountdown />
+          </div>
+        ) : (giveaway.startDate || giveaway.drawDate) && (
           <div className="giveaway-dates">
             {giveaway.startDate && <span><b>{pick("INICIADO","STARTED")}</b> {giveaway.startDate}</span>}
             {giveaway.drawDate && <GiveawayCountdown giveaway={giveaway}/>}
@@ -789,7 +850,7 @@ function HomeGiveawayRotator(){
   const now=useNowTick();
   const activeGiveaways=giveaways
     .filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now))
-    .sort((a,b)=>a.id==="survival-tiger-tooth"?-1:b.id==="survival-tiger-tooth"?1:0);
+    .sort((a,b)=>a.id==="christmas-loadout-2026"?-1:b.id==="christmas-loadout-2026"?1:a.id==="survival-tiger-tooth"?-1:b.id==="survival-tiger-tooth"?1:0);
   const [activeIndex,setActiveIndex]=useState(0);
 
   useEffect(()=>{

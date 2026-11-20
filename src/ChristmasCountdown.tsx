@@ -56,6 +56,19 @@ const CalendarLeaf = memo(function CalendarLeaf({ value, label }: { value: numbe
   </div>;
 });
 
+/** Reusable flip-calendar clock, shared by the Christmas hero and loadout card. */
+export function ChristmasFlipCountdown({now, className = ""}: {now:number; className?:string}) {
+  const { pick } = useLanguage();
+  const parts = countdownParts(now);
+  const labels = pick(["DIAS", "HORAS", "MINUTOS", "SEGUNDOS"], ["DAYS", "HOURS", "MINUTES", "SECONDS"]);
+  return (
+    <div className={`xmas-countdown${className ? ` ${className}` : ""}`} role="timer"
+      aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
+      {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
+    </div>
+  );
+}
+
 export default function ChristmasCountdown() {
   const { pick } = useLanguage();
   const [now, setNow] = useState(Date.now);
@@ -65,8 +78,6 @@ export default function ChristmasCountdown() {
     document.addEventListener("visibilitychange", update);
     return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", update); };
   }, []);
-  const parts = countdownParts(now);
-  const labels = pick(["DIAS", "HORAS", "MINUTOS", "SEGUNDOS"], ["DAYS", "HOURS", "MINUTES", "SECONDS"]);
   const ended = now >= CHRISTMAS_DEADLINE;
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
     <div className="xmas-lights" aria-hidden="true">
@@ -99,9 +110,7 @@ export default function ChristmasCountdown() {
       </div>
       <p className="xmas-intro">{pick("Celebra o Natal connosco e ganha este loadout incrível.", "Celebrate Christmas with us and win this incredible loadout.")}</p>
       <p className="xmas-countdown-heading">{ended ? pick("CONTAGEM TERMINADA", "COUNTDOWN COMPLETE") : pick("Não percas esta oportunidade! Faltam:", "Don't miss this opportunity! Time left:")}</p>
-      <div className="xmas-countdown" role="timer" aria-label={parts.map((value, i) => `${value} ${labels[i]}`).join(", ")}>
-        {parts.map((value, i) => <CalendarLeaf key={labels[i]} value={value} label={labels[i]} />)}
-      </div>
+      <ChristmasFlipCountdown now={now} />
       <div className="xmas-actions">
         <div className="xmas-proof" role="note">
           <span className="xmas-proof-icon" aria-hidden="true">!</span>
