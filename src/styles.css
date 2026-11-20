@@ -4067,6 +4067,14 @@ body:has(.topbar-christmas) .site-ornament{
   will-change:auto;
   filter:drop-shadow(0 10px 12px rgba(0,0,0,.45));
 }
+/* Fill the entire prize viewport on the first (full-loadout) slide.
+   Preserve image proportions and keep individual skin slides unchanged. */
+.giveaway-christmas-loadout-2026 .loadout-stage-all .giveaway-prize-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 48%;
+}
 .giveaway-christmas-loadout-2026 .loadout-stage-single .giveaway-prize-image{
   width:86%;
   height:82%;
