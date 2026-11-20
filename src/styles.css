@@ -4075,6 +4075,11 @@ body:has(.topbar-christmas) .site-ornament{
   object-fit:cover;
   object-position:center 48%;
 }
+/* On the full-loadout slide, place TOPSKIN in the space between
+   the top M4A1-S and the AWP below; leave individual slides untouched. */
+.giveaway-christmas-loadout-2026 .loadout-stage-all .giveaway-stage-provider-logo.topskin{
+  top:27%;
+}
 .giveaway-christmas-loadout-2026 .loadout-stage-single .giveaway-prize-image{
   width:86%;
   height:82%;
