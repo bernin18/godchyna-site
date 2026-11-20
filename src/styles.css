@@ -3939,7 +3939,7 @@ body:has(.topbar-christmas) .site-ornament{
 
 
 /* Christmas 2026: snow on the SKINS heading divider, Santa standing on top. */
-/* Anchored to the SKINS category's existing divider, not to the product cards.
+/* Snow occupies only the first ~440px of the SKINS divider, not the full header.\n   Santa is centered over that local snowbank and reaches toward the upper line.\n   Anchored to the SKINS category's existing divider, not to the product cards.
    The decoration is noninteractive and leaves the header text in front. */
 .store-page #store-skins .store-christmas-heading{
   position:relative;
@@ -3956,8 +3956,8 @@ body:has(.topbar-christmas) .site-ornament{
   left:0;
   bottom:-7px;
   display:block;
-  width:100%;
-  height:clamp(29px,3.8vw,49px);
+  width:min(440px,100%);
+  height:clamp(34px,3.8vw,49px);
   max-width:none;
   object-fit:cover;
   object-position:center 43%;
@@ -3971,12 +3971,12 @@ body:has(.topbar-christmas) .site-ornament{
 .store-page #store-skins .store-christmas-santa{
   position:absolute;
   z-index:4;
-  left:50%;
-  bottom:clamp(13px,2.1vw,26px);
+  left:min(220px,50%);
+  bottom:clamp(18px,2.4vw,28px);
   display:block;
-  width:clamp(110px,11vw,165px);
+  width:clamp(200px,21vw,285px);
   height:auto;
-  max-height:195px;
+  max-height:295px;
   object-fit:contain;
   object-position:center bottom;
   transform:translateX(-50%);
@@ -3987,12 +3987,14 @@ body:has(.topbar-christmas) .site-ornament{
 }
 @media(max-width:720px){
   .store-page #store-skins .store-christmas-snow{
+    width:min(320px,100%);
     bottom:-5px;
     height:30px;
   }
   .store-page #store-skins .store-christmas-santa{
-    width:96px;
-    max-height:120px;
-    bottom:12px;
+    left:min(160px,50%);
+    width:clamp(130px,32vw,190px);
+    max-height:205px;
+    bottom:15px;
   }
 }
