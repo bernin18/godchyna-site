@@ -3938,9 +3938,8 @@ body:has(.topbar-christmas) .site-ornament{
 }
 
 
-/* Christmas 2026: snow on the SKINS heading divider, Santa standing on top. */
-/* Snow occupies only the first ~440px of the SKINS divider, not the full header.\n   Santa is centered over that local snowbank and reaches toward the upper line.\n   Anchored to the SKINS category's existing divider, not to the product cards.
-   The decoration is noninteractive and leaves the header text in front. */
+/* Christmas 2026: snow over the final SKINS items divider.
+   Santa sits on the right-hand snowbank rather than floating at the left. */
 .store-page #store-skins .store-christmas-heading{
   position:relative;
   isolation:isolate;
@@ -3953,7 +3952,8 @@ body:has(.topbar-christmas) .site-ornament{
 .store-page #store-skins .store-christmas-snow{
   position:absolute;
   z-index:2;
-  left:0;
+  left:auto;
+  right:12px;
   bottom:-7px;
   display:block;
   width:min(440px,100%);
@@ -3971,15 +3971,16 @@ body:has(.topbar-christmas) .site-ornament{
 .store-page #store-skins .store-christmas-santa{
   position:absolute;
   z-index:4;
-  left:min(220px,50%);
-  bottom:clamp(18px,2.4vw,28px);
+  left:auto;
+  right:calc(12px + (min(440px,100%) - 215px)/2);
+  bottom:8px;
   display:block;
-  width:clamp(200px,21vw,285px);
+  width:215px;
   height:auto;
-  max-height:295px;
+  max-height:235px;
   object-fit:contain;
   object-position:center bottom;
-  transform:translateX(-50%);
+  transform:none;
   pointer-events:none;
   user-select:none;
   -webkit-user-drag:none;
@@ -3987,14 +3988,17 @@ body:has(.topbar-christmas) .site-ornament{
 }
 @media(max-width:720px){
   .store-page #store-skins .store-christmas-snow{
+    left:auto;
+    right:8px;
     width:min(320px,100%);
     bottom:-5px;
     height:30px;
   }
   .store-page #store-skins .store-christmas-santa{
-    left:min(160px,50%);
-    width:clamp(130px,32vw,190px);
-    max-height:205px;
-    bottom:15px;
+    left:auto;
+    right:calc(8px + (min(320px,100%) - 145px)/2);
+    width:145px;
+    max-height:158px;
+    bottom:6px;
   }
 }
