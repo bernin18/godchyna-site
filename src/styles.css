@@ -4035,8 +4035,9 @@ body:has(.topbar-christmas) .site-ornament{
   min-height:0;
   border-color:rgba(226,178,82,.48);
   background:
-    radial-gradient(circle at 86% 30%,rgba(18,91,54,.29),transparent 42%),
-    linear-gradient(115deg,#1b0c0e,#08110f 48%,#061711);
+    radial-gradient(ellipse at 24% 48%,rgba(150,24,37,.36),transparent 66%),
+    radial-gradient(ellipse at 98% 30%,rgba(18,91,54,.25),transparent 40%),
+    linear-gradient(108deg,#2b090f 0%,#280b13 43%,#1b1114 67%,#061711 100%);
   box-shadow:
     0 14px 35px rgba(0,0,0,.22),
     inset 0 0 32px rgba(234,184,78,.035);
@@ -4044,8 +4045,9 @@ body:has(.topbar-christmas) .site-ornament{
 .giveaway-christmas-loadout-2026 .loadout-stage{
   min-height:0;
   background:
-    radial-gradient(ellipse at 78% 45%,rgba(20,103,58,.19),transparent 56%),
-    linear-gradient(115deg,rgba(70,16,20,.16),rgba(4,17,12,1) 45%,rgba(10,45,27,.22));
+    radial-gradient(ellipse at 22% 45%,rgba(145,26,39,.28),transparent 65%),
+    radial-gradient(ellipse at 90% 45%,rgba(20,103,58,.12),transparent 48%),
+    linear-gradient(110deg,#22090e 0%,#1b0d10 62%,#061711 100%);
   border-color:rgba(218,176,83,.32);
 }
 .giveaway-christmas-loadout-2026 .loadout-stage::before{
