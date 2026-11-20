@@ -68,8 +68,18 @@ export default function ChristmasCountdown() {
   const ended = now >= CHRISTMAS_DEADLINE;
   return <section id="inicio" className="xmas-banner" aria-labelledby="xmas-title">
     <div className="xmas-lights" aria-hidden="true">
-      <svg className="xmas-light-joining-wire" viewBox="0 0 1000 30" preserveAspectRatio="none" focusable="false">
-        <path d="M0 9 C19 7 39 9 55 10 M445 10 C471 12 486 21 500 21 S532 12 555 10 M945 10 C968 9 985 7 1000 9" />
+      <svg className="xmas-light-joining-wire" viewBox="0 0 4344 724" preserveAspectRatio="none" focusable="false">
+        <defs>
+          <clipPath id="xmas-light-cable-gaps">
+            <rect x="0" y="0" width="261" height="724" />
+            <rect x="1911" y="0" width="522" height="724" />
+            <rect x="4083" y="0" width="261" height="724" />
+          </clipPath>
+        </defs>
+        <path
+          clipPath="url(#xmas-light-cable-gaps)"
+          d="M0 255 C100 258 175 326 239 340 C500 354 640 250 720 270 C1020 377 1310 243 1680 330 C1800 342 1880 325 1933 325 C2030 305 2092 240 2172 240 C2255 240 2320 324 2411 340 C2700 354 2840 250 2892 270 C3200 377 3482 243 3852 330 C3972 342 4050 325 4105 325 C4170 324 4240 259 4344 255"
+        />
       </svg>
       <img src={asset("Fita com luzes.png")} alt="" />
       <img src={asset("Fita com luzes.png")} alt="" />
