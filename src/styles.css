@@ -3826,9 +3826,10 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   max-width:100%;
   overflow:hidden;
   border-radius:999px;
-  /* Only round and soften the outer ends, not every joint. */
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 1.5%,#000 98.5%,transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0%,#000 1.5%,#000 98.5%,transparent 100%);
+  /* Fade only the outer tips so dangling bauble threads disappear instead of
+     ending abruptly; leave the central ornaments and tile joints untouched. */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,transparent 4%,#000 10%,#000 90%,transparent 96%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,transparent 4%,#000 10%,#000 90%,transparent 96%,transparent 100%);
   filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));
 }
 .christmas-garland-image{
