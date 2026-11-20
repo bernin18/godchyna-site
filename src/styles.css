@@ -4033,12 +4033,19 @@ body:has(.topbar-christmas) .site-ornament{
 .giveaway-christmas-loadout-2026{
   grid-template-columns:.76fr 1.24fr;
   min-height:0;
-  border-color:rgba(226,178,82,.38);
-  background:linear-gradient(120deg,#071610,#071015 58%,#091218);
+  border-color:rgba(226,178,82,.48);
+  background:
+    radial-gradient(circle at 14% 30%,rgba(18,91,54,.29),transparent 42%),
+    linear-gradient(115deg,#061711,#08110f 48%,#1b0c0e);
+  box-shadow:
+    0 14px 35px rgba(0,0,0,.22),
+    inset 0 0 32px rgba(234,184,78,.035);
 }
 .giveaway-christmas-loadout-2026 .loadout-stage{
   min-height:0;
-  background:#04110c;
+  background:
+    radial-gradient(ellipse at 48% 45%,rgba(20,103,58,.19),transparent 56%),
+    #04110c;
   border-color:rgba(218,176,83,.32);
 }
 .giveaway-christmas-loadout-2026 .loadout-stage::before{
