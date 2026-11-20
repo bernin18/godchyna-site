@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { useLanguage } from "./i18n";
 import "./christmas-countdown.css";
@@ -22,7 +22,7 @@ export function ChristmasOrnaments() {
   </div>;
 }
 
-function CalendarLeaf({ value, label }: { value: number; label: string }) {
+const CalendarLeaf = memo(function CalendarLeaf({ value, label }: { value: number; label: string }) {
   const previous = useRef(value);
   const flipId = useRef(0);
   const [transition, setTransition] = useState<{ from: number; to: number; id: number } | null>(null);
@@ -52,7 +52,7 @@ function CalendarLeaf({ value, label }: { value: number; label: string }) {
     </div>
     <span className="xmas-unit-label">{label}</span>
   </div>;
-}
+});
 
 export default function ChristmasCountdown() {
   const { pick } = useLanguage();
