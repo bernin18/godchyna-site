@@ -3801,6 +3801,30 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 /* Christmas 2026: three natural-ratio tiles of the same detailed garland.
    The source PNG is 2172x270 (8.04:1); never stretch it to a fixed height. */
 .topbar-christmas{border-bottom:0}
+/* A solid backing behind the sticky Christmas garland hides content scrolling
+   upward underneath it, before it can show through above the foliage.
+   The menu and the garland themselves stay on top of this backing. */
+.topbar-christmas::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:calc(100% + 52px);
+  background:linear-gradient(to bottom,#05090c 0%,#05090c calc(100% - 22px),transparent 100%);
+  z-index:1;
+  pointer-events:none;
+}
+.topbar-christmas .topbar-inner{
+  position:relative;
+  z-index:2;
+}
+@media(max-width:720px){
+  .topbar-christmas::before{
+    height:calc(100% + 42px);
+    background:linear-gradient(to bottom,#05090c 0%,#05090c calc(100% - 16px),transparent 100%);
+  }
+}
 .christmas-home > .hero,
 .christmas-home > .section{border-bottom:0}
 .christmas-garland-divider{
