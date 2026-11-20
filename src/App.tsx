@@ -680,7 +680,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const isLotus=giveaway.id==="m4a1s-black-lotus";
   const isEmerald=giveaway.id==="hydra-gloves-emerald";
   const isKukriSlaughter=giveaway.id==="kukri-slaughter-ft";
-  const galleryImages=giveaway.galleryImages?.length
+  const galleryImages:NonNullable<Giveaway["galleryImages"]>=giveaway.galleryImages?.length
     ? giveaway.galleryImages
     : [{src:giveaway.image,alt:giveaway.imageAlt}];
   const [galleryIndex,setGalleryIndex]=useState(0);
