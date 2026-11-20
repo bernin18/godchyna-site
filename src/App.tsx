@@ -1,5 +1,5 @@
 import MaintenanceGate from "./MaintenanceGate";
-import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments } from "./ChristmasCountdown";
+import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments, ChristmasFlipCountdown, CHRISTMAS_DEADLINE } from "./ChristmasCountdown";
 import { useEffect, useState } from "react";
 import {
   ArrowLeftRight,
@@ -120,11 +120,45 @@ type Giveaway = {
   drawEndOfDay?:boolean;
   partnerNotePt?:string;
   partnerNoteEn?:string;
-  galleryImages?:Array<{src:string;alt:string}>;
+  galleryImages?:Array<{src:string;alt:string;name?:string;condition?:string}>;
+  deadlineTimestamp?:number;
   enabled?:boolean;
 };
 
 const giveaways:Giveaway[] = [
+  {
+    id:"christmas-loadout-2026",
+    enabled:true,
+    title:"Giveaway ★ Loadout Completo CS2",
+    condition:"",
+    price:"$800",
+    minDeposit:"€10",
+    image:"godchyna_arsenal_natal_png_real.png",
+    imageAlt:"Loadout completo de Natal GODCHYNA com nove skins CS2",
+    galleryImages:[
+      {src:"godchyna_arsenal_natal_png_real.png",alt:"Conjunto completo com as nove skins CS2 do giveaway"},
+      {src:"glock trace.png",alt:"Glock Trace Lock Factory New",name:"Glock | Trace Lock",condition:"Factory New (FN)"},
+      {src:"usp print.webp",alt:"USP-S Printstream Field-Tested",name:"USP-S | Printstream",condition:"Field-Tested (FT)"},
+      {src:"m4a1 printstream.webp",alt:"M4A1-S Printstream Field-Tested",name:"M4A1-S | Printstream",condition:"Field-Tested (FT)"},
+      {src:"awp print.png",alt:"AWP Printstream Field-Tested",name:"AWP | Printstream",condition:"Field-Tested (FT)"},
+      {src:"tec white.png",alt:"Tec-9 Whiteout Minimal Wear",name:"Tec-9 | Whiteout",condition:"Minimal Wear (MW)"},
+      {src:"deagle print.png",alt:"Desert Eagle Printstream Field-Tested",name:"Desert Eagle | Printstream",condition:"Field-Tested (FT)"},
+      {src:"Ak inheri.png",alt:"AK-47 Inheritance Field-Tested",name:"AK-47 | Inheritance",condition:"Field-Tested (FT)"},
+      {src:"gloves snow.png",alt:"Driver Gloves Snow Leopard Field-Tested",name:"★ Driver Gloves | Snow Leopard",condition:"Field-Tested (FT)"},
+      {src:"talon damas.png",alt:"Talon Knife Damascus Steel Factory New",name:"★ Talon Knife | Damascus Steel",condition:"Factory New (FN)"},
+    ],
+    provider:"topskin",
+    providerName:"TOPSKIN",
+    providerLogo:"topskin-logo.png?v=3",
+    url:"https://topskin.net/utm/godchyna",
+    requiresProof:true,
+    startDate:"18/11/2026",
+    drawDate:"30/12/2026",
+    // Use the exact same 23:59 clock and timezone as the Christmas hero.
+    deadlineTimestamp:CHRISTMAS_DEADLINE,
+    warningPt:"Para participares, envia a prova de depósito pelo Discord. Sem essa prova, não estarás elegível para o giveaway!",
+    warningEn:"To enter, send proof of your deposit via Discord. Without that proof, you won't be eligible for the giveaway!",
+  },
   {
     id:"bayonet-lore-gloves-omega",
     enabled:true,
@@ -305,6 +339,7 @@ function getZurichMidnightTimestamp(date?:string){
 }
 
 function getGiveawayDrawTimestamp(giveaway:Giveaway){
+  if(giveaway.deadlineTimestamp !== undefined) return giveaway.deadlineTimestamp;
   if(!giveaway.drawDate) return null;
   if(!giveaway.drawEndOfDay) return getZurichMidnightTimestamp(giveaway.drawDate);
 
