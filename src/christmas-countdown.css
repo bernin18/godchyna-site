@@ -506,7 +506,7 @@
 .christmas-home .xmas-lights > img{
   position:relative;
   z-index:2;
-  clip-path:inset(0 9% 0 9%);
+  clip-path:inset(0 11% 0 11%);
 }
 /* Bridge the small trimmed sections: left edge, centre join and right edge.
    The path is behind the bulbs, so the result reads as one continuous wire. */
