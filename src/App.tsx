@@ -850,7 +850,7 @@ function HomeGiveawayRotator(){
   const now=useNowTick();
   const activeGiveaways=giveaways
     .filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now))
-    .sort((a,b)=>a.id==="survival-tiger-tooth"?-1:b.id==="survival-tiger-tooth"?1:0);
+    .sort((a,b)=>a.id==="christmas-loadout-2026"?-1:b.id==="christmas-loadout-2026"?1:a.id==="survival-tiger-tooth"?-1:b.id==="survival-tiger-tooth"?1:0);
   const [activeIndex,setActiveIndex]=useState(0);
 
   useEffect(()=>{
