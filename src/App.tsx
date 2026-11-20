@@ -29,18 +29,23 @@ const asset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
 
 // Christmas garland section separators use the three existing tinsel assets.
 // Phase-shifted waves make the red, gold and green strands cross like a braid.
-// A single Christmas garland PNG per separator preserves the pine needles,
-// warm lights and ornaments instead of flattening them into colored segments.
+// Repeat the original high-resolution PNG without distorting its proportions.
+// On phones, CSS displays a single tile; larger screens show three joined tiles.
 function ChristmasGarlandDivider({ header=false }: { header?:boolean }) {
   return (
     <div className={`christmas-garland-divider${header?" christmas-garland-header":""}`} aria-hidden="true">
-      <img
-        className="christmas-garland-image"
-        src={asset("godchyna_grinalda_natal_transparente.png")}
-        alt=""
-        loading={header?"eager":"lazy"}
-        decoding="async"
-      />
+      <div className="christmas-garland-strip">
+        {Array.from({length:3}, (_,index) => (
+          <img
+            key={index}
+            className="christmas-garland-image"
+            src={asset("godchyna_grinalda_natal_transparente.png")}
+            alt=""
+            loading={header?"eager":"lazy"}
+            decoding="async"
+          />
+        ))}
+      </div>
     </div>
   );
 }
