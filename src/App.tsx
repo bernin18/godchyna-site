@@ -129,7 +129,7 @@ const giveaways:Giveaway[] = [
   {
     id:"christmas-loadout-2026",
     enabled:true,
-    title:"Giveaway ★ Loadout Completo CS2",
+    title:"Loadout branco completo CS2",
     condition:"",
     price:"$800",
     minDeposit:"€10",
