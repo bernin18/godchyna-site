@@ -487,10 +487,10 @@
   }
 }
 
-/* One original transparent 1440x125 Christmas light strip, kept proportional.
-   No SVG imitation, visible plugs, clipped lamps or artificial joins. */
+/* Original 1440x125 Christmas lights, slightly smaller and higher to
+   give the giveaway title more breathing room without distorting the PNG. */
 .christmas-home .xmas-lights{
-  top:calc(-1 * clamp(15px, 2.3vw, 32px));
+  top:calc(-1 * clamp(22px, 3vw, 44px));
   height:auto;
   display:block;
   overflow:visible;
@@ -498,7 +498,8 @@
 }
 .christmas-home .xmas-lights-image{
   display:block;
-  width:100%;
+  width:96%;
+  margin:0 auto;
   height:auto;
   max-width:none;
   object-fit:contain;
@@ -509,6 +510,6 @@
 }
 @media(max-width:650px){
   .christmas-home .xmas-lights{
-    top:-9px;
+    top:-15px;
   }
 }
