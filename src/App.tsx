@@ -1759,7 +1759,7 @@ function StorePage(){
 
             <div className="store-content">
               <section id="store-skins" className="store-category-section">
-                <header className="store-category-heading store-category-heading-wallet">
+                <header className="store-category-heading store-category-heading-wallet store-christmas-heading">
                   <div>
                     <h2>SKINS</h2>
                   </div>
@@ -1778,6 +1778,24 @@ function StorePage(){
                       </div>
                     </div>
                   </div>
+                  <img
+                    className="store-christmas-snow"
+                    src={asset("Neve.png")}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                  />
+                  <img
+                    className="store-christmas-santa"
+                    src={asset("pai natal.png")}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                  />
                 </header>
 
                 <section className="store-grid" aria-label={pick("Skins da loja","Shop skins")}>
