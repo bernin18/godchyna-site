@@ -3936,3 +3936,63 @@ body:has(.topbar-christmas) .site-ornament{
   }
   body:has(.topbar-christmas) .site-ornament{top:2px}
 }
+
+
+/* Christmas 2026: snow on the SKINS heading divider, Santa standing on top. */
+/* Anchored to the SKINS category's existing divider, not to the product cards.
+   The decoration is noninteractive and leaves the header text in front. */
+.store-page #store-skins .store-christmas-heading{
+  position:relative;
+  isolation:isolate;
+  overflow:visible;
+}
+.store-page #store-skins .store-christmas-heading > div{
+  position:relative;
+  z-index:3;
+}
+.store-page #store-skins .store-christmas-snow{
+  position:absolute;
+  z-index:2;
+  left:0;
+  bottom:-7px;
+  display:block;
+  width:100%;
+  height:clamp(29px,3.8vw,49px);
+  max-width:none;
+  object-fit:cover;
+  object-position:center 43%;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%);
+  filter:drop-shadow(0 3px 3px rgba(166,209,244,.18));
+}
+.store-page #store-skins .store-christmas-santa{
+  position:absolute;
+  z-index:4;
+  left:50%;
+  bottom:clamp(13px,2.1vw,26px);
+  display:block;
+  width:clamp(110px,11vw,165px);
+  height:auto;
+  max-height:195px;
+  object-fit:contain;
+  object-position:center bottom;
+  transform:translateX(-50%);
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.48));
+}
+@media(max-width:720px){
+  .store-page #store-skins .store-christmas-snow{
+    bottom:-5px;
+    height:30px;
+  }
+  .store-page #store-skins .store-christmas-santa{
+    width:96px;
+    max-height:120px;
+    bottom:12px;
+  }
+}
