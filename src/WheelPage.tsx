@@ -327,14 +327,14 @@ const CASE_RARE_ITEMS: Record<number, [PlinkoResult, PlinkoResult]> = {
   1: [
     {
       label: "Slaughter",
-      skinName: "★ Falchion Knife | Slaughter FN",
+      skinName: "Falchion Knife ★ Slaughter FN",
       imageUrl: "/skins/round-1/falchion slau.png",
       valueEur: 200,
       status: "safe",
     },
     {
       label: "Bronze Morph",
-      skinName: "★ Sport Gloves | Bronze Morph FN",
+      skinName: "Sport Gloves ★ Bronze Morph FN",
       imageUrl: "/skins/round-1/bronze morph.png",
       valueEur: 360,
       status: "safe",
@@ -343,14 +343,14 @@ const CASE_RARE_ITEMS: Record<number, [PlinkoResult, PlinkoResult]> = {
   2: [
     {
       label: "Slaughter",
-      skinName: "★ Talon Knife | Slaughter FN",
+      skinName: "Talon Knife ★ Slaughter FN",
       imageUrl: "/skins/round-2/talon slau.png",
       valueEur: 545,
       status: "safe",
     },
     {
       label: "Big Game",
-      skinName: "★ Sport Gloves | Big Game FN",
+      skinName: "Sport Gloves ★ Big Game FN",
       imageUrl: "/skins/round-2/big game.png",
       valueEur: 625,
       status: "safe",
@@ -359,14 +359,14 @@ const CASE_RARE_ITEMS: Record<number, [PlinkoResult, PlinkoResult]> = {
   3: [
     {
       label: "Slaughter",
-      skinName: "★ Butterfly Knife | Slaughter FN",
+      skinName: "Butterfly Knife ★ Slaughter FN",
       imageUrl: "/skins/round-3/butterfly slau.webp",
       valueEur: 1200,
       status: "safe",
     },
     {
       label: "Fade",
-      skinName: "★ Specialist Gloves | Fade FN",
+      skinName: "Specialist Gloves ★ Fade FN",
       imageUrl: "/skins/round-3/gloves fade.png",
       valueEur: 1450,
       status: "safe",
@@ -375,14 +375,14 @@ const CASE_RARE_ITEMS: Record<number, [PlinkoResult, PlinkoResult]> = {
   4: [
     {
       label: "Black Pearl",
-      skinName: "★ Butterfly Knife | Doppler Black Pearl FN",
+      skinName: "Butterfly Knife ★ Doppler Black Pearl FN",
       imageUrl: "/skins/round-4/butterfly-knife-doppler-factory-new-black-pearl.webp",
       valueEur: 11000,
       status: "safe",
     },
     {
       label: "Pandora's Box",
-      skinName: "★ Sport Gloves | Pandora's Box FN",
+      skinName: "Sport Gloves ★ Pandora's Box FN",
       imageUrl: "/skins/round-4/pandora box.png",
       valueEur: 17000,
       status: "safe",
@@ -678,8 +678,17 @@ function spreadParticipantEntries(entries: string[]) {
   return spread;
 }
 
+/* Keep legacy saved prize names readable without modifying stored records.
+   Only knife/glove item separators are changed; gun skin names keep their "|". */
+function formatKnifeGloveName(name: string) {
+  return name.replace(
+    /(^|&\s*)★?\s*((?:[\w-]+\s+){0,3}(?:Knife|Gloves)|Bayonet|Karambit|Shadow Daggers|Hand Wraps)\s*(?:\||★)\s*/gi,
+    (_match, prefix: string, model: string) => `${prefix}${model.trim()} ★ `,
+  );
+}
+
 function formatFactoryNewSkinName(name: string) {
-  const trimmed = name.trim();
+  const trimmed = formatKnifeGloveName(name.trim());
   if (!trimmed) return trimmed;
   return /(?:^|\s)(?:FN|MW|FT|WW|BS)$/i.test(trimmed) ? trimmed : `${trimmed} FN`;
 }
@@ -1075,7 +1084,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
       const row = Array.isArray(data) && data.length > 0 ? data[0] : null;
 
-      setMonthlyPrizeDraftName(row?.skin_name ?? "");
+      setMonthlyPrizeDraftName(formatKnifeGloveName(row?.skin_name ?? ""));
       setMonthlyPrizeDraftValue(
         row?.skin_value === null || row?.skin_value === undefined
           ? ""
@@ -3647,7 +3656,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     const monthlyPrizeImageUrl = monthlyPrizeDraftImageUrl;
     const monthlyWheelPointerImageUrl = wheelAsset(MONTHLY_POINTER_IMAGE);
     const monthlyPrizeName = monthlyPrizeDraftName.trim()
-      ? monthlyPrizeDraftName.trim()
+      ? formatKnifeGloveName(monthlyPrizeDraftName.trim())
       : pick("SEM SKIN CONFIGURADA", "NO SKIN CONFIGURED");
     const monthlyPrizeValue = monthlyPrizeNumericValue();
     const monthlyPrizeReady = Boolean(
@@ -4078,7 +4087,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     setMonthlyPrizeDraftName(event.target.value);
                     setMonthlyPrizeDraftMessage("");
                   }}
-                  placeholder="Ursus Marble Fade"
+                  placeholder="Ursus Knife ★ Marble Fade"
                   disabled={monthlyPrizeDraftSaving}
                 />
               </label>
@@ -5895,7 +5904,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <span>{pick("VENCEDOR", "WINNER")}: </span>
                 <b>{monthlyHistoryDemo.winnerName}</b>
               </strong>
-              <span className="monthly-history-skin">{monthlyHistoryDemo.skinName}</span>
+              <span className="monthly-history-skin">{formatKnifeGloveName(monthlyHistoryDemo.skinName)}</span>
             </div>
             <b className="monthly-history-value monthly-history-value-under-art">
               $ {monthlyHistoryDemo.skinValue.toFixed(2)}
@@ -5960,7 +5969,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                                 <span>{pick("VENCEDOR", "WINNER")}: </span>
                                 <b>{monthlyHistoryDemo.winnerName}</b>
                               </strong>
-                              <span className="monthly-history-skin">{monthlyHistoryDemo.skinName}</span>
+                              <span className="monthly-history-skin">{formatKnifeGloveName(monthlyHistoryDemo.skinName)}</span>
                             </div>
                             <b className="monthly-history-value monthly-history-value-under-art">
                               $ {monthlyHistoryDemo.skinValue.toFixed(2)}
@@ -6003,7 +6012,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                                   <b>{item.winnerName}</b>
                                 </strong>
                                 <span className="monthly-history-skin">
-                                  {item.skinName || pick("Prémio não indicado", "Prize not specified")}
+                                  {item.skinName ? formatKnifeGloveName(item.skinName) : pick("Prémio não indicado", "Prize not specified")}
                                 </span>
                               </div>
                               {item.skinValue !== null && (
