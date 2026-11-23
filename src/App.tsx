@@ -129,7 +129,7 @@ const giveaways:Giveaway[] = [
   {
     id:"ursus-doppler-phase-1",
     enabled:true,
-    title:"Ursus Knife ★ Doppler (Phase 1)",
+    title:"Ursus Knife ★ Doppler (Phase 1) FN",
     condition:"Factory New / FN",
     price:"$240",
     minDeposit:"€10",
@@ -166,8 +166,8 @@ const giveaways:Giveaway[] = [
       {src:"tec white.png",alt:"Tec-9 Whiteout Minimal Wear",name:"Tec-9 | Whiteout",condition:"Minimal Wear (MW)"},
       {src:"deagle print.png",alt:"Desert Eagle Printstream Field-Tested",name:"Desert Eagle | Printstream",condition:"Field-Tested (FT)"},
       {src:"Ak inheri.png",alt:"AK-47 Inheritance Field-Tested",name:"AK-47 | Inheritance",condition:"Field-Tested (FT)"},
-      {src:"gloves snow.png",alt:"Driver Gloves ★ Snow Leopard Field-Tested",name:"Driver Gloves ★ Snow Leopard",condition:"Field-Tested (FT)"},
-      {src:"talon damas.png",alt:"Talon Knife ★ Damascus Steel Factory New",name:"Talon Knife ★ Damascus Steel",condition:"Factory New (FN)"},
+      {src:"gloves snow.png",alt:"Driver Gloves ★ Snow Leopard Field-Tested",name:"Driver Gloves ★ Snow Leopard FT",condition:"Field-Tested (FT)"},
+      {src:"talon damas.png",alt:"Talon Knife ★ Damascus Steel Factory New",name:"Talon Knife ★ Damascus Steel FN",condition:"Factory New (FN)"},
     ],
     provider:"topskin",
     providerName:"TOPSKIN",
@@ -232,7 +232,7 @@ const giveaways:Giveaway[] = [
   },
   {
     id:"survival-tiger-tooth",
-    title:"Survival Knife ★ Tiger Tooth",
+    title:"Survival Knife ★ Tiger Tooth FN",
     condition:"Factory New / FN",
     price:"$124",
     minDeposit:"€6",
@@ -275,7 +275,7 @@ const giveaways:Giveaway[] = [
   {
     id:"kukri-slaughter-ft",
     enabled:true,
-    title:"Kukri Knife ★ Slaughter",
+    title:"Kukri Knife ★ Slaughter FT",
     condition:"Field-Tested / FT",
     price:"$140",
     minDeposit:"€6",
@@ -298,7 +298,7 @@ const giveaways:Giveaway[] = [
   },
   {
     id:"hydra-gloves-emerald",
-    title:"Hydra Gloves ★ Emerald",
+    title:"Hydra Gloves ★ Emerald FT",
     condition:"Field-Tested / FT",
     price:"$40.00",
     minDeposit:"€4",
@@ -1300,7 +1300,7 @@ function GiveawayAnnouncementPopup(){
         </span>
 
         <h2 id="giveaway-announcement-title">
-          URSUS KNIFE <em>★ MARBLE FADE</em>
+          URSUS KNIFE <em>★ MARBLE FADE FN</em>
         </h2>
 
         <p>
@@ -1453,7 +1453,7 @@ function DeliveredGiveaways({now}:{now:number}){
               <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife ★ Marble Fade Factory New" />
             </div>
             <div className="delivered-prize-copy">
-              <h3>Ursus Knife ★ Marble Fade</h3>
+              <h3>Ursus Knife ★ Marble Fade FN</h3>
               <p>Factory New</p>
               <strong>$150</strong>
             </div>
@@ -1485,7 +1485,7 @@ function DeliveredGiveaways({now}:{now:number}){
                     <div className="delivered-history-copy">
                       <em>{pick("OFERECIDO POR","OFFERED BY")} · <b>Chyna</b></em>
                       <strong><span>{pick("VENCEDOR","WINNER")}: </span><b>Roman</b></strong>
-                      <span>Luvas Hydra ★ | Emerald FT</span>
+                      <span>Hydra Gloves ★ Emerald FT</span>
                     </div>
                     <b className="delivered-history-value">$ 40.00</b>
                   </div>
