@@ -4251,3 +4251,20 @@ body:has(.topbar-christmas) .site-ornament{
     box-shadow:0 -4px 14px rgba(244,73,179,.25);
   }
 }
+
+/* Giveaway popup knife backgrounds: Slaughter crimson, Ursus Doppler pink/red/blue. */
+/* Match the colored ambience of the Tiger Tooth popup, without changing its yellow background. */
+.active-giveaway-popup.popup-kukri-slaughter-ft .active-giveaway-popup-visual{
+  background:
+    radial-gradient(ellipse at 49% 47%,rgba(229,46,62,.29) 0%,rgba(150,16,30,.17) 38%,transparent 70%),
+    radial-gradient(ellipse at 30% 65%,rgba(183,20,36,.23),transparent 60%),
+    linear-gradient(180deg,#100607 0%,#22090e 52%,#080a0d 100%)!important;
+}
+.active-giveaway-popup.popup-ursus-doppler-phase-1 .active-giveaway-popup-visual{
+  background:
+    radial-gradient(ellipse at 31% 31%,rgba(242,56,176,.27),transparent 52%),
+    radial-gradient(ellipse at 74% 48%,rgba(227,43,78,.24),transparent 58%),
+    radial-gradient(ellipse at 28% 75%,rgba(37,94,235,.28),transparent 61%),
+    radial-gradient(ellipse at 67% 78%,rgba(133,53,216,.16),transparent 60%),
+    linear-gradient(145deg,#0b091a 0%,#180b1d 48%,#090d1a 100%)!important;
+}
