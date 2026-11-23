@@ -4275,3 +4275,16 @@ body:has(.topbar-christmas) .site-ornament{
     radial-gradient(ellipse at 67% 78%,rgba(133,53,216,.16),transparent 60%),
     linear-gradient(145deg,#0b091a 0%,#180b1d 48%,#090d1a 100%)!important;
 }
+
+/* Mobile giveaway status: anchor ATIVO beside the price, not over the skin title. */
+@media(max-width:720px){
+  .giveaway-card .giveaway-head{
+    position:relative;
+  }
+  .giveaway-card .giveaway-provider-status{
+    top:auto;
+    bottom:0;
+    right:0;
+    min-width:0;
+  }
+}
