@@ -134,10 +134,10 @@ const giveaways:Giveaway[] = [
     price:"$240",
     minDeposit:"€10",
     image:"ursus-knife-doppler-factory-new-phase-1.webp",
-    imageAlt:"Ursus Knife Doppler Phase 1 Factory New",
+    imageAlt:"Ursus Knife ★ Doppler (Phase 1) Factory New",
     galleryImages:[
-      {src:"ursus-knife-doppler-factory-new-phase-1.webp",alt:"Ursus Knife Doppler Phase 1 Factory New"},
-      {src:"braços ursus doppler.webp",alt:"Ursus Knife Doppler Phase 1 Factory New com braços"},
+      {src:"ursus-knife-doppler-factory-new-phase-1.webp",alt:"Ursus Knife ★ Doppler (Phase 1) Factory New"},
+      {src:"braços ursus doppler.webp",alt:"Ursus Knife ★ Doppler (Phase 1) Factory New com braços"},
     ],
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
@@ -166,8 +166,8 @@ const giveaways:Giveaway[] = [
       {src:"tec white.png",alt:"Tec-9 Whiteout Minimal Wear",name:"Tec-9 | Whiteout",condition:"Minimal Wear (MW)"},
       {src:"deagle print.png",alt:"Desert Eagle Printstream Field-Tested",name:"Desert Eagle | Printstream",condition:"Field-Tested (FT)"},
       {src:"Ak inheri.png",alt:"AK-47 Inheritance Field-Tested",name:"AK-47 | Inheritance",condition:"Field-Tested (FT)"},
-      {src:"gloves snow.png",alt:"Driver Gloves Snow Leopard Field-Tested",name:"Driver Gloves ★ Snow Leopard",condition:"Field-Tested (FT)"},
-      {src:"talon damas.png",alt:"Talon Knife Damascus Steel Factory New",name:"Talon Knife ★ Damascus Steel",condition:"Factory New (FN)"},
+      {src:"gloves snow.png",alt:"Driver Gloves ★ Snow Leopard Field-Tested",name:"Driver Gloves ★ Snow Leopard",condition:"Field-Tested (FT)"},
+      {src:"talon damas.png",alt:"Talon Knife ★ Damascus Steel Factory New",name:"Talon Knife ★ Damascus Steel",condition:"Factory New (FN)"},
     ],
     provider:"topskin",
     providerName:"TOPSKIN",
@@ -189,11 +189,11 @@ const giveaways:Giveaway[] = [
     price:"$400",
     minDeposit:"€10",
     image:"Combo omega lore braços.webp",
-    imageAlt:"Bayonet Lore and Gloves Omega giveaway",
+    imageAlt:"Bayonet ★ Lore and Sport Gloves ★ Omega giveaway",
     galleryImages:[
-      {src:"Combo omega lore braços.webp",alt:"Bayonet Lore FT and Sport Gloves Omega FT combo"},
-      {src:"bayo lore.png",alt:"Bayonet Lore FT"},
-      {src:"gloves omega.png",alt:"Sport Gloves Omega FT"},
+      {src:"Combo omega lore braços.webp",alt:"Bayonet ★ Lore FT and Sport Gloves ★ Omega FT combo"},
+      {src:"bayo lore.png",alt:"Bayonet ★ Lore FT"},
+      {src:"gloves omega.png",alt:"Sport Gloves ★ Omega FT"},
     ],
     provider:"topskin",
     providerName:"TOPSKIN",
@@ -232,15 +232,15 @@ const giveaways:Giveaway[] = [
   },
   {
     id:"survival-tiger-tooth",
-    title:"Survival Knife | Tiger Tooth",
+    title:"Survival Knife ★ Tiger Tooth",
     condition:"Factory New / FN",
     price:"$124",
     minDeposit:"€6",
     image:"braços Survival Tiger 2.webp",
-    imageAlt:"Survival Knife Tiger Tooth Factory New with arms",
+    imageAlt:"Survival Knife ★ Tiger Tooth Factory New with arms",
     galleryImages:[
-      {src:"Survival Tiger.png",alt:"Survival Knife Tiger Tooth Factory New"},
-      {src:"braços Survival Tiger 2.webp",alt:"Survival Knife Tiger Tooth Factory New with arms"},
+      {src:"Survival Tiger.png",alt:"Survival Knife ★ Tiger Tooth Factory New"},
+      {src:"braços Survival Tiger 2.webp",alt:"Survival Knife ★ Tiger Tooth Factory New with arms"},
     ],
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
@@ -275,15 +275,15 @@ const giveaways:Giveaway[] = [
   {
     id:"kukri-slaughter-ft",
     enabled:true,
-    title:"★ Kukri Knife | Slaughter",
+    title:"Kukri Knife ★ Slaughter",
     condition:"Field-Tested / FT",
     price:"$140",
     minDeposit:"€6",
     image:"Kukri slaug.webp",
-    imageAlt:"Kukri Knife Slaughter Field-Tested",
+    imageAlt:"Kukri Knife ★ Slaughter Field-Tested",
     galleryImages:[
-      {src:"Kukri slaug.webp",alt:"Kukri Knife Slaughter Field-Tested"},
-      {src:"braços kukri.webp",alt:"Kukri Knife Slaughter Field-Tested with arms"},
+      {src:"Kukri slaug.webp",alt:"Kukri Knife ★ Slaughter Field-Tested"},
+      {src:"braços kukri.webp",alt:"Kukri Knife ★ Slaughter Field-Tested with arms"},
     ],
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
@@ -298,15 +298,15 @@ const giveaways:Giveaway[] = [
   },
   {
     id:"hydra-gloves-emerald",
-    title:"Hydra Gloves | Emerald",
+    title:"Hydra Gloves ★ Emerald",
     condition:"Field-Tested / FT",
     price:"$40.00",
     minDeposit:"€4",
     image:"Gloves emerald braços.webp",
-    imageAlt:"Hydra Gloves Emerald with arms",
+    imageAlt:"Hydra Gloves ★ Emerald with arms",
     galleryImages:[
-      {src:"gloves hydra emerald.png",alt:"Hydra Gloves Emerald"},
-      {src:"Gloves emerald braços.webp",alt:"Hydra Gloves Emerald with arms"},
+      {src:"gloves hydra emerald.png",alt:"Hydra Gloves ★ Emerald"},
+      {src:"Gloves emerald braços.webp",alt:"Hydra Gloves ★ Emerald with arms"},
     ],
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
@@ -1005,7 +1005,7 @@ function ActiveGiveawayPopup(){
           <img
             className="combo-image-popup-art"
             src={asset("Pop up combo.png")}
-            alt={pick("Giveaway Bayonet Lore e Sport Gloves Omega","Bayonet Lore and Sport Gloves Omega giveaway")}
+            alt={pick("Giveaway Bayonet ★ Lore e Sport Gloves ★ Omega","Bayonet ★ Lore and Sport Gloves ★ Omega giveaway")}
           />
           <span className="combo-popup-eye-glow" aria-hidden="true" />
           {giveaway.drawDate && (
@@ -1292,7 +1292,7 @@ function GiveawayAnnouncementPopup(){
         </div>
 
         <div className="giveaway-announcement-knife">
-          <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade" />
+          <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife ★ Marble Fade" />
         </div>
 
         <span className="giveaway-announcement-date">
@@ -1300,7 +1300,7 @@ function GiveawayAnnouncementPopup(){
         </span>
 
         <h2 id="giveaway-announcement-title">
-          URSUS KNIFE <em>| MARBLE FADE</em>
+          URSUS KNIFE <em>★ MARBLE FADE</em>
         </h2>
 
         <p>
@@ -1450,10 +1450,10 @@ function DeliveredGiveaways({now}:{now:number}){
             <div className="delivered-prize-delivered-date">06/10/2026</div>
             <div className="delivered-prize-visual">
               <div className="delivered-prize-glow" />
-              <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife Marble Fade Factory New" />
+              <img src={asset("ursus-marble-fade.png")} alt="Ursus Knife ★ Marble Fade Factory New" />
             </div>
             <div className="delivered-prize-copy">
-              <h3>Ursus Knife | Marble Fade</h3>
+              <h3>Ursus Knife ★ Marble Fade</h3>
               <p>Factory New</p>
               <strong>$150</strong>
             </div>
