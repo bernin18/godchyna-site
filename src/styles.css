@@ -4097,6 +4097,22 @@ body:has(.topbar-christmas) .site-ornament{
   transform:none!important;
   animation:none!important;
 }
+/* Animate the individual loadout items like the other giveaway weapons;
+   keep the full nine-item composition fixed so it stays framed correctly. */
+.giveaway-christmas-loadout-2026 .loadout-stage-single .giveaway-prize-image,
+.giveaway-christmas-loadout-2026 .loadout-stage-single:hover .giveaway-prize-image{
+  animation:knifeShowcaseSpin 5.6s ease-in-out infinite!important;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+@media(prefers-reduced-motion:reduce){
+  .giveaway-christmas-loadout-2026 .loadout-stage-single .giveaway-prize-image,
+  .giveaway-christmas-loadout-2026 .loadout-stage-single:hover .giveaway-prize-image{
+    animation:none!important;
+    transform:none!important;
+    will-change:auto;
+  }
+}
 .giveaway-christmas-loadout-2026 .giveaway-info{
   min-height:0;
   height:100%;
