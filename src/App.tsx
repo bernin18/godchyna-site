@@ -127,6 +127,28 @@ type Giveaway = {
 
 const giveaways:Giveaway[] = [
   {
+    id:"ursus-doppler-phase-1",
+    enabled:true,
+    title:"★ Ursus Knife | Doppler FN (Phase 1)",
+    condition:"",
+    price:"$240",
+    minDeposit:"€10",
+    image:"braços ursus doppler.webp",
+    imageAlt:"Ursus Knife Doppler Phase 1 Factory New com braços",
+    galleryImages:[
+      {src:"braços ursus doppler.webp",alt:"Ursus Knife Doppler Phase 1 Factory New com braços"},
+      {src:"ursus-knife-doppler-factory-new-phase-1.webp",alt:"Ursus Knife Doppler Phase 1 Factory New"},
+    ],
+    provider:"csgoskins",
+    providerName:"CSGO-SKINS",
+    providerLogo:"csgoskins-logo.png?v=3",
+    url:"https://csgo-skins.com/?ref=GODCHYNA",
+    requiresProof:true,
+    startDate:"22/11/26",
+    partnerNotePt:"A data do sorteio é determinada pelo parceiro. O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor, de forma a permitir a verificação da legitimidade do sorteio.",
+    partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
+  },
+  {
     id:"christmas-loadout-2026",
     enabled:true,
     title:"Loadout branco completo",
