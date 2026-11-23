@@ -3612,6 +3612,18 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 
 
+/* Keep the Kukri Knife ★ Slaughter FT title on one line in the popup. */
+.active-giveaway-popup.popup-kukri-slaughter-ft .active-giveaway-popup-copy h2{
+  font-size:20px!important;
+  letter-spacing:-.035em;
+  white-space:nowrap;
+}
+@media(max-width:700px){
+  .active-giveaway-popup.popup-kukri-slaughter-ft .active-giveaway-popup-copy h2{
+    font-size:clamp(14px,4vw,18px)!important;
+  }
+}
+
 /* Kukri Slaughter popup red accent */
 .active-giveaway-popup.popup-kukri-slaughter-ft{
   border-color:rgba(229,62,72,.42)!important;
