@@ -129,15 +129,15 @@ const giveaways:Giveaway[] = [
   {
     id:"ursus-doppler-phase-1",
     enabled:true,
-    title:"★ Ursus Knife | Doppler FN (Phase 1)",
-    condition:"",
+    title:"Ursus Knife ★ Doppler (Phase 1)",
+    condition:"Factory New / FN",
     price:"$240",
     minDeposit:"€10",
-    image:"braços ursus doppler.webp",
-    imageAlt:"Ursus Knife Doppler Phase 1 Factory New com braços",
+    image:"ursus-knife-doppler-factory-new-phase-1.webp",
+    imageAlt:"Ursus Knife Doppler Phase 1 Factory New",
     galleryImages:[
-      {src:"braços ursus doppler.webp",alt:"Ursus Knife Doppler Phase 1 Factory New com braços"},
       {src:"ursus-knife-doppler-factory-new-phase-1.webp",alt:"Ursus Knife Doppler Phase 1 Factory New"},
+      {src:"braços ursus doppler.webp",alt:"Ursus Knife Doppler Phase 1 Factory New com braços"},
     ],
     provider:"csgoskins",
     providerName:"CSGO-SKINS",
@@ -686,6 +686,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
   const isKitGiveaway=giveaway.id==="bayonet-lore-gloves-omega";
   const isWildfire=giveaway.id==="awp-wildfire";
   const isTiger=giveaway.id==="survival-tiger-tooth";
+  const isUrsus=giveaway.id==="ursus-doppler-phase-1";
   const isLotus=giveaway.id==="m4a1s-black-lotus";
   const isEmerald=giveaway.id==="hydra-gloves-emerald";
   const isKukriSlaughter=giveaway.id==="kukri-slaughter-ft";
@@ -754,7 +755,7 @@ function GiveawayCard({giveaway}:{giveaway:Giveaway}) {
           </button>
         )}
         <img
-          className={`giveaway-prize-image giveaway-preview-trigger${isChristmasLoadout?" loadout-gallery-image":""}${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKukriSlaughter && galleryIndex===0?" kukri-single-image stage-image-floating":""}${isKukriSlaughter && galleryIndex>0?" kukri-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
+          className={`giveaway-prize-image giveaway-preview-trigger${isChristmasLoadout?" loadout-gallery-image":""}${isKitGiveaway?` kit-gallery-image kit-gallery-image-${galleryIndex}`:""}${isWildfire && galleryIndex===0?" wildfire-arms-image stage-image-static":""}${isWildfire && galleryIndex>0?" stage-image-floating":""}${isTiger && galleryIndex===0?" tiger-single-image stage-image-floating":""}${isTiger && galleryIndex>0?" tiger-arms-image stage-image-static":""}${isUrsus && galleryIndex===0?" ursus-single-image":""}${isUrsus && galleryIndex>0?" ursus-arms-image":""}${isLotus && galleryIndex===0?" lotus-single-image stage-image-floating":""}${isLotus && galleryIndex>0?" lotus-arms-image stage-image-static":""}${isEmerald && galleryIndex===0?" hydra-single-image stage-image-floating":""}${isEmerald && galleryIndex>0?" hydra-arms-image stage-image-static":""}${isKukriSlaughter && galleryIndex===0?" kukri-single-image stage-image-floating":""}${isKukriSlaughter && galleryIndex>0?" kukri-arms-image stage-image-static":""}${isKitGiveaway && galleryIndex===0?" stage-image-static":""}${isKitGiveaway && galleryIndex>0?" stage-image-floating":""}`}
           src={asset(activeGalleryImage.src)}
           alt={activeGalleryImage.alt}
           role="button"
