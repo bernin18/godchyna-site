@@ -4236,3 +4236,18 @@ body:has(.topbar-christmas) .site-ornament{
     will-change:auto;
   }
 }
+
+/* Ursus Doppler popup: neon pink divider between knife preview and details. */
+.active-giveaway-popup.popup-ursus-doppler-phase-1 .active-giveaway-popup-copy{
+  border-left:5px solid rgba(244,73,179,.96);
+  box-shadow:
+    inset 8px 0 18px rgba(244,73,179,.055),
+    -3px 0 14px rgba(244,73,179,.28);
+}
+@media(max-width:700px){
+  .active-giveaway-popup.popup-ursus-doppler-phase-1 .active-giveaway-popup-copy{
+    border-left:0;
+    border-top:4px solid rgba(244,73,179,.96);
+    box-shadow:0 -4px 14px rgba(244,73,179,.25);
+  }
+}
