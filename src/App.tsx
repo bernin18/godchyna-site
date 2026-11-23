@@ -915,7 +915,7 @@ function ActiveGiveawayPopup(){
 
   useEffect(()=>{
     if(launchRef.current===null){
-      const active=giveaways.filter(item=>item.enabled!==false && !isGiveawayDrawReached(item,Date.now()));
+      const active=giveaways.filter(item=>item.id!=="christmas-loadout-2026" && item.enabled!==false && !isGiveawayDrawReached(item,Date.now()));
       const navEntry=window.performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
       const isRefresh=navEntry?.type==="reload";
       let isInternalNavigation=false;
