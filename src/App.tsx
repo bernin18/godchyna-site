@@ -1,6 +1,6 @@
 import MaintenanceGate from "./MaintenanceGate";
 import ChristmasCountdown, { ChristmasSnow, ChristmasOrnaments, CHRISTMAS_DEADLINE } from "./ChristmasCountdown";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeftRight,
   Check,
@@ -898,6 +898,241 @@ function HomeGiveawayRotator(){
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+const ACTIVE_GIVEAWAY_POPUP_INDEX_KEY = "chyna-active-giveaway-popup-index";
+
+
+function ActiveGiveawayPopup(){
+  const { pick } = useLanguage();
+  const [giveaway,setGiveaway]=useState<Giveaway|null>(null);
+  const [copied,setCopied]=useState(false);
+  const now=useNowTick();
+  // Keep the launch decision across React StrictMode's effect cleanup/replay.
+  const launchRef=useRef<{show:boolean;giveawayId:string|null}|null>(null);
+
+  useEffect(()=>{
+    if(launchRef.current===null){
+      const active=giveaways.filter(item=>item.enabled!==false && !isGiveawayDrawReached(item,Date.now()));
+      const navEntry=window.performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+      const isRefresh=navEntry?.type==="reload";
+      let isInternalNavigation=false;
+      try{
+        isInternalNavigation=Boolean(document.referrer && new URL(document.referrer).origin===window.location.origin);
+      }catch{
+        // A missing or malformed referrer does not prevent a first-visit popup.
+      }
+      // New visit or explicit refresh: show; links between site pages: stay silent.
+      const shouldShow=active.length>0 && (isRefresh || !isInternalNavigation);
+      let giveawayId:string|null=null;
+      if(shouldShow){
+        let nextIndex=0;
+        try{
+          const stored=window.localStorage.getItem(ACTIVE_GIVEAWAY_POPUP_INDEX_KEY);
+          const previous=stored===null?-1:Number(stored);
+          nextIndex=Number.isFinite(previous)?(previous+1)%active.length:0;
+          window.localStorage.setItem(ACTIVE_GIVEAWAY_POPUP_INDEX_KEY,String(nextIndex));
+        }catch{
+          nextIndex=0;
+        }
+        giveawayId=(active[nextIndex] ?? active[0]).id;
+      }
+      launchRef.current={show:shouldShow,giveawayId};
+    }
+    if(!launchRef.current.show || !launchRef.current.giveawayId) return;
+    const giveawayId=launchRef.current.giveawayId;
+    const timer=window.setTimeout(()=>{
+      const current=giveaways.find(item=>item.id===giveawayId);
+      if(current && current.enabled!==false && !isGiveawayDrawReached(current,Date.now())) setGiveaway(current);
+    },450);
+    return ()=>window.clearTimeout(timer);
+  },[]);
+
+  useEffect(()=>{
+    if(giveaway && (giveaway.enabled===false || isGiveawayDrawReached(giveaway,now))) setGiveaway(null);
+  },[giveaway,now]);
+
+  useEffect(()=>{
+    if(!giveaway) return;
+    const onKeyDown=(event:KeyboardEvent)=>{
+      if(event.key==="Escape") setGiveaway(null);
+    };
+    window.addEventListener("keydown",onKeyDown);
+    return ()=>window.removeEventListener("keydown",onKeyDown);
+  },[giveaway]);
+
+  async function copyGiveawayCode(){
+    try{
+      await navigator.clipboard.writeText("GODCHYNA");
+      setCopied(true);
+      window.setTimeout(()=>setCopied(false),1500);
+    }catch(error){
+      console.warn("Unable to copy giveaway code",error);
+    }
+  }
+
+  if(!giveaway) return null;
+
+  const isComboPopup=giveaway.id==="bayonet-lore-gloves-omega";
+
+  const popupImage =
+    giveaway.id==="hydra-gloves-emerald"
+      ? "gloves hydra emerald.png"
+      : giveaway.id==="awp-wildfire"
+        ? "wildfire.png"
+        : giveaway.id==="survival-tiger-tooth"
+          ? "Survival Tiger.png"
+          : giveaway.id==="m4a1s-black-lotus"
+          ? "M4a1 black lotus.png"
+          : giveaway.id==="bayonet-lore-gloves-omega"
+            ? "omega lore pop up.png"
+            : giveaway.galleryImages?.[0]?.src ?? giveaway.image;
+
+  if(isComboPopup){
+    return (
+      <div
+        className="active-giveaway-popup-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-label={pick("Giveaway ativo","Active giveaway")}
+        onMouseDown={(event)=>{
+          if(event.currentTarget===event.target) setGiveaway(null);
+        }}
+      >
+        <article className="combo-image-popup">
+          <img
+            className="combo-image-popup-art"
+            src={asset("Pop up combo.png")}
+            alt={pick("Giveaway Bayonet Lore e Sport Gloves Omega","Bayonet Lore and Sport Gloves Omega giveaway")}
+          />
+          <span className="combo-popup-eye-glow" aria-hidden="true" />
+          {giveaway.drawDate && (
+            <div className="combo-popup-countdown">
+              <GiveawayCountdown giveaway={giveaway}/>
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="combo-popup-hotspot combo-popup-close"
+            onClick={()=>setGiveaway(null)}
+            aria-label={pick("Fechar","Close")}
+            title={pick("Fechar","Close")}
+          />
+
+          <button
+            type="button"
+            className={`combo-popup-hotspot combo-popup-copy${copied?" copied":""}`}
+            onClick={copyGiveawayCode}
+            aria-label={copied?pick("Código copiado","Code copied"):pick("Copiar código GODCHYNA","Copy GODCHYNA code")}
+            title={copied?pick("Copiado!","Copied!"):pick("Copiar código","Copy code")}
+          />
+
+          <a
+            className="combo-popup-hotspot combo-popup-enter"
+            href={giveaway.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            aria-label={pick("Participar no giveaway","Enter giveaway")}
+            title={pick("Participar","Enter")}
+          />
+
+          <a
+            className="combo-popup-hotspot combo-popup-more"
+            href="./giveaways"
+            aria-label={pick("Ver outros giveaways","See other giveaways")}
+            title={pick("Ver outros giveaways","See other giveaways")}
+          />
+        </article>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="active-giveaway-popup-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label={pick("Giveaway ativo","Active giveaway")}
+      onMouseDown={(event)=>{
+        if(event.currentTarget===event.target) setGiveaway(null);
+      }}
+    >
+      <article className={`active-giveaway-popup popup-${giveaway.provider} popup-${giveaway.id}`}>
+        <button
+          type="button"
+          className="active-giveaway-popup-close"
+          onClick={()=>setGiveaway(null)}
+          aria-label={pick("Fechar","Close")}
+        >
+          ×
+        </button>
+
+        <div className="active-giveaway-popup-visual">
+          <img className="active-giveaway-popup-provider" src={asset(giveaway.providerLogo)} alt={giveaway.providerName}/>
+          <img className="active-giveaway-popup-prize" src={asset(popupImage)} alt={giveaway.imageAlt}/>
+        </div>
+
+        <div className="active-giveaway-popup-copy">
+          <span className="active-giveaway-popup-kicker">{pick("GIVEAWAY ATIVO","ACTIVE GIVEAWAY")}</span>
+          <h2>{giveaway.title}</h2>
+          {giveaway.condition && <p className="active-giveaway-popup-condition">{giveaway.condition}</p>}
+          <strong className="active-giveaway-popup-price">{giveaway.price}</strong>
+
+          {(giveaway.startDate || giveaway.drawDate) && (
+            <div className="active-giveaway-popup-dates">
+              {giveaway.startDate && <span>{pick("Iniciado","Started")}: <b>{giveaway.startDate}</b></span>}
+              {giveaway.drawDate && <GiveawayCountdown giveaway={giveaway}/>} 
+            </div>
+          )}
+
+          <div className="active-giveaway-popup-code">
+            <div className="active-giveaway-popup-code-text">
+              <span>{pick("UTILIZA O CÓDIGO","USE CODE")}</span>
+              <b>GODCHYNA</b>
+            </div>
+            <button
+              type="button"
+              className={`active-giveaway-popup-copy-btn${copied?" copied":""}`}
+              onClick={copyGiveawayCode}
+              aria-label={pick("Copiar código","Copy code")}
+              title={pick("Copiar código","Copy code")}
+            >
+              {copied?<Check/>:<Copy/>}
+            </button>
+          </div>
+
+          {giveaway.minDeposit && (
+            <p className="active-giveaway-popup-deposit">
+              {pick("Faz um depósito mínimo de ","Make a minimum deposit of ")}
+              <strong>{giveaway.minDeposit}</strong>
+              {pick(" e participa no giveaway."," and enter the giveaway.")}
+            </p>
+          )}
+
+          {(giveaway.warningPt || giveaway.warningEn) && (
+            <p className="active-giveaway-popup-warning">
+              {pick(giveaway.warningPt ?? "",giveaway.warningEn ?? "")}
+            </p>
+          )}
+
+          <div className="active-giveaway-popup-actions">
+            <a
+              className="active-giveaway-popup-cta"
+              href={giveaway.url}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+            >
+              {pick("PARTICIPAR","ENTER")}
+            </a>
+            <a className="active-giveaway-popup-more" href="./giveaways">
+              {pick("VER OUTROS GIVEAWAYS","SEE OTHER GIVEAWAYS")}
+            </a>
+          </div>
+        </div>
+      </article>
     </div>
   );
 }
@@ -1972,7 +2207,7 @@ function RoutedSite(){
   else if(path.endsWith("/cliente")) page = <AdminUserProfilePage Header={Header} Footer={Footer}/>;
   else if(path.endsWith("/perfil")) page = <ProfilePage Header={Header} Footer={Footer}/>;
 
-  return page;
+  return <>{page}<ActiveGiveawayPopup/></>;
 }
 
 export default function App(){
