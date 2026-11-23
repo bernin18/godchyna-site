@@ -1300,7 +1300,9 @@ function DeliveredGiveaways({now}:{now:number}){
 function GiveawaysPage(){
   const { pick } = useLanguage();
   const now=useNowTick();
-  const activeGiveaways=giveaways.filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now));
+  const activeGiveaways=giveaways
+    .filter(giveaway=>giveaway.enabled!==false && !isGiveawayDrawReached(giveaway,now))
+    .sort((a,b)=>Number(b.id==="christmas-loadout-2026")-Number(a.id==="christmas-loadout-2026"));
   return (
     <>
       <Header/>
