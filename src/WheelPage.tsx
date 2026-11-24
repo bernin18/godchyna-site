@@ -441,50 +441,38 @@ const CASE_ROUNDS: CaseRound[] = [
   },
 ];
 
-const CASE_RARE_CHANCE = 3;
-const CASE_BASE_WEIGHTS = [24.244713, 21.335347, 17.456193, 13.577039, 8.728097, 5.818731, 3.39426, 1.745619, 0.7];
-const CASE_MAX_WEIGHTS = [20.336842, 18.4, 15.494737, 12.589474, 9.684211, 7.747368, 4.842105, 2.905263, 5];
+// Fixed rare odds PER ITEM by starting-entry rank among the five finalists.
+// When entrants tie, they share the same rank (competition ranking).
+const CASE_RARE_PER_ITEM_CHANCES = [5, 3, 1.5, 0.5, 0.25] as const;
+const CASE_ROLL_TICKETS = 1_000_000;
 
-function caseBoostProgress(entries: number, maxEntries: number) {
-  const safeMax = Math.max(1, maxEntries);
-  const relativeEntries = Math.max(0, Math.min(1, entries / safeMax));
+function pickCaseDrop(round: CaseRound, rareChancePerItem: number) {
+  // Exact probability for each rare item, independently of skin values.
+  // 5% => 50,000 tickets out of 1,000,000 for EACH of the two rare items.
+  const rareTicketsPerItem = Math.round(rareChancePerItem * 10_000);
+  const roll = randomParticipantIndex(CASE_ROLL_TICKETS);
 
-  // The top entrant is always the 5% reference. A softer curve keeps
-  // meaningful odds for the rest of the TOP 5 (e.g. 100 vs 300 ≈ 2.5%).
-  return Math.pow(relativeEntries, 0.8);
-}
-
-function caseWeightsForEntries(entries: number, maxEntries: number) {
-  const boost = caseBoostProgress(entries, maxEntries);
-  return CASE_BASE_WEIGHTS.map(
-    (base, index) => base + (CASE_MAX_WEIGHTS[index] - base) * boost,
-  );
-}
-
-function caseTopSkinChance(entries: number, maxEntries: number) {
-  return caseWeightsForEntries(entries, maxEntries)[CASE_BASE_WEIGHTS.length - 1];
-}
-
-function pickCaseDrop(round: CaseRound, entries: number, maxEntries: number, forceRare = false) {
-  const rareRoll = randomParticipantIndex(1_000_000) / 10_000;
-
-  if (forceRare || rareRoll < CASE_RARE_CHANCE) {
-    const finalSkin = round.rareItems[randomParticipantIndex(round.rareItems.length)];
+  if (roll < rareTicketsPerItem * round.rareItems.length) {
+    const rareIndex = Math.floor(roll / rareTicketsPerItem);
     return {
       reelSkin: CASE_RARE_PLACEHOLDER,
-      finalSkin,
+      finalSkin: round.rareItems[rareIndex],
       isRare: true,
     };
   }
 
+  // Allocate the remaining tickets to this round's nine normal skins.
+  // Lower-value skins have higher odds, normalised within THIS round.
   const sorted = [...round.skins].sort((a, b) => a.valueEur - b.valueEur);
-  const weights = caseWeightsForEntries(entries, maxEntries);
-  const normalRoll = randomParticipantIndex(970_000) / 10_000;
-  let cursor = 0;
+  const weights = sorted.map((skin) => 1 / Math.max(skin.valueEur, 0.01));
+  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+  const normalTickets = CASE_ROLL_TICKETS - rareTicketsPerItem * round.rareItems.length;
+  const normalRoll = (roll - rareTicketsPerItem * round.rareItems.length) / normalTickets;
+  let cumulative = 0;
 
   for (let index = 0; index < sorted.length; index += 1) {
-    cursor += weights[index] ?? 0;
-    if (normalRoll < cursor) {
+    cumulative += weights[index] / totalWeight;
+    if (normalRoll < cumulative || index === sorted.length - 1) {
       return {
         reelSkin: sorted[index],
         finalSkin: sorted[index],
@@ -493,8 +481,7 @@ function pickCaseDrop(round: CaseRound, entries: number, maxEntries: number, for
     }
   }
 
-  const fallback = sorted[sorted.length - 1];
-  return { reelSkin: fallback, finalSkin: fallback, isRare: false };
+  throw new Error("CHYNAO CASE round has no normal skins.");
 }
 
 const wheelAsset = (name: string) => `${import.meta.env.BASE_URL}${name}`;
@@ -2737,9 +2724,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     return qualifiedEntryCounts[playerName.trim().toLocaleLowerCase()] ?? 1;
   }
 
-  function caseMaxEntryCount() {
-    const counts = Object.values(qualifiedEntryCounts);
-    return counts.length ? Math.max(...counts, 1) : 1;
+  // The ranking is based on entries at qualification, never on live case scores.
+  // Equal entry counts get equal rare odds, across all four rounds and tiebreaks.
+  function casePlayerRank(playerName: string) {
+    const playerEntries = caseEntryCount(playerName);
+    return 1 + (topFive ?? []).filter((name) => caseEntryCount(name) > playerEntries).length;
+  }
+
+  function caseRarePerItemChance(playerName: string) {
+    const rank = casePlayerRank(playerName);
+    return CASE_RARE_PER_ITEM_CHANCES[Math.min(rank - 1, CASE_RARE_PER_ITEM_CHANCES.length - 1)];
   }
 
   function casePlayerTotal(playerName: string) {
@@ -2748,13 +2742,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       .reduce((total, opening) => total + opening.skin.valueEur, 0);
   }
 
-  function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult) {
-    const randomVisualSkin = () => {
-      const rareVisualRoll = randomParticipantIndex(1_000_000) / 10_000;
-      return rareVisualRoll < CASE_RARE_CHANCE
-        ? CASE_RARE_PLACEHOLDER
-        : round.skins[randomParticipantIndex(round.skins.length)];
-    };
+  function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult, rareChancePerItem: number) {
+    // Filler items use the same odds as the actual winner selection.
+    const randomVisualSkin = () => pickCaseDrop(round, rareChancePerItem).reelSkin;
 
     const fillerCount = 24;
     const reel = Array.from({ length: fillerCount }, randomVisualSkin);
@@ -2782,8 +2772,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
-    const maxEntries = caseMaxEntryCount();
-    const drop = pickCaseDrop(round, entries, maxEntries);
+    const rareChancePerItem = caseRarePerItemChance(playerName);
+    const drop = pickCaseDrop(round, rareChancePerItem);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
@@ -2794,7 +2784,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseRolling(true);
     setCaseLastOpening(null);
     setCaseStopOffset(randomParticipantIndex(105) - 52);
-    setCaseReel(buildCaseReel(round, drop.reelSkin));
+    setCaseReel(buildCaseReel(round, drop.reelSkin, rareChancePerItem));
     setCaseReelRun(false);
 
     window.setTimeout(() => {
@@ -4312,10 +4302,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         : leaderboardOrder;
     const currentPlayer = activePlayers[casePlayerIndex] ?? activePlayers[0];
     const currentEntries = currentPlayer ? caseEntryCount(currentPlayer) : 1;
-    const maxCaseEntries = Math.max(
-      1,
-      ...leaderboardOrder.map((name) => caseEntryCount(name)),
-    );
+    const rareChancePerItem = currentPlayer ? caseRarePerItemChance(currentPlayer) : 0;
+    const totalRareChance = rareChancePerItem * round.rareItems.length;
     const leaderboard = leaderboardOrder.map((name) => ({
       name,
       entries: caseEntryCount(name),
@@ -4430,8 +4418,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <span>{pick("BOOST DE ENTRADAS", "ENTRY BOOST")}</span>
                   <p>
                     {pick(
-                      "O jogador com mais entradas define a referência máxima de 5,00%. Os restantes recebem um boost proporcional às entradas que têm em comparação com esse jogador.",
-                      "The player with the most entries sets the 5.00% maximum reference. Everyone else receives a proportional boost based on their entries compared with that player.",
+                      "As probabilidades dos itens raros dependem da classificação por entradas dos 5 apurados. Cada caixa tem 2 raros com a mesma probabilidade; empates nas entradas dão a mesma percentagem.",
+                      "Rare-item odds depend on the five finalists' initial entry ranking. Each case has 2 rare items with equal odds; tied entry counts receive the same percentage.",
                     )}
                   </p>
                 </div>
@@ -4458,8 +4446,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       <b>{currentEntries}</b>
                     </span>
                     <span>
-                      {pick("MELHOR DROP", "TOP DROP")}
-                      <b>{caseTopSkinChance(currentEntries, maxCaseEntries).toFixed(2)}%</b>
+                      {pick("ITEM RARO", "RARE ITEM")}
+                      <b title={pick(`${rareChancePerItem.toFixed(2)}% por cada raro`, `${rareChancePerItem.toFixed(2)}% for each rare item`)}>{totalRareChance.toFixed(2)}%</b>
                     </span>
                   </div>
                 </div>
@@ -4507,7 +4495,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                       <article className="case-contents-rare" key="case-rare-item">
                         <img src={CASE_RARE_PLACEHOLDER.imageUrl} alt="Item raro" />
                         <strong>ITEM RARO</strong>
-                        <span>{CASE_RARE_CHANCE.toFixed(2)}%</span>
+                        <span>{totalRareChance.toFixed(2)}%</span>
                       </article>
                     </div>
 
@@ -4541,7 +4529,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                             >
                               <img src={skin.imageUrl} alt="" />
                               <strong>{skin.label}</strong>
-                              <span>{skin.skinName === "ITEM RARO" ? `${CASE_RARE_CHANCE.toFixed(2)}%` : <ChyAmount value={skin.valueEur} />}</span>
+                              <span>{skin.skinName === "ITEM RARO" ? `${totalRareChance.toFixed(2)}%` : <ChyAmount value={skin.valueEur} />}</span>
                             </article>
                           ))}
                         </div>
