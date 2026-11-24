@@ -567,6 +567,8 @@ function nameFontSize(name: string, count: number) {
 }
 
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
+// Only giveaways with more than 15 different participants proceed to TOP 5 / Plinko.
+const PLINKO_PARTICIPANT_THRESHOLD = 15;
 const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_VISIBLE_NAMES = 100;
 const LARGE_WHEEL_LIST_LIMIT = 160;
@@ -588,7 +590,7 @@ function uniqueParticipantNames(entries: string[]) {
 function shouldUseDirectTopFive(entries: string[]) {
   return (
     entries.length > DIRECT_TOP_FIVE_THRESHOLD &&
-    uniqueParticipantNames(entries).length >= 5
+    uniqueParticipantNames(entries).length > PLINKO_PARTICIPANT_THRESHOLD
   );
 }
 
@@ -854,6 +856,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     | null
   >(null);
   const [wheelMode, setWheelMode] = useState<"elimination" | "qualification" | null>(null);
+  // Snapshot eligibility at the start so eliminations never change this rule mid-draw.
+  const plinkoEligibleRef = useRef(false);
   const [qualifiedParticipants, setQualifiedParticipants] = useState<string[]>([]);
   const [qualifiedEntryCounts, setQualifiedEntryCounts] = useState<Record<string, number>>({});
   const [showQualificationIntro, setShowQualificationIntro] = useState(false);
@@ -2122,6 +2126,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setParticipantSearch("");
     setAutoSpin(false);
     setWheelMode(null);
+    plinkoEligibleRef.current = false;
     setQualifiedParticipants([]);
     setQualifiedEntryCounts({});
     setShowQualificationIntro(false);
@@ -3318,11 +3323,13 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     ) return;
 
     if (wheelMode === null) {
+      plinkoEligibleRef.current =
+        uniqueParticipantNames(participants).length > PLINKO_PARTICIPANT_THRESHOLD;
       setWheelMode(activeMode);
       if (qualifyingDirectly) setQualifiedParticipants([]);
     }
 
-    if (!qualifyingDirectly && participants.length === 5) {
+    if (!qualifyingDirectly && plinkoEligibleRef.current && participants.length === 5) {
       setAutoSpin(false);
       setTopFive(participants.slice(0, 5));
       setShowTopFiveModal(true);
@@ -5349,7 +5356,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                           playEliminatedSound();
                         }
 
-                        if (nextParticipants.length === 5) {
+                        if (plinkoEligibleRef.current && nextParticipants.length === 5) {
                           setPendingTopFive(nextParticipants.slice(0, 5));
                         }
                       }
@@ -5399,12 +5406,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <p>
                   {qualificationModeActive
                     ? pick(
-                        "Mais de 200 entradas: cada pessoa escolhida fica diretamente apurada para o Plinko. Todas as entradas desse nome saem da roda e o processo repete-se até termos 5 apurados.",
-                        "More than 200 entries: each selected person qualifies directly for Plinko. All entries for that name leave the wheel and the process repeats until 5 players qualify.",
+                        "Com mais de 200 entradas e mais de 15 participantes diferentes, cada pessoa escolhida fica diretamente apurada para o Plinko. Todas as entradas desse nome saem da roda até termos 5 apurados.",
+                        "With more than 200 entries and more than 15 different participants, each selected person qualifies directly for Plinko. All entries for that name leave the wheel until 5 players qualify.",
                       )
                     : pick(
-                        "Em cada rodada, a pessoa escolhida pela roda é eliminada. Quando restarem apenas 5 entradas, o TOP 5 avança para o Plinko, onde será decidido o vencedor final do sorteio.",
-                        "Each round, the person selected by the wheel is eliminated. When only 5 entries remain, the TOP 5 advances to Plinko, where the final giveaway winner will be decided.",
+                        "Em cada rodada, uma entrada é eliminada. Se o sorteio começar com mais de 15 participantes diferentes, as últimas 5 entradas avançam para o Plinko. Com 15 participantes ou menos, a roda decide o vencedor final.",
+                        "Each round, one entry is eliminated. If the draw starts with more than 15 different participants, the final 5 entries advance to Plinko. With 15 participants or fewer, the wheel decides the final winner.",
                       )}
                 </p>
               </div>
