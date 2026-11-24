@@ -2064,11 +2064,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function addQuickParticipant() {
     if (spinning || eliminationNotice || topFive || wheelWinnerNotice) return;
 
-    const name = quickParticipantName.trim();
-    const count = Math.max(
-      1,
-      Math.min(participantMultiplierLimit, Math.floor(quickParticipantCount || 1)),
-    );
+    const typedName = quickParticipantName.trim();
+    // Accept "rafa 300x" in the quick-add field as well as in the bulk textarea.
+    // If a multiplier is typed in the name, it takes precedence over the +/- input.
+    const quickEntries = parseParticipantInput(typedName, participantMultiplierLimit).entries;
+    const name = quickEntries[0] ?? typedName;
+    const hasInlineMultiplier = quickEntries.length !== 1 || name !== typedName;
+    const count = hasInlineMultiplier
+      ? quickEntries.length
+      : Math.max(1, Math.min(participantMultiplierLimit, Math.floor(quickParticipantCount || 1)));
 
     if (!name) {
       setParticipantMessage(pick(
@@ -5595,7 +5599,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     aria-label={pick("Pesquisar participante na roda", "Search participant on wheel")}
                     spellCheck={false}
                   />
-                  <strong>{directWinnerModeActive ? wheelDisplayParticipants.length : participants.length}</strong>
+                  <strong title={pick("Total de entradas carregadas", "Total entries loaded")}>{participants.length}</strong>
                 </div>
                 <div className="participants-list">
                   {participants.length === 0 ? (
@@ -5611,7 +5615,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <div className="participant-row participant-row-grouped" key={participant.name.trim().toLocaleLowerCase()}>
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <strong title={participant.name}>{participant.name}</strong>
-                      {!directWinnerModeActive && <b>×{participant.count}</b>}
+                      <b>×{participant.count}</b>
                       <button
                         type="button"
                         className="participant-remove-one"
