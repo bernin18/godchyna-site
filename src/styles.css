@@ -3980,6 +3980,19 @@ body:has(.topbar-christmas) .site-ornament{
   position:relative;
   isolation:isolate;
   overflow:visible;
+  /* Replace the full-width divider: it must stop underneath the snowbank. */
+  border-bottom:0;
+}
+.store-page #store-skins .store-christmas-heading::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  left:0;
+  right:calc(85px + min(340px,100%) - 16px);
+  bottom:0;
+  height:1px;
+  background:#1a2b2f;
+  pointer-events:none;
 }
 .store-page #store-skins .store-christmas-heading > div{
   position:relative;
@@ -4025,6 +4038,9 @@ body:has(.topbar-christmas) .site-ornament{
   filter:drop-shadow(0 5px 7px rgba(0,0,0,.48));
 }
 @media(max-width:720px){
+  .store-page #store-skins .store-christmas-heading::after{
+    right:calc(-6px + min(320px,100%) - 16px);
+  }
   .store-page #store-skins .store-christmas-snow{
     left:auto;
     right:-6px;
