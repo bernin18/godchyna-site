@@ -3279,16 +3279,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     wheelMode === "qualification" ||
     (wheelMode === null && shouldUseDirectTopFive(participants));
 
-  // A regular wheel contains one sector per person, never weighted entries.
-  // Keeping the weighted list in state preserves CHYNAO CASE and Plinko rules.
+  // All loaded entries are visible on the wheel, including multipliers.
+  // The normal winner mode still selects among unique people, as agreed.
   const directWinnerModeActive =
     wheelMode === "direct" ||
     (wheelMode === null &&
       !shouldUseDirectTopFive(participants) &&
       !shouldUsePlinko(participants));
-  const wheelDisplayParticipants = directWinnerModeActive
-    ? uniqueParticipantNames(participants)
-    : participants;
+  const wheelDisplayParticipants = participants;
+  const eligibleParticipantCount = directWinnerModeActive
+    ? uniqueParticipantNames(participants).length
+    : participants.length;
 
   useEffect(() => {
     if (wheelMode !== null || shouldUseDirectTopFive(participants)) return;
@@ -3354,9 +3355,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
           ? "elimination"
           : "direct");
     const qualifyingDirectly = activeMode === "qualification";
-    const currentWheelEntries = activeMode === "direct"
+    const directEligibleNames = activeMode === "direct"
       ? uniqueParticipantNames(participants)
-      : participants;
+      : [];
+    const eligibleEntries = activeMode === "direct"
+      ? directEligibleNames.length
+      : participants.length;
 
     if (
       spinning ||
@@ -3364,7 +3368,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       topFive ||
       wheelWinnerNotice ||
       participants.length < 1 ||
-      (!qualifyingDirectly && currentWheelEntries.length < 2)
+      (!qualifyingDirectly && eligibleEntries < 2)
     ) return;
 
     if (wheelMode === null) {
@@ -3382,9 +3386,18 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     playWheelPlim();
 
-    const winnerIndex = randomParticipantIndex(currentWheelEntries.length);
-    const selectedName = currentWheelEntries[winnerIndex];
-    const step = 360 / currentWheelEntries.length;
+    // Draw all entry sectors, but in normal mode choose the winner fairly
+    // among people first, then aim at one of that person's visible entries.
+    let winnerIndex = randomParticipantIndex(participants.length);
+    if (activeMode === "direct") {
+      const chosenName = directEligibleNames[randomParticipantIndex(directEligibleNames.length)];
+      const matchingIndices = participants.flatMap((name, index) =>
+        name.trim().toLocaleLowerCase() === chosenName.trim().toLocaleLowerCase() ? [index] : []
+      );
+      winnerIndex = matchingIndices[randomParticipantIndex(matchingIndices.length)];
+    }
+    const selectedName = participants[winnerIndex];
+    const step = 360 / participants.length;
     const selectedCenter = winnerIndex * step + step / 2;
     const targetAngle = (360 - (selectedCenter % 360)) % 360;
 
@@ -3393,9 +3406,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinnerIndex(winnerIndex);
     setSpinning(true);
     startWheelSpinAudio(
-      activeMode !== "direct" && currentWheelEntries.length >= DIRECT_TOP_FIVE_THRESHOLD
-        ? LARGE_WHEEL_VISUAL_SEGMENTS
-        : currentWheelEntries.length,
+      participants.length >= DIRECT_TOP_FIVE_THRESHOLD
+        ? Math.min(LARGE_WHEEL_VISUAL_SEGMENTS, participants.length)
+        : participants.length,
     );
 
     setRotation((currentRotation) => {
@@ -3491,8 +3504,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
   }, [groupedParticipants, participantSearch]);
 
-  const largeWheelVisual =
-    !directWinnerModeActive && participants.length >= DIRECT_TOP_FIVE_THRESHOLD;
+  // Large visual optimisation applies to every mode, including multiplied
+  // entries in the normal wheel, to avoid rendering thousands of labels.
+  const largeWheelVisual = participants.length >= DIRECT_TOP_FIVE_THRESHOLD;
   const displayedGroupedParticipants = useMemo(
     () =>
       [...filteredGroupedParticipants]
@@ -3508,7 +3522,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     filteredGroupedParticipants.length - displayedGroupedParticipants.length,
   );
   const visualWheelSegmentCount = largeWheelVisual
-    ? LARGE_WHEEL_VISUAL_SEGMENTS
+    ? Math.min(LARGE_WHEEL_VISUAL_SEGMENTS, participants.length)
     : wheelDisplayParticipants.length;
 
   const largeWheelNameEntries = useMemo(() => {
@@ -3547,8 +3561,10 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   const fastWheelSpin = !directWinnerModeActive && participants.length >= 10;
 
   const configGradient = useMemo(
-    () => (largeWheelVisual ? LARGE_WHEEL_GRADIENT : wheelGradient(wheelDisplayParticipants.length)),
-    [largeWheelVisual, wheelDisplayParticipants.length],
+    () => (visualWheelSegmentCount === LARGE_WHEEL_VISUAL_SEGMENTS
+      ? LARGE_WHEEL_GRADIENT
+      : wheelGradient(visualWheelSegmentCount)),
+    [visualWheelSegmentCount],
   );
 
   const renderLargeWheelNames = () => {
@@ -5425,8 +5441,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   className={`giveaway-wheel-center${autoSpin ? " is-auto" : ""}`}
                   onClick={requestAutoSpinToggle}
                   disabled={
-                    wheelDisplayParticipants.length < 1 ||
-                    (!qualificationModeActive && wheelDisplayParticipants.length <= 1) ||
+                    participants.length < 1 ||
+                    (!qualificationModeActive && eligibleParticipantCount < 2) ||
                     Boolean(topFive) ||
                     Boolean(wheelWinnerNotice)
                   }
@@ -5656,7 +5672,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="wheel-spin-btn"
                   onClick={requestManualSpin}
-                  disabled={autoSpin || spinning || Boolean(eliminationNotice) || (!qualificationModeActive && wheelDisplayParticipants.length < 2)}
+                  disabled={autoSpin || spinning || Boolean(eliminationNotice) || (!qualificationModeActive && eligibleParticipantCount < 2)}
                 >
                   {autoSpin ? pick("AUTO ATIVO", "AUTO ACTIVE") : "SPINNNNNNNNN"}
                 </button>
