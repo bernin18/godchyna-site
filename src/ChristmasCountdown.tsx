@@ -16,11 +16,11 @@ export function ChristmasSnow() {
 }
 
 export function ChristmasOrnaments() {
-  // Keep the right-hand decorations off the wheel's participant HUD only.
-  const onWheelPage = window.location.pathname.replace(/\/$/, "").endsWith("/wheel");
+  // Show both sides on the wheel and throughout the site.
+  // The CHYNAO CASE screen alone hides the decoration via its scoped CSS.
   return <div className="site-christmas-ornaments" aria-hidden="true">
     <img className="site-ornament site-ornament-left" src={asset("bolas de neve.png")} alt="" />
-    {!onWheelPage && <img className="site-ornament site-ornament-right" src={asset("bolas de neve.png")} alt="" />}
+    <img className="site-ornament site-ornament-right" src={asset("bolas de neve.png")} alt="" />
   </div>;
 }
 
