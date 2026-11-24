@@ -596,6 +596,14 @@ function shouldUseDirectTopFive(entries: string[]) {
   );
 }
 
+// Plinko is available only from 16 different people with fewer than 200 entries.
+function shouldUsePlinko(entries: string[]) {
+  return (
+    entries.length < DIRECT_TOP_FIVE_THRESHOLD &&
+    uniqueParticipantNames(entries).length > PLINKO_PARTICIPANT_THRESHOLD
+  );
+}
+
 function randomParticipantIndex(count: number) {
   if (count <= 1) return 0;
 
@@ -3276,7 +3284,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     wheelMode === "direct" ||
     (wheelMode === null &&
       !shouldUseDirectTopFive(participants) &&
-      uniqueParticipantNames(participants).length <= PLINKO_PARTICIPANT_THRESHOLD);
+      !shouldUsePlinko(participants));
   const wheelDisplayParticipants = directWinnerModeActive
     ? uniqueParticipantNames(participants)
     : participants;
@@ -3341,9 +3349,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       wheelMode ??
       (shouldUseDirectTopFive(participants)
         ? "qualification"
-        : uniqueParticipantNames(participants).length <= PLINKO_PARTICIPANT_THRESHOLD
-          ? "direct"
-          : "elimination");
+        : shouldUsePlinko(participants)
+          ? "elimination"
+          : "direct");
     const qualifyingDirectly = activeMode === "qualification";
     const currentWheelEntries = activeMode === "direct"
       ? uniqueParticipantNames(participants)
@@ -5452,8 +5460,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                         "CHYNAO CASE: with 200 or more entries and at least 5 different people, the wheel qualifies 5 people for the cases. Each qualifying person leaves with all their entries.",
                       )
                     : pick(
-                        "RODA NORMAL: de 2 a 15 pessoas, uma hipótese por pessoa e um único spin lento para escolher o vencedor. PLINKO: mais de 15 pessoas, com eliminações até ao TOP 5. CHYNAO CASE: 200 ou mais entradas e pelo menos 5 pessoas diferentes (tem prioridade).",
-                        "NORMAL WHEEL: 2–15 people, one chance per person and a single slow spin to choose the winner. PLINKO: more than 15 people, eliminating entries down to TOP 5. CHYNAO CASE: 200 or more entries and at least 5 different people (takes priority).",
+                        "RODA NORMAL: de 2 a 15 pessoas, uma hipótese por pessoa e um único spin lento para escolher o vencedor. PLINKO: mais de 15 pessoas diferentes e menos de 200 entradas, com eliminações até ao TOP 5. CHYNAO CASE: 200 ou mais entradas e pelo menos 5 pessoas diferentes (tem prioridade).",
+                        "NORMAL WHEEL: 2–15 people, one chance per person and a single slow spin to choose the winner. PLINKO: more than 15 different people and fewer than 200 entries, eliminating entries down to TOP 5. CHYNAO CASE: 200 or more entries and at least 5 different people (takes priority).",
                       )}
                 </p>
               </div>
