@@ -5982,3 +5982,8 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 body:has(.case-page) .site-christmas-ornaments{
   display:none!important;
 }
+
+/* Daily giveaway and Test setup: keep left baubles, hide right baubles over the participants HUD. */
+body:has(.wheel-page-config) .site-ornament-right{
+  display:none!important;
+}
