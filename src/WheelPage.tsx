@@ -567,8 +567,10 @@ function nameFontSize(name: string, count: number) {
 }
 
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
-// Only giveaways with more than 15 different participants proceed to TOP 5 / Plinko.
+// Normal elimination mode reaches Plinko only with more than 15 unique entrants.
 const PLINKO_PARTICIPANT_THRESHOLD = 15;
+// CHYNAO CASE is separate: 200+ entries and more than 5 distinct entrants.
+const CASE_MIN_UNIQUE_PARTICIPANTS = 5;
 const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_VISIBLE_NAMES = 100;
 const LARGE_WHEEL_LIST_LIMIT = 160;
@@ -589,8 +591,8 @@ function uniqueParticipantNames(entries: string[]) {
 
 function shouldUseDirectTopFive(entries: string[]) {
   return (
-    entries.length > DIRECT_TOP_FIVE_THRESHOLD &&
-    uniqueParticipantNames(entries).length > PLINKO_PARTICIPANT_THRESHOLD
+    entries.length >= DIRECT_TOP_FIVE_THRESHOLD &&
+    uniqueParticipantNames(entries).length > CASE_MIN_UNIQUE_PARTICIPANTS
   );
 }
 
@@ -631,7 +633,7 @@ function spreadParticipantEntries(entries: string[]) {
   // Large giveaways use direct TOP 5 qualification. At this size, repeatedly
   // sorting duplicate groups is expensive and brings no fairness benefit:
   // every entry still has the same chance regardless of its array position.
-  if (entries.length > DIRECT_TOP_FIVE_THRESHOLD) {
+  if (entries.length >= DIRECT_TOP_FIVE_THRESHOLD) {
     return shuffleParticipantEntries(entries);
   }
 
@@ -3349,7 +3351,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinnerIndex(winnerIndex);
     setSpinning(true);
     startWheelSpinAudio(
-      participants.length > DIRECT_TOP_FIVE_THRESHOLD
+      participants.length >= DIRECT_TOP_FIVE_THRESHOLD
         ? LARGE_WHEEL_VISUAL_SEGMENTS
         : participants.length,
     );
@@ -3446,7 +3448,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
   }, [groupedParticipants, participantSearch]);
 
-  const largeWheelVisual = participants.length > DIRECT_TOP_FIVE_THRESHOLD;
+  const largeWheelVisual = participants.length >= DIRECT_TOP_FIVE_THRESHOLD;
   const displayedGroupedParticipants = useMemo(
     () =>
       [...filteredGroupedParticipants]
@@ -5406,12 +5408,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <p>
                   {qualificationModeActive
                     ? pick(
-                        "Com mais de 200 entradas e mais de 15 participantes diferentes, cada pessoa escolhida fica diretamente apurada para o Plinko. Todas as entradas desse nome saem da roda até termos 5 apurados.",
-                        "With more than 200 entries and more than 15 different participants, each selected person qualifies directly for Plinko. All entries for that name leave the wheel until 5 players qualify.",
+                        "Com 200 ou mais entradas e mais de 5 participantes diferentes, cada pessoa escolhida fica apurada para o CHYNAO CASE. Todas as entradas desse nome saem da roda até termos 5 apurados.",
+                        "With 200 or more entries and more than 5 different participants, each selected person qualifies for CHYNAO CASE. All entries for that name leave the wheel until 5 players qualify.",
                       )
                     : pick(
-                        "Em cada rodada, uma entrada é eliminada. Se o sorteio começar com mais de 15 participantes diferentes, as últimas 5 entradas avançam para o Plinko. Com 15 participantes ou menos, a roda decide o vencedor final.",
-                        "Each round, one entry is eliminated. If the draw starts with more than 15 different participants, the final 5 entries advance to Plinko. With 15 participants or fewer, the wheel decides the final winner.",
+                        "Regra normal: em cada rodada, uma entrada é eliminada. Com mais de 15 participantes diferentes, o TOP 5 avança para o Plinko. Com 15 ou menos, a roda decide o vencedor. CHYNAO CASE: 200 ou mais entradas e mais de 5 pessoas diferentes.",
+                        "Normal rule: one entry is eliminated each round. With more than 15 different participants, TOP 5 advances to Plinko. With 15 or fewer, the wheel decides the winner. CHYNAO CASE: 200 or more entries and more than 5 different participants.",
                       )}
                 </p>
               </div>
@@ -5637,8 +5639,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               </strong>
               <p>
                 {pick(
-                  "A roda vai agora escolher diretamente os 5 apurados para o Plinko.",
-                  "The wheel will now select the 5 players who qualify directly for Plinko.",
+                  "A roda vai agora escolher diretamente os 5 apurados para o CHYNAO CASE.",
+                  "The wheel will now select the 5 players who qualify directly for CHYNAO CASE.",
                 )}
               </p>
               <button
@@ -5672,8 +5674,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <h2 id="wheel-elimination-title" className="wheel-still-in-title">
                     <strong>{eliminationNotice.name}</strong>{" "}
                     {pick(
-                      "estás apurado para o Plinko!",
-                      "you qualified for Plinko!",
+                      "estás apurado para o CHYNAO CASE!",
+                      "you qualified for CHYNAO CASE!",
                     )}
                   </h2>
                   <p>
