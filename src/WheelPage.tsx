@@ -5987,7 +5987,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
             <div className={`giveaway-history-window${giveawayHistory.length >= 5 ? " is-rolling" : ""}`}>
               {giveawayHistory.length > 0 ? (
-                <div className={`giveaway-history-track${giveawayHistory.length >= 5 ? " is-rolling" : ""}${monthlyHistoryDemo && monthlyHistoryDemo.phase !== "landed" ? " is-arrival-paused" : ""}`}>
+                <div
+                  className={`giveaway-history-track${giveawayHistory.length >= 5 ? " is-rolling" : ""}${monthlyHistoryDemo && monthlyHistoryDemo.phase !== "landed" ? " is-arrival-paused" : ""}`}
+                  style={{
+                    "--giveaway-history-duration": `${Math.max(90, (giveawayHistory.length + (monthlyHistoryDemo?.phase === "landed" ? 1 : 0)) * 5)}s`,
+                  } as CSSProperties}
+                >
                   {(giveawayHistory.length >= 5 ? [0, 1] : [0]).map((groupIndex) => (
                     <div
                       className="giveaway-history-group"
