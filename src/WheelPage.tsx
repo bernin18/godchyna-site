@@ -444,9 +444,12 @@ const CASE_ROUNDS: CaseRound[] = [
 // Fixed rare odds PER ITEM by starting-entry rank among the five finalists.
 // When entrants tie, they share the same rank (competition ranking).
 const CASE_RARE_PER_ITEM_CHANCES = [5, 3, 1.5, 0.5, 0.25] as const;
+// Rank 1 has a flatter price curve; rank 5 has a stronger bias toward cheap skins.
+// These fixed curves apply to each case round's own nine normal skins.
+const CASE_NORMAL_PRICE_EXPONENTS = [0.5, 0.8, 1.1, 1.5, 1.9] as const;
 const CASE_ROLL_TICKETS = 1_000_000;
 
-function pickCaseDrop(round: CaseRound, rareChancePerItem: number) {
+function pickCaseDrop(round: CaseRound, rareChancePerItem: number, playerRank: number) {
   // Exact probability for each rare item, independently of skin values.
   // 5% => 50,000 tickets out of 1,000,000 for EACH of the two rare items.
   const rareTicketsPerItem = Math.round(rareChancePerItem * 10_000);
@@ -462,9 +465,16 @@ function pickCaseDrop(round: CaseRound, rareChancePerItem: number) {
   }
 
   // Allocate the remaining tickets to this round's nine normal skins.
-  // Lower-value skins have higher odds, normalised within THIS round.
+  // A higher entry rank increases the odds of valuable skins; rank 5 has the
+  // strongest preference for cheaper skins. Every skin remains possible.
   const sorted = [...round.skins].sort((a, b) => a.valueEur - b.valueEur);
-  const weights = sorted.map((skin) => 1 / Math.max(skin.valueEur, 0.01));
+  const lowestPrice = Math.max(sorted[0]?.valueEur ?? 0, 0.01);
+  const exponent = CASE_NORMAL_PRICE_EXPONENTS[
+    Math.min(Math.max(1, playerRank), CASE_NORMAL_PRICE_EXPONENTS.length) - 1
+  ];
+  const weights = sorted.map((skin) =>
+    Math.pow(lowestPrice / Math.max(skin.valueEur, 0.01), exponent)
+  );
   const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
   const normalTickets = CASE_ROLL_TICKETS - rareTicketsPerItem * round.rareItems.length;
   const normalRoll = (roll - rareTicketsPerItem * round.rareItems.length) / normalTickets;
@@ -2742,9 +2752,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       .reduce((total, opening) => total + opening.skin.valueEur, 0);
   }
 
-  function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult, rareChancePerItem: number) {
-    // Filler items use the same odds as the actual winner selection.
-    const randomVisualSkin = () => pickCaseDrop(round, rareChancePerItem).reelSkin;
+  function buildCaseReel(round: CaseRound, winningSkin: PlinkoResult, rareChancePerItem: number, playerRank: number) {
+    // Filler items use the same rank-weighted odds as the actual winner selection.
+    const randomVisualSkin = () => pickCaseDrop(round, rareChancePerItem, playerRank).reelSkin;
 
     const fillerCount = 24;
     const reel = Array.from({ length: fillerCount }, randomVisualSkin);
@@ -2772,8 +2782,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (!playerName || !round) return;
 
     const entries = caseEntryCount(playerName);
+    const playerRank = casePlayerRank(playerName);
     const rareChancePerItem = caseRarePerItemChance(playerName);
-    const drop = pickCaseDrop(round, rareChancePerItem);
+    const drop = pickCaseDrop(round, rareChancePerItem, playerRank);
     const opening: CaseOpening = {
       round: caseRound,
       playerName,
@@ -2784,7 +2795,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setCaseRolling(true);
     setCaseLastOpening(null);
     setCaseStopOffset(randomParticipantIndex(105) - 52);
-    setCaseReel(buildCaseReel(round, drop.reelSkin, rareChancePerItem));
+    setCaseReel(buildCaseReel(round, drop.reelSkin, rareChancePerItem, playerRank));
     setCaseReelRun(false);
 
     window.setTimeout(() => {
@@ -4418,8 +4429,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <span>{pick("BOOST DE ENTRADAS", "ENTRY BOOST")}</span>
                   <p>
                     {pick(
-                      "As probabilidades dos itens raros dependem da classificação por entradas dos 5 apurados. Cada caixa tem 2 raros com a mesma probabilidade; empates nas entradas dão a mesma percentagem.",
-                      "Rare-item odds depend on the five finalists' initial entry ranking. Each case has 2 rare items with equal odds; tied entry counts receive the same percentage.",
+                      "A classificação pelas entradas define as probabilidades de cada caixa: os primeiros têm mais hipóteses nas skins normais mais caras; os últimos, nas mais baratas. Cada raro mantém a percentagem fixa da classificação. Entradas empatadas dão as mesmas hipóteses.",
+                      "Entry ranking determines each case's odds: higher ranks have better chances at valuable normal skins; lower ranks favour cheaper ones. Each rare keeps its fixed rank chance. Equal entry counts receive equal odds.",
                     )}
                   </p>
                 </div>
