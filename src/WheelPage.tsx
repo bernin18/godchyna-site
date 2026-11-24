@@ -569,7 +569,7 @@ function nameFontSize(name: string, count: number) {
 const DIRECT_TOP_FIVE_THRESHOLD = 200;
 // Normal elimination mode reaches Plinko only with more than 15 unique entrants.
 const PLINKO_PARTICIPANT_THRESHOLD = 15;
-// CHYNAO CASE is separate: 200+ entries and more than 5 distinct entrants.
+// CHYNAO CASE needs both 200+ entries and at least 5 distinct people.
 const CASE_MIN_UNIQUE_PARTICIPANTS = 5;
 const LARGE_WHEEL_VISUAL_SEGMENTS = 600;
 const LARGE_WHEEL_VISIBLE_NAMES = 100;
@@ -592,7 +592,7 @@ function uniqueParticipantNames(entries: string[]) {
 function shouldUseDirectTopFive(entries: string[]) {
   return (
     entries.length >= DIRECT_TOP_FIVE_THRESHOLD &&
-    uniqueParticipantNames(entries).length > CASE_MIN_UNIQUE_PARTICIPANTS
+    uniqueParticipantNames(entries).length >= CASE_MIN_UNIQUE_PARTICIPANTS
   );
 }
 
@@ -857,7 +857,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     | { kind: "qualification"; name: string; position: number }
     | null
   >(null);
-  const [wheelMode, setWheelMode] = useState<"elimination" | "qualification" | null>(null);
+  const [wheelMode, setWheelMode] = useState<"direct" | "elimination" | "qualification" | null>(null);
   // Snapshot eligibility at the start so eliminations never change this rule mid-draw.
   const plinkoEligibleRef = useRef(false);
   const [qualifiedParticipants, setQualifiedParticipants] = useState<string[]>([]);
@@ -3254,6 +3254,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     wheelMode === "qualification" ||
     (wheelMode === null && shouldUseDirectTopFive(participants));
 
+  // A regular wheel contains one sector per person, never weighted entries.
+  // Keeping the weighted list in state preserves CHYNAO CASE and Plinko rules.
+  const directWinnerModeActive =
+    wheelMode === "direct" ||
+    (wheelMode === null &&
+      !shouldUseDirectTopFive(participants) &&
+      uniqueParticipantNames(participants).length <= PLINKO_PARTICIPANT_THRESHOLD);
+  const wheelDisplayParticipants = directWinnerModeActive
+    ? uniqueParticipantNames(participants)
+    : participants;
+
   useEffect(() => {
     if (wheelMode !== null || shouldUseDirectTopFive(participants)) return;
 
@@ -3312,8 +3323,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   function spinWheel() {
     const activeMode =
       wheelMode ??
-      (shouldUseDirectTopFive(participants) ? "qualification" : "elimination");
+      (shouldUseDirectTopFive(participants)
+        ? "qualification"
+        : uniqueParticipantNames(participants).length <= PLINKO_PARTICIPANT_THRESHOLD
+          ? "direct"
+          : "elimination");
     const qualifyingDirectly = activeMode === "qualification";
+    const currentWheelEntries = activeMode === "direct"
+      ? uniqueParticipantNames(participants)
+      : participants;
 
     if (
       spinning ||
@@ -3321,17 +3339,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       topFive ||
       wheelWinnerNotice ||
       participants.length < 1 ||
-      (!qualifyingDirectly && participants.length <= 1)
+      (!qualifyingDirectly && currentWheelEntries.length < 2)
     ) return;
 
     if (wheelMode === null) {
-      plinkoEligibleRef.current =
-        uniqueParticipantNames(participants).length > PLINKO_PARTICIPANT_THRESHOLD;
+      plinkoEligibleRef.current = activeMode === "elimination";
       setWheelMode(activeMode);
       if (qualifyingDirectly) setQualifiedParticipants([]);
     }
 
-    if (!qualifyingDirectly && plinkoEligibleRef.current && participants.length === 5) {
+    if (activeMode === "elimination" && plinkoEligibleRef.current && participants.length === 5) {
       setAutoSpin(false);
       setTopFive(participants.slice(0, 5));
       setShowTopFiveModal(true);
@@ -3340,9 +3357,9 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
     playWheelPlim();
 
-    const winnerIndex = randomParticipantIndex(participants.length);
-    const selectedName = participants[winnerIndex];
-    const step = 360 / participants.length;
+    const winnerIndex = randomParticipantIndex(currentWheelEntries.length);
+    const selectedName = currentWheelEntries[winnerIndex];
+    const step = 360 / currentWheelEntries.length;
     const selectedCenter = winnerIndex * step + step / 2;
     const targetAngle = (360 - (selectedCenter % 360)) % 360;
 
@@ -3351,15 +3368,16 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setPendingWinnerIndex(winnerIndex);
     setSpinning(true);
     startWheelSpinAudio(
-      participants.length >= DIRECT_TOP_FIVE_THRESHOLD
+      activeMode !== "direct" && currentWheelEntries.length >= DIRECT_TOP_FIVE_THRESHOLD
         ? LARGE_WHEEL_VISUAL_SEGMENTS
-        : participants.length,
+        : currentWheelEntries.length,
     );
 
     setRotation((currentRotation) => {
       const currentAngle = ((currentRotation % 360) + 360) % 360;
       const alignment = (targetAngle - currentAngle + 360) % 360;
-      return currentRotation + 6 * 360 + alignment;
+      // Direct winner: five slow turns, no preliminary eliminations.
+      return currentRotation + (activeMode === "direct" ? 5 : 6) * 360 + alignment;
     });
   }
 
@@ -3448,7 +3466,8 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     );
   }, [groupedParticipants, participantSearch]);
 
-  const largeWheelVisual = participants.length >= DIRECT_TOP_FIVE_THRESHOLD;
+  const largeWheelVisual =
+    !directWinnerModeActive && participants.length >= DIRECT_TOP_FIVE_THRESHOLD;
   const displayedGroupedParticipants = useMemo(
     () =>
       [...filteredGroupedParticipants]
@@ -3465,7 +3484,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
   );
   const visualWheelSegmentCount = largeWheelVisual
     ? LARGE_WHEEL_VISUAL_SEGMENTS
-    : participants.length;
+    : wheelDisplayParticipants.length;
 
   const largeWheelNameEntries = useMemo(() => {
     if (!largeWheelVisual || participants.length === 0) return [];
@@ -3500,11 +3519,11 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
 
   const monthlyWheelSegments = useMemo(() => buildMonthlySegments(groupedParticipants), [groupedParticipants]);
 
-  const fastWheelSpin = participants.length >= 10;
+  const fastWheelSpin = !directWinnerModeActive && participants.length >= 10;
 
   const configGradient = useMemo(
-    () => (largeWheelVisual ? LARGE_WHEEL_GRADIENT : wheelGradient(participants.length)),
-    [largeWheelVisual, participants.length],
+    () => (largeWheelVisual ? LARGE_WHEEL_GRADIENT : wheelGradient(wheelDisplayParticipants.length)),
+    [largeWheelVisual, wheelDisplayParticipants.length],
   );
 
   const renderLargeWheelNames = () => {
@@ -5278,7 +5297,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
               >
                 <div
                   ref={wheelRotorRef}
-                  className={`giveaway-wheel-rotor${spinning ? " is-spinning" : ""}${spinning && fastWheelSpin ? " is-fast" : ""}`}
+                  className={`giveaway-wheel-rotor${spinning ? " is-spinning" : ""}${spinning && fastWheelSpin ? " is-fast" : ""}${spinning && directWinnerModeActive ? " is-direct" : ""}`}
                   style={{
                     background: configGradient,
                     transform: `rotate(${rotation}deg)`,
@@ -5300,7 +5319,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     setSpinning(false);
                     setWinner(eliminatedName);
 
-                    if (qualificationModeActive) {
+                    if (wheelMode === "direct") {
+                      // One winner, chosen on the first and only spin.
+                      setAutoSpin(false);
+                      setWheelWinnerNotice(eliminatedName);
+                      void finalizeCurrentGiveaway(eliminatedName);
+                    } else if (qualificationModeActive) {
                       const entryCount = participants.filter(
                         (name) => name.trim().toLocaleLowerCase() === normalizedName,
                       ).length;
@@ -5371,15 +5395,15 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   <WheelDividers count={visualWheelSegmentCount} />
                   {largeWheelVisual
                     ? renderLargeWheelNames()
-                    : participants.length > 0 && renderWheelNames(participants)}
+                    : wheelDisplayParticipants.length > 0 && renderWheelNames(wheelDisplayParticipants)}
                 </div>
                 <button
                   type="button"
                   className={`giveaway-wheel-center${autoSpin ? " is-auto" : ""}`}
                   onClick={requestAutoSpinToggle}
                   disabled={
-                    participants.length < 1 ||
-                    (!qualificationModeActive && participants.length <= 1) ||
+                    wheelDisplayParticipants.length < 1 ||
+                    (!qualificationModeActive && wheelDisplayParticipants.length <= 1) ||
                     Boolean(topFive) ||
                     Boolean(wheelWinnerNotice)
                   }
@@ -5408,12 +5432,12 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                 <p>
                   {qualificationModeActive
                     ? pick(
-                        "Com 200 ou mais entradas e mais de 5 participantes diferentes, cada pessoa escolhida fica apurada para o CHYNAO CASE. Todas as entradas desse nome saem da roda até termos 5 apurados.",
-                        "With 200 or more entries and more than 5 different participants, each selected person qualifies for CHYNAO CASE. All entries for that name leave the wheel until 5 players qualify.",
+                        "CHYNAO CASE: com 200 ou mais entradas e pelo menos 5 pessoas diferentes, a roda apura 5 pessoas para as caixas. Cada apurado sai da roda com todas as suas entradas.",
+                        "CHYNAO CASE: with 200 or more entries and at least 5 different people, the wheel qualifies 5 people for the cases. Each qualifying person leaves with all their entries.",
                       )
                     : pick(
-                        "Regra normal: em cada rodada, uma entrada é eliminada. Com mais de 15 participantes diferentes, o TOP 5 avança para o Plinko. Com 15 ou menos, a roda decide o vencedor. CHYNAO CASE: 200 ou mais entradas e mais de 5 pessoas diferentes.",
-                        "Normal rule: one entry is eliminated each round. With more than 15 different participants, TOP 5 advances to Plinko. With 15 or fewer, the wheel decides the winner. CHYNAO CASE: 200 or more entries and more than 5 different participants.",
+                        "RODA NORMAL: de 2 a 15 pessoas, uma hipótese por pessoa e um único spin lento para escolher o vencedor. PLINKO: mais de 15 pessoas, com eliminações até ao TOP 5. CHYNAO CASE: 200 ou mais entradas e pelo menos 5 pessoas diferentes (tem prioridade).",
+                        "NORMAL WHEEL: 2–15 people, one chance per person and a single slow spin to choose the winner. PLINKO: more than 15 people, eliminating entries down to TOP 5. CHYNAO CASE: 200 or more entries and at least 5 different people (takes priority).",
                       )}
                 </p>
               </div>
