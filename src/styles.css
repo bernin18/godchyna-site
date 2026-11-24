@@ -3989,10 +3989,11 @@ body:has(.topbar-christmas) .site-ornament{
   position:absolute;
   z-index:2;
   left:auto;
-  right:-10px;
+  /* Bring the snowbank's right edge in line with the final visible skin card. */
+  right:85px;
   bottom:-7px;
   display:block;
-  width:min(440px,100%);
+  width:min(340px,100%);
   height:clamp(34px,3.8vw,49px);
   max-width:none;
   object-fit:cover;
@@ -4008,7 +4009,8 @@ body:has(.topbar-christmas) .site-ornament{
   position:absolute;
   z-index:4;
   left:auto;
-  right:calc(-10px + (min(440px,100%) - 215px)/2);
+  /* Keep Santa centered above the narrower, left-shifted snowbank. */
+  right:calc(85px + (min(340px,100%) - 215px)/2);
   bottom:8px;
   display:block;
   width:215px;
