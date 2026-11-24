@@ -3979,6 +3979,9 @@ body:has(.topbar-christmas) .site-ornament{
 .store-page #store-skins .store-christmas-heading{
   position:relative;
   isolation:isolate;
+  /* Keep the fixed SALDO panel above the hanging Christmas strings (z-index:12).
+     The heading forms a stacking context, so its own layer must also be raised. */
+  z-index:20;
   overflow:visible;
   /* Replace the full-width divider: it must stop underneath the snowbank. */
   border-bottom:0;
