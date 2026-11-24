@@ -5971,3 +5971,8 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
     height:120px;
   }
 }
+
+/* Regular wheel: one slow spin for a direct winner, 2–15 unique people. */
+.giveaway-wheel-rotor.is-spinning.is-direct{
+  transition:transform 11s cubic-bezier(.12,.66,.055,1)!important;
+}
