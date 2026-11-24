@@ -2014,6 +2014,17 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     }
   }
 
+  function resetWheelModeAfterEditingParticipants() {
+    setAutoSpin(false);
+    setWheelMode(null);
+    plinkoEligibleRef.current = false;
+    setQualifiedParticipants([]);
+    setQualifiedEntryCounts({});
+    setShowQualificationIntro(false);
+    setQualificationIntroSeen(false);
+    setQualificationStartIntent(null);
+  }
+
   function loadParticipants() {
     const { entries, cappedLines } = parseParticipantInput(participantInput, participantMultiplierLimit);
 
@@ -2028,6 +2039,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     setParticipants((current) =>
       spreadParticipantEntries([...current, ...entries]),
     );
+    resetWheelModeAfterEditingParticipants();
     setParticipantInput("");
     setWinner(null);
     setPendingWinner(null);
@@ -2067,6 +2079,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
         ...Array.from({ length: count }, () => name),
       ]),
     );
+    resetWheelModeAfterEditingParticipants();
     setQuickParticipantName("");
     setQuickParticipantCount(1);
     setWinner(null);
@@ -2099,6 +2112,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       return current.filter((_, index) => index !== indexToRemove);
     });
 
+    resetWheelModeAfterEditingParticipants();
     setWinner(null);
     setPendingWinner(null);
     setPendingWinnerIndex(null);
@@ -2115,6 +2129,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
       ),
     );
 
+    resetWheelModeAfterEditingParticipants();
     setWinner(null);
     setPendingWinner(null);
     setPendingWinnerIndex(null);
@@ -2167,6 +2182,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
     if (spinning || eliminationNotice || topFive) return;
 
     setParticipants((current) => current.filter((_, index) => index !== indexToRemove));
+    resetWheelModeAfterEditingParticipants();
     setWinner(null);
     setPendingWinner(null);
     setPendingWinnerIndex(null);
@@ -5572,7 +5588,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     aria-label={pick("Pesquisar participante na roda", "Search participant on wheel")}
                     spellCheck={false}
                   />
-                  <strong>{participants.length}</strong>
+                  <strong>{directWinnerModeActive ? wheelDisplayParticipants.length : participants.length}</strong>
                 </div>
                 <div className="participants-list">
                   {participants.length === 0 ? (
@@ -5588,7 +5604,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                     <div className="participant-row participant-row-grouped" key={participant.name.trim().toLocaleLowerCase()}>
                       <span>{String(index + 1).padStart(2, "0")}</span>
                       <strong title={participant.name}>{participant.name}</strong>
-                      <b>×{participant.count}</b>
+                      {!directWinnerModeActive && <b>×{participant.count}</b>}
                       <button
                         type="button"
                         className="participant-remove-one"
@@ -5633,7 +5649,7 @@ export default function WheelPage({ Header, Footer }: WheelPageProps) {
                   type="button"
                   className="wheel-spin-btn"
                   onClick={requestManualSpin}
-                  disabled={autoSpin || spinning || Boolean(eliminationNotice)}
+                  disabled={autoSpin || spinning || Boolean(eliminationNotice) || (!qualificationModeActive && wheelDisplayParticipants.length < 2)}
                 >
                   {autoSpin ? pick("AUTO ATIVO", "AUTO ACTIVE") : "SPINNNNNNNNN"}
                 </button>
