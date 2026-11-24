@@ -5976,3 +5976,9 @@ linear-gradient(180deg,#071014,#050a0d);display:flex;flex-direction:column}
 .giveaway-wheel-rotor.is-spinning.is-direct{
   transition:transform 11s cubic-bezier(.12,.66,.055,1)!important;
 }
+
+/* Hide the hanging Christmas baubles only while CHYNAO CASE is open.
+   The global Christmas decorations remain visible everywhere else. */
+body:has(.case-page) .site-christmas-ornaments{
+  display:none!important;
+}
