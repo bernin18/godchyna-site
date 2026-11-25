@@ -256,7 +256,7 @@ const giveaways:Giveaway[] = [
     id:"m4a1s-black-lotus",
     title:"M4A1-S | Black Lotus",
     condition:"StatTrak™ Field-Tested / FT",
-    price:"$13.62",
+    price:"$14",
     minDeposit:"€3",
     image:"black lotus braços.webp",
     imageAlt:"M4A1-S Black Lotus StatTrak Field-Tested with arms",
