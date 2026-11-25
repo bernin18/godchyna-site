@@ -3668,6 +3668,23 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 .delivered-giveaways-grid .delivered-giveaway-card+.delivered-giveaway-card{
   margin-top:0!important;
 }
+
+/* Keep delivered giveaway cards aligned regardless of title/condition length. */
+.delivered-giveaways-grid{
+  align-items:stretch;
+}
+.delivered-giveaways-grid .delivered-giveaway-card{
+  min-height:522px;
+  height:100%;
+  box-sizing:border-box;
+}
+.delivered-giveaways-grid .delivered-prize-panel{
+  flex:1;
+}
+.delivered-giveaways-grid .delivered-prize-visual{
+  min-height:85px;
+  margin-top:20px;
+}
 @media(max-width:760px){
   .delivered-giveaways-grid{
     grid-template-columns:minmax(0,360px);
