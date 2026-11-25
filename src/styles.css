@@ -3804,6 +3804,22 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
 }
 
 
+
+/* Delivered Black Lotus: keep the same Hydra-style card, with a wider rifle preview. */
+.delivered-history-lotus .delivered-history-art{
+  right:12px;
+  top:16px;
+  bottom:16px;
+  width:54%;
+}
+.delivered-history-lotus .delivered-history-art img{
+  transform:rotate(-5deg) scale(1.13);
+}
+.delivered-m4a1s-black-lotus .delivered-prize-visual img{
+  max-width:205px;
+  max-height:102px;
+}
+
 /* Keep every delivered top block centered with its prize panel */
 .delivered-giveaway-card .delivered-clip-wrap > *{
   margin-left:auto;
