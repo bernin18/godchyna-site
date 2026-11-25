@@ -3563,6 +3563,13 @@ footer{max-width:1500px;margin:auto;padding:32px 50px 28px}
   background:#19343b!important;
   opacity:1!important;
 }
+/* Kukri has two description paragraphs: reduce the extra gap so its
+   action buttons retain the same bottom breathing room as Survival Tiger. */
+@media(min-width:1001px){
+  .giveaway-kukri-slaughter-ft .giveaway-action-zone{
+    margin-top:12px;
+  }
+}
 .giveaway-kukri-slaughter-ft .participate{
   background:linear-gradient(90deg,#d92332,#ff5b66)!important;
   color:#fff!important;
