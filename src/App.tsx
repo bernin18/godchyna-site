@@ -117,6 +117,7 @@ type Giveaway = {
   startDate?:string;
   drawDate?:string;
   deliveredDate?:string;
+  winnerName?:string;
   drawEndOfDay?:boolean;
   partnerNotePt?:string;
   partnerNoteEn?:string;
@@ -255,7 +256,7 @@ const giveaways:Giveaway[] = [
     id:"m4a1s-black-lotus",
     title:"M4A1-S | Black Lotus",
     condition:"StatTrak™ Field-Tested / FT",
-    price:"$14.00",
+    price:"$13.62",
     minDeposit:"€3",
     image:"black lotus braços.webp",
     imageAlt:"M4A1-S Black Lotus StatTrak Field-Tested with arms",
@@ -269,6 +270,9 @@ const giveaways:Giveaway[] = [
     url:"https://csgo-skins.com/?ref=GODCHYNA",
     requiresProof:true,
     startDate:"10/10/26",
+    drawDate:"25/11/2026",
+    deliveredDate:"25/11/2026",
+    winnerName:"Jesus",
     partnerNotePt:"A data do sorteio é determinada pelo parceiro. O giveaway será enviado automaticamente pelo CSGO-SKINS ao vencedor, de forma a permitir a verificação da legitimidade do sorteio.",
     partnerNoteEn:"The draw date is determined by the partner. The giveaway will be sent automatically by CSGO-SKINS to the winner, allowing the legitimacy of the draw to be verified.",
   },
@@ -1467,27 +1471,33 @@ function DeliveredGiveaways({now}:{now:number}){
         {autoDelivered.map(giveaway=>{
           const isEmeraldDelivered=giveaway.id==="hydra-gloves-emerald";
           const isComboDelivered=giveaway.id==="bayonet-lore-gloves-omega";
+          const isLotusDelivered=giveaway.id==="m4a1s-black-lotus";
+          const deliveredWinner=isComboDelivered ? "Bush" : isEmeraldDelivered ? "Roman" : giveaway.winnerName;
           const deliveredImage=isEmeraldDelivered
             ? "gloves hydra emerald.png"
-            : isComboDelivered
-              ? "combo.png"
-              : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
+            : isLotusDelivered
+              ? "M4a1 black lotus.png"
+              : isComboDelivered
+                ? "combo.png"
+                : giveaway.galleryImages?.[1]?.src ?? giveaway.image;
           return (
             <article className="delivered-giveaway-card" key={"auto-delivered-"+giveaway.id}>
               <div className="delivered-clip-wrap">
-                {isEmeraldDelivered ? (
-                  <div className="delivered-history-preview" aria-label={pick("Resumo do giveaway mensal","Monthly giveaway summary")}>
+                {isEmeraldDelivered || isLotusDelivered ? (
+                  <div className={`delivered-history-preview${isLotusDelivered ? " delivered-history-lotus" : ""}`} aria-label={pick("Resumo do giveaway entregue","Delivered giveaway summary")}>
                     <div className="delivered-history-smoke" aria-hidden="true" />
                     <div className="delivered-history-art" aria-hidden="true">
-                      <img src={asset("gloves hydra emerald.png")} alt="" />
+                      <img src={asset(deliveredImage)} alt="" />
                     </div>
-                    <span className="delivered-history-badge">{pick("GIVEAWAY MENSAL","MONTHLY GIVEAWAY")}</span>
+                    <span className="delivered-history-badge">
+                      {isEmeraldDelivered ? pick("GIVEAWAY MENSAL","MONTHLY GIVEAWAY") : "GIVEAWAY"}
+                    </span>
                     <div className="delivered-history-copy">
                       <em>{pick("OFERECIDO POR","OFFERED BY")} · <b>Chyna</b></em>
-                      <strong><span>{pick("VENCEDOR","WINNER")}: </span><b>Roman</b></strong>
-                      <span>Hydra Gloves ★ Emerald FT</span>
+                      <strong><span>{pick("VENCEDOR","WINNER")}: </span><b>{deliveredWinner}</b></strong>
+                      <span>{giveaway.title}{isLotusDelivered ? " · StatTrak™ FT" : ""}</span>
                     </div>
-                    <b className="delivered-history-value">$ 40.00</b>
+                    <b className="delivered-history-value">{giveaway.price.replace("$", "$ ")}</b>
                   </div>
                 ) : (
                   <div className="delivered-clip-frame delivered-clip-pending">
@@ -1512,10 +1522,10 @@ function DeliveredGiveaways({now}:{now:number}){
                   {giveaway.condition && <p>{giveaway.condition}</p>}
                   <strong>{giveaway.price}</strong>
                 </div>
-                {isEmeraldDelivered || isComboDelivered ? (
+                {deliveredWinner ? (
                   <div className="delivered-winner">
                     <span>{pick("VENCEDOR","WINNER")}</span>
-                    <b>{isComboDelivered ? "Bush" : "Roman"}</b>
+                    <b>{deliveredWinner}</b>
                   </div>
                 ) : giveaway.drawDate ? (
                   <div className="delivered-winner delivered-date-row">
